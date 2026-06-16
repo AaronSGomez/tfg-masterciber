@@ -1,0 +1,131 @@
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    container_name: thehive_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # Bajado a 512MB
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - security_net
+
+  cassandra:
+    image: cassandra:4.0
+    container_name: thehive_cassandra
+    environment:
+      - MAX_HEAP_SIZE=512M # Bajado a 512MB
+      - HEAP_NEWSIZE=128M
+      - CASSANDRA_CLUSTER_NAME=TheHive
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - security_net
+
+  cortex:
+    image: thehiveproject/cortex:3.1.7
+    container_name: cortex
+    depends_on:
+      - elasticsearch
+    environment:
+      - job_directory=/opt/cortex/jobs
+    ports:
+      - "9001:9001"
+    deploy:
+      resources:
+        limits:
+          memory: 750M
+    volumes:
+      - cortex_data:/etc/cortex
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - security_net
+
+  thehive:
+    image: thehiveproject/thehive4:4.1.24
+    container_name: thehive
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - cortex
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+    volumes:
+      - thehive_data:/etc/thehive
+    environment:
+      - CORTEX_BACKEND_ORGANIZATION=cortex
+      - CORTEX_BACKEND_KEY=Je+ZTM2vUxbWZuk9nPf6KCFHi9xg+UOx
+    networks:
+      - security_net
+
+  n8n_db:
+    image: postgres:16-alpine
+    container_name: n8n_postgres
+    environment:
+      - POSTGRES_USER=n8n_user
+      - POSTGRES_PASSWORD=n8n_secure_pass
+      - POSTGRES_DB=n8n_database
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    volumes:
+      - n8n_db_data:/var/lib/postgresql/data
+    networks:
+      - security_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U n8n_user -d n8n_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n_automation
+    depends_on:
+      n8n_db:
+        condition: service_healthy
+    ports:
+      - "5678:5678"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=n8n_db
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n_database
+      - DB_POSTGRESDB_USER=n8n_user
+      - DB_POSTGRESDB_PASSWORD=n8n_secure_pass
+      - GENERIC_TIMEZONE=Europe/Madrid
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - security_net
+
+volumes:
+  elasticsearch_data:
+  cassandra_data:
+  cortex_data:
+  thehive_data:
+  n8n_db_data:
+  n8n_data:
+
+networks:
+  security_net:
+    driver: bridge
