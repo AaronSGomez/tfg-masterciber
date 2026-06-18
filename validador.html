@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Objetivos TFG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Barra lateral -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold"><i class="fa-solid fa-list-check text-lg"></i></div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">Auditoría</p>
+                            <h1 class="mt-1 text-2xl font-black text-slate-950">Validador</h1>
+                        </div>
+                    </div>
+
+                    <!-- Progreso Dinámico -->
+                    <div class="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Progreso Global</p>
+                        <div class="mt-3 flex items-baseline gap-2">
+                            <span id="progress-count" class="text-3xl font-black text-slate-950">0</span>
+                            <span class="text-sm text-slate-500">de 24 completados</span>
+                        </div>
+                        <div class="mt-3 w-full bg-slate-200 rounded-full h-2">
+                            <div id="progress-bar" class="bg-cyan-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p id="progress-pct" class="mt-2 text-right text-xs font-bold text-cyan-700">0%</p>
+                    </div>
+
+                    <nav class="mt-6 space-y-2 text-sm">
+                        <a href="index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">
+                            <i class="fa-solid fa-house mr-1"></i> Volver al menú principal
+                        </a>
+                        <a href="assets/tfg-ciberseguridad.pdf" target="_blank" class="nav-link border-red-200 bg-red-50/50 text-red-900 hover:bg-red-100/70">
+                            <i class="fa-solid fa-file-pdf mr-1"></i> Abrir Guía PDF Oficial
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500 space-y-2">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline font-semibold">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenido principal -->
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">Auditoría del Anexo A</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Validador de Objetivos y Evidencias Obligatorias</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Esta herramienta te permite auditar de forma interactiva y guardar tu progreso con respecto a las 24 evidencias obligatorias indicadas en el anexo académico del archivo <span class="font-semibold text-slate-900">tfg-ciberseguridad.pdf</span>. Marca los objetivos a medida que los valides en tu laboratorio.
+                </p>
+            </header>
+
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-300/20">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+                    <h3 class="text-xl font-bold text-slate-950">Matriz de Cumplimiento (24 Ítems)</h3>
+                    <button onclick="resetValidator()" class="text-xs font-semibold text-red-600 hover:text-red-800 border border-red-200 rounded-lg px-3 py-1.5 bg-red-50/50 hover:bg-red-100 transition-colors">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Reiniciar
+                    </button>
+                </div>
+
+                <div class="space-y-4" id="checklist-container">
+                    <!-- JS generará los ítems aquí -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const items = [
+            { id: 1, title: "Diagrama de red del laboratorio", block: "Setup", desc: "Modelado de la topología distribuida de tres nodos con WAN.", evidence: "Diagrama de arquitectura de red detallando IPs públicas y subredes internas Docker.", link: "tfg/tfg_instalacion.html#topologia" },
+            { id: 2, title: "Máquinas víctimas activas con IPs", block: "Setup", desc: "Arranque del docker-compose en la Raspberry Pi 5.", evidence: "Captura del comando docker ps mostrando nombres de contenedores e IPs de subredes.", link: "tfg/tfg_instalacion.html#compose" },
+            { id: 3, title: "Reconocimiento con 5 herramientas", block: "Ofensivo", desc: "Ejecución del set de herramientas OSINT/Escaneo desde Kali.", evidence: "Capturas de consola con: Nmap, DNSdumpster, The Harvester, SpiderFoot y script Python." },
+            { id: 4, title: "Análisis de vulnerabilidades con CVE", block: "Ofensivo", desc: "Ejecución del análisis con OpenVAS identificando CVE-2025-55182.", evidence: "Reporte PDF de OpenVAS / Greenbone con el CVSS Score y mitigación recomendada." },
+            { id: 5, title: "Acceso web explotado (Vector 1)", block: "Ofensivo", desc: "Evasión del panel de login web mediante inyección SQL clásica.", evidence: "Pantallazo del bypass exitoso del login en el navegador y las cookies interceptadas." },
+            { id: 6, title: "Acceso a máquina Linux explotado", block: "Ofensivo", desc: "Detonación del exploit de RCE React2Shell obteniendo consola reversa.", evidence: "Captura de la shell interactiva en Kali Linux ejecutando los comandos whoami e id." },
+            { id: 7, title: "Post-explotación documentada", block: "Ofensivo", desc: "Inyección de persistencia cron, pivoteo a MariaDB y exfiltración.", evidence: "Terminal evidenciando la persistencia inyectada y los comandos de exfiltración de bases de datos." },
+            { id: 8, title: "Informe de pentest redactado", block: "Ofensivo", desc: "Elaboración formal del informe de auditoría técnica.", evidence: "Documento formal con estructura ejecutiva y matriz de severidades estimadas según CVSS v3.1." },
+            { id: 9, title: "Análisis SAST ejecutado", block: "Dev Seguro", desc: "Ejecución del análisis estático del código Next.js mediante Semgrep.", evidence: "Captura del reporte generado por Semgrep categorizando vulnerabilidades de inyección." },
+            { id: 10, title: "Análisis DAST ejecutado", block: "Dev Seguro", desc: "Escaneo dinámico activo apuntando a tus subdominios reales de DuckDNS.", evidence: "Informe de vulnerabilidades dinámicas generado en formato HTML/PDF por OWASP ZAP." },
+            { id: 11, title: "Modelado de amenazas realizado", block: "Dev Seguro", desc: "Creación del DFD lógico de la aplicación moderna en OWASP Threat Dragon.", evidence: "Capturas de pantalla del modelado gráfico STRIDE exportado de Threat Dragon." },
+            { id: 12, title: "Pipeline DevSecOps funcional", block: "Dev Seguro", desc: "Pipeline automatizado ejecutando Semgrep, Trivy y Gitleaks.", evidence: "Captura de la ejecución del flujo CI/CD en la interfaz web de GitHub Actions." },
+            { id: 13, title: "Política de contraseñas y MFA", block: "Protección", desc: "Configuración de complejidad de credenciales y activación de OTP.", evidence: "Capturas del panel web forzando contraseña robusta e inicio validando con token." },
+            { id: 14, title: "Reglas de firewall deny-by-default", block: "Protección", desc: "Configuración restrictiva de puertos a nivel de sistema host mediante UFW.", evidence: "Consola de la Raspberry Pi 5 ejecutando el comando sudo ufw status verbose." },
+            { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Nginx.", evidence: "Reporte con calificación A+ obtenido en la plataforma externa de análisis securityheaders.com.", link: "tfg/tfg_instalacion.html#apache" },
+            { id: 16, title: "Campaña de Gophish ejecutada", block: "Protección", desc: "Simulación local controlada de phishing enviando correos dirigidos.", evidence: "Captura del panel analítico principal de Gophish mostrando tasas de clics y credenciales expuestas." },
+            { id: 17, title: "SIEM unificado con 2 fuentes de logs", block: "SOC / IR", desc: "Wazuh Server en Ubuntu recibiendo logs remotos de la Raspberry Pi 5.", evidence: "Dashboard de Wazuh evidenciando la telemetría remota de logs auth.log y JSON del agente.", link: "tfg/tfg_instalacion.html#wazuh" },
+            { id: 18, title: "Caso de uso SIEM con alerta disparada", block: "SOC / IR", desc: "Detonación del exploit ofensivo React2Shell contra la aplicación.", evidence: "Captura en el panel de eventos de la consola de Wazuh del disparo de la alerta ID 100503." },
+            { id: 19, title: "Playbook de detección desarrollado", block: "SOC / IR", desc: "Diseño del diagrama lógico de toma de decisiones del SOC.", evidence: "Diagrama de flujo detallando criterios de triage, severidades y escalado de incidencias." },
+            { id: 20, title: "Simulacro de incidente documentado (PRI)", block: "SOC / IR", desc: "Flujo completo de respuesta y mitigación frente al ataque React2Shell.", evidence: "Documento formal describiendo bitácora, timeline, comandos de aislamiento y código corregido." },
+            { id: 21, title: "Adquisición forense básica realizada", block: "SOC / IR", desc: "Extracción lógica mediante volcado raw del volumen comprometido de base de datos.", evidence: "Terminal con el comando de generación de hash SHA256 y vista del análisis forense en Autopsy." },
+            { id: 22, title: "Política de Seguridad redactada", block: "Gobierno", desc: "Elaboración de las directrices de seguridad aplicables al laboratorio.", evidence: "Capítulo formal describiendo políticas de acceso mínimo, backup y gestión de identidades." },
+            { id: 23, title: "Evaluación de riesgos con tabla de activos", block: "Gobierno", desc: "Análisis cuantitativo de riesgos según metodología MAGERIT v3.", evidence: "Matriz de riesgos en el informe estimando la ecuación formal de impacto: Riesgo = Impacto x Probabilidad." },
+            { id: 24, title: "PDS básico de 12 meses elaborado", block: "Gobierno", desc: "Plan Director de Seguridad a un año para mitigar riesgos identificados.", evidence: "Diagrama de Gantt detallando iniciativas trimestrales de hardening, MFA e infraestructura defensiva." }
+        ];
+
+        // Cargar estado guardado o inicializar con los objetivos ya conseguidos
+        const defaultState = {
+            1: true,   // Diagrama de red
+            2: true,   // Máquinas víctimas
+            15: true,  // Headers HTTP
+            17: true   // SIEM
+        };
+        let state = JSON.parse(localStorage.getItem('tfg_validator_state_v2'));
+        if (state === null) {
+            state = defaultState;
+            localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                const checked = state[item.id] ? 'checked' : '';
+                const activeClass = state[item.id] ? 'border-cyan-300 bg-cyan-50/20' : 'border-slate-200 bg-slate-50/40';
+                
+                const blockColors = {
+                    "Setup": "bg-slate-100 text-slate-700 border-slate-200",
+                    "Ofensivo": "bg-red-100 text-red-800 border-red-200",
+                    "Dev Seguro": "bg-emerald-100 text-emerald-800 border-emerald-200",
+                    "Protección": "bg-blue-100 text-blue-800 border-blue-200",
+                    "SOC / IR": "bg-purple-100 text-purple-800 border-purple-200",
+                    "Gobierno": "bg-amber-100 text-amber-800 border-amber-200"
+                };
+                const colorClass = blockColors[item.block] || "bg-slate-100 text-slate-800 border-slate-200";
+
+                const linkHtml = item.link ? `
+                    <div class="mt-3 flex justify-end">
+                        <a href="${item.link}" class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-600 hover:text-cyan-800 hover:underline">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Evidencia Técnica
+                        </a>
+                    </div>
+                ` : '';
+
+                const cardHtml = `
+                    <div id="card-${item.id}" class="flex gap-4 p-5 rounded-2xl border transition-all duration-300 ${activeClass}">
+                        <div class="flex items-start pt-1">
+                            <input type="checkbox" id="item-${item.id}" ${checked} onchange="toggleItem(${item.id})" class="h-5 w-5 rounded border-slate-350 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span class="text-sm font-bold text-slate-400">#${item.id}</span>
+                                <h4 class="text-base font-bold text-slate-900">${item.title}</h4>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${colorClass}">${item.block}</span>
+                            </div>
+                            <p class="mt-2 text-sm leading-6 text-slate-650">${item.desc}</p>
+                            <div class="mt-3 p-3 rounded-xl bg-white border border-slate-100 text-xs">
+                                <span class="font-bold text-slate-800">Evidencia esperada:</span>
+                                <span class="text-slate-600 font-mono">${item.evidence}</span>
+                            </div>
+                            ${linkHtml}
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            updateProgress();
+        }
+
+        function toggleItem(id) {
+            const checkbox = document.getElementById(`item-${id}`);
+            const card = document.getElementById(`card-${id}`);
+            
+            state[id] = checkbox.checked;
+            localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
+
+            if (checkbox.checked) {
+                card.classList.remove('border-slate-200', 'bg-slate-50/40');
+                card.classList.add('border-cyan-300', 'bg-cyan-50/20');
+            } else {
+                card.classList.remove('border-cyan-300', 'bg-cyan-50/20');
+                card.classList.add('border-slate-200', 'bg-slate-50/40');
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const checkedCount = Object.values(state).filter(val => val === true).length;
+            const pct = Math.round((checkedCount / items.length) * 100);
+
+            document.getElementById('progress-count').textContent = checkedCount;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('progress-pct').textContent = `${pct}%`;
+        }
+
+        function resetValidator() {
+            if (confirm('¿Seguro que deseas reiniciar el progreso del validador?')) {
+                state = {};
+                localStorage.removeItem('tfg_validator_state_v2');
+                renderChecklist();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', renderChecklist);
+    </script>
+</body>
+</html>

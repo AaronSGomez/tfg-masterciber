@@ -66,10 +66,17 @@ button,
 
 a {
     color: var(--accent-2);
+    text-decoration: none;
 }
 
 a:hover {
     color: #0369a1;
+}
+
+a.group,
+a.group h2,
+a.group p {
+    color: var(--text) !important;
 }
 
 pre,
