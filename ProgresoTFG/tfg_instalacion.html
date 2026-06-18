@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levantamiento del laboratorio TFG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white">LAB</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-emerald-700">Levantador</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">TFG Instalación</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#topologia" class="nav-link">Topología WAN</a>
+                    <a href="#compose" class="nav-link">Docker Compose</a>
+                    <a href="#errores" class="nav-link">Problemas encontrados</a>
+                    <a href="#duckdns" class="nav-link">DuckDNS y captura</a>
+                    <a href="#apache" class="nav-link">Apache y VirtualHost</a>
+                    <a href="#certificados" class="nav-link">Proxy y certificados</a>
+                    <a href="#script" class="nav-link">Script de IP</a>
+                    <a href="#wazuh" class="nav-link">Wazuh</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al índice</a>
+                    <a href="../tfg/index.html" class="nav-link border-emerald-200 bg-emerald-50 text-emerald-900">Abrir manual TFG</a>
+                    <a href="../ProgresoTFG/index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-800">Abrir progreso</a>
+                </nav>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">Levantamiento del laboratorio</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Documento web del despliegue real del laboratorio</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Esta página traslada a formato web el contenido de <a href="tfg_instalacion.md" class="font-semibold text-emerald-700 hover:text-emerald-900">tfg_instalacion.md</a> tal y como quedó documentado: desde la topología con Docker y Apache hasta el acceso por DuckDNS, el control por IP y la instalación del agente Wazuh.
+                </p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <span class="chip">DuckDNS</span>
+                    <span class="chip">Apache</span>
+                    <span class="chip">Docker Compose</span>
+                    <span class="chip">Wazuh</span>
+                </div>
+            </header>
+
+            <section id="topologia" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <div class="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-950">Topología de entrada</h3>
+                        <p class="mt-2 text-sm leading-7 text-slate-700">Esquema WAN con Apache2 nativo como puerta de entrada y publicación de los subdominios de prueba.</p>
+                    </div>
+                    <span class="progress-status">Tal cual en el .md</span>
+                </div>
+
+                <pre class="mt-5 overflow-x-auto"><code>                              [ KALI LINUX ]
+                                    │  (Internet / WAN)
+                                    ▼
+                 [ APACHE2 Nativo (Host) Puerto 80/443 ]
+                  (Filtra por IP y hace Reverse Proxy)
+                                    │
+            ┌───────────────────────┴───────────────────────┐
+            ▼ (Red de Docker)                               ▼ (Red de Docker)
+[ Contenedor: modern_app ]                      [ Contenedor: classic_app (DVWA) ]
+  (webinsegura1.duckdns.org)                      (webinsegura2.duckdns.org)</code></pre>
+            </section>
+
+            <section id="compose" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">Configuración docker-compose.yml</h3>
+                <p class="mt-3 leading-8 text-slate-700">Se elimina el proxy intermedio de Docker y se publican los servicios vulnerables en puertos locales altos para que Apache reenvíe el tráfico.</p>
+
+                <div class="code-shell mt-5">
+                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>networks:
+  lab_net:
+    driver: bridge
+
+services:
+  db_server:
+    image: mariadb:10.11
+    container_name: lab-db-server
+    restart: always
+    networks:
+      - lab_net
+    environment:
+      MYSQL_ROOT_PASSWORD: RootSecurePassword2026_Unused
+      MYSQL_DATABASE: lab_modern_db
+      MYSQL_USER: db_modern_user
+      MYSQL_PASSWORD: InsecureAIPassword_123
+    volumes:
+      - db_data:/var/lib/mysql
+
+  modern_app:
+    build: ./modern_app          # Construye la imagen vulnerable localmente
+    container_name: lab-modern-app
+    restart: always
+    ports:
+      - "127.0.0.1:8081:8000"     # Expuesto internamente para Apache en el 8081
+    networks:
+      - lab_net
+    environment:
+      DB_HOST: lab-db-server
+      DB_USER: db_modern_user
+      DB_PASS: InsecureAIPassword_123
+      DB_NAME: lab_modern_db
+      NODE_ENV: development
+
+  classic_app:
+    image: cytopia/dvwa:latest     # Imagen nativa compatible con ARM64 (Raspberry Pi 5)
+    container_name: lab-classic-app
+    restart: always
+    ports:
+      - "127.0.0.1:8082:80"       # Expuesto internamente para Apache en el 8082
+    networks:
+      - lab_net
+    environment:
+      DBMS: MySQL
+      DB_SERVER: lab-db-server
+      MYSQL_HOSTNAME: lab-db-server
+      MYSQL_USERNAME: db_modern_user
+      MYSQL_PASSWORD: InsecureAIPassword_123
+      MYSQL_DATABASE: lab_modern_db
+
+volumes:
+  db_data:</code></pre>
+                </div>
+
+                <p class="mt-4 text-sm leading-7 text-slate-700">Nota: al mapear los puertos como <code>127.0.0.1:8081</code> se evita que nadie en internet ataque los puertos de Docker directamente.</p>
+
+                <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-700">
+                    Para que funcione, se crean las dependencias de <code>alpine:18</code> y React con <code>React2Shell (CVE-2025-55182 / CVE-2025-66478)</code>.
+                </div>
+
+                <div class="code-shell mt-5">
+                    <div class="px-4 py-3 text-xs text-slate-600 border-b border-slate-200">modern_app/package.json</div>
+                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>{
+  "name": "lab-react2shell",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 8000"
+  },
+  "dependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-server-dom-webpack": "19.0.0",
+    "next": "15.0.1"
+  }
+}</code></pre>
+                </div>
+
+                <div class="code-shell mt-5">
+                    <div class="px-4 py-3 text-xs text-slate-600 border-b border-slate-200">modern_app/Dockerfile</div>
+                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --legacy-peer-deps
+COPY . .
+EXPOSE 8000
+CMD ["npm", "run", "dev"]</code></pre>
+                </div>
+            </section>
+
+            <section id="errores" class="grid gap-4 md:grid-cols-2">
+                <article class="progress-card">
+                    <span class="progress-status">Crítico</span>
+                    <h3 class="mt-3 text-xl font-bold text-slate-950">Fallo de arquitectura en DVWA</h3>
+                    <p class="mt-2 text-sm leading-7 text-slate-700"><code>exec /main.sh: exec format error</code> al ejecutar la imagen <code>vulnerables/web-dvwa:latest</code> sobre ARM64.</p>
+                </article>
+
+                <article class="progress-card">
+                    <span class="progress-status">Crítico</span>
+                    <h3 class="mt-3 text-xl font-bold text-slate-950">Fallo de estructura en Next.js</h3>
+                    <p class="mt-2 text-sm leading-7 text-slate-700"><code>ENOENT: no such file or directory, open '/app/package.json'</code> porque la imagen base de Node arrancaba vacía.</p>
+                </article>
+
+                <article class="progress-card">
+                    <span class="progress-status">Post-migración</span>
+                    <h3 class="mt-3 text-xl font-bold text-slate-950">ERESOLVE en Next.js</h3>
+                    <p class="mt-2 text-sm leading-7 text-slate-700">Se resolvió con <code>npm install --legacy-peer-deps</code> para forzar el entorno vulnerable a React2Shell.</p>
+                </article>
+
+                <article class="progress-card">
+                    <span class="progress-status">Post-migración</span>
+                    <h3 class="mt-3 text-xl font-bold text-slate-950">Variables de entorno DVWA</h3>
+                    <p class="mt-2 text-sm leading-7 text-slate-700">Se remapeó la configuración para usar <code>MYSQL_HOSTNAME</code> y <code>MYSQL_USERNAME</code> como exige <code>cytopia/dvwa</code>.</p>
+                </article>
+            </section>
+
+            <section id="duckdns" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">Subdominios y captura de DuckDNS</h3>
+                <p class="mt-3 leading-8 text-slate-700">La vinculación de las apps se documenta con los subdominios <code>webinsegura1.duckdns.org</code> y <code>webinsegura2.duckdns.org</code>. La imagen siguiente corresponde a la captura referenciada en el documento original.</p>
+
+                <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <img src="image.png" alt="Captura de subdominios DuckDNS" class="w-full rounded-xl border border-slate-200 object-cover">
+                    <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500">Captura de subdominios y vínculo DuckDNS</figcaption>
+                </figure>
+            </section>
+
+            <section id="apache" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">Apache: IP permitida y VirtualHost</h3>
+                <p class="mt-3 leading-8 text-slate-700">Se crea el archivo de configuración para la IP autorizada y se habilitan los módulos necesarios antes de definir los VirtualHost para cada subdominio.</p>
+
+                <div class="code-shell mt-5">
+                    <div class="px-4 py-3 text-xs text-slate-600 border-b border-slate-200">/etc/apache2/allowed_ip.conf</div>
+                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>Define ALLOWED_ATTACKER_IP 1.2.3.4</code></pre>
+                </div>
+
+                <div class="code-shell mt-5">
+                    <div class="px-4 py-3 text-xs text-slate-600 border-b border-slate-200">tfg_vulnerable.conf</div>
+                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code># Incluimos el archivo que contiene la IP del atacante
+Include /etc/apache2/allowed_ip.conf
+
+<VirtualHost *:443>
+    ServerName webinsegura1.duckdns.org
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/webinsegura1.duckdns.org/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/webinsegura1.duckdns.org/privkey.pem
+
+    <Location />
+        Require ip ${ALLOWED_ATTACKER_IP}
+    </Location>
+
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:8081/
+    ProxyPassReverse / http://127.0.0.1:8081/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName webinsegura2.duckdns.org
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/webinsegura2.duckdns.org/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/webinsegura2.duckdns.org/privkey.pem
+
+    <Location />
+        Require ip ${ALLOWED_ATTACKER_IP}
+    </Location>
+
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:8082/
+    ProxyPassReverse / http://127.0.0.1:8082/
+</VirtualHost></code></pre>
+                </div>
+
+                <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-700">
+                    Tras activar los módulos con <code>sudo a2enmod proxy proxy_http headers rewrite</code> se habilita la publicación de los subdominios y el filtrado por IP.
+                </div>
+
+                <pre class="mt-5 overflow-x-auto"><code>sudo a2ensite tfg_vulnerable.conf
+sudo systemctl restart apache2</code></pre>
+            </section>
+
+            <section id="certificados" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">Errores y soluciones en Proxy y Certificados</h3>
+                <div class="mt-4 space-y-4 text-sm leading-7 text-slate-700">
+                    <p><strong>Bloqueo interactivo de Certbot.</strong> Se canceló el asistente y se generaron los certificados con <code>certonly --webroot</code>.</p>
+                    <p><strong>Fuga de información en el puerto 80.</strong> Se añadieron bloques <code>&lt;VirtualHost *:80&gt;</code> específicos para devolver <code>403 Forbidden</code> antes de redirigir a HTTPS.</p>
+                    <p><strong>Ruta única de certificados.</strong> Se configuró Apache para apuntar a la ruta unificada de <code>webinsegura1.duckdns.org</code> cuando el alta conjunta dejó ambos certificados en el mismo directorio.</p>
+                </div>
+            </section>
+
+            <section id="script" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">Script de Python para cambiar la IP de forma remota</h3>
+                <p class="mt-3 leading-8 text-slate-700">El script actualiza la IP permitida en Apache, valida la sintaxis y recarga el servicio sin cortar conexiones activas.</p>
+
+                <div class="code-shell mt-5">
+                    <div class="px-4 py-3 text-xs text-slate-600 border-b border-slate-200">update_ip.py</div>
+                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>import re
+import os
+import sys
+import subprocess
+
+CONFIG_PATH = "/etc/apache2/allowed_ip.conf"
+
+def validate_ip(ip):
+    match = re.match(r"^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$", ip)
+    if not match:
+        return False
+    return all(0 <= int(component) <= 255 for component in match.groups())
+
+def main():
+    if os.geteuid() != 0:
+        print("[-] Este script debe ejecutarse con privilegios de root (sudo).")
+        sys.exit(1)
+
+    new_ip = input("[+] Introduce la IP pública de tu Kali Linux: ").strip()
+
+    if not validate_ip(new_ip):
+        print("[-] Error: El formato de la IP no es válido.")
+        sys.exit(1)
+
+    try:
+        with open(CONFIG_PATH, "w") as f:
+            f.write(f"Define ALLOWED_ATTACKER_IP {new_ip}\n")
+        print(f"[+] Archivo {CONFIG_PATH} actualizado con la IP: {new_ip}")
+
+        print("[*] Validando configuración de Apache...")
+        result = subprocess.run(["apache2ctl", "configtest"], capture_output=True, text=True)
+
+        if "Syntax OK" in result.stderr or "Syntax OK" in result.stdout:
+            subprocess.run(["systemctl", "reload", "apache2"])
+            print("[+] Apache recargado con éxito. ¡Acceso permitido para tu Kali!")
+        else:
+            print("[-] Error de sintaxis en Apache detectado. Revierte los cambios.")
+            print(result.stderr)
+
+    except Exception as e:
+        print(f"[-] Ocurrió un error inesperado: {e}")
+
+if __name__ == "__main__":
+    main()</code></pre>
+                </div>
+
+                <pre class="mt-5 overflow-x-auto"><code>sudo python3 update_ip.py</code></pre>
+
+                <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-7 text-slate-700">
+                    Las pruebas confirman que <code>webinsegura1.duckdns.org</code> resuelve en React2Shell y <code>webinsegura2.duckdns.org</code> muestra el login de DVWA; cualquier petición fuera de la IP registrada devuelve <code>403 Forbidden</code>.
+                </div>
+            </section>
+
+            <section id="wazuh" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">Instalación y configuración del agente Wazuh</h3>
+                <p class="mt-3 leading-8 text-slate-700">Este bloque continúa el levantamiento del laboratorio con la monitorización de la Raspberry Pi 5 como agente nativo ARM64.</p>
+
+                <h4 class="mt-6 text-lg font-bold text-slate-950">1. Firma y repositorios oficiales</h4>
+                <pre class="mt-3 overflow-x-auto"><code># Importar clave GPG oficial
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
+sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+
+# Indexar el repositorio en las fuentes del sistema
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list
+sudo apt update</code></pre>
+
+                <h4 class="mt-6 text-lg font-bold text-slate-950">2. Despliegue orientado al Manager</h4>
+                <pre class="mt-3 overflow-x-auto"><code>sudo WAZUH_MANAGER='IP_DE_LA_VM_DEBIAN' apt-get install wazuh-agent</code></pre>
+
+                <h4 class="mt-6 text-lg font-bold text-slate-950">3. Auditoría y enlace de comunicación</h4>
+                <pre class="mt-3 overflow-x-auto"><code>sudo nano /var/ossec/etc/ossec.conf
+
+&lt;client&gt;
+  &lt;server&gt;
+    &lt;address&gt;IP_LOCAL_DE_LA_VM_DEBIAN&lt;/address&gt;
+    &lt;port&gt;1514&lt;/port&gt;
+    &lt;protocol&gt;tcp&lt;/protocol&gt;
+  &lt;/server&gt;
+&lt;/client&gt;</code></pre>
+
+                <h4 class="mt-6 text-lg font-bold text-slate-950">4. Gestión del demonio del sistema</h4>
+                <pre class="mt-3 overflow-x-auto"><code>sudo systemctl daemon-reload
+sudo systemctl enable wazuh-agent
+sudo systemctl start wazuh-agent</code></pre>
+
+                <h4 class="mt-6 text-lg font-bold text-slate-950">5. Diagnóstico de conexión</h4>
+                <pre class="mt-3 overflow-x-auto"><code>sudo systemctl status wazuh-agent
+
+sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</code></pre>
+
+                <blockquote class="mt-6 rounded-2xl border-l-4 border-emerald-500 bg-emerald-50 p-5 text-sm leading-7 text-slate-700">
+                    CAPTURA DE PANTALLA 3: Interfaz Web de Wazuh Dashboard donde se aprecie el panel principal y el listado de Agentes Activos mostrando la Raspberry Pi 5 conectada.
+                </blockquote>
+            </section>
+        </section>
+    </main>
+</body>
+</html>
