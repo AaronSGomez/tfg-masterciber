@@ -349,3 +349,71 @@ search {
     hosts = ["http://thehive_elasticsearch:9200"]
   }
 }
+
+===================================================================
+PASO 3: CONSTRUIR EL FLUJO DE PRUEBA (WORKFLOW) EN N8N
+===================================================================
+
+1. CREACIÓN DEL DISPARADOR (WEBHOOK PARA WAZUH)
+-------------------------------------------------------------------
+- En el menú izquierdo de n8n, ve a "Workflows" y haz clic en "Create a workflow".
+- Elimina el nodo manual por defecto ("When clicking Execute Workflow").
+- Haz clic en el botón "+" e integra el nodo "Webhook" con la siguiente configuración:
+  * Authentication: None
+  * HTTP Method: POST
+  * Path: wazuh-alerts
+- Copia la URL de producción que genera n8n (formato: http://<IP_DE_N8N>:5678/webhook/wazuh-alerts).
+
+2. INTEGRACIÓN DEL NODO DE THEHIVE
+-------------------------------------------------------------------
+- Haz clic en el botón "+" a la derecha del nodo Webhook y busca "TheHive".
+- En la lista de acciones iniciales, selecciona: "Case" -> "get many".
+- Haz clic en el botón azul "Add Node" para colocarlo en el lienzo.
+- Configuración en el panel principal:
+  * Credential for TheHive v4: Selecciona la credencial API creada en el Paso 1.
+  * Resource: Case
+  * Operation: Get Many / Get All
+- Configuración en la pestaña "Settings" (parte superior del panel):
+  * ACTIVA la opción "Always Output Data". Esto es crucial para que n8n continúe el flujo hacia Cortex aunque la lista de casos inicial esté vacía ([ ]).
+
+3. INTEGRACIÓN DEL NODO DE CORTEX
+-------------------------------------------------------------------
+- Haz clic en el botón "+" a la derecha del nodo de TheHive y busca "Cortex".
+- En la lista de acciones iniciales, selecciona: "Job" -> "get".
+- Haz clic en el botón azul "Add Node" para colocarlo en el lienzo.
+- Configuración en el panel principal:
+  * Credential for Cortex: Selecciona la credencial API de Cortex creada en el Paso 2.
+  * Job ID: Escribe '1' (parámetro de prueba inicial).
+- Configuración en la pestaña "Settings" (parte superior del panel):
+  * ACTIVA la opción "Continue On Fail". Esto evita que el workflow se congele o rompa cuando Cortex devuelva que el Job 1 no existe (comportamiento normal con la base de datos limpia).
+
+4. AUTOMATIZACIÓN EN SEGUNDO PLANO
+-------------------------------------------------------------------
+- En la esquina superior derecha de n8n, cambia el interruptor a "Active" (Activado).
+- El flujo queda guardado en producción y escuchará de forma permanente sin necesidad de ejecuciones manuales.
+
+===================================================================
+PASO 4: VINCULACIÓN INTERNA DESDE WAZUH (OSSEC.CONF)
+===================================================================
+
+Para que Wazuh envíe de forma automática las alertas al Webhook de n8n, añade el bloque de integración exacta al final de tu archivo de configuración.
+
+1. Abre el archivo de configuración en caliente:
+   sudo nano /var/ossec/etc/ossec.conf
+
+2. Desplázate hasta el final del archivo e inserta el bloque de integración JUSTO ANTES de la etiqueta de cierre final </ossec_config> (asegúrate de no duplicar cabeceras):
+
+  <integration>
+    <name>custom-webhook</name>
+    <hook_url>http://192.168.1.88:5678/webhook/wazuh-alerts</hook_url>
+    <level>3</level> 
+    <alert_format>json</alert_format>
+  </integration>
+</ossec_config>
+
+3. Valida la estructura XML para asegurar que no hay errores de sintaxis:
+   /var/ossec/bin/wazuh-analysisd -t
+
+4. Si no hay errores, reinicia el manager para aplicar los cambios en segundo plano:
+   systemctl restart wazuh-manager
+

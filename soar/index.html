@@ -5,35 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual de Instalación SOAR</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap');
-        :root {
-          color-scheme: light;
-        }
-        body {
-            font-family: 'Pixelify Sans', 'Inter', sans-serif;
-          background:
-            radial-gradient(circle at top left, rgba(16,185,129,0.10), transparent 26%),
-            radial-gradient(circle at top right, rgba(14,165,233,0.10), transparent 22%),
-            linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-        }
-        pre, code {
-            font-family: 'Fira Code', monospace;
-        }
-        pre {
-            white-space: pre;
-            overflow-x: auto;
-        }
-        .code-shell {
-            position: relative;
-        }
-        .copy-btn {
-            transition: opacity .2s ease, transform .2s ease, background-color .2s ease;
-        }
-        .copy-btn:hover {
-            transform: translateY(-1px);
-        }
-    </style>
+  <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body class="text-slate-900">
     <script>
@@ -74,6 +46,7 @@
               <a href="#arranque" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Arranque inicial</a>
               <a href="#cortex" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Cortex</a>
               <a href="#thehive" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">TheHive</a>
+              <a href="#workflow" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Workflow n8n</a>
               <a href="#despliegue" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Despliegue global</a>
               <a href="#verificacion" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Verificación final</a>
               <a href="../index.html" class="block rounded-xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-cyan-900 transition hover:border-cyan-400 hover:bg-cyan-100">Volver al índice</a>
@@ -206,8 +179,70 @@ cortex {
                 </div>
             </article>
 
+            <article id="workflow" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+              <h3 class="text-2xl font-bold text-slate-950">6. Construcción del workflow de prueba en n8n</h3>
+              <p class="mt-3 leading-8 text-slate-700">Crea un flujo nuevo en n8n y enlaza Webhook, TheHive y Cortex con la configuración exacta del laboratorio.</p>
+
+              <div class="progress-grid mt-6">
+                <div class="step-card">
+                  <div class="flex items-center justify-between gap-4">
+                    <h4 class="text-lg font-bold text-slate-950">1. Creación del disparador Webhook</h4>
+                    <span class="progress-status">n8n</span>
+                  </div>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                    <li>En el menú izquierdo de n8n, entra en <span class="font-semibold text-cyan-900">Workflows</span> y pulsa <span class="font-semibold text-emerald-700">Create a workflow</span>.</li>
+                    <li>Elimina el nodo manual por defecto <span class="font-semibold">When clicking Execute Workflow</span>.</li>
+                    <li>Haz clic en <span class="font-semibold">+</span> y añade el nodo <span class="font-semibold text-emerald-700">Webhook</span>.</li>
+                    <li>Configura <span class="font-semibold">Authentication: None</span>, <span class="font-semibold">HTTP Method: POST</span> y <span class="font-semibold">Path: wazuh-alerts</span>.</li>
+                    <li>Copia la URL de producción generada por n8n en formato <span class="font-semibold text-cyan-900">http://&lt;IP_DE_N8N&gt;:5678/webhook/wazuh-alerts</span>.</li>
+                  </ul>
+                </div>
+
+                <div class="step-card">
+                  <div class="flex items-center justify-between gap-4">
+                    <h4 class="text-lg font-bold text-slate-950">2. Integración del nodo TheHive</h4>
+                    <span class="progress-status">TheHive</span>
+                  </div>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                    <li>Haz clic en <span class="font-semibold">+</span> a la derecha del Webhook y busca <span class="font-semibold text-cyan-900">TheHive</span>.</li>
+                    <li>Selecciona la acción inicial <span class="font-semibold">Case</span> → <span class="font-semibold">get many</span>.</li>
+                    <li>Pulsa <span class="font-semibold text-emerald-700">Add Node</span> para añadirlo al lienzo.</li>
+                    <li>Configura <span class="font-semibold">Credential for TheHive v4</span> con la credencial API creada en el paso 1.</li>
+                    <li>Define <span class="font-semibold">Resource: Case</span> y <span class="font-semibold">Operation: Get Many / Get All</span>.</li>
+                    <li>En <span class="font-semibold">Settings</span>, activa <span class="font-semibold text-emerald-700">Always Output Data</span> para que el flujo continúe aunque no haya casos iniciales.</li>
+                  </ul>
+                </div>
+
+                <div class="step-card">
+                  <div class="flex items-center justify-between gap-4">
+                    <h4 class="text-lg font-bold text-slate-950">3. Integración del nodo Cortex</h4>
+                    <span class="progress-status">Cortex</span>
+                  </div>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                    <li>Haz clic en el <span class="font-semibold">+</span> a la derecha del nodo de TheHive y busca <span class="font-semibold text-cyan-900">Cortex</span>.</li>
+                    <li>Elige la acción inicial <span class="font-semibold">Job</span> → <span class="font-semibold">get</span>.</li>
+                    <li>Añádelo con el botón <span class="font-semibold text-emerald-700">Add Node</span>.</li>
+                    <li>Configura <span class="font-semibold">Credential for Cortex</span> con la credencial API de Cortex creada en el paso 2.</li>
+                    <li>Escribe <span class="font-semibold">Job ID: 1</span> como parámetro de prueba inicial.</li>
+                    <li>En <span class="font-semibold">Settings</span>, activa <span class="font-semibold text-emerald-700">Continue On Fail</span> para evitar bloqueos cuando el Job 1 no exista en una base limpia.</li>
+                  </ul>
+                </div>
+
+                <div class="step-card">
+                  <div class="flex items-center justify-between gap-4">
+                    <h4 class="text-lg font-bold text-slate-950">4. Activación del flujo</h4>
+                    <span class="progress-status">Activo</span>
+                  </div>
+                  <ul class="mt-3 space-y-2 text-sm leading-7 text-slate-700">
+                    <li>En la esquina superior derecha de n8n, cambia el interruptor a <span class="font-semibold text-emerald-700">Active</span>.</li>
+                    <li>El flujo queda guardado en producción y escuchará de forma permanente sin ejecuciones manuales.</li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
             <article class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
-              <h3 class="text-2xl font-bold text-slate-950">6. Archivos completos de configuración</h3>
+              <h3 class="text-2xl font-bold text-slate-950">7. Archivos completos de configuración</h3>
               <p class="mt-3 leading-8 text-slate-700">Aquí tienes los dos ficheros de configuración y el orquestador listos para copiar directamente.</p>
 
               <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
@@ -388,7 +423,7 @@ search {
             </article>
 
             <article id="despliegue" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
-              <h3 class="text-2xl font-bold text-slate-950">7. Despliegue global del laboratorio</h3>
+              <h3 class="text-2xl font-bold text-slate-950">8. Despliegue global del laboratorio</h3>
               <p class="mt-3 leading-8 text-slate-700">Una vez ajustada la API key, despliega el resto del ecosistema y espera a que TheHive termine de inicializar sus tablas e índices.</p>
               <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
                 <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
@@ -402,7 +437,7 @@ docker logs -f thehive</code></pre>
             </article>
 
             <article id="verificacion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
-              <h3 class="text-2xl font-bold text-slate-950">8. Verificación final</h3>
+              <h3 class="text-2xl font-bold text-slate-950">9. Verificación final</h3>
               <div class="mt-4 space-y-3 text-sm leading-7 text-slate-700">
                 <p>1. Accede a TheHive en <span class="font-semibold text-cyan-900">http://localhost:9000</span>.</p>
                 <p>2. Define la contraseña de administrador en el primer inicio.</p>
