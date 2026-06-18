@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Instalación SOAR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap');
+        :root {
+          color-scheme: light;
+        }
+        body {
+            font-family: 'Pixelify Sans', 'Inter', sans-serif;
+          background:
+            radial-gradient(circle at top left, rgba(16,185,129,0.10), transparent 26%),
+            radial-gradient(circle at top right, rgba(14,165,233,0.10), transparent 22%),
+            linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        pre, code {
+            font-family: 'Fira Code', monospace;
+        }
+        pre {
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .code-shell {
+            position: relative;
+        }
+        .copy-btn {
+            transition: opacity .2s ease, transform .2s ease, background-color .2s ease;
+        }
+        .copy-btn:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.textContent;
+                button.textContent = 'Copiado';
+                button.classList.add('bg-emerald-500/20', 'text-emerald-200');
+                setTimeout(() => {
+                    button.textContent = original;
+                    button.classList.remove('bg-emerald-500/20', 'text-emerald-200');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'No disponible';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+
+    <main class="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+          <div class="h-full rounded-3xl border border-slate-200 bg-white/95 p-6 shadow-2xl shadow-slate-300/40 backdrop-blur">
+                <div class="flex items-start gap-4">
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white ring-1 ring-emerald-700/10">SOAR</div>
+                    <div>
+                <p class="text-xs font-bold uppercase tracking-[0.3em] text-emerald-700">Manual de instalación</p>
+                <h1 class="mt-1 text-2xl font-black text-slate-950">TheHive + Cortex + n8n</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+              <a href="#resumen" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Resumen</a>
+              <a href="#requisitos" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Requisito previo</a>
+              <a href="#archivos" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Archivos a crear</a>
+              <a href="#arranque" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Arranque inicial</a>
+              <a href="#cortex" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Cortex</a>
+              <a href="#thehive" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">TheHive</a>
+              <a href="#despliegue" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Despliegue global</a>
+              <a href="#verificacion" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Verificación final</a>
+              <a href="../index.html" class="block rounded-xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-cyan-900 transition hover:border-cyan-400 hover:bg-cyan-100">Volver al índice</a>
+                </nav>
+            </div>
+        </aside>
+
+        <section class="flex-1 space-y-6 pb-10">
+          <header id="resumen" class="overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 backdrop-blur md:p-10">
+            <p class="inline-flex rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-emerald-900">Laboratorio SOAR</p>
+            <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Guía de despliegue con bloques de código copiable</h2>
+            <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+              Esta página convierte el contenido de <a href="laboratorio.txt" class="text-cyan-800 underline decoration-cyan-300 underline-offset-4">laboratorio.txt</a> en un manual visual y operativo. Incluye los comandos, el <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">docker-compose.yml</code> y los archivos de configuración listos para copiar.
+                </p>
+            </header>
+
+          <article id="requisitos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+            <h3 class="text-2xl font-bold text-slate-950">1. Requisito previo crítico</h3>
+            <p class="mt-3 max-w-4xl leading-8 text-slate-700">
+                    Antes de levantar los contenedores, el host debe permitir suficientes mapas de memoria virtual para Elasticsearch. Ejecuta el comando siguiente como root en la máquina anfitriona.
+                </p>
+            <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>Host Linux</span>
+                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-requisito')">Copiar</button>
+                    </div>
+              <pre id="code-requisito" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>sysctl -w vm.max_map_count=262144</code></pre>
+                </div>
+            <p class="mt-4 text-sm leading-7 text-slate-600">Para hacerlo permanente, añade <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">vm.max_map_count=262144</code> al final de <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">/etc/sysctl.conf</code>.</p>
+            </article>
+
+          <article id="archivos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+            <h3 class="text-2xl font-bold text-slate-950">2. Archivos que debes crear</h3>
+            <p class="mt-3 leading-8 text-slate-700">En el mismo directorio del <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">docker-compose.yml</code> deben existir estos tres archivos:</p>
+                <ul class="mt-4 grid gap-3 md:grid-cols-3">
+              <li class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-slate-900">docker-compose.yml</li>
+              <li class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-slate-900">thehive.conf</li>
+              <li class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-slate-900">cortex.conf</li>
+                </ul>
+            </article>
+
+          <article id="arranque" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+            <h3 class="text-2xl font-bold text-slate-950">3. Arranque inicial de la infraestructura de datos</h3>
+            <p class="mt-3 leading-8 text-slate-700">Primero se levantan solo Cassandra y Elasticsearch. Después se monitoriza el log de Cassandra hasta que termine de inicializarse.</p>
+
+            <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>Arranque inicial</span>
+                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-arranque')">Copiar</button>
+                    </div>
+              <pre id="code-arranque" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>docker compose up -d cassandra elasticsearch
+docker logs -f thehive_cassandra</code></pre>
+                </div>
+            <p class="mt-4 text-sm leading-7 text-slate-600">No avances hasta ver un mensaje equivalente a <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">Created default superuser role 'cassandra'</code> o <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">Startup complete</code>.</p>
+            </article>
+
+          <article id="cortex" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+            <h3 class="text-2xl font-bold text-slate-950">4. Cortex: configuración inicial y creación de la organización</h3>
+            <p class="mt-3 leading-8 text-slate-700">Cuando los motores de datos estén estables, levanta Cortex y completa la configuración inicial en la interfaz web.</p>
+
+            <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>Arranque de Cortex</span>
+                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-cortex-start')">Copiar</button>
+                    </div>
+              <pre id="code-cortex-start" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>docker compose up -d cortex</code></pre>
+                </div>
+
+            <ol class="mt-5 space-y-3 text-sm leading-7 text-slate-700">
+              <li>Abre <span class="font-semibold text-cyan-900">http://localhost:9001</span>.</li>
+              <li>Inicia sesión con <span class="font-semibold text-emerald-700">admin</span> y <span class="font-semibold text-emerald-700">secret</span>.</li>
+              <li>Crea la organización <span class="font-semibold text-emerald-700">soar_lab</span>.</li>
+                    <li>Crea el usuario de API y asígnale la organización y los roles necesarios.</li>
+                    <li>Genera la API key y cópiala inmediatamente.</li>
+                </ol>
+            </article>
+
+          <article id="thehive" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+            <h3 class="text-2xl font-bold text-slate-950">5. Vinculación en TheHive y ajuste de la API key</h3>
+            <p class="mt-3 leading-8 text-slate-700">Sustituye la clave de Cortex en <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">thehive.conf</code> por la que hayas generado en la interfaz.</p>
+
+            <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>thehive.conf</span>
+                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-thehive')">Copiar</button>
+                    </div>
+              <pre id="code-thehive" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>play.http.secret.key="GeneraAquiUnaCadenaDeTextoAleatoriaYMuyLarga123456789"
+
+# === CONFIGURACIÓN DE ALMACENAMIENTO (JANUSGRAPH + CASSANDRA) ===
+db.janusgraph {
+  storage {
+    backend = "cql"
+    hostname = ["thehive_cassandra"]
+    cluster-name = "TheHive"
+    
+    cql {
+      keyspace = "thehive"
+      consistency-level = "LOCAL_ONE"
+      read-timeout = 180000
+      write-timeout = 180000
+      connection-timeout = 180000
+    }
+  }
+}
+
+# === INDEXADOR (ELASTICSEARCH) ===
+search {
+  backend = "elasticsearch"
+  elasticsearch {
+    hosts = ["http://thehive_elasticsearch:9200"]
+  }
+}
+
+# === INTEGRACIÓN CON CORTEX ===
+cortex {
+  servers = [
+    {
+      name = "cortex0"
+      url = "http://cortex:9001"
+      auth {
+        type = "bearer"
+        key = "PEGA_AQUI_LA_API_KEY_QUE_COPIASTE_DE_CORTEX"
+      }
+      wsConfig {
+        ws.credentials.realm = "soar_lab"
+      }
+    }
+  ]
+}</code></pre>
+                </div>
+            </article>
+
+            <article class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+              <h3 class="text-2xl font-bold text-slate-950">6. Archivos completos de configuración</h3>
+              <p class="mt-3 leading-8 text-slate-700">Aquí tienes los dos ficheros de configuración y el orquestador listos para copiar directamente.</p>
+
+              <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
+                <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>docker-compose.yml</span>
+                  <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-compose')">Copiar</button>
+                    </div>
+                <pre id="code-compose" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>version: '3.8'
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    container_name: thehive_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - security_net
+
+  cassandra:
+    image: cassandra:3.11
+    container_name: thehive_cassandra
+    environment:
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=128M
+      - CASSANDRA_CLUSTER_NAME=TheHive
+      - CASSANDRA_CONCURRENT_READS=8
+      - CASSANDRA_CONCURRENT_WRITES=8
+      - CASSANDRA_CONCURRENT_COMPACTORS=1
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - security_net
+
+  cortex:
+    image: thehiveproject/cortex:3.1.7
+    container_name: cortex
+    depends_on:
+      - elasticsearch
+    environment:
+      - job_directory=/opt/cortex/jobs
+    ports:
+      - "9001:9001"
+    deploy:
+      resources:
+        limits:
+          memory: 750M
+    volumes:
+      - ./cortex.conf:/etc/cortex/application.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - security_net
+
+  thehive:
+    image: thehiveproject/thehive4:4.1.24
+    container_name: thehive
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - cortex
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+    volumes:
+      - thehive_data:/etc/thehive
+      - ./thehive.conf:/etc/thehive/application.conf 
+    command: --config-file /etc/thehive/application.conf
+    networks:
+      - security_net
+
+  n8n_db:
+    image: postgres:16-alpine
+    container_name: n8n_postgres
+    environment:
+      - POSTGRES_USER=n8n_user
+      - POSTGRES_PASSWORD=n8n_secure_pass
+      - POSTGRES_DB=n8n_database
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    volumes:
+      - n8n_db_data:/var/lib/postgresql/data
+    networks:
+      - security_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U n8n_user -d n8n_database"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n_automation
+    depends_on:
+      n8n_db:
+        condition: service_healthy
+    ports:
+      - "5678:5678"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=n8n_db
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n_database
+      - DB_POSTGRESDB_USER=n8n_user
+      - DB_POSTGRESDB_PASSWORD=n8n_secure_pass
+      - GENERIC_TIMEZONE=Europe/Madrid
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - security_net
+
+volumes:
+  elasticsearch_data:
+  cassandra_data:
+  cortex_data:
+  thehive_data:
+  n8n_db_data:
+  n8n_data:
+
+networks:
+  security_net:
+    driver: bridge</code></pre>
+                </div>
+
+                <div class="code-shell mt-6 rounded-2xl border border-slate-200 bg-slate-50">
+                  <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>cortex.conf</span>
+                    <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-cortex')">Copiar</button>
+                    </div>
+                  <pre id="code-cortex" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code># === CONFIGURACIÓN DE CORTEX ===
+
+# Dónde ejecutará Cortex los scripts de los analizadores
+job {
+  directory = "/opt/cortex/jobs"
+}
+
+# Rutas internas del contenedor donde se mapean los analizadores
+analyzer {
+  urls = [
+    "/opt/cortex/analyzers"
+  ]
+}
+
+responder {
+  urls = [
+    "/opt/cortex/responders"
+  ]
+}
+
+# Indexador propio de Cortex (Apunta a tu contenedor de Elasticsearch)
+search {
+  backend = elasticsearch
+  elasticsearch {
+    hosts = ["http://thehive_elasticsearch:9200"]
+  }
+}</code></pre>
+                </div>
+            </article>
+
+            <article id="despliegue" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+              <h3 class="text-2xl font-bold text-slate-950">7. Despliegue global del laboratorio</h3>
+              <p class="mt-3 leading-8 text-slate-700">Una vez ajustada la API key, despliega el resto del ecosistema y espera a que TheHive termine de inicializar sus tablas e índices.</p>
+              <div class="code-shell mt-5 rounded-2xl border border-slate-200 bg-slate-50">
+                <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>Despliegue final</span>
+                  <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-global')">Copiar</button>
+                    </div>
+                <pre id="code-global" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>docker compose up -d
+docker logs -f thehive</code></pre>
+                </div>
+              <p class="mt-4 text-sm leading-7 text-slate-600">La señal de éxito es <code class="rounded bg-slate-900 px-2 py-1 text-emerald-200">Listening for HTTP on /0.0.0.0:9000</code>.</p>
+            </article>
+
+            <article id="verificacion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+              <h3 class="text-2xl font-bold text-slate-950">8. Verificación final</h3>
+              <div class="mt-4 space-y-3 text-sm leading-7 text-slate-700">
+                <p>1. Accede a TheHive en <span class="font-semibold text-cyan-900">http://localhost:9000</span>.</p>
+                <p>2. Define la contraseña de administrador en el primer inicio.</p>
+                <p>3. Comprueba que el icono de Cortex aparece en verde.</p>
+                <p>4. Si quieres, accede también a n8n en <span class="font-semibold text-cyan-900">http://localhost:5678</span>.</p>
+                </div>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
