@@ -21,10 +21,10 @@ html {
 }
 
 body {
-    font-family: 'Pixelify Sans', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 1.9;
     background:
         radial-gradient(circle at top left, rgba(16, 185, 129, 0.10), transparent 26%),
@@ -41,6 +41,27 @@ section,
 article,
 .page-shell {
     color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.nav-link,
+.progress-link,
+.action-link,
+.hero-pill,
+.section-pill,
+.badge,
+.chip,
+.progress-status,
+nav a,
+button,
+.btn,
+.menu-item {
+    font-family: 'Pixelify Sans', 'Inter', sans-serif;
 }
 
 a {
