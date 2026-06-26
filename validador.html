@@ -27,12 +27,18 @@
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Progreso Global</p>
                         <div class="mt-3 flex items-baseline gap-2">
                             <span id="progress-count" class="text-3xl font-black text-slate-950">0</span>
-                            <span class="text-sm text-slate-500">de 24 completados</span>
+                            <span class="text-sm text-slate-500">de <span id="progress-total">24</span> completados</span>
                         </div>
                         <div class="mt-3 w-full bg-slate-200 rounded-full h-2">
                             <div id="progress-bar" class="bg-cyan-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                         <p id="progress-pct" class="mt-2 text-right text-xs font-bold text-cyan-700">0%</p>
+                        
+                        <!-- Tiempo Invertido Acumulado -->
+                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-600">
+                            <span>Dedicación Registrada:</span>
+                            <span class="font-bold text-slate-900"><span id="total-time-count">0</span> horas</span>
+                        </div>
                     </div>
 
                     <nav class="mt-6 space-y-2 text-sm">
@@ -79,9 +85,9 @@
 
     <script>
         const items = [
-            { id: 1, title: "Diagrama de red del laboratorio", block: "Setup", desc: "Modelado de la topología distribuida de tres nodos con WAN.", evidence: "Diagrama de arquitectura de red detallando IPs públicas y subredes internas Docker.", link: "laboratorio/tfg_instalacion.html#topologia" },
-            { id: 2, title: "Máquinas víctimas activas con IPs", block: "Setup", desc: "Arranque del docker-compose en la Raspberry Pi 5.", evidence: "Captura del comando docker ps mostrando nombres de contenedores e IPs de subredes.", link: "laboratorio/tfg_instalacion.html#compose" },
-            { id: 3, title: "Reconocimiento con 5 herramientas", block: "Ofensivo", desc: "Ejecución del set de herramientas OSINT/Escaneo desde Kali.", evidence: "Capturas de consola con: Nmap, DNSdumpster, The Harvester, SpiderFoot y script Python.", link: "reconocimiento/recon.html" },
+            { id: 1, title: "Diagrama de red del laboratorio", block: "Setup", desc: "Modelado de la topología distribuida de tres nodos con WAN.", evidence: "Diagrama de arquitectura de red detallando IPs públicas y subredes internas Docker.", link: "laboratorio/tfg_instalacion.html#topologia", time: "4 horas (Despliegue de red y corrección de errores)" },
+            { id: 2, title: "Máquinas víctimas activas con IPs", block: "Setup", desc: "Arranque del docker-compose en la Raspberry Pi 5.", evidence: "Captura del comando docker ps mostrando nombres de contenedores e IPs de subredes.", link: "laboratorio/tfg_instalacion.html#compose", time: "3 horas (Arranque de contenedores e IPs)" },
+            { id: 3, title: "Reconocimiento con 5 herramientas", block: "Ofensivo", desc: "Ejecución del set de herramientas OSINT/Escaneo desde Kali.", evidence: "Capturas de consola con: Nmap, DNSdumpster, The Harvester, SpiderFoot y script Python.", link: "reconocimiento/recon.html", time: "7 horas (Análisis pasivo, dig, Spiderfoot y automatización)" },
             { id: 4, title: "Análisis de vulnerabilidades con CVE", block: "Ofensivo", desc: "Ejecución del análisis con OpenVAS identificando CVE-2025-55182.", evidence: "Reporte PDF de OpenVAS / Greenbone con el CVSS Score y mitigación recomendada." },
             { id: 5, title: "Acceso web explotado (Vector 1)", block: "Ofensivo", desc: "Evasión del panel de login web mediante inyección SQL clásica.", evidence: "Pantallazo del bypass exitoso del login en el navegador y las cookies interceptadas." },
             { id: 6, title: "Acceso a máquina Linux explotado", block: "Ofensivo", desc: "Detonación del exploit de RCE React2Shell obteniendo consola reversa.", evidence: "Captura de la shell interactiva en Kali Linux ejecutando los comandos whoami e id." },
@@ -93,16 +99,16 @@
             { id: 12, title: "Pipeline DevSecOps funcional", block: "Dev Seguro", desc: "Pipeline automatizado ejecutando Semgrep, Trivy y Gitleaks.", evidence: "Captura de la ejecución del flujo CI/CD en la interfaz web de GitHub Actions." },
             { id: 13, title: "Política de contraseñas y MFA", block: "Protección", desc: "Configuración de complejidad de credenciales y activación de OTP.", evidence: "Capturas del panel web forzando contraseña robusta e inicio validando con token." },
             { id: 14, title: "Reglas de firewall deny-by-default", block: "Protección", desc: "Configuración restrictiva de puertos a nivel de sistema host mediante UFW.", evidence: "Consola de la Raspberry Pi 5 ejecutando el comando sudo ufw status verbose." },
-            { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Nginx.", evidence: "Reporte con calificación A+ obtenido en la plataforma externa de análisis securityheaders.com.", link: "laboratorio/tfg_instalacion.html#apache" },
+            { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Nginx.", evidence: "Reporte con calificación A+ obtenido en la plataforma externa de análisis securityheaders.com.", link: "laboratorio/tfg_instalacion.html#apache", time: "0.5 horas (30 min - Configuración Apache, certificados SSL y cabeceras)" },
             { id: 16, title: "Campaña de Gophish ejecutada", block: "Protección", desc: "Simulación local controlada de phishing enviando correos dirigidos.", evidence: "Captura del panel analítico principal de Gophish mostrando tasas de clics y credenciales expuestas." },
-            { id: 17, title: "SIEM unificado con 2 fuentes de logs", block: "SOC / IR", desc: "Wazuh Server en Ubuntu recibiendo logs remotos de la Raspberry Pi 5.", evidence: "Dashboard de Wazuh evidenciando la telemetría remota de logs auth.log y JSON del agente.", link: "laboratorio/tfg_instalacion.html#wazuh" },
+            { id: 17, title: "SIEM unificado con 2 fuentes de logs", block: "SOC / IR", desc: "Wazuh Server en Ubuntu recibiendo logs remotos de la Raspberry Pi 5.", evidence: "Dashboard de Wazuh evidenciando la telemetría remota de logs auth.log y JSON del agente.", link: "laboratorio/tfg_instalacion.html#wazuh", time: "6 horas (4h despliegue Wazuh + 2h agentes locales y reglas JSON)" },
             { id: 18, title: "Caso de uso SIEM con alerta disparada", block: "SOC / IR", desc: "Detonación del exploit ofensivo React2Shell contra la aplicación.", evidence: "Captura en el panel de eventos de la consola de Wazuh del disparo de la alerta ID 100503." },
             { id: 19, title: "Playbook de detección desarrollado", block: "SOC / IR", desc: "Diseño del diagrama lógico de toma de decisiones del SOC.", evidence: "Diagrama de flujo detallando criterios de triage, severidades y escalado de incidencias." },
             { id: 20, title: "Simulacro de incidente documentado (PRI)", block: "SOC / IR", desc: "Flujo completo de respuesta y mitigación frente al ataque React2Shell.", evidence: "Documento formal describiendo bitácora, timeline, comandos de aislamiento y código corregido." },
             { id: 21, title: "Adquisición forense básica realizada", block: "SOC / IR", desc: "Extracción lógica mediante volcado raw del volumen comprometido de base de datos.", evidence: "Terminal con el comando de generación de hash SHA256 y vista del análisis forense en Autopsy." },
             { id: 22, title: "Política de Seguridad redactada", block: "Gobierno", desc: "Elaboración de las directrices de seguridad aplicables al laboratorio.", evidence: "Capítulo formal describiendo políticas de acceso mínimo, backup y gestión de identidades." },
-            { id: 23, title: "Evaluación de riesgos con tabla de activos", block: "Gobierno", desc: "Análisis cuantitativo de riesgos según metodología MAGERIT v3.", evidence: "Matriz de riesgos en el informe estimando la ecuación formal de impacto: Riesgo = Impacto x Probabilidad." },
-            { id: 24, title: "PDS básico de 12 meses elaborado", block: "Gobierno", desc: "Plan Director de Seguridad a un año para mitigar riesgos identificados.", evidence: "Diagrama de Gantt detallando iniciativas trimestrales de hardening, MFA e infraestructura defensiva." }
+            { id: 24, title: "PDS básico de 12 meses elaborado", block: "Gobierno", desc: "Plan Director de Seguridad a un año para mitigar riesgos identificados.", evidence: "Diagrama de Gantt detallando iniciativas trimestrales de hardening, MFA e infraestructura defensiva." },
+            { id: 25, title: "Despliegue del Laboratorio SOAR (Extra)", block: "SOC / IR", desc: "Instalación del orquestador Shuffle, configuración de webhooks e integración inicial.", evidence: "Trazas e interfaz activa del dashboard SOAR evidenciando recepción de eventos de Wazuh.", link: "soar/soar.html", time: "6 horas (Configuración y resolución de incidencias)" }
         ];
 
         // Cargar estado guardado o inicializar con los objetivos ya conseguidos
@@ -111,11 +117,20 @@
             2: true,   // Máquinas víctimas
             3: true,   // Reconocimiento perimetral
             15: true,  // Headers HTTP
-            17: true   // SIEM
+            17: true,  // SIEM
+            25: true   // SOAR Extra
         };
         let state = JSON.parse(localStorage.getItem('tfg_validator_state_v2'));
         if (state === null) {
             state = defaultState;
+            localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
+        } else {
+            // Asegurar que las nuevas claves por defecto se unan al estado existente del navegador
+            Object.keys(defaultState).forEach(key => {
+                if (state[key] === undefined) {
+                    state[key] = defaultState[key];
+                }
+            });
             localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
         }
 
@@ -137,6 +152,12 @@
                 };
                 const colorClass = blockColors[item.block] || "bg-slate-100 text-slate-800 border-slate-200";
 
+                const timeHtml = item.time && state[item.id] ? `
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border border-slate-200 bg-slate-100 text-slate-600 inline-flex items-center gap-1">
+                        <i class="fa-solid fa-clock text-[9px]"></i> ${item.time}
+                    </span>
+                ` : '';
+
                 const linkHtml = item.link ? `
                     <div class="mt-3 flex justify-end">
                         <a href="${item.link}" class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-600 hover:text-cyan-800 hover:underline">
@@ -155,6 +176,7 @@
                                 <span class="text-sm font-bold text-slate-400">#${item.id}</span>
                                 <h4 class="text-base font-bold text-slate-900">${item.title}</h4>
                                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${colorClass}">${item.block}</span>
+                                ${timeHtml}
                             </div>
                             <p class="mt-2 text-sm leading-6 text-slate-650">${item.desc}</p>
                             <div class="mt-3 p-3 rounded-xl bg-white border border-slate-100 text-xs">
@@ -186,7 +208,7 @@
                 card.classList.add('border-slate-200', 'bg-slate-50/40');
             }
 
-            updateProgress();
+            renderChecklist(); // Forzar rerender para mostrar/ocultar los badges de tiempo
         }
 
         function updateProgress() {
@@ -194,8 +216,21 @@
             const pct = Math.round((checkedCount / items.length) * 100);
 
             document.getElementById('progress-count').textContent = checkedCount;
+            document.getElementById('progress-total').textContent = items.length;
             document.getElementById('progress-bar').style.width = `${pct}%`;
             document.getElementById('progress-pct').textContent = `${pct}%`;
+
+            // Calcular horas totales acumuladas
+            let totalHours = 0;
+            items.forEach(item => {
+                if (state[item.id] && item.time) {
+                    const match = item.time.match(/(\d+(\.\d+)?)\s*hora/);
+                    if (match) {
+                        totalHours += parseFloat(match[1]);
+                    }
+                }
+            });
+            document.getElementById('total-time-count').textContent = totalHours % 1 === 0 ? totalHours : totalHours.toFixed(1);
         }
 
         function resetValidator() {
