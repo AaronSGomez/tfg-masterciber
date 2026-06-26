@@ -49,6 +49,7 @@
               <a href="#workflow" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Workflow n8n</a>
               <a href="#despliegue" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Despliegue global</a>
               <a href="#verificacion" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Verificación final</a>
+              <a href="#incidencias" class="block rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-slate-950">Incidencias</a>
               <a href="../index.html" class="block rounded-xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-cyan-900 transition hover:border-cyan-400 hover:bg-cyan-100">Volver al menú principal</a>
                 </nav>
 
@@ -448,6 +449,32 @@ docker logs -f thehive</code></pre>
                 <p>2. Define la contraseña de administrador en el primer inicio.</p>
                 <p>3. Comprueba que el icono de Cortex aparece en verde.</p>
                 <p>4. Si quieres, accede también a n8n en <span class="font-semibold text-cyan-900">http://localhost:5678</span>.</p>
+              </div>
+
+              <div class="mt-6 space-y-4">
+                  <p class="text-sm leading-7 text-slate-700">
+                      Una vez arrancada toda la infraestructura orquestada, se valida que los contenedores del ecosistema SOAR (Elasticsearch, Cassandra, Cortex, TheHive, PostgreSQL y n8n) se encuentren activos y respondiendo en sus respectivos puertos:
+                  </p>
+                  <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <img src="../assets/docker_soar.png" alt="Contenedores SOAR activos" class="w-full rounded-xl border border-slate-200 object-cover">
+                      <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Captura: Contenedores Elasticsearch, Cassandra, Cortex, TheHive, PostgreSQL y n8n en ejecución</figcaption>
+                  </figure>
+              </div>
+            </article>
+
+            <article id="incidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 backdrop-blur">
+                <h3 class="text-2xl font-bold text-slate-950">10. Registro de Incidencias Técnicas Previas</h3>
+                <div class="warning-box">
+                    <div class="warning-box-header">
+                        <span>Incidencias</span>
+                        <span>⚠️</span>
+                    </div>
+                    <div class="warning-box-content">
+                        <p><strong>1. Problemas de recursos y estabilidad.</strong> La máquina virtual colapsaba al arrancar todos los contenedores de forma simultánea debido a la sobrecarga de consumo de RAM de los servicios basados en Java (Elasticsearch, Cassandra, TheHive y Cortex). Se solucionó ampliando la VM del host a <code>8GB RAM y 4 Núcleos</code>, configurando <code>deploy.resources.limits</code> en el <code>docker-compose.yml</code> y realizando un arranque escalonado.</p>
+                        <p><strong>2. Bloqueo de seguridad de cookies en n8n.</strong> Error de cookies seguras que impedía el acceso por HTTP inseguro. Corregido inyectando la variable de entorno <code>N8N_SECURE_COOKIE=false</code> en el servicio correspondiente.</p>
+                        <p><strong>3. Fallo de integración TheHive-Cortex (401 Unauthorized).</strong> Discordancia en el nombre de la organización entre los dos extremos y sintaxis obsoleta de entorno. Solventado implementando una configuración robusta vía archivo <code>application.conf</code> (HOCON) y alineando el nombre exacto de la organización en ambos sistemas.</p>
+                        <p><strong>4. Invisibilidad de Cortex en la Interfaz de TheHive.</strong> El operador no podía visualizar los analizadores de Cortex en TheHive debido al estado <code>no org</code> del usuario por defecto de administración global. Se solucionó creando una organización formal de trabajo (`Thehive`) y asignándole un usuario operador con el perfil de `org-admin` para realizar las consultas.</p>
+                    </div>
                 </div>
             </article>
         </section>

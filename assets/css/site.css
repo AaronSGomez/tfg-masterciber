@@ -369,3 +369,39 @@ table tbody tr:hover td {
         padding-left: 2.5rem;
     }
 }
+
+/* Warning Box for errors and alerts (Orange Ficha Layout) */
+.warning-box {
+    background-color: #fffaf8 !important; /* Extremely soft orange/red bg */
+    border: 1px solid #ffedd5 !important; /* Soft orange border */
+    color: #7c2d12 !important; /* Dark orange/brown text */
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-top: 4px solid #f97316 !important; /* Orange tab stripe */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02) !important;
+}
+.warning-box-header {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ea580c !important; /* Vivid orange for header text */
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between "Incidencias" and "⚠️" */
+}
+.warning-box-content {
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+.warning-box-content p {
+    margin-bottom: 0.75rem;
+}
+.warning-box-content p:last-child {
+    margin-bottom: 0;
+}
+.warning-box-content strong {
+    color: #431407 !important;
+}
+

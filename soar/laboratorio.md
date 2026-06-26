@@ -417,3 +417,54 @@ Para que Wazuh envíe de forma automática las alertas al Webhook de n8n, añade
 4. Si no hay errores, reinicia el manager para aplicar los cambios en segundo plano:
    systemctl restart wazuh-manager
 
+
+
+
+---
+
+# Registro de Errores y Soluciones: Laboratorio SOC 2026
+
+Este documento resume los fallos críticos encontrados durante la configuración del ecosistema de seguridad en el entorno Docker.
+
+## 1. Problemas de Recursos (Estabilidad del Sistema)
+
+* **Fallo:** La máquina virtual (VM) colapsaba al arrancar todos los contenedores simultáneamente, provocando un *kernel panic* o salida a la pantalla de usuario.
+* **Causa:** Sobrecarga de memoria RAM por el arranque simultáneo de múltiples aplicaciones basadas en Java (Elasticsearch, Cassandra, TheHive, Cortex) y base de datos (Postgres).
+* **Solución:** * Ampliación de recursos de la VM a **8GB RAM / 4 Núcleos**.
+* Implementación de `deploy.resources.limits` en el `docker-compose.yml` para acotar el consumo de RAM por contenedor.
+* Arranque escalonado de servicios para evitar picos de CPU.
+
+
+
+## 2. Bloqueo de Seguridad en n8n
+
+* **Fallo:** Error: *"Your n8n server is configured to use a secure cookie..."*.
+* **Causa:** Restricción de seguridad de n8n al detectar acceso vía HTTP (inseguro) frente a una configuración que espera HTTPS.
+* **Solución:** Inclusión de la variable de entorno `N8N_SECURE_COOKIE=false` en el servicio de n8n dentro del `docker-compose.yml`.
+
+## 3. Fallo de Integración TheHive-Cortex (401 Unauthorized)
+
+* **Fallo:** Los logs de TheHive mostraban `...is not authorized to execute actions on organization...`.
+* **Causa:** Discordancia entre la organización configurada en la API Key de Cortex y el parámetro de configuración del backend en TheHive. Además, una sintaxis obsoleta en las variables de entorno de TheHive 4.1.x.
+* **Solución:** * Migración de variables de entorno obsoletas a una configuración robusta vía archivo `application.conf` (HOCON).
+* Alineación exacta del nombre de organización (`Thehive` vs `cortex`) en ambos sistemas.
+
+
+
+## 4. Invisibilidad de Cortex en la Interfaz de TheHive
+
+* **Fallo:** La integración aparecía "enabled" pero no visible ni operativa en el dashboard de TheHive.
+* **Causa:** Estado `no org` del usuario administrador y falta de vinculación formal entre el usuario operador y una organización de trabajo. TheHive 4 oculta los conectores si el usuario logueado no pertenece activamente a una organización con permisos de análisis.
+* **Solución:** * Abandono del uso del usuario "Super-Admin Global" para operaciones.
+* Creación de una organización (`Thehive`) y asignación de un usuario operador con perfil `org-admin`.
+* Re-autenticación como usuario de organización para habilitar la visibilidad de los menús de conectores.
+
+
+
+---
+
+> **Nota de arquitectura:** El despliegue final utiliza una red puente interna (`security_net`) para la comunicación eficiente entre contenedores, garantizando que TheHive acceda a Cortex vía `http://cortex:9001` sin exponer puertos innecesarios al exterior.
+
+### Estructura final recomendada para el despliegue
+
+Este registro sirve como base de conocimientos para futuras implementaciones o troubleshooting del entorno SOC. ¡El sistema está ahora listo para realizar análisis de observables!
