@@ -231,3 +231,25 @@ aqui mostramos captura de pantalla C:\Proyectos\TFG_MasterCiber\assets\logtest.p
 
 Este resultado confirma que el motor del SIEM decodifica correctamente las variables de entrada JSON y disparará con éxito la alerta roja de severidad crítica 14 en la consola web en cuanto se emule el exploit real.
 
+
+
+Para tu documentación técnica, es importante registrar este incidente como una lección aprendida sobre las restricciones del motor de análisis de Wazuh. Aquí tienes una descripción formal y estructurada que puedes incluir en tu memoria o informe de proyecto:
+Registro de Incidente: Error de validación en wazuh-analysisd durante la definición de reglas personalizadas
+1. Descripción del problema
+
+Durante la implementación de reglas de seguridad personalizadas en local_rules.xml para la detección de la vulnerabilidad React2Shell, el servicio wazuh-manager falló al reiniciarse. El análisis de logs reveló un error crítico: ERROR: Failure to read rule 100504. Field 'status' is static.
+2. Causa raíz
+
+El motor de análisis de Wazuh (wazuh-analysisd) impone restricciones estrictas sobre el uso de etiquetas <field> en reglas secundarias (aquellas que utilizan <if_sid>). El motor clasificó el campo status como "estático" dentro de la jerarquía de la regla, lo cual es incompatible con la arquitectura de procesamiento de eventos en tiempo real de Wazuh cuando se intenta filtrar campos dinámicos de un JSON ya decodificado de esta manera.
+3. Resolución implementada
+
+Para mitigar la restricción, se realizó una transición de la lógica de filtrado:
+
+    De: Uso de <field name="status">, que requiere una correspondencia exacta y validación de campos, lo que disparó la restricción de tipo "estático".
+
+    A: Uso de <match>, que realiza una búsqueda de patrones (string matching) sobre el contenido completo del evento decodificado.
+
+Esta modificación permitió el desacoplamiento del motor de reglas respecto a la estructura rígida de campos, restaurando la funcionalidad del servicio sin comprometer la capacidad de detección.
+4. Conclusión técnica
+
+El uso de <match> es preferible para reglas que operan sobre logs JSON donde el valor objetivo puede variar o donde la estructura interna de los campos podría entrar en conflicto con las validaciones del motor de reglas wazuh-analysisd. Este cambio asegura que, ante cualquier intento de intrusión (malicious_input_detected), el sistema dispare la alerta de nivel 14 independientemente de la complejidad del payload.

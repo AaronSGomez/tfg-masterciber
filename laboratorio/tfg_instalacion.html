@@ -607,6 +607,21 @@ sudo systemctl restart filebeat</code></pre>
                         El test de logs verifica que el parseador JSON reconoce de forma limpia los campos, mapeando la expresión regular al CVE correspondiente y confirmando que el SIEM generará la alerta crítica al momento de la explotación perimetral ofensiva.
                     </p>
                 </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-xl font-bold text-slate-950">Resolución de Incidencias de Reglas Personalizadas</h4>
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <span>Incidencias</span>
+                            <span>⚠️</span>
+                        </div>
+                        <div class="warning-box-content">
+                            <p><strong>Error de validación en wazuh-analysisd.</strong> Durante el aprovisionamiento de las alertas en <code>local_rules.xml</code>, el servicio del <code>wazuh-manager</code> colapsaba en el arranque indicando: <code>ERROR: Failure to read rule 100504. Field 'status' is static</code>.</p>
+                            <p><strong>Causa raíz:</strong> El motor del validador de Wazuh clasifica como "estático" el mapeo directo de un campo JSON ya decodificado (<code>&lt;field name="status"&gt;</code>) al usar reglas secundarias asociadas a un <code>&lt;if_sid&gt;</code>.</p>
+                            <p><strong>Solución implementada:</strong> Se realizó la transición desde la estructura de correspondencia de campos directos hacia el uso de <code>&lt;match&gt;malicious_input_detected&lt;/match&gt;</code>. Esto permite al motor realizar una comprobación por patrones en todo el evento sin restricción de tipo, logrando una carga correcta.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
         </section>
     </main>
