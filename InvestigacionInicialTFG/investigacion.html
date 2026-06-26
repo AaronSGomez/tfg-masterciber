@@ -9,10 +9,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/polyfill/3.25.1/polyfill.min.js"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="stylesheet" href="../assets/css/site.css">
+    <style>
+        #sidebar {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @media (min-width: 1024px) {
+            #sidebar.collapsed {
+                width: 0 !important;
+                min-width: 0 !important;
+                max-width: 0 !important;
+                margin-right: -2rem !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                overflow: hidden !important;
+            }
+        }
+        @media (max-width: 1023px) {
+            #sidebar.collapsed {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body class="flex justify-center bg-slate-100 text-slate-900">
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
-        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+        <aside id="sidebar" class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0 relative">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
                 <div class="flex items-start gap-4">
                     <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600 text-white font-bold">R5</div>
@@ -753,5 +774,30 @@ http {
 
     </main>
 
+    <!-- Botón flotante para ocultar/mostrar menú lateral -->
+    <button id="sidebar-toggle" class="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-850 shadow-xl backdrop-blur transition-all duration-300 hover:bg-white hover:scale-105 active:scale-95 lg:h-14 lg:w-14" title="Ocultar Menú">
+        <i class="fa-solid fa-chevron-left text-lg transition-transform duration-300" id="toggle-icon"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebar-toggle');
+            const toggleIcon = document.getElementById('toggle-icon');
+
+            toggleBtn.addEventListener('click', () => {
+                const isCollapsed = sidebar.classList.toggle('collapsed');
+                if (isCollapsed) {
+                    toggleIcon.classList.add('rotate-180');
+                    toggleBtn.title = 'Mostrar Menú';
+                } else {
+                    toggleIcon.classList.remove('rotate-180');
+                    toggleBtn.title = 'Ocultar Menú';
+                }
+            });
+        });
+    </script>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>

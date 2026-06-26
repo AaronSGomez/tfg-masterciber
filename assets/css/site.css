@@ -109,6 +109,18 @@ code {
     font-size: 0.95em;
 }
 
+aside > div {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE y Edge */
+}
+
+aside > div::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important; /* Chrome, Safari y Opera */
+}
+
+
 ::selection {
     background: rgba(16, 185, 129, 0.22);
     color: var(--text);
@@ -404,4 +416,43 @@ table tbody tr:hover td {
 .warning-box-content strong {
     color: #431407 !important;
 }
+
+/* Diseño de maquetación unificado basado en soar.html */
+body {
+    display: block !important;
+}
+
+main:has(aside) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: flex !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+    max-width: 80rem !important; /* max-w-7xl (1280px) */
+    flex-direction: column !important;
+    gap: 2rem !important; /* gap-8 */
+    padding: 1.5rem 1rem !important; /* px-4 py-6 */
+}
+
+@media (min-width: 768px) {
+    main:has(aside) {
+        padding: 2.5rem 2rem !important; /* px-8 py-10 */
+    }
+}
+
+@media (min-width: 1024px) {
+    main:has(aside) {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+    }
+    
+    main:has(aside) aside {
+        position: sticky !important;
+        top: 1.5rem !important; /* top-6 */
+        height: calc(100vh - 3rem) !important; /* h-[calc(100vh-3rem)] */
+        width: 20rem !important; /* w-80 (320px) */
+        flex-shrink: 0 !important;
+    }
+}
+
 
