@@ -81,7 +81,7 @@
         const items = [
             { id: 1, title: "Diagrama de red del laboratorio", block: "Setup", desc: "Modelado de la topología distribuida de tres nodos con WAN.", evidence: "Diagrama de arquitectura de red detallando IPs públicas y subredes internas Docker.", link: "laboratorio/tfg_instalacion.html#topologia" },
             { id: 2, title: "Máquinas víctimas activas con IPs", block: "Setup", desc: "Arranque del docker-compose en la Raspberry Pi 5.", evidence: "Captura del comando docker ps mostrando nombres de contenedores e IPs de subredes.", link: "laboratorio/tfg_instalacion.html#compose" },
-            { id: 3, title: "Reconocimiento con 5 herramientas", block: "Ofensivo", desc: "Ejecución del set de herramientas OSINT/Escaneo desde Kali.", evidence: "Capturas de consola con: Nmap, DNSdumpster, The Harvester, SpiderFoot y script Python." },
+            { id: 3, title: "Reconocimiento con 5 herramientas", block: "Ofensivo", desc: "Ejecución del set de herramientas OSINT/Escaneo desde Kali.", evidence: "Capturas de consola con: Nmap, DNSdumpster, The Harvester, SpiderFoot y script Python.", link: "reconocimiento/recon.html" },
             { id: 4, title: "Análisis de vulnerabilidades con CVE", block: "Ofensivo", desc: "Ejecución del análisis con OpenVAS identificando CVE-2025-55182.", evidence: "Reporte PDF de OpenVAS / Greenbone con el CVSS Score y mitigación recomendada." },
             { id: 5, title: "Acceso web explotado (Vector 1)", block: "Ofensivo", desc: "Evasión del panel de login web mediante inyección SQL clásica.", evidence: "Pantallazo del bypass exitoso del login en el navegador y las cookies interceptadas." },
             { id: 6, title: "Acceso a máquina Linux explotado", block: "Ofensivo", desc: "Detonación del exploit de RCE React2Shell obteniendo consola reversa.", evidence: "Captura de la shell interactiva en Kali Linux ejecutando los comandos whoami e id." },
@@ -109,6 +109,7 @@
         const defaultState = {
             1: true,   // Diagrama de red
             2: true,   // Máquinas víctimas
+            3: true,   // Reconocimiento perimetral
             15: true,  // Headers HTTP
             17: true   // SIEM
         };

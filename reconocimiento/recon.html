@@ -46,7 +46,7 @@
                     <a href="#whatweb-dig" class="nav-link">WhatWeb & DIG</a>
                     <a href="#whois-harvester" class="nav-link">WHOIS & theHarvester</a>
                     <a href="#spiderfoot" class="nav-link">SpiderFoot</a>
-                    <a href="#guia-script" class="nav-link">Guía de Ejecución</a>
+                    <a href="#auditoria-auto" class="nav-link">Auditoría Automática</a>
                     <a href="pendiente.html" class="nav-link border-red-200 bg-red-50 text-red-900">Ir a Explotación (Parte 2)</a>
                     <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
                 </nav>
@@ -455,65 +455,89 @@ done</code></pre>
                 </div>
             </section>
 
-            <!-- Guía de Ejecución de Script -->
-            <section id="guia-script" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <!-- Auditoría Automática -->
+            <section id="auditoria-auto" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🚀 6. Guía de Ejecución de auditor_seguridad.sh en Kali Linux</h3>
-                    <p class="text-sm text-slate-600 mt-1">Pasos detallados para transferir y ejecutar el script de automatización pasiva directamente en tu terminal de Kali.</p>
+                    <h3 class="text-2xl font-bold text-slate-950">🟪 6. Auditoría automatizada con auditor_seguridad.sh</h3>
+                    <p class="text-sm text-slate-600 mt-1">Automatización del reconocimiento pasivo y mapeo técnico perimetral.</p>
                 </div>
 
-                <div class="space-y-4">
-                    <div>
-                        <h4 class="font-bold text-slate-900">Paso 1: Crear o transferir el script a Kali Linux</h4>
-                        <p class="text-sm text-slate-700 mt-1">Puedes transferirlo de dos maneras sencillas:</p>
-                        <ul class="list-disc pl-5 mt-2 space-y-2 text-xs text-slate-700">
-                            <li><strong>Opción A (Copiar y Pegar):</strong> Abre una terminal en Kali Linux, ejecuta <code>nano auditor_seguridad.sh</code>, copia el código que figura arriba en la sección de metodología y pégalo. Presiona <code>Ctrl+O</code>, <code>Enter</code> y <code>Ctrl+X</code> para guardar y salir.</li>
-                            <li><strong>Opción B (Servidor HTTP local):</strong> Lanza un servidor Python temporal desde la máquina host de Windows en la carpeta de reconocimiento:
-                                <div class="code-shell mt-2">
-                                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>python -m http.server 8000</code></pre>
-                                </div>
-                                Y recupéralo en tu Kali ejecutando:
-                                <div class="code-shell mt-2">
-                                    <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>wget http://[IP_DE_WINDOWS]:8000/auditor_seguridad.sh</code></pre>
-                                </div>
-                            </li>
-                        </ul>
+                <div class="space-y-6">
+                    <p class="text-sm text-slate-700 leading-7">
+                        Para complementar las fases de reconocimiento manual y semiautomático (Nmap, WhatWeb, DIG, SpiderFoot), se desarrolló y ejecutó un script propio en Bash denominado <a href="auditor_seguridad.sh" download class="underline font-bold text-cyan-600">auditor_seguridad.sh</a>. Este script se encarga de estructurar, agrupar y guardar de forma ordenada la información de registros DNS, cabeceras HTTP y el fingerprinting de WhatWeb en directorios individuales para cada dominio.
+                    </p>
+
+                    <div class="bg-cyan-50 border border-cyan-100 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-cyan-950">Descargar Script Directamente</p>
+                            <p class="text-xs text-cyan-800">Obtén el archivo script de Bash directamente del servidor local para Kali Linux.</p>
+                        </div>
+                        <a href="auditor_seguridad.sh" download class="copy-btn rounded-xl bg-cyan-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md shadow-cyan-600/25 hover:bg-cyan-700">Descargar Script</a>
                     </div>
 
+                    <!-- 6.1 Ejecución -->
                     <div class="pt-4 border-t border-slate-100">
-                        <h4 class="font-bold text-slate-900">Paso 2: Otorgar permisos de ejecución</h4>
-                        <p class="text-sm text-slate-700 mt-1">Asigna privilegios de ejecución al script en la terminal de Kali:</p>
+                        <h4 class="font-bold text-slate-900">6.1 Ejecución del script y guía paso a paso</h4>
+                        <p class="text-sm text-slate-700 mt-1">El script se hizo ejecutable y se lanzó desde la consola de Kali Linux:</p>
                         <div class="code-shell mt-2">
-                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>chmod +x auditor_seguridad.sh</code></pre>
+                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>chmod +x auditor_seguridad.sh
+./auditor_seguridad.sh</code></pre>
+                        </div>
+
+                        <div class="mt-4">
+                            <img src="../assets/reco1/image10.png" alt="Ejecución del script auditor_seguridad.sh" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                            <p class="text-xs text-slate-500 mt-2 text-center">Captura 10: Ejecución del script en la consola de Kali, procesando de manera estructurada ambos objetivos.</p>
                         </div>
                     </div>
 
+                    <!-- 6.2 Resultados webinsegura1 -->
                     <div class="pt-4 border-t border-slate-100">
-                        <h4 class="font-bold text-slate-900">Paso 3: Lanzar el Script</h4>
-                        <p class="text-sm text-slate-700 mt-1">Ejecuta el script de automatización:</p>
-                        <div class="code-shell mt-2">
-                            <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>./auditor_seguridad.sh</code></pre>
+                        <h4 class="font-bold text-slate-900">6.2 Resultados generados para webinsegura1.duckdns.org</h4>
+                        <p class="text-sm text-slate-700 mt-1">Se generó el directorio de salida <code>reporte_reconocimiento/webinsegura1.duckdns.org/</code> conteniendo las siguientes evidencias:</p>
+                        
+                        <div class="space-y-3 mt-3 pl-4 border-l-2 border-slate-200">
+                            <p class="text-xs text-slate-700"><strong>✔️ dns_a.txt:</strong> Contiene la dirección IP resuelta: <code>5.40.33.18</code></p>
+                            <p class="text-xs text-slate-700"><strong>✔️ headers.txt:</strong> Cabeceras HTTP extraídas del servidor web:</p>
+                            <pre class="text-xs text-slate-800 bg-slate-50 p-3 rounded-lg">HTTP/1.1 200 OK
+Server: Apache/2.4.67 (Debian)
+X-Powered-By: Next.js
+Content-Type: text/html; charset=utf-8</pre>
+                            <p class="text-xs text-slate-700"><strong>✔️ tecnologias.txt:</strong> Mapeo directo de WhatWeb:</p>
+                            <pre class="text-xs text-slate-800 bg-slate-50 p-3 rounded-lg">https://webinsegura1.duckdns.org [200 OK] Apache/2.4.67, Next.js, Debian Linux</pre>
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t border-slate-100 bg-slate-50 p-4 rounded-xl">
-                        <h4 class="font-bold text-slate-900">Estructura del Reporte de Salida</h4>
-                        <p class="text-xs text-slate-600 mt-1">El script generará de forma automática la siguiente estructura organizada por subcarpetas:</p>
-                        <pre class="mt-2 text-xs leading-6 text-slate-800">
-reporte_reconocimiento/
-├── webinsegura1.duckdns.org/
-│   ├── dns_a.txt          # Registro IP pública
-│   ├── dns_mx.txt         # MX genérico
-│   ├── dns_ns.txt         # Servidores NS
-│   ├── headers.txt        # Cabeceras HTTP de Next.js
-│   └── tecnologias.txt    # Fingerprint de WhatWeb
-└── webinsegura2.duckdns.org/
-    ├── dns_a.txt
-    ├── dns_mx.txt
-    ├── dns_ns.txt
-    ├── headers.txt        # Cabeceras HTTP de DVWA/Apache
-    └── tecnologias.txt    # Fingerprint de WhatWeb (PHP, Apache)
-                        </pre>
+                    <!-- 6.3 Resultados webinsegura2 -->
+                    <div class="pt-4 border-t border-slate-100">
+                        <h4 class="font-bold text-slate-900">6.3 Resultados generados para webinsegura2.duckdns.org</h4>
+                        <p class="text-sm text-slate-700 mt-1">Se generó el directorio de salida <code>reporte_reconocimiento/webinsegura2.duckdns.org/</code> conteniendo las siguientes evidencias:</p>
+                        
+                        <div class="space-y-3 mt-3 pl-4 border-l-2 border-slate-200">
+                            <p class="text-xs text-slate-700"><strong>✔️ dns_a.txt:</strong> IP pública resuelta: <code>5.40.33.18</code></p>
+                            <p class="text-xs text-slate-700"><strong>✔️ dns_mx.txt:</strong> Registro de intercambio de correo: <code>50 webinsegura2.duckdns.org.</code></p>
+                            <p class="text-xs text-slate-700"><strong>✔️ headers.txt:</strong> Cabeceras HTTP que revelan redirecciones y cookies de sesión activas:</p>
+                            <pre class="text-xs text-slate-800 bg-slate-50 p-3 rounded-lg">HTTP/1.1 302 Found
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/8.1.16
+Set-Cookie: PHPSESSID=...</pre>
+                            <p class="text-xs text-slate-700"><strong>✔️ tecnologias.txt:</strong> Trazabilidad del flujo HTTP por WhatWeb:</p>
+                            <pre class="text-xs text-slate-800 bg-slate-50 p-3 rounded-lg">1 https://webinsegura2.duckdns.org [301 Moved Permanently] Apache/2.4.67
+2 https://webinsegura2.duckdns.org [302 Found] Apache/2.4.54, PHP/8.1.16
+3 https://webinsegura2.duckdns.org/login.php [200 OK] DVWA, HTML5</pre>
+                        </div>
+
+                        <div class="mt-4">
+                            <img src="../assets/reco1/image11.png" alt="Archivos generados por el script" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                            <p class="text-xs text-slate-500 mt-2 text-center">Captura 11: Editor visual con la estructura jerárquica y el contenido de los archivos generados para webinsegura1 y webinsegura2.</p>
+                        </div>
+                    </div>
+
+                    <!-- 6.4 Conclusión -->
+                    <div class="pt-4 border-t border-slate-100">
+                        <h4 class="font-bold text-slate-900">6.4 Conclusión de la auditoría automatizada</h4>
+                        <blockquote class="border-l-4 border-cyan-600 pl-4 italic text-sm text-slate-700">
+                            El script <code>auditor_seguridad.sh</code> automatiza la recolección de información clave de reconocimiento pasivo, generando un reporte limpio, ordenado y homogéneo. Los hallazgos reafirman que ambos objetivos comparten la misma IP pública (5.40.33.18), exponen servidores web Apache bajo Debian Linux y diferencian perfectamente las aplicaciones Next.js en webinsegura1 y DVWA en webinsegura2.
+                        </blockquote>
                     </div>
                 </div>
             </section>
