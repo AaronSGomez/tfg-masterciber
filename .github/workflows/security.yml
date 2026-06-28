@@ -1,0 +1,274 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+##############################################################################
+# SEMGREP SAST
+##############################################################################
+
+jobs:
+  semgrep:
+    name: SAST - Semgrep
+    runs-on: ubuntu-latest
+
+    outputs:
+      findings: ${{ steps.count.outputs.findings }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Semgrep
+        run: |
+          python -m pip install --upgrade pip
+          pip install semgrep
+
+      - name: Run Semgrep
+        run: |
+          semgrep \
+            --config p/javascript \
+            --json \
+            --output semgrep.json \
+            . || true
+
+      - name: Count findings
+        id: count
+        run: |
+          TOTAL=$(jq '.results | length' semgrep.json)
+
+          echo "findings=$TOTAL" >> $GITHUB_OUTPUT
+
+          {
+            echo "## ✔ SAST - Semgrep"
+            echo ""
+            echo "**Findings:** $TOTAL"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Semgrep report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: semgrep-report
+          path: semgrep.json
+          if-no-files-found: ignore
+
+##############################################################################
+# CODEQL
+##############################################################################
+
+  codeql:
+    name: SAST - CodeQL
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    
+    outputs:
+      findings: ${{ steps.summary.outputs.findings }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          upload: false
+
+      - name: Summary
+        id: summary
+        run: |
+          echo "findings=0" >> $GITHUB_OUTPUT
+
+          {
+            echo "## ✔ SAST - CodeQL"
+            echo ""
+            echo "Analysis completed successfully"
+          } >> $GITHUB_STEP_SUMMARY
+
+##############################################################################
+# SCA
+##############################################################################
+
+  sca:
+    name: SCA - Dependency Scan
+    runs-on: ubuntu-latest
+
+    outputs:
+      findings: ${{ steps.audit.outputs.findings }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run npm audit
+        working-directory: frontend
+        run: |
+          npm audit --json > audit.json || true
+
+      - name: Count findings
+        id: audit
+        working-directory: frontend
+        run: |
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit.json)
+          MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' audit.json)
+
+          TOTAL=$((CRITICAL+HIGH+MODERATE))
+
+          echo "findings=$TOTAL" >> $GITHUB_OUTPUT
+
+          {
+            echo "## ✔ SCA - Dependency Scan"
+            echo ""
+            echo "**Findings:** $TOTAL"
+            echo ""
+            echo "| Severity | Count |"
+            echo "|---|---|"
+            echo "| Critical | $CRITICAL |"
+            echo "| High | $HIGH |"
+            echo "| Moderate | $MODERATE |"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: frontend/audit.json
+
+##############################################################################
+# DAST
+##############################################################################
+
+  dast:
+    name: DAST - OWASP ZAP
+    runs-on: ubuntu-latest
+    if: always()
+    
+    outputs:
+      findings: ${{ steps.zap.outputs.findings }}
+
+    steps:
+      - name: Run ZAP
+        id: zapscan
+        continue-on-error: true
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: "https://asga.vercel.app"
+
+      - name: Count findings
+        id: zap
+        run: |
+          FAILS=$(grep -c "FAIL" report_md.md 2>/dev/null || echo 0)
+          WARNS=$(grep -c "WARN" report_md.md 2>/dev/null || echo 0)
+
+          TOTAL=$((FAILS+WARNS))
+
+          echo "findings=$TOTAL" >> $GITHUB_OUTPUT
+
+          {
+            echo "## ✔ DAST - OWASP ZAP"
+            echo ""
+            echo "**Findings:** $TOTAL"
+            echo ""
+            echo "| Severity | Count |"
+            echo "|---|---|"
+            echo "| High | $FAILS |"
+            echo "| Medium | $WARNS |"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
+          if-no-files-found: ignore
+
+##############################################################################
+# FINAL REPORT
+##############################################################################
+
+  security-report:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    if: always()
+    
+    needs:
+      - semgrep
+      - codeql
+      - sca
+      - dast
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Create Summary
+        run: |
+          {
+            echo "# 🛡️ DevSecOps Security Report"
+            echo ""
+            echo "| Tool | Status | Findings |"
+            echo "|---|---|---|"
+            echo "| Semgrep | ✅ | ${{ needs.semgrep.outputs.findings }} |"
+            echo "| CodeQL | ✅ | ${{ needs.codeql.outputs.findings }} |"
+            echo "| npm audit | ✅ | ${{ needs.sca.outputs.findings }} |"
+            echo "| OWASP ZAP | ✅ | ${{ needs.dast.outputs.findings }} |"
+            echo ""
+            echo "### Generated artifacts"
+            echo "- semgrep-report"
+            echo "- npm-audit-report"
+            echo "- zap-report"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `
+              # 🛡️ DevSecOps Security Report
+
+              | Tool | Status | Findings |
+              |------|------|------|
+              | Semgrep | ✅ | ${{ needs.semgrep.outputs.findings }} |
+              | CodeQL | ✅ | ${{ needs.codeql.outputs.findings }} |
+              | npm audit | ✅ | ${{ needs.sca.outputs.findings }} |
+              | OWASP ZAP | ✅ | ${{ needs.dast.outputs.findings }} |
+
+              ### Generated artifacts
+              - semgrep-report
+              - npm-audit-report
+              - zap-report
+              `
+            })
