@@ -1,0 +1,55 @@
+{
+  "threatDragonVersion": "2.2.0",
+  "meta": {
+    "name": "TFG DevSecOps - Portfolio Threat Model",
+    "owner": "Aarón S. Gómez",
+    "description": "Modelado de amenazas STRIDE para la arquitectura del portfolio con Next.js, Vercel y Supabase."
+  },
+  "detail": {
+    "contributors": ["Aarón S. Gómez"],
+    "diagrams": [
+      {
+        "title": "DFD Lógico del Sistema",
+        "id": 0,
+        "diagramType": "STRIDE",
+        "cells": [
+          {
+            "type": "tm.Actor",
+            "name": "Usuario Final (Cliente Web)",
+            "description": "Actor que accede al portfolio a través del navegador web."
+          },
+          {
+            "type": "tm.Process",
+            "name": "Frontend Next.js (Vercel)",
+            "description": "Servidor que aloja la interfaz de usuario e hidrata los componentes."
+          },
+          {
+            "type": "tm.Process",
+            "name": "API Routes (Next.js)",
+            "description": "Endpoints lógicos internos como /api/contact."
+          },
+          {
+            "type": "tm.Process",
+            "name": "Supabase Auth",
+            "description": "Servicio externo de autenticación JWT de Supabase."
+          },
+          {
+            "type": "tm.Process",
+            "name": "Supabase Database & Storage API",
+            "description": "API Gateway de comunicación con bases de datos y buckets de Supabase."
+          },
+          {
+            "type": "tm.Store",
+            "name": "Base de Datos Supabase (PostgreSQL)",
+            "description": "Almacén persistente de datos del portfolio."
+          },
+          {
+            "type": "tm.Store",
+            "name": "Supabase Storage (Buckets)",
+            "description": "Almacenamiento de archivos y capturas estáticas."
+          }
+        ]
+      }
+    ]
+  }
+}

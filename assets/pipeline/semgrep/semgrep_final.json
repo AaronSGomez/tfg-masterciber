@@ -1,0 +1,140 @@
+{
+  "version": "1.168.0",
+  "results": [],
+  "errors": [
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "frontend/pages/adminback.tsx",
+            "start": { "line": 2293, "col": 127, "offset": 0 },
+            "end": { "line": 2293, "col": 137, "offset": 10 }
+          },
+          {
+            "path": "frontend/pages/adminback.tsx",
+            "start": { "line": 2309, "col": 121, "offset": 0 },
+            "end": { "line": 2309, "col": 130, "offset": 9 }
+          }
+        ]
+      ],
+      "message": "Syntax error at line frontend/pages/adminback.tsx:2293:\n `& mobile\":` was unexpected",
+      "path": "frontend/pages/adminback.tsx",
+      "spans": [
+        {
+          "file": "frontend/pages/adminback.tsx",
+          "start": { "line": 2293, "col": 127, "offset": 0 },
+          "end": { "line": 2293, "col": 137, "offset": 10 }
+        },
+        {
+          "file": "frontend/pages/adminback.tsx",
+          "start": { "line": 2309, "col": 121, "offset": 0 },
+          "end": { "line": 2309, "col": 130, "offset": 9 }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "frontend/src/components/CVSection.tsx",
+            "start": { "line": 386, "col": 156, "offset": 0 },
+            "end": { "line": 386, "col": 195, "offset": 39 }
+          }
+        ]
+      ],
+      "message": "Syntax error at line frontend/src/components/CVSection.tsx:386:\n `&ocid=6863100&redeem=R24L9G&source=docs` was unexpected",
+      "path": "frontend/src/components/CVSection.tsx",
+      "spans": [
+        {
+          "file": "frontend/src/components/CVSection.tsx",
+          "start": { "line": 386, "col": 156, "offset": 0 },
+          "end": { "line": 386, "col": 195, "offset": 39 }
+        }
+      ]
+    }
+  ],
+  "paths": {
+    "scanned": [
+      "frontend/next-env.d.ts",
+      "frontend/next.config.js",
+      "frontend/pages/_app.tsx",
+      "frontend/pages/_document.tsx",
+      "frontend/pages/adminback.tsx",
+      "frontend/pages/api/contact.ts",
+      "frontend/pages/index.tsx",
+      "frontend/src/components/About.tsx",
+      "frontend/src/components/CVSection.tsx",
+      "frontend/src/components/Contact.tsx",
+      "frontend/src/components/Footer.tsx",
+      "frontend/src/components/Header.tsx",
+      "frontend/src/components/Navbar.tsx",
+      "frontend/src/components/ProjectModal.tsx",
+      "frontend/src/components/Projects.tsx",
+      "frontend/src/components/admin/BadgeForm.tsx",
+      "frontend/src/components/admin/ImageCropperModal.tsx",
+      "frontend/src/components/admin/ProjectForm.tsx",
+      "frontend/src/components/admin/TimelineForm.tsx",
+      "frontend/src/data/portfolioData.ts",
+      "frontend/src/index.tsx",
+      "frontend/supabase.ts"
+    ]
+  },
+  "time": {
+    "rules": [],
+    "rules_parse_time": 0.08261013031005859,
+    "profiling_times": {
+      "config_time": 0.2539055347442627,
+      "core_time": 1.032942533493042,
+      "ignores_time": 0.0001628398895263672,
+      "total_time": 1.2913870811462402
+    },
+    "parsing_time": {
+      "total_time": 0.0,
+      "per_file_time": { "mean": 0.0, "std_dev": 0.0 },
+      "very_slow_stats": { "time_ratio": 0.0, "count_ratio": 0.0 },
+      "very_slow_files": []
+    },
+    "scanning_time": {
+      "total_time": 1.3643267154693604,
+      "per_file_time": {
+        "mean": 0.06201485070315275,
+        "std_dev": 0.02041070010503587
+      },
+      "very_slow_stats": { "time_ratio": 0.0, "count_ratio": 0.0 },
+      "very_slow_files": []
+    },
+    "matching_time": {
+      "total_time": 0.0,
+      "per_file_and_rule_time": { "mean": 0.0, "std_dev": 0.0 },
+      "very_slow_stats": { "time_ratio": 0.0, "count_ratio": 0.0 },
+      "very_slow_rules_on_files": []
+    },
+    "tainting_time": {
+      "total_time": 0.0,
+      "per_def_and_rule_time": { "mean": 0.0, "std_dev": 0.0 },
+      "very_slow_stats": { "time_ratio": 0.0, "count_ratio": 0.0 },
+      "very_slow_rules_on_defs": []
+    },
+    "fixpoint_timeouts": [],
+    "prefiltering": {
+      "project_level_time": 0.0,
+      "file_level_time": 0.0,
+      "rules_with_project_prefilters_ratio": 0.0,
+      "rules_with_file_prefilters_ratio": 1.0,
+      "rules_selected_ratio": 0.01911220715166461,
+      "rules_matched_ratio": 0.01911220715166461
+    },
+    "targets": [],
+    "total_bytes": 0,
+    "max_memory_bytes": 348832512
+  },
+  "engine_requested": "OSS",
+  "skipped_rules": [],
+  "profiling_results": []
+}

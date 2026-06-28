@@ -18,9 +18,7 @@
                         <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
                     </div>
                 </div>
-
-                <nav class="mt-8 space-y-2 text-sm">
-                    <a href="montajes.html" class="nav-link">Volver a Montaje (Config)</a>
+                <nav class="mt-8 space-y-2 text-sm">
                     <a href="#sast-semgrep" class="nav-link">1. SAST - XSS Hallazgo</a>
                     <a href="#sast-explotacion" class="nav-link">2. Explotación y Mitigaciones</a>
                     <a href="#sast-tabla" class="nav-link">3. Tabla Clasificación SAST</a>
@@ -29,8 +27,7 @@
                     <a href="#dast-detalles" class="nav-link">6. Desglose de los 11 Warnings</a>
                     <a href="#warnings-tabla" class="nav-link">7. Matriz de Warnings DAST</a>
                     <a href="#issues-creados" class="nav-link">8. Optimización e Issues</a>
-                    <a href="correcciones.html" class="nav-link border-emerald-200 bg-emerald-50 text-emerald-900">Ir a Correcciones (Paso 2)</a>
-                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                    <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
@@ -367,8 +364,17 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
                     </div>
                 </div>
             </section>
+
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="dast_vulnerabilidad.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                    Siguiente: Paso 2 (Mitigación DAST) &rarr;
+                </a>
+            </footer>
         </section>
     </main>
+    <script src="../assets/js/sidebar.js"></script>
     <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>

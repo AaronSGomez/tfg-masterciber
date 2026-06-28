@@ -108,4 +108,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ejecutar verificación inicial
     setTimeout(checkSidebarScroll, 300);
+
+    // ==========================================
+    // BOTONERA DE FLUJO DEVSECOPS FLOTANTE FIJA (SUPERIOR DERECHA)
+    // ==========================================
+    const pasos = [
+        { url: 'montajes.html', label: 'Montaje (Config)' },
+        { url: 'analisis.html', label: 'Paso 1 (Análisis)' },
+        { url: 'dast_vulnerabilidad.html', label: 'Paso 2 (Mitigación DAST)' },
+        { url: 'dast_comparativa.html', label: 'Paso 3 (Comparativa DAST)' },
+        { url: 'sast_vulnerabilidad.html', label: 'Paso 4 (Vulnerabilidad SAST)' },
+        { url: 'sast_comparativa.html', label: 'Paso 5 (Reporte SAST)' },
+        { url: 'conclusiones.html', label: 'Paso Final (Conclusiones)' },
+        { url: 'threat_dragon.html', label: 'Modelado (Threat Dragon)' }
+    ];
+
+    const currentUrl = window.location.pathname.split('/').pop();
+    const currentIndex = pasos.findIndex(p => p.url === currentUrl);
+
+    if (currentIndex !== -1) {
+        const floatNav = document.createElement('div');
+        floatNav.className = 'fixed top-6 right-6 z-50 flex items-center gap-1.5 bg-slate-950/80 text-white rounded-full p-1.5 shadow-2xl border border-slate-700/40 backdrop-blur-md transition-all duration-300';
+        
+        let prevButton = '';
+        let nextButton = '';
+
+        if (currentIndex > 0) {
+            const prev = pasos[currentIndex - 1];
+            prevButton = `
+                <a href="${prev.url}" title="Anterior: ${prev.label}" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-slate-200 transition-all hover:bg-slate-800 hover:text-white border border-slate-800">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </a>
+            `;
+        }
+
+        if (currentIndex < pasos.length - 1) {
+            const next = pasos[currentIndex + 1];
+            nextButton = `
+                <a href="${next.url}" title="Siguiente: ${next.label}" class="flex h-9 w-9 items-center justify-center rounded-full bg-cyan-600 text-white transition-all hover:bg-cyan-500 shadow-md hover:shadow-cyan-500/20">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            `;
+        }
+
+        floatNav.innerHTML = `
+            ${prevButton}
+            ${nextButton}
+        `;
+
+        document.body.appendChild(floatNav);
+    }
 });

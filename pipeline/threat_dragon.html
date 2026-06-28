@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelado de Amenazas - OWASP Threat Dragon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#dfd-logico" class="nav-link">1. DFD Lógico Completo</a>
+                    <a href="#stride-analisis" class="nav-link">2. Análisis STRIDE</a>
+                    <a href="#entregables" class="nav-link">3. Entregables y Exportación</a>
+                    <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">Modelado de Amenazas — Dev Seguro</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Modelado de Amenazas con OWASP Threat Dragon</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Modelado arquitectónico y análisis preventivo de riesgos de seguridad estructurado bajo la metodología STRIDE utilizando la suite Threat Dragon.
+                </p>
+            </header>
+
+            <!-- Introducción didáctica sobre Modelado y relación con SAST/DAST -->
+            <section class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">💡 ¿Qué es el Modelado de Amenazas y cómo se relaciona con SAST y DAST?</h3>
+                <p class="text-sm text-slate-700 leading-7 text-justify">
+                    El <strong>Modelado de Amenazas</strong> es un proceso de diseño preventivo. En lugar de buscar fallos en la aplicación cuando ya está programada, se analiza el mapa o diseño lógico del sistema (arquitectura) para identificar de antemano qué podría fallar basándonos en cómo viajan los datos y dónde están las fronteras de seguridad (por ejemplo, entre el navegador del usuario y los servidores de Supabase).
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 text-xs">
+                    <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/30">
+                        <strong class="text-indigo-950 block mb-1">1. Modelado de Amenazas (El Plano)</strong>
+                        <span class="text-slate-650 leading-5 block mt-1">Identifica peligros teóricos antes de escribir el código analizando las fronteras de confianza y flujos de datos del sistema.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/30">
+                        <strong class="text-emerald-950 block mb-1">2. SAST (Análisis del Código)</strong>
+                        <span class="text-slate-650 leading-5 block mt-1">Busca si los peligros identificados en el plano (ej. inyección de datos de usuario) se han programado mal en el código fuente.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/30">
+                        <strong class="text-rose-950 block mb-1">3. DAST (Análisis del Entorno)</strong>
+                        <span class="text-slate-650 leading-5 block mt-1">Prueba el sistema en funcionamiento real (producción) para comprobar si las fronteras de red e infraestructura están bien protegidas.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. DFD lógico completo de la aplicación -->
+            <section id="dfd-logico" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">1. DFD Lógico Completo de la Aplicación</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    El Data Flow Diagram (DFD) define de forma gráfica los procesos, los almacenes de datos, los actores externos y los límites de confianza (trust boundaries) que componen la topología lógica de la aplicación:
+                </p>
+
+                <!-- DFD Image -->
+                <div class="mt-4">
+                    <img src="../assets/pipeline/threat_dragon_dfd.png" alt="Data Flow Diagram lógico en OWASP Threat Dragon" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: DFD lógico modelando límites del navegador, Vercel y Supabase.</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 text-sm text-slate-700 space-y-4">
+                    <h4 class="font-bold text-slate-900 text-base">Desglose de Componentes del DFD:</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Actores Externos:</strong> Usuario final interactuando desde el navegador web de cliente.</li>
+                        <li><strong>Procesos Lógicos:</strong> Frontend Next.js y endpoints en la API (ambos alojados en Vercel) y los motores de Supabase Auth y Supabase API Gateway.</li>
+                        <li><strong>Almacenes de Datos:</strong> Base de Datos PostgreSQL y Buckets de almacenamiento en Supabase.</li>
+                        <li><strong>Límites de Confianza:</strong> Límitador de Cliente (Navegador), Límitador de Servidor (Vercel) y Límitador de Terceros (Supabase).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 2. Análisis STRIDE -->
+            <section id="stride-analisis" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">2. Análisis STRIDE y Modelado de Riesgos</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Se mapearon y clasificaron las amenazas lógicas potenciales identificadas en los límites de confianza y tráficos de red HTTPS / WSS:
+                </p>
+
+                <!-- STRIDE threats Image -->
+                <div class="mt-4">
+                    <img src="../assets/pipeline/stride_threats.png" alt="Análisis STRIDE en OWASP Threat Dragon" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Matriz de vulnerabilidades STRIDE asociadas a los nodos de la topología.</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-200 text-xs">
+                            <thead>
+                                <tr class="bg-slate-50 font-bold">
+                                    <th class="px-3 py-2 text-left">Amenaza STRIDE</th>
+                                    <th class="px-3 py-2 text-left">Elemento Afectado</th>
+                                    <th class="px-3 py-2 text-left">Mitigación Técnica Aplicada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-semibold">Spoofing (Suplantación)</td>
+                                    <td class="px-3 py-2">Supabase Auth / API</td>
+                                    <td class="px-3 py-2">Uso estricto de autenticación multifactor (MFA), contraseñas robustas y validación de tokens JWT en el servidor.</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-semibold">Tampering (Alteración)</td>
+                                    <td class="px-3 py-2">Flujo de datos HTTP / API</td>
+                                    <td class="px-3 py-2">Canales cifrados TLS (HTTPS), cabecera nosniff, CSP explícita y sanitización estricta por escape de caracteres.</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-semibold">Repudiation (Repudio)</td>
+                                    <td class="px-3 py-2">Logs de API y Base de Datos</td>
+                                    <td class="px-3 py-2">Envío de trazas y logs unificados a Wazuh SIEM para monitorización y auditoría no modificable.</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-semibold">Information Disclosure (Fuga)</td>
+                                    <td class="px-3 py-2">PostgreSQL DB / Storage</td>
+                                    <td class="px-3 py-2">Políticas de seguridad a nivel de fila (RLS) en Supabase impidiendo el acceso a registros sin autenticar.</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-semibold">Denial of Service (DoS)</td>
+                                    <td class="px-3 py-2">API Gateway en Supabase</td>
+                                    <td class="px-3 py-2">Protección perimetral y balanceo nativo con CDN de Vercel y Cloudflare del backend.</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-semibold">Elevation of Privilege (Privilegios)</td>
+                                    <td class="px-3 py-2">Next.js API / PostgreSQL RLS</td>
+                                    <td class="px-3 py-2">Control de accesos estricto basado en roles (RBAC) y limitación de las variables de entorno.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Entregables y Exportación -->
+            <section id="entregables" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">3. Entregables y Proyecto Threat Dragon</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Puedes descargar o abrir el archivo del proyecto original de Threat Dragon en formato estructurado JSON para importarlo en tu herramienta de modelado o utilizarlo como evidencia adjunta del TFG:
+                </p>
+                <div class="flex items-center justify-between bg-cyan-50 p-4 rounded-2xl border border-cyan-100">
+                    <div>
+                        <p class="text-sm font-bold text-cyan-950">Archivo de Proyecto Threat Dragon (JSON)</p>
+                        <p class="text-xs text-cyan-850">Proyecto listo para importar y renderizar en la web oficial.</p>
+                    </div>
+                    <a href="threat_dragon_project.json" target="_blank" class="copy-btn rounded-xl bg-cyan-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md hover:bg-cyan-700">Descargar JSON del Proyecto</a>
+                </div>
+            </section>
+
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="../index.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                    Volver al Menú Principal &rarr;
+                </a>
+            </footer>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

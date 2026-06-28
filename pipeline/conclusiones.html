@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline DevSecOps: Conclusiones y Cierre</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#consolidacion" class="nav-link">1. Consolidación del Ciclo</a>
+                    <a href="#resultados-dast" class="nav-link">2. Resultados DAST (ZAP)</a>
+                    <a href="#resultados-sast" class="nav-link">3. Resultados SAST (Semgrep)</a>
+                    <a href="#evidencias" class="nav-link">4. Evidencias Generadas</a>
+                    <a href="#conclusion-tecnica" class="nav-link">5. Conclusión Técnica Final</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">PASO FINAL — Conclusiones Generales</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Cierre del Apartado DevSecOps y Consolidación del Ciclo Completo</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Este apartado resume, integra y cierra formalmente todo el trabajo técnico de seguridad continua e infraestructura ágil realizado en el proyecto. Evidencia el cumplimiento estricto de las directrices académicas mediante el ciclo de automatización verificado en producción.
+                </p>
+            </header>
+
+            <!-- Consolidación del ciclo DevSecOps -->
+            <section id="consolidacion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 1. Consolidación del Ciclo DevSecOps Aplicado</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Durante el desarrollo del proyecto se ha ejecutado un ciclo DevSecOps completo, integrado orgánicamente en cada commit y Pull Request:
+                </p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2 text-center text-xs">
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <strong class="text-slate-900 block mb-1">SAST (Semgrep)</strong>
+                        <span class="text-slate-500">Auditoría del código fuente y tratamiento de inputs.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <strong class="text-slate-900 block mb-1">DAST (OWASP ZAP)</strong>
+                        <span class="text-slate-500">Análisis perimetral dinámico pasivo en producción.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <strong class="text-slate-900 block mb-1">Hardening de Despliegue</strong>
+                        <span class="text-slate-500">Cabeceras HTTP estrictas y CSP a nivel de Vercel.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <strong class="text-slate-900 block mb-1">Remediación de Fallos</strong>
+                        <span class="text-slate-500">Cierre efectivo de vulnerabilidades lógicas.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <strong class="text-slate-900 block mb-1">Validación Automática</strong>
+                        <span class="text-slate-500">Re-ejecución del pipeline y evaluación de severidades.</span>
+                    </div>
+                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                        <strong class="text-slate-900 block mb-1">Trazabilidad</strong>
+                        <span class="text-slate-500">Mapeo del "antes y después" con reportes e incidencias.</span>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-700 leading-7 mt-3">
+                    Este flujo demuestra empíricamente que la seguridad no ha sido tratada como un parche estático al término del proyecto, sino como una dimensión dinámica integrada activamente en el ciclo de vida del software (SDLC).
+                </p>
+            </section>
+
+            <!-- Resultados DAST -->
+            <section id="resultados-dast" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 2. Resultados del Análisis DAST (OWASP ZAP)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Se ejecutaron y contrastaron dos análisis completos sobre el dominio real del portfolio: el informe de estado inicial y el informe final tras la aplicación de directivas estrictas de seguridad.
+                </p>
+                <div class="p-5 rounded-2xl bg-cyan-50/20 border border-cyan-200 text-sm text-slate-700 space-y-2">
+                    <p class="font-bold text-cyan-950">Mejoras y Mitigaciones Clave Confirmadas:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Inyección y declaración explícita de la cabecera <strong>X-Frame-Options (DENY)</strong> y directiva <code>frame-ancestors 'none'</code> en la CSP para contrarrestar Clickjacking.</li>
+                        <li>Configuración de la cabecera <strong>X-Content-Type-Options (nosniff)</strong> previniendo sniffing MIME.</li>
+                        <li>Acotación de periféricos del navegador mediante <strong>Permissions-Policy</strong>.</li>
+                        <li><strong>Auto-alojamiento de Fuentes de Google:</strong> Eliminación de CDNs externos, permitiendo aplicar una CSP estricta con directiva <code>font-src 'self'</code> sin requerir hashes SRI externos.</li>
+                    </ul>
+                </div>
+                <p class="text-sm text-slate-700 leading-7 mt-2">
+                    Los avisos remanentes reportados por el escáner se encuentran técnicamente delimitados y debidamente documentados como excepciones legítimas y aceptables en la memoria del TFG (tales como <code>style-src 'unsafe-inline'</code> debido a requerimientos de hidratación SSR en Next.js, y el Cross-Domain por la conexión obligatoria al endpoint remoto en Supabase).
+                </p>
+            </section>
+
+            <!-- Resultados SAST -->
+            <section id="resultados-sast" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 3. Resultados del Análisis SAST (Semgrep)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    El Paso 4 implementó con éxito el ciclo DevSecOps frente a vulnerabilidades graves en el código fuente. Se forzó una inyección de fallos lógicos severos de tipo RCE, Eval y XSS en el endpoint <code>contact.ts</code>:
+                </p>
+                <div class="p-5 rounded-2xl bg-emerald-50/20 border border-emerald-250 text-sm text-slate-700 space-y-2">
+                    <p class="font-bold text-emerald-950">Ciclo de Remediación Verificado:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Detección de Criticidad High (ERROR):</strong> Semgrep interrumpió el compilado en Actions.</li>
+                        <li><strong>Alertado Automático:</strong> Apertura de un Issue asignado en GitHub mediante Github CLI de forma desatendida.</li>
+                        <li><strong>Parcheo de Seguridad:</strong> Sanitización de entradas por codificación HTML y uso de placeholders estáticos reemplazados mediante <code>.replace()</code> para evitar falsos positivos sintácticos del parser SAST.</li>
+                        <li><strong>Validación Verde:</strong> La re-ejecución final del pipeline certificó <strong>0 vulnerabilidades activas</strong>, cerrando el ciclo.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Evidencias Generadas -->
+            <section id="evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 4. Evidencias Generadas y Publicadas en el Proyecto</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Para certificar el progreso del laboratorio y dotar al proyecto de la rigurosidad científica exigida, se han integrado y publicado en esta web los siguientes entregables y reportes técnicos:
+                </p>
+                <div class="overflow-x-auto mt-2">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-left">Evidencia Técnica</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-left">Ubicación / Enlace de Auditoría</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-left">Valor para el Tribunal del TFG</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Reporte Dinámico Inicial ZAP</td>
+                                <td class="px-4 py-3"><a href="../assets/pipeline/report_inicial_html.html" target="_blank" class="text-cyan-650 hover:underline font-bold">report_inicial_html.html</a></td>
+                                <td class="px-4 py-3 text-xs text-slate-600">Estado base de vulnerabilidades dynamic (11 warnings).</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Reporte Dinámico Final ZAP</td>
+                                <td class="px-4 py-3"><a href="../assets/pipeline/report_final_html.html" target="_blank" class="text-cyan-650 hover:underline font-bold">report_final_html.html</a></td>
+                                <td class="px-4 py-3 text-xs text-slate-600">Hardening dinámico efectivo tras el hardening de cabeceras.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Reporte Estático Inicial Semgrep</td>
+                                <td class="px-4 py-3"><a href="../assets/pipeline/semgrep/semgrep_inicial.json" target="_blank" class="text-cyan-650 hover:underline font-bold">semgrep_inicial.json</a></td>
+                                <td class="px-4 py-3 text-xs text-slate-600">Registro en JSON detallando inyecciones y fallos SAST.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Reporte Estático Final Semgrep</td>
+                                <td class="px-4 py-3"><a href="../assets/pipeline/semgrep/semgrep_final.json" target="_blank" class="text-cyan-650 hover:underline font-bold">semgrep_final.json</a></td>
+                                <td class="px-4 py-3 text-xs text-slate-600">Certificación final de 0 hallazgos activos en código fuente.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Configuración de Pipeline YAML</td>
+                                <td class="px-4 py-3"><a href="montajes.html#workflow-final" class="text-cyan-650 hover:underline font-bold">montajes.html#workflow-final</a></td>
+                                <td class="px-4 py-3 text-xs text-slate-600">Descriptores, triggers de ejecución, conteo e incidentes desatendidos.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 font-semibold">Proyecto de Modelado (Threat Dragon)</td>
+                                <td class="px-4 py-3"><a href="threat_dragon_project.json" target="_blank" class="text-cyan-650 hover:underline font-bold">threat_dragon_project.json</a></td>
+                                <td class="px-4 py-3 text-xs text-slate-600">JSON de modelado de amenazas STRIDE y DFD listo para importar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Conclusión Técnica Final -->
+            <section id="conclusion-tecnica" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 5. Conclusión Técnica del Apartado DevSecOps</h3>
+                <p class="text-sm text-slate-700 leading-7 text-justify">
+                    El desarrollo práctico de esta sección del TFG ha permitido implementar con éxito una arquitectura de <strong>Seguridad Integrada y Continua</strong>. El flujo automatizado diseñado en GitHub Actions garantiza que ninguna rama de desarrollo pueda integrar código con inyecciones XSS, inyecciones de código o fallos perimetrales. 
+                </p>
+                <p class="text-sm text-slate-700 leading-7 text-justify">
+                    La sinergia entre el escaneo estático local (SAST), la auditoría dinámica perimetral (DAST) y la gestión proactiva de incidentes demuestra una asimilación técnica sólida e integral. Con evidencias reales contrastadas y un ciclo cerrado funcional, el apartado DevSecOps queda <strong>completamente finalizado y consolidado con éxito</strong>.
+                </p>
+            </section>
+
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="threat_dragon.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                    Siguiente: Modelado de Amenazas &rarr;
+                </a>
+            </footer>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

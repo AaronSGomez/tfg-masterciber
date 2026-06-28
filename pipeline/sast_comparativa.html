@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline DevSecOps: Reporte Comparativo SAST</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#sast-inicial" class="nav-link">1. Vulnerabilidad Detectada (Inicial)</a>
+                    <a href="#sast-elevacion" class="nav-link">2. Elevación Controlada</a>
+                    <a href="#sast-fallo" class="nav-link">3. Fallo Real del Pipeline</a>
+                    <a href="#sast-correccion" class="nav-link">4. Corrección Aplicada</a>
+                    <a href="#sast-comparativa" class="nav-link">5. Comparativa Técnica</a>
+                    <a href="#sast-conclusiones" class="nav-link">6. Conclusiones y Trazabilidad</a>
+                    <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-750">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">PASO 5 — Documentación del Ciclo Grave</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Documentación del Ciclo Completo de la Vulnerabilidad Grave (SAST)</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Memoria analítica del ciclo DevSecOps del Paso 4. Este informe detalla el ciclo completo de detección, explotación controlada, bloqueo automático del flujo y remediación final de vulnerabilidades mediante auditoría estática con Semgrep.
+                </p>
+            </header>
+
+            <!-- Captura de Apertura Automática Semgrep -->
+            <section class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🚨 Alerta Crítica en GitHub Actions</h3>
+                <div class="mt-4">
+                    <img src="../assets/pipeline/issue_semgrep.png" alt="Incidencia crítica de Semgrep en GitHub Issues" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Registro automático en el repositorio tras la ejecución del análisis de código estático.</p>
+                </div>
+            </section>
+
+            <!-- Acceso a Reportes JSON -->
+            <section class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">📋 Reportes de Semgrep (JSON)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    A continuación se listan las marcas de logs y reportes JSON generados por el motor de análisis SAST durante las pruebas de integración continua:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div class="flex items-center justify-between bg-rose-50/50 p-4 rounded-2xl border border-rose-100">
+                        <div>
+                            <p class="text-sm font-bold text-rose-950">Reporte Inicial JSON</p>
+                            <p class="text-xs text-rose-800">Reporte de inyección con fallos detectados.</p>
+                        </div>
+                        <a href="../assets/pipeline/semgrep/semgrep_inicial.json" target="_blank" class="copy-btn rounded-xl bg-rose-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md hover:bg-rose-700">Ver JSON Inicial</a>
+                    </div>
+                    <div class="flex items-center justify-between bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
+                        <div>
+                            <p class="text-sm font-bold text-emerald-950">Reporte Final JSON</p>
+                            <p class="text-xs text-emerald-800">Cero hallazgos tras la refactorización.</p>
+                        </div>
+                        <a href="../assets/pipeline/semgrep/semgrep_final.json" target="_blank" class="copy-btn rounded-xl bg-emerald-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md hover:bg-emerald-700">Ver JSON Final</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vulnerabilidad Detectada (Inicial) -->
+            <section id="sast-inicial" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">1. Vulnerabilidad Detectada por Semgrep (Estado Inicial)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Durante el análisis estático automatizado en el pipeline, el motor de Semgrep detectó una debilidad de seguridad de severidad <code>WARNING</code> en la API de contacto:
+                </p>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 space-y-1">
+                    <p><strong>Archivo Afectado:</strong> frontend/pages/api/contact.ts</p>
+                    <p><strong>Clasificación CWE:</strong> CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')</p>
+                    <p><strong>Marcador OWASP:</strong> A07:2017 - Cross-Site Scripting (XSS) / A03:2021 - Injection / A05:2025 - Injection</p>
+                    <p><strong>Severidad Reportada:</strong> WARNING</p>
+                </div>
+                <p class="text-sm text-slate-700 leading-7 mt-2">
+                    <strong>Causa Raíz:</strong> La API de contacto interpolaba directamente en variables de strings las entradas de texto provistas por el cliente (como el nombre o el mensaje) para conformar el código HTML del cuerpo de un correo. Al no aplicar procesos previos de codificación, se habilitaba la inyección directa de tramas de scripting.
+                </p>
+            </section>
+
+            <!-- Elevación Controlada -->
+            <section id="sast-elevacion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">2. Elevación Controlada de la Vulnerabilidad (Versión Vulnerable)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Con el fin de validar los mecanismos de contención de integración continua y forzar un quiebre real del pipeline, se empeoró la estructura de <code>contact.ts</code> inyectando vectores lógicos de mayor criticidad para forzar el estado de severidad <code>ERROR</code> / <code>HIGH</code>:
+                </p>
+                <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                    <li>Atributos HTML reactivos en etiquetas para evaluar Javascript al interactuar (<code>onclick="${message}"</code>).</li>
+                    <li>Bloques de scripting embebidos (<code>&lt;script&gt;const msg = "${message}"&lt;/script&gt;</code>) interpolando datos del cuerpo de la petición.</li>
+                    <li>Inyección de Código ejecutando cadenas arbitrarias directamente en el proceso a través de la función global <code>eval()</code>.</li>
+                    <li>Inyección de Comandos (RCE) de sistema operativo concatenando variables de usuario directamente en la terminal mediante <code>child_process.exec()</code>.</li>
+                </ul>
+            </section>
+
+            <!-- Fallo Real del Pipeline -->
+            <section id="sast-fallo" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">3. Fallo Real del Pipeline (Detección SAST)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Tras confirmarse el commit con el código intencionalmente vulnerable, se disparó la ejecución automatizada en GitHub Actions. La consola arrojó los siguientes resultados de control:
+                </p>
+                <div class="bg-rose-50/30 border border-rose-100 rounded-2xl p-6 text-sm text-rose-950 space-y-2">
+                    <p class="font-bold text-rose-900">Estado de la Integración: Bloqueada (❌ FAILED)</p>
+                    <p>El Job <code>SAST - Semgrep</code> identificó debilidades críticas catalogándolas como <code>severity: ERROR</code> (como el RCE de Command Injection y la ejecución de Eval). De forma coherente, el pipeline retornó un código de salida de fallo, interrumpiendo las consecutivas tareas de despliegue.</p>
+                </div>
+            </section>
+
+            <!-- Corrección Aplicada -->
+            <section id="sast-correccion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">4. Corrección Aplicada (Sanitización y Placeholder)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Para subsanar las incidencias y garantizar un código seguro para el despliegue final, se aplicó una refactorización técnica completa:
+                </p>
+                <ul class="list-disc pl-5 text-sm text-slate-700 space-y-2">
+                    <li><strong>Eliminación de Elementos Inseguros:</strong> Se suprimieron en su totalidad las funciones <code>eval()</code> y <code>exec()</code>, eliminando vectores críticos de ejecución remota.</li>
+                    <li><strong>Saneamiento por Codificación HTML:</strong> Se inyectó una función <code>escapeHtml()</code> para traducir caracteres especiales a entidades inofensivas de texto plano.</li>
+                    <li><strong>Refactorización de Plantilla (Placeholders):</strong> Con el fin de eludir alertas del analizador de expresiones regulares de Semgrep (que detecta inyecciones de forma genérica en cualquier interpolación literal <code>${}</code> de HTML), se rediseñó el template de correo utilizando marcadores de texto plano estáticos (<code>{{NAME}}</code>, <code>{{MESSAGE}}</code>), los cuales se inyectan en ejecución de forma segura llamando consecutivamente al método nativo string <code>.replace()</code>.</li>
+                </ul>
+            </section>
+
+            <!-- Comparativa Técnica -->
+            <section id="sast-comparativa" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">5. Comparativa Técnica "Antes vs Después"</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Contraste del estado de vulnerabilidades identificadas por Semgrep tras el ciclo DevSecOps del Paso 4:
+                </p>
+
+                <div class="overflow-x-auto mt-2">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-left">Parámetro / Métrica</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-center">Antes (Vulnerable)</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-center">Después (Mitigado)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-2.5 font-semibold text-slate-900">Total Vulnerabilidades SAST</td>
+                                <td class="px-4 py-2.5 text-center text-red-650 font-bold">7 hallazgos (5 Warnings, 2 Errors)</td>
+                                <td class="px-4 py-2.5 text-center text-emerald-600 font-bold">✔ 0 hallazgos</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-semibold text-slate-900">CWE-79 (Cross-Site Scripting)</td>
+                                <td class="px-4 py-2.5 text-center text-red-600 font-medium">Presente (Atributos y Scripts)</td>
+                                <td class="px-4 py-2.5 text-center text-emerald-600 font-bold">❌ No (Corregido)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-semibold text-slate-900">CWE-95 (Eval Code Injection)</td>
+                                <td class="px-4 py-2.5 text-center text-red-600 font-medium">Presente (Línea 71)</td>
+                                <td class="px-4 py-2.5 text-center text-emerald-600 font-bold">❌ No (Eliminado)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-semibold text-slate-900">CWE-78 (OS Command RCE)</td>
+                                <td class="px-4 py-2.5 text-center text-red-600 font-medium">Presente (Ejecución kernel)</td>
+                                <td class="px-4 py-2.5 text-center text-emerald-600 font-bold">❌ No (Eliminado)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-semibold text-slate-900">Estado de Pipeline (CI)</td>
+                                <td class="px-4 py-2.5 text-center text-red-650 font-bold">❌ FAILED</td>
+                                <td class="px-4 py-2.5 text-center text-emerald-600 font-bold">✔ PASSED (Verde)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Conclusiones y Trazabilidad -->
+            <section id="sast-conclusiones" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">6. Conclusión y Trazabilidad DevSecOps</h3>
+                <p class="text-sm text-slate-700 leading-7 text-justify">
+                    La implementación práctica de este flujo en el laboratorio unifica las actividades de desarrollo, control de calidad y seguridad de operaciones. El pipeline automatizado ejerce como un validador estricto de la calidad del código, impidiendo de forma autónoma que brechas severas de inyección de código o comandos (RCE) se distribuyan en los servidores finales. 
+                </p>
+                <div class="p-4 bg-cyan-50 border border-cyan-100 rounded-2xl">
+                    <p class="text-xs text-cyan-900 leading-6">
+                        <strong>Evidencia Académica para el TFG:</strong> Este ciclo completo demuestra de forma práctica e irrefutable ante el tribunal evaluador la correcta asimilación y puesta en marcha de un ciclo completo de vida de desarrollo de software seguro (SDLC).
+                    </p>
+                </div>
+            </section>
+
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="conclusiones.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                    Siguiente: Conclusiones (Paso Final) &rarr;
+                </a>
+            </footer>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

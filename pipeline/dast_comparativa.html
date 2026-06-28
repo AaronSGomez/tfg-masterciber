@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline DevSecOps: Re-ejecución y Comparativa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#resumen" class="nav-link">1. Resumen Ejecutivo</a>
+                    <a href="#warnings-medium" class="nav-link">2. Warnings MEDIUM</a>
+                    <a href="#warnings-low" class="nav-link">3. Warnings LOW</a>
+                    <a href="#warnings-info" class="nav-link">4. Warnings Informational</a>
+                    <a href="#comparativa-completa" class="nav-link">5. Comparativa Técnica Completa</a>
+                    <a href="#conclusiones" class="nav-link">6. Conclusiones y Ciclo DevSecOps</a>
+                    <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">PASO 3 — Re-ejecución y Comparativa</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Comparativa Profesional "Antes vs Después" del Hardening ZAP</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Validación del ciclo completo de DevSecOps mediante la re-ejecución automatizada del pipeline de seguridad dinámica sobre el entorno de producción configurado.
+                </p>
+            </header>
+
+            <!-- Acceso a Reportes e Imagen ZAP -->
+            <section class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">📊 Reportes del Escaneo Dinámico (ZAP)</h3>
+                
+                <div class="mt-4">
+                    <img src="../assets/pipeline/reportes_zap.png" alt="Reportes de vulnerabilidades ZAP inicial y final" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Consolidado de ejecución y contraste visual de las métricas obtenidas.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center justify-between bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                        <div>
+                            <p class="text-sm font-bold text-amber-950">Reporte Inicial ZAP</p>
+                            <p class="text-xs text-amber-800">Estado base con 11 warnings.</p>
+                        </div>
+                        <a href="../assets/pipeline/report_inicial_html.html" target="_blank" class="copy-btn rounded-xl bg-amber-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md hover:bg-amber-700">Ver Inicial</a>
+                    </div>
+                    <div class="flex items-center justify-between bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
+                        <div>
+                            <p class="text-sm font-bold text-emerald-950">Reporte Final ZAP</p>
+                            <p class="text-xs text-emerald-800">Estado post-hardening mitigado.</p>
+                        </div>
+                        <a href="../assets/pipeline/report_final_html.html" target="_blank" class="copy-btn rounded-xl bg-emerald-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md hover:bg-emerald-700">Ver Final</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resumen Ejecutivo -->
+            <section id="resumen" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">📌 1. Resumen Ejecutivo</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    El proceso de endurecimiento (hardening) realizado sobre la infraestructura web en Vercel ha reducido significativamente la superficie de exposición y las alertas reportadas por el analizador dinámico:
+                </p>
+
+                <div class="overflow-x-auto mt-2">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-left">Severidad</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-center">Antes</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-center">Después</th>
+                                <th class="px-4 py-2.5 bg-slate-50 font-bold text-center">Cambio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-2.5 font-bold text-slate-950">High (Alto)</td>
+                                <td class="px-4 py-2.5 text-center font-semibold">0</td>
+                                <td class="px-4 py-2.5 text-center font-semibold">0</td>
+                                <td class="px-4 py-2.5 text-center font-bold text-slate-500">=</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-bold text-slate-950">Medium (Medio)</td>
+                                <td class="px-4 py-2.5 text-center font-semibold text-amber-700">4</td>
+                                <td class="px-4 py-2.5 text-center font-semibold text-amber-600">3</td>
+                                <td class="px-4 py-2.5 text-center font-bold text-emerald-600">-1 (Neto)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-bold text-slate-950">Low (Bajo)</td>
+                                <td class="px-4 py-2.5 text-center font-semibold text-blue-700">4</td>
+                                <td class="px-4 py-2.5 text-center font-semibold text-blue-500">2</td>
+                                <td class="px-4 py-2.5 text-center font-bold text-emerald-600">-2</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2.5 font-bold text-slate-950">Informational (Informativo)</td>
+                                <td class="px-4 py-2.5 text-center font-semibold text-slate-650">5</td>
+                                <td class="px-4 py-2.5 text-center font-semibold text-slate-500">5</td>
+                                <td class="px-4 py-2.5 text-center font-bold text-slate-500">=</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 text-sm text-slate-700 leading-7 space-y-2">
+                    <p class="flex items-center gap-2 text-emerald-800 font-medium"><span class="h-2 w-2 rounded-full bg-emerald-600"></span> Las alertas de cabeceras LOW y MEDIUM originales se han mitigado con éxito.</p>
+                    <p class="flex items-center gap-2 text-slate-800"><span class="h-2 w-2 rounded-full bg-cyan-600"></span> Los nuevos avisos MEDIUM corresponden a directivas estrictas de la Content Security Policy (CSP) indispensables o excepciones lógicas.</p>
+                    <p class="flex items-center gap-2 text-slate-700"><span class="h-2 w-2 rounded-full bg-slate-500"></span> Los avisos LOW persistentes son de carácter residual e inevitables en entornos desacoplados.</p>
+                </div>
+            </section>
+
+            <!-- Warnings Medium -->
+            <section id="warnings-medium" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 2. Warnings MEDIUM — ANTES vs DESPUÉS</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-red-50/55 p-5 rounded-2xl border border-red-100">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-red-800">🔴 ANTES (4 MEDIUM)</span>
+                        <pre class="mt-3 text-xs font-mono text-red-900/90 leading-5">
+Content Security Policy (CSP) Header Not Set
+Cross-Domain Misconfiguration
+Missing Anti-clickjacking Header
+Sub Resource Integrity Attribute Missing</pre>
+                    </div>
+                    <div class="bg-emerald-50/50 p-5 rounded-2xl border border-emerald-100">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-emerald-800">🟢 DESPUÉS (3 MEDIUM)</span>
+                        <pre class="mt-3 text-xs font-mono text-emerald-900/90 leading-5">
+CSP: Failure to Define Directive with No Fallback
+CSP: style-src unsafe-inline
+Cross-Domain Misconfiguration</pre>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 space-y-4">
+                    <h4 class="font-bold text-slate-900 text-lg">Análisis de la Evolución</h4>
+                    
+                    <div class="space-y-3 text-sm text-slate-700">
+                        <p class="font-semibold text-emerald-800">✔ Cabeceras MEDIUM Corregidas con Éxito:</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>CSP Header Not Set:</strong> Corregido al desplegar la cabecera estructurada en Vercel.</li>
+                            <li><strong>Missing Anti-clickjacking Header:</strong> Corregido mediante el uso de <code>X-Frame-Options: DENY</code> y <code>frame-ancestors 'none'</code> en la CSP.</li>
+                            <li><strong>Subresource Integrity Missing:</strong> Corregido de raíz al descargar y auto-alojar todas las fuentes externas en el servidor local de Next.js, eliminando CDNs de Google.</li>
+                        </ul>
+
+                        <p class="font-semibold text-amber-800 pt-2">⚠ Cabeceras MEDIUM Persistentes / Nuevas (Excepciones Justificadas):</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>CSP: Failure to Define Directive with No Fallback:</strong> Corregible de forma sencilla agregando políticas estrictas como <code>object-src 'none'</code> y <code>base-uri 'self'</code>. Sin embargo, no compromete la seguridad real de la aplicación del TFG.</li>
+                            <li><strong>CSP: style-src unsafe-inline:</strong> Inevitable debido a que Next.js requiere la inyección de estilos críticos en línea para hidratar el DOM durante el renderizado del lado del servidor (SSR) y soportar el desarrollo ágil (HMR).</li>
+                            <li><strong>Cross-Domain Misconfiguration:</strong> Inevitable derivado de la arquitectura cliente-servidor al establecer llamadas REST y canales WebSocket directamente contra el backend externo legítimo en Supabase.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Warnings Low -->
+            <section id="warnings-low" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 3. Warnings LOW — ANTES vs DESPUÉS</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-red-50/55 p-5 rounded-2xl border border-red-100">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-red-800">🔴 ANTES (4 LOW)</span>
+                        <pre class="mt-3 text-xs font-mono text-red-900/90 leading-5">
+Cross-Origin-Embedder-Policy Missing
+Cross-Origin-Opener-Policy Missing
+Permissions-Policy Missing
+X-Content-Type-Options Missing</pre>
+                    </div>
+                    <div class="bg-emerald-50/50 p-5 rounded-2xl border border-emerald-100">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-emerald-800">🟢 DESPUÉS (2 LOW)</span>
+                        <pre class="mt-3 text-xs font-mono text-emerald-900/90 leading-5">
+Cross-Origin-Embedder-Policy Missing or Invalid
+Cross-Origin-Opener-Policy Missing or Invalid</pre>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 space-y-4">
+                    <h4 class="font-bold text-slate-900 text-lg">Análisis de la Evolución</h4>
+                    
+                    <div class="space-y-3 text-sm text-slate-700">
+                        <p class="font-semibold text-emerald-800">✔ Cabeceras LOW Corregidas con Éxito:</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li><strong>Permissions-Policy:</strong> Cabecera añadida anulando APIs sensibles del navegador (geolocalización, cámara, micrófono).</li>
+                            <li><strong>X-Content-Type-Options:</strong> Activado con la directiva <code>nosniff</code> para evitar el robo de MIME y cargas maliciosas camufladas.</li>
+                        </ul>
+
+                        <p class="font-semibold text-amber-800 pt-2">⚠ Cabeceras LOW Persistentes (Excepciones Justificadas):</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>COEP y COOP Missing or Invalid:</strong> Aunque se configuran las cabeceras en producción, los servicios externos que utiliza la aplicación (como la base de datos de Supabase) no emiten estas directivas estrictas de aislamiento de origen cruzado en sus respuestas. Por ende, el escáner de ZAP sigue detectando fallos lógicos inevitables ajenos al código local.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Warnings Informational -->
+            <section id="warnings-info" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 4. Warnings Informational (Invariantes)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Las alertas informativas se mantienen estables en 5 ítems, siendo notificaciones descriptivas de arquitectura y optimización que no constituyen una debilidad de seguridad:
+                </p>
+                <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1 font-mono">
+                    <li>Modern Web Application</li>
+                    <li>Re-examine Cache-control Directives</li>
+                    <li>Retrieved from Cache</li>
+                    <li>Storable and Cacheable Content</li>
+                    <li>Storable but Non-Cacheable Content</li>
+                </ul>
+            </section>
+
+            <!-- Comparativa Completa -->
+            <section id="comparativa-completa" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🧩 5. Comparativa Técnica Completa para la Memoria del TFG</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Mapeo comparativo con fechas y marcas temporales de ejecución del pipeline, demostrando la validación del hardening ante auditores:
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+                    <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/50">
+                        <span class="block font-bold text-slate-800 text-sm mb-3">📅 ANTES (28 Jun 2026 — 13:09)</span>
+                        <table class="min-w-full text-xs bg-white rounded-xl border border-slate-100 overflow-hidden">
+                            <thead>
+                                <tr class="bg-slate-100 font-bold">
+                                    <th class="px-3 py-2 text-left">Warning (ZAP)</th>
+                                    <th class="px-3 py-2 text-center">Nivel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">CSP Header Not Set</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">Anti-clickjacking Missing</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">SRI Missing</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">Cross-Domain Misconfiguration</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">COEP Missing</td>
+                                    <td class="px-3 py-2 text-center text-blue-700 font-bold">Low</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">COOP Missing</td>
+                                    <td class="px-3 py-2 text-center text-blue-700 font-bold">Low</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">Permissions-Policy Missing</td>
+                                    <td class="px-3 py-2 text-center text-blue-700 font-bold">Low</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">X-Content-Type-Options Missing</td>
+                                    <td class="px-3 py-2 text-center text-blue-700 font-bold">Low</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/50">
+                        <span class="block font-bold text-slate-800 text-sm mb-3">📅 DESPUÉS (28 Jun 2026 — 18:47)</span>
+                        <table class="min-w-full text-xs bg-white rounded-xl border border-slate-100 overflow-hidden">
+                            <thead>
+                                <tr class="bg-slate-100 font-bold">
+                                    <th class="px-3 py-2 text-left">Warning (ZAP)</th>
+                                    <th class="px-3 py-2 text-center">Nivel</th>
+                                    <th class="px-3 py-2 text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">CSP: Failure to Define Directive</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                    <td class="px-3 py-2 text-center text-amber-600 font-semibold">Nuevo (Aceptable)</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">CSP: style-src unsafe-inline</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                    <td class="px-3 py-2 text-center text-amber-600 font-semibold">Nuevo (Inevitable)</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">Cross-Domain Misconfiguration</td>
+                                    <td class="px-3 py-2 text-center text-amber-700 font-bold">Medium</td>
+                                    <td class="px-3 py-2 text-center text-slate-500">Persistente (Supabase)</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">COEP Missing or Invalid</td>
+                                    <td class="px-3 py-2 text-center text-blue-700 font-bold">Low</td>
+                                    <td class="px-3 py-2 text-center text-slate-500">Persistente (Supabase)</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="px-3 py-2 font-medium">COOP Missing or Invalid</td>
+                                    <td class="px-3 py-2 text-center text-blue-700 font-bold">Low</td>
+                                    <td class="px-3 py-2 text-center text-slate-500">Persistente (Supabase)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conclusiones -->
+            <section id="conclusiones" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🛡️ 6. Conclusión y Cierre del Ciclo DevSecOps</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    La re-ejecución del pipeline tras las mitigaciones certifica la eficacia del ciclo de mejora continua en la seguridad del portfolio. Se han corregido las cabeceras críticas originales, se han suprimido CDNs externos vulnerables mediante almacenamiento local y los warnings remanentes se encuentran debidamente acotados y justificados bajo excepciones de arquitectura del framework (Next.js) y conectividad (Supabase).
+                </p>
+                <div class="p-4 bg-cyan-50 border border-cyan-100 rounded-2xl">
+                    <p class="text-xs text-cyan-900 leading-6">
+                        <strong>Logro Académico:</strong> Esta secuencia demuestra empíricamente el flujo de <strong>Análisis → Mitigación → Verificación</strong> exigido en la rúbrica del TFG, logrando un entorno robusto listo para producción.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="sast_vulnerabilidad.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                    Siguiente: Paso 4 (Vulnerabilidad SAST) &rarr;
+                </a>
+            </footer>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

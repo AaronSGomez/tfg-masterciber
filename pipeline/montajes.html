@@ -47,9 +47,7 @@
                     <a href="#incidencias-dast" class="nav-link">5. Errores de Sintaxis y DAST</a>
                     <a href="#estudio-zap" class="nav-link">6. Caso de Estudio: OWASP ZAP</a>
                     <a href="#arquitectura" class="nav-link">7. Arquitectura Final</a>
-                    <a href="analisis.html" class="nav-link border-red-200 bg-red-50 text-red-900">Ir a Análisis (Paso 1)</a>
-                    <a href="correcciones.html" class="nav-link border-emerald-200 bg-emerald-50 text-emerald-900">Ir a Correcciones (Paso 2)</a>
-                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                    <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
@@ -68,6 +66,40 @@
                     Este documento detalla el proceso completo de creación, depuración de incidencias y puesta en marcha del pipeline de seguridad en GitHub Actions. Se documenta la resolución de errores reales de sintaxis, permisos de API y optimización de parseo de logs.
                 </p>
             </header>
+
+            <!-- Resumen del Flujo DevSecOps del Apartado -->
+            <section class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-xl font-bold text-slate-950">📋 Estructura y Flujo del Apartado DevSecOps</h3>
+                <p class="text-sm text-slate-700 leading-6">
+                    A continuación se detallan las fases y pasos interactivos que componen la memoria de laboratorio del bloque DevSecOps. Puedes navegar secuencialmente por ellos usando el panel de control flotante fijo:
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
+                    <a href="analisis.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                        <strong class="text-slate-900 block mb-1">Paso 1: Análisis Inicial &rarr;</strong>
+                        <span class="text-slate-500">Reporte inicial DAST/SAST y detección de 11 warnings.</span>
+                    </a>
+                    <a href="dast_vulnerabilidad.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                        <strong class="text-slate-900 block mb-1">Paso 2: Mitigación DAST &rarr;</strong>
+                        <span class="text-slate-500">Hardening de cabeceras HTTP y políticas CSP.</span>
+                    </a>
+                    <a href="dast_comparativa.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                        <strong class="text-slate-900 block mb-1">Paso 3: Comparativa DAST &rarr;</strong>
+                        <span class="text-slate-500">Análisis dinámico comparativo antes/después.</span>
+                    </a>
+                    <a href="sast_vulnerabilidad.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                        <strong class="text-slate-900 block mb-1">Paso 4: Vulnerabilidad SAST &rarr;</strong>
+                        <span class="text-slate-500">Inyección controlada de código y fallo del pipeline.</span>
+                    </a>
+                    <a href="sast_comparativa.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                        <strong class="text-slate-900 block mb-1">Paso 5: Reporte SAST &rarr;</strong>
+                        <span class="text-slate-500">Remediación y comparativa final de código limpio.</span>
+                    </a>
+                    <a href="conclusiones.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                        <strong class="text-slate-900 block mb-1">Paso Final: Conclusiones &rarr;</strong>
+                        <span class="text-slate-500">Cierre metodológico y modelado de amenazas STRIDE.</span>
+                    </a>
+                </div>
+            </section>
 
             <!-- Problema inicial github -->
             <section id="problema-github" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
@@ -144,28 +176,43 @@ permissions:
   issues: write
 
 jobs:
+
+##############################################################################
+# SEMGREP
+##############################################################################
+
   semgrep:
     name: SAST - Semgrep
     runs-on: ubuntu-latest
+
     outputs:
-      findings: ${{ steps.count.outputs.findings }}
-      critical: ${{ steps.count.outputs.critical }}
-      high: ${{ steps.count.outputs.high }}
-      medium: ${{ steps.count.outputs.medium }}
-      low: ${{ steps.count.outputs.low }}
+      findings: &lbrace;&lbrace; steps.count.outputs.findings &rbrace;&rbrace;
+      critical: &lbrace;&lbrace; steps.count.outputs.critical &rbrace;&rbrace;
+      high: &lbrace;&lbrace; steps.count.outputs.high &rbrace;&rbrace;
+      medium: &lbrace;&lbrace; steps.count.outputs.medium &rbrace;&rbrace;
+      low: &lbrace;&lbrace; steps.count.outputs.low &rbrace;&rbrace;
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Install Semgrep
         run: |
           python -m pip install --upgrade pip
           pip install semgrep
+
       - name: Run Semgrep
         run: |
-          semgrep --config p/javascript --json --output semgrep.json . || true
+          semgrep \
+            --config p/javascript \
+            --json \
+            --output semgrep.json \
+            . || true
+
       - name: Count findings
         id: count
         run: |
@@ -173,74 +220,99 @@ jobs:
           MEDIUM=$(jq '[.results[] | select(.extra.severity=="WARNING")] | length' semgrep.json)
           LOW=$(jq '[.results[] | select(.extra.severity=="INFO")] | length' semgrep.json)
           CRITICAL=0
+
           TOTAL=$((CRITICAL+HIGH+MEDIUM+LOW))
-          echo "findings=$TOTAL" &gt;&gt; $GITHUB_OUTPUT
-          echo "critical=$CRITICAL" &gt;&gt; $GITHUB_OUTPUT
-          echo "high=$HIGH" &gt;&gt; $GITHUB_OUTPUT
-          echo "medium=$MEDIUM" &gt;&gt; $GITHUB_OUTPUT
-          echo "low=$LOW" &gt;&gt; $GITHUB_OUTPUT
+
+          echo "findings=$TOTAL" >> $GITHUB_OUTPUT
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "medium=$MEDIUM" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+
           {
             echo "## ✔ SAST - Semgrep"
             echo ""
             echo "**Findings:** $TOTAL"
-          } &gt;&gt; $GITHUB_STEP_SUMMARY
+          } >> $GITHUB_STEP_SUMMARY
+
       - name: Upload Semgrep report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: semgrep-report
           path: semgrep.json
+          if-no-files-found: ignore
+
+##############################################################################
+# CODEQL
+##############################################################################
 
   codeql:
     name: SAST - CodeQL
     runs-on: ubuntu-latest
     continue-on-error: true
+
     outputs:
-      findings: ${{ steps.summary.outputs.findings }}
+      findings: &lbrace;&lbrace; steps.summary.outputs.findings &rbrace;&rbrace;
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: javascript
+
       - name: Analyze
         continue-on-error: true
         uses: github/codeql-action/analyze@v3
         with:
           upload: false
+
       - name: Summary
         if: always()
         id: summary
         run: |
-          echo "findings=0" &gt;&gt; $GITHUB_OUTPUT
+          echo "findings=0" >> $GITHUB_OUTPUT
+
           {
             echo "## ✔ SAST - CodeQL"
             echo ""
             echo "Analysis completed successfully"
-          } &gt;&gt; $GITHUB_STEP_SUMMARY
+          } >> $GITHUB_STEP_SUMMARY
+
+##############################################################################
+# SCA
+##############################################################################
 
   sca:
     name: SCA - Dependency Scan
     runs-on: ubuntu-latest
+
     outputs:
-      findings: ${{ steps.audit.outputs.findings }}
-      critical: ${{ steps.audit.outputs.critical }}
-      high: ${{ steps.audit.outputs.high }}
-      medium: ${{ steps.audit.outputs.medium }}
-      low: ${{ steps.audit.outputs.low }}
+      findings: &lbrace;&lbrace; steps.audit.outputs.findings &rbrace;&rbrace;
+      critical: &lbrace;&lbrace; steps.audit.outputs.critical &rbrace;&rbrace;
+      high: &lbrace;&lbrace; steps.audit.outputs.high &rbrace;&rbrace;
+      medium: &lbrace;&lbrace; steps.audit.outputs.medium &rbrace;&rbrace;
+      low: &lbrace;&lbrace; steps.audit.outputs.low &rbrace;&rbrace;
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - name: Install dependencies
         working-directory: frontend
         run: npm ci
+
       - name: Run npm audit
         working-directory: frontend
         run: |
-          npm audit --json &gt; audit.json || true
+          npm audit --json > audit.json || true
+
       - name: Count findings
         id: audit
         working-directory: frontend
@@ -249,32 +321,42 @@ jobs:
           HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit.json)
           MEDIUM=$(jq '.metadata.vulnerabilities.moderate // 0' audit.json)
           LOW=$(jq '.metadata.vulnerabilities.low // 0' audit.json)
+
           TOTAL=$((CRITICAL+HIGH+MEDIUM+LOW))
-          echo "findings=$TOTAL" &gt;&gt; $GITHUB_OUTPUT
-          echo "critical=$CRITICAL" &gt;&gt; $GITHUB_OUTPUT
-          echo "high=$HIGH" &gt;&gt; $GITHUB_OUTPUT
-          echo "medium=$MEDIUM" &gt;&gt; $GITHUB_OUTPUT
-          echo "low=$LOW" &gt;&gt; $GITHUB_OUTPUT
+
+          echo "findings=$TOTAL" >> $GITHUB_OUTPUT
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "medium=$MEDIUM" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+
           {
             echo "## ✔ SCA - Dependency Scan"
             echo ""
             echo "**Findings:** $TOTAL"
-          } &gt;&gt; $GITHUB_STEP_SUMMARY
+          } >> $GITHUB_STEP_SUMMARY
+
       - name: Upload audit
         uses: actions/upload-artifact@v4
         with:
           name: npm-audit-report
           path: frontend/audit.json
 
+##############################################################################
+# DAST
+##############################################################################
+
   dast:
     name: DAST - OWASP ZAP
     runs-on: ubuntu-latest
     if: always()
+
     outputs:
-      findings: ${{ steps.zap.outputs.findings }}
-      high: ${{ steps.zap.outputs.high }}
-      medium: ${{ steps.zap.outputs.medium }}
-      low: ${{ steps.zap.outputs.low }}
+      findings: &lbrace;&lbrace; steps.zap.outputs.findings &rbrace;&rbrace;
+      high: &lbrace;&lbrace; steps.zap.outputs.high &rbrace;&rbrace;
+      medium: &lbrace;&lbrace; steps.zap.outputs.medium &rbrace;&rbrace;
+      low: &lbrace;&lbrace; steps.zap.outputs.low &rbrace;&rbrace;
+
     steps:
       - name: Run ZAP
         id: zapscan
@@ -282,7 +364,8 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: "https://asga.vercel.app"
-          token: ""
+          token: "" 
+
       - name: Count findings
         id: zap
         run: |
@@ -291,19 +374,28 @@ jobs:
             MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
             LOW=$(grep -i "Low" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
           else
-            HIGH=0; MEDIUM=0; LOW=0
+            HIGH=0
+            MEDIUM=0
+            LOW=0
           fi
-          HIGH=${HIGH:-0}; MEDIUM=${MEDIUM:-0}; LOW=${LOW:-0}
+
+          HIGH=${HIGH:-0}
+          MEDIUM=${MEDIUM:-0}
+          LOW=${LOW:-0}
+          
           TOTAL=$((HIGH + MEDIUM + LOW))
-          echo "findings=$TOTAL" &gt;&gt; "$GITHUB_OUTPUT"
-          echo "high=$HIGH" &gt;&gt; "$GITHUB_OUTPUT"
-          echo "medium=$MEDIUM" &gt;&gt; "$GITHUB_OUTPUT"
-          echo "low=$LOW" &gt;&gt; "$GITHUB_OUTPUT"
+
+          echo "findings=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "high=$HIGH" >> "$GITHUB_OUTPUT"
+          echo "medium=$MEDIUM" >> "$GITHUB_OUTPUT"
+          echo "low=$LOW" >> "$GITHUB_OUTPUT"
+
           {
             echo "## ✔ DAST - OWASP ZAP"
             echo ""
             echo "**Findings:** $TOTAL"
-          } &gt;&gt; "$GITHUB_STEP_SUMMARY"
+          } >> "$GITHUB_STEP_SUMMARY"
+          
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4
         if: always()
@@ -315,43 +407,60 @@ jobs:
             report_md.md
           if-no-files-found: ignore
 
+##############################################################################
+# FINAL REPORT & ISSUE GENERATION
+##############################################################################
+
   security-report:
     name: Security Summary
     runs-on: ubuntu-latest
     if: always()
-    needs: [semgrep, codeql, sca, dast]
+
+    needs:
+      - semgrep
+      - codeql
+      - sca
+      - dast
+
     steps:
+      - uses: actions/checkout@v4
+
       - name: Create Summary and Evaluate Issues
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: &lbrace;&lbrace; secrets.GITHUB_TOKEN &rbrace;&rbrace;
         run: |
-          SEMGREP_FINDINGS=${{ needs.semgrep.outputs.findings || 0 }}
-          SEMGREP_CRITICAL=${{ needs.semgrep.outputs.critical || 0 }}
-          SEMGREP_HIGH=${{ needs.semgrep.outputs.high || 0 }}
-          SEMGREP_MEDIUM=${{ needs.semgrep.outputs.medium || 0 }}
-          SEMGREP_LOW=${{ needs.semgrep.outputs.low || 0 }}
-          SCA_FINDINGS=${{ needs.sca.outputs.findings || 0 }}
-          SCA_CRITICAL=${{ needs.sca.outputs.critical || 0 }}
-          SCA_HIGH=${{ needs.sca.outputs.high || 0 }}
-          SCA_MEDIUM=${{ needs.sca.outputs.medium || 0 }}
-          SCA_LOW=${{ needs.sca.outputs.low || 0 }}
-          DAST_FINDINGS=${{ needs.dast.outputs.findings || 0 }}
-          DAST_HIGH=${{ needs.dast.outputs.high || 0 }}
-          DAST_MEDIUM=${{ needs.dast.outputs.medium || 0 }}
-          DAST_LOW=${{ needs.dast.outputs.low || 0 }}
+          SEMGREP_FINDINGS=&lbrace;&lbrace; needs.semgrep.outputs.findings || 0 &rbrace;&rbrace;
+          SEMGREP_CRITICAL=&lbrace;&lbrace; needs.semgrep.outputs.critical || 0 &rbrace;&rbrace;
+          SEMGREP_HIGH=&lbrace;&lbrace; needs.semgrep.outputs.high || 0 &rbrace;&rbrace;
+          SEMGREP_MEDIUM=&lbrace;&lbrace; needs.semgrep.outputs.medium || 0 &rbrace;&rbrace;
+          SEMGREP_LOW=&lbrace;&lbrace; needs.semgrep.outputs.low || 0 &rbrace;&rbrace;
+
+          SCA_FINDINGS=&lbrace;&lbrace; needs.sca.outputs.findings || 0 &rbrace;&rbrace;
+          SCA_CRITICAL=&lbrace;&lbrace; needs.sca.outputs.critical || 0 &rbrace;&rbrace;
+          SCA_HIGH=&lbrace;&lbrace; needs.sca.outputs.high || 0 &rbrace;&rbrace;
+          SCA_MEDIUM=&lbrace;&lbrace; needs.sca.outputs.medium || 0 &rbrace;&rbrace;
+          SCA_LOW=&lbrace;&lbrace; needs.sca.outputs.low || 0 &rbrace;&rbrace;
+
+          DAST_FINDINGS=&lbrace;&lbrace; needs.dast.outputs.findings || 0 &rbrace;&rbrace;
+          DAST_HIGH=&lbrace;&lbrace; needs.dast.outputs.high || 0 &rbrace;&rbrace;
+          DAST_MEDIUM=&lbrace;&lbrace; needs.dast.outputs.medium || 0 &rbrace;&rbrace;
+          DAST_LOW=&lbrace;&lbrace; needs.dast.outputs.low || 0 &rbrace;&rbrace;
+
+          CODEQL_FINDINGS=&lbrace;&lbrace; needs.codeql.outputs.findings || 0 &rbrace;&rbrace;
+
           TOTAL_FINDINGS=$(( SEMGREP_FINDINGS + SCA_FINDINGS + DAST_FINDINGS ))
-          TOTAL_CRITICAL=$(( TOTAL_CRITICAL + SCA_CRITICAL ))
+          TOTAL_CRITICAL=$(( SEMGREP_CRITICAL + SCA_CRITICAL ))
           TOTAL_HIGH=$(( SEMGREP_HIGH + SCA_HIGH + DAST_HIGH ))
           TOTAL_MEDIUM=$(( SEMGREP_MEDIUM + SCA_MEDIUM + DAST_MEDIUM ))
           TOTAL_LOW=$(( SEMGREP_LOW + SCA_LOW + DAST_LOW ))
-          
+
           {
             echo "# 🛡️ DevSecOps Security Report"
             echo ""
             echo "| Tool | Status | Findings | Critical | High | Medium | Low |"
             echo "|------|--------|----------|----------|------|--------|-----|"
             echo "| Semgrep | ✅ | $SEMGREP_FINDINGS | $SEMGREP_CRITICAL | $SEMGREP_HIGH | $SEMGREP_MEDIUM | $SEMGREP_LOW |"
-            echo "| CodeQL | ✅ | 0 | N/A | N/A | N/A | N/A |"
+            echo "| CodeQL | ✅ | $CODEQL_FINDINGS | N/A | N/A | N/A | N/A |"
             echo "| npm audit | ✅ | $SCA_FINDINGS | $SCA_CRITICAL | $SCA_HIGH | $SCA_MEDIUM | $SCA_LOW |"
             echo "| OWASP ZAP | ✅ | $DAST_FINDINGS | 0 | $DAST_HIGH | $DAST_MEDIUM | $DAST_LOW |"
             echo "| **TOTAL** | 🛡️ | **$TOTAL_FINDINGS** | **$TOTAL_CRITICAL** | **$TOTAL_HIGH** | **$TOTAL_MEDIUM** | **$TOTAL_LOW** |"
@@ -360,10 +469,13 @@ jobs:
             echo "- semgrep-report"
             echo "- npm-audit-report"
             echo "- zap-report"
-          } &gt;&gt; $GITHUB_STEP_SUMMARY
+          } >> $GITHUB_STEP_SUMMARY
 
           TRIGGER_ISSUE=$(( TOTAL_CRITICAL + TOTAL_HIGH ))
+
           if [ "$TRIGGER_ISSUE" -gt 0 ]; then
+            echo "Se han detectado vulnerabilidades graves ($TRIGGER_ISSUE en total). Creando issue..."
+            
             BODY_TEXT=$(cat &lt;&lt;EOF
           ## ⚠️ Alertas de Seguridad Críticas / Altas Detectadas en el Pipeline
           
@@ -380,10 +492,13 @@ jobs:
           Por favor, descargue los reportes adjuntos en los *Artifacts* de la ejecución de este workflow para mitigar los fallos identificados.
           EOF
             )
+
             gh issue create \
               --title "🔴 Security Alert: $TRIGGER_ISSUE Critical/High Vulnerabilities Found" \
               --body "$BODY_TEXT" \
               --label "security,bug"
+          else
+            echo "No se encontraron vulnerabilidades críticas o altas. No se requiere abrir un issue."
           fi</code></pre>
                 </div>
             </section>
@@ -413,6 +528,23 @@ jobs:
                         <p class="mt-2"><strong>Causa raíz:</strong> El token de autenticación asignado al entorno del pipeline (<code>secrets.GITHUB_TOKEN</code>) cuenta nativamente únicamente con privilegios de lectura.</p>
                         <p class="mt-2"><strong>Solución aplicada:</strong> Se declaró e inyectó de forma explícita el bloque global de permisos en el manifiesto YAML habilitando permisos de escritura específicos para el gestor de tareas y incidencias:
                         <code class="px-1 py-0.5 rounded bg-slate-900 text-slate-200">permissions: issues: write, pull-requests: write</code>.</p>
+                    </div>
+                </div>
+
+                <!-- Incidencia Creación Automática de Issues -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencia 4.3: Fallos en el Pipeline al Crear Issues Automáticamente con GitHub CLI ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Errores arrojados por el runner:</strong></p>
+                        <ul class="list-disc pl-5 mt-1 space-y-1">
+                            <li><code>fatal: not a git repository (or any of the parent directories): .git</code></li>
+                            <li><code>could not add label: 'security' not found</code></li>
+                        </ul>
+                        <p class="mt-2"><strong>Causa raíz:</strong> 
+                            En primer lugar, el job <code>security-report</code> no incluía el paso de clonación/descarga del repositorio (<code>actions/checkout</code>). Al no disponer de los metadatos Git locales, el CLI <code>gh</code> no podía asociar la tarea al repositorio de GitHub correspondiente. 
+                            En segundo lugar, se intentaba adjuntar una etiqueta personalizada (<code>security</code>) que no estaba previamente creada en la configuración del repositorio.
+                        </p>
+                        <p class="mt-2"><strong>Solución aplicada:</strong> Se incorporó de manera explícita el paso de checkout (<code>- uses: actions/checkout@v4</code>) al inicio de las tareas del job, y se reemplazó la lista de etiquetas en la llamada del CLI para apuntar únicamente a la etiqueta estándar nativa <code>bug</code> (<code>--label "bug"</code>).</p>
                     </div>
                 </div>
             </section>
@@ -531,8 +663,17 @@ DevSecOps Pipeline (Flujo de Ejecución Correcto)
                     </div>
                 </div>
             </section>
+
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="analisis.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                    Siguiente: Paso 1 (Análisis) &rarr;
+                </a>
+            </footer>
         </section>
     </main>
+    <script src="../assets/js/sidebar.js"></script>
     <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>
