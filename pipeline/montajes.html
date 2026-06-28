@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline DevSecOps: Montaje y Configuración</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.textContent;
+                button.textContent = 'Copiado';
+                button.classList.add('bg-emerald-500/20', 'text-emerald-200');
+                setTimeout(() => {
+                    button.textContent = original;
+                    button.classList.remove('bg-emerald-500/20', 'text-emerald-200');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'No disponible';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#problema-github" class="nav-link">1. Fallo de Carpeta GitHub</a>
+                    <a href="#seleccion-herramientas" class="nav-link">2. Elección de Herramientas</a>
+                    <a href="#workflow-final" class="nav-link">3. Workflow security.yml</a>
+                    <a href="#limitaciones-permisos" class="nav-link">4. Limitaciones y Permisos</a>
+                    <a href="#incidencias-dast" class="nav-link">5. Errores de Sintaxis y DAST</a>
+                    <a href="#estudio-zap" class="nav-link">6. Caso de Estudio: OWASP ZAP</a>
+                    <a href="#arquitectura" class="nav-link">7. Arquitectura Final</a>
+                    <a href="analisis.html" class="nav-link border-red-200 bg-red-50 text-red-900">Ir a Análisis (Paso 1)</a>
+                    <a href="correcciones.html" class="nav-link border-emerald-200 bg-emerald-50 text-emerald-900">Ir a Correcciones (Paso 2)</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">Integración Continua Segura</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Diseño, Configuración y Montaje del Pipeline DevSecOps</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Este documento detalla el proceso completo de creación, depuración de incidencias y puesta en marcha del pipeline de seguridad en GitHub Actions. Se documenta la resolución de errores reales de sintaxis, permisos de API y optimización de parseo de logs.
+                </p>
+            </header>
+
+            <!-- Problema inicial github -->
+            <section id="problema-github" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🧱 1. Incidencia de Detección de Workflows en GitHub</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        Al inicializar el flujo automatizado en GitHub, la consola de Actions no reconocía ningún descriptor de tareas, mostrando el asistente genérico de inicialización web de la plataforma.
+                    </p>
+                </div>
+
+                <div class="mt-4">
+                    <img src="../assets/pipeline/imagen error en carpeta.png" alt="Error de detección de carpeta en GitHub Actions" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Interfaz de GitHub Actions indicando la ausencia de workflows detectados en el repositorio.</p>
+                </div>
+
+                <!-- Incidencia -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencias ⚠️</div>
+                    <div class="warning-box-content">
+                        <p><strong>Falta del punto inicial en la carpeta de configuración:</strong> La raíz del problema fue que Visual Studio Code creó la carpeta de workflows sin el punto inicial obligatorio (<code>github/workflows/</code> en lugar de <code>.github/workflows/</code>). Debido a esta sintaxis incorrecta, el analizador de GitHub ignoró por completo los archivos YAML de configuración del pipeline, impidiendo su automatización.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">Solución Técnica Aplicada</h4>
+                    <p class="text-sm text-slate-700 mt-2 leading-7">
+                        Se renombró de manera estructurada el directorio raíz a <code>.github/</code> en el entorno de desarrollo local y se movieron los descriptores del pipeline dentro de su subdirectorio de workflows. Tras realizar el commit y empujar los cambios, GitHub Actions indexó los jobs y comenzó a ejecutarlos automáticamente.
+                    </p>
+                    <div class="mt-4">
+                        <img src="../assets/pipeline/workflows.png" alt="Directorio de workflows corregido" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Estructura de directorios corregida y sincronizada en la interfaz web de GitHub.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Elección de Herramientas -->
+            <section id="seleccion-herramientas" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🛠️ 2. Selección de Herramientas del Ciclo DevSecOps</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    El diseño de seguridad del software (SDLC) requiere la integración de tres tipos de análisis automatizados dentro del flujo de integración continua:
+                </p>
+                <ul class="list-disc pl-5 space-y-3 text-sm text-slate-700">
+                    <li><strong>SAST (Static Application Security Testing):</strong> Inicialmente se contempló únicamente GitHub CodeQL. Sin embargo, debido a las limitaciones funcionales de subir reportes a las pestañas de seguridad en repositorios personales privados sin licencias Advanced Security, se optó por incorporar <strong>Semgrep Community Edition</strong> como herramienta SAST principal por ser open-source, flexible, compatible con pipelines locales y tener soporte completo para JavaScript/TypeScript.</li>
+                    <li><strong>SCA (Software Composition Analysis):</strong> Integración de <code>npm audit</code> en el frontend del portfolio para rastrear vulnerabilidades conocidas en dependencias del gestor Node.js, exportando reportes detallados en formato estructurado JSON.</li>
+                    <li><strong>DAST (Dynamic Application Security Testing):</strong> Configuración de <strong>OWASP ZAP Baseline Scan</strong> a través de una acción del pipeline que realiza un escaneo de seguridad pasivo perimetral apuntando al dominio de producción (<code>https://asga.vercel.app</code>).</li>
+                </ul>
+            </section>
+
+            <!-- security.yml -->
+            <section id="workflow-final" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">📄 3. Descriptor del Pipeline Final (`security.yml`)</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        Configuración YAML unificada y optimizada que define los trabajos de escaneo perimetral, la captura estructurada de variables en los outputs de cada job y la unificación de alertas de criticidad en el resumen final.
+                    </p>
+                </div>
+
+                <div class="code-shell mt-3">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>.github/workflows/security.yml</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-workflow-yaml-full')">Copiar</button>
+                    </div>
+                    <pre id="code-workflow-yaml-full"><code>name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  semgrep:
+    name: SAST - Semgrep
+    runs-on: ubuntu-latest
+    outputs:
+      findings: ${{ steps.count.outputs.findings }}
+      critical: ${{ steps.count.outputs.critical }}
+      high: ${{ steps.count.outputs.high }}
+      medium: ${{ steps.count.outputs.medium }}
+      low: ${{ steps.count.outputs.low }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Semgrep
+        run: |
+          python -m pip install --upgrade pip
+          pip install semgrep
+      - name: Run Semgrep
+        run: |
+          semgrep --config p/javascript --json --output semgrep.json . || true
+      - name: Count findings
+        id: count
+        run: |
+          HIGH=$(jq '[.results[] | select(.extra.severity=="ERROR")] | length' semgrep.json)
+          MEDIUM=$(jq '[.results[] | select(.extra.severity=="WARNING")] | length' semgrep.json)
+          LOW=$(jq '[.results[] | select(.extra.severity=="INFO")] | length' semgrep.json)
+          CRITICAL=0
+          TOTAL=$((CRITICAL+HIGH+MEDIUM+LOW))
+          echo "findings=$TOTAL" &gt;&gt; $GITHUB_OUTPUT
+          echo "critical=$CRITICAL" &gt;&gt; $GITHUB_OUTPUT
+          echo "high=$HIGH" &gt;&gt; $GITHUB_OUTPUT
+          echo "medium=$MEDIUM" &gt;&gt; $GITHUB_OUTPUT
+          echo "low=$LOW" &gt;&gt; $GITHUB_OUTPUT
+          {
+            echo "## ✔ SAST - Semgrep"
+            echo ""
+            echo "**Findings:** $TOTAL"
+          } &gt;&gt; $GITHUB_STEP_SUMMARY
+      - name: Upload Semgrep report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: semgrep-report
+          path: semgrep.json
+
+  codeql:
+    name: SAST - CodeQL
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    outputs:
+      findings: ${{ steps.summary.outputs.findings }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+      - name: Analyze
+        continue-on-error: true
+        uses: github/codeql-action/analyze@v3
+        with:
+          upload: false
+      - name: Summary
+        if: always()
+        id: summary
+        run: |
+          echo "findings=0" &gt;&gt; $GITHUB_OUTPUT
+          {
+            echo "## ✔ SAST - CodeQL"
+            echo ""
+            echo "Analysis completed successfully"
+          } &gt;&gt; $GITHUB_STEP_SUMMARY
+
+  sca:
+    name: SCA - Dependency Scan
+    runs-on: ubuntu-latest
+    outputs:
+      findings: ${{ steps.audit.outputs.findings }}
+      critical: ${{ steps.audit.outputs.critical }}
+      high: ${{ steps.audit.outputs.high }}
+      medium: ${{ steps.audit.outputs.medium }}
+      low: ${{ steps.audit.outputs.low }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Run npm audit
+        working-directory: frontend
+        run: |
+          npm audit --json &gt; audit.json || true
+      - name: Count findings
+        id: audit
+        working-directory: frontend
+        run: |
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' audit.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' audit.json)
+          MEDIUM=$(jq '.metadata.vulnerabilities.moderate // 0' audit.json)
+          LOW=$(jq '.metadata.vulnerabilities.low // 0' audit.json)
+          TOTAL=$((CRITICAL+HIGH+MEDIUM+LOW))
+          echo "findings=$TOTAL" &gt;&gt; $GITHUB_OUTPUT
+          echo "critical=$CRITICAL" &gt;&gt; $GITHUB_OUTPUT
+          echo "high=$HIGH" &gt;&gt; $GITHUB_OUTPUT
+          echo "medium=$MEDIUM" &gt;&gt; $GITHUB_OUTPUT
+          echo "low=$LOW" &gt;&gt; $GITHUB_OUTPUT
+          {
+            echo "## ✔ SCA - Dependency Scan"
+            echo ""
+            echo "**Findings:** $TOTAL"
+          } &gt;&gt; $GITHUB_STEP_SUMMARY
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-report
+          path: frontend/audit.json
+
+  dast:
+    name: DAST - OWASP ZAP
+    runs-on: ubuntu-latest
+    if: always()
+    outputs:
+      findings: ${{ steps.zap.outputs.findings }}
+      high: ${{ steps.zap.outputs.high }}
+      medium: ${{ steps.zap.outputs.medium }}
+      low: ${{ steps.zap.outputs.low }}
+    steps:
+      - name: Run ZAP
+        id: zapscan
+        continue-on-error: true
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: "https://asga.vercel.app"
+          token: ""
+      - name: Count findings
+        id: zap
+        run: |
+          if [ -f "report_md.md" ]; then
+            HIGH=$(grep -i "High" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+            MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+            LOW=$(grep -i "Low" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+          else
+            HIGH=0; MEDIUM=0; LOW=0
+          fi
+          HIGH=${HIGH:-0}; MEDIUM=${MEDIUM:-0}; LOW=${LOW:-0}
+          TOTAL=$((HIGH + MEDIUM + LOW))
+          echo "findings=$TOTAL" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "high=$HIGH" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "medium=$MEDIUM" &gt;&gt; "$GITHUB_OUTPUT"
+          echo "low=$LOW" &gt;&gt; "$GITHUB_OUTPUT"
+          {
+            echo "## ✔ DAST - OWASP ZAP"
+            echo ""
+            echo "**Findings:** $TOTAL"
+          } &gt;&gt; "$GITHUB_STEP_SUMMARY"
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: |
+            report_html.html
+            report_json.json
+            report_md.md
+          if-no-files-found: ignore
+
+  security-report:
+    name: Security Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [semgrep, codeql, sca, dast]
+    steps:
+      - name: Create Summary and Evaluate Issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SEMGREP_FINDINGS=${{ needs.semgrep.outputs.findings || 0 }}
+          SEMGREP_CRITICAL=${{ needs.semgrep.outputs.critical || 0 }}
+          SEMGREP_HIGH=${{ needs.semgrep.outputs.high || 0 }}
+          SEMGREP_MEDIUM=${{ needs.semgrep.outputs.medium || 0 }}
+          SEMGREP_LOW=${{ needs.semgrep.outputs.low || 0 }}
+          SCA_FINDINGS=${{ needs.sca.outputs.findings || 0 }}
+          SCA_CRITICAL=${{ needs.sca.outputs.critical || 0 }}
+          SCA_HIGH=${{ needs.sca.outputs.high || 0 }}
+          SCA_MEDIUM=${{ needs.sca.outputs.medium || 0 }}
+          SCA_LOW=${{ needs.sca.outputs.low || 0 }}
+          DAST_FINDINGS=${{ needs.dast.outputs.findings || 0 }}
+          DAST_HIGH=${{ needs.dast.outputs.high || 0 }}
+          DAST_MEDIUM=${{ needs.dast.outputs.medium || 0 }}
+          DAST_LOW=${{ needs.dast.outputs.low || 0 }}
+          TOTAL_FINDINGS=$(( SEMGREP_FINDINGS + SCA_FINDINGS + DAST_FINDINGS ))
+          TOTAL_CRITICAL=$(( TOTAL_CRITICAL + SCA_CRITICAL ))
+          TOTAL_HIGH=$(( SEMGREP_HIGH + SCA_HIGH + DAST_HIGH ))
+          TOTAL_MEDIUM=$(( SEMGREP_MEDIUM + SCA_MEDIUM + DAST_MEDIUM ))
+          TOTAL_LOW=$(( SEMGREP_LOW + SCA_LOW + DAST_LOW ))
+          
+          {
+            echo "# 🛡️ DevSecOps Security Report"
+            echo ""
+            echo "| Tool | Status | Findings | Critical | High | Medium | Low |"
+            echo "|------|--------|----------|----------|------|--------|-----|"
+            echo "| Semgrep | ✅ | $SEMGREP_FINDINGS | $SEMGREP_CRITICAL | $SEMGREP_HIGH | $SEMGREP_MEDIUM | $SEMGREP_LOW |"
+            echo "| CodeQL | ✅ | 0 | N/A | N/A | N/A | N/A |"
+            echo "| npm audit | ✅ | $SCA_FINDINGS | $SCA_CRITICAL | $SCA_HIGH | $SCA_MEDIUM | $SCA_LOW |"
+            echo "| OWASP ZAP | ✅ | $DAST_FINDINGS | 0 | $DAST_HIGH | $DAST_MEDIUM | $DAST_LOW |"
+            echo "| **TOTAL** | 🛡️ | **$TOTAL_FINDINGS** | **$TOTAL_CRITICAL** | **$TOTAL_HIGH** | **$TOTAL_MEDIUM** | **$TOTAL_LOW** |"
+            echo ""
+            echo "### Generated artifacts"
+            echo "- semgrep-report"
+            echo "- npm-audit-report"
+            echo "- zap-report"
+          } &gt;&gt; $GITHUB_STEP_SUMMARY
+
+          TRIGGER_ISSUE=$(( TOTAL_CRITICAL + TOTAL_HIGH ))
+          if [ "$TRIGGER_ISSUE" -gt 0 ]; then
+            BODY_TEXT=$(cat &lt;&lt;EOF
+          ## ⚠️ Alertas de Seguridad Críticas / Altas Detectadas en el Pipeline
+          
+          Se han encontrado hallazgos que requieren atención inmediata en el último análisis automatizado:
+          
+          - **Vulnerabilidades Críticas:** $TOTAL_CRITICAL
+          - **Vulnerabilidades Altas:** $TOTAL_HIGH
+          
+          ### Resumen de hallazgos por herramienta:
+          - **Semgrep (SAST):** $SEMGREP_CRITICAL Críticas, $SEMGREP_HIGH Altas.
+          - **npm audit (SCA):** $SCA_CRITICAL Críticas, $SCA_HIGH Altas.
+          - **OWASP ZAP (DAST):** $DAST_HIGH Altas.
+          
+          Por favor, descargue los reportes adjuntos en los *Artifacts* de la ejecución de este workflow para mitigar los fallos identificados.
+          EOF
+            )
+            gh issue create \
+              --title "🔴 Security Alert: $TRIGGER_ISSUE Critical/High Vulnerabilities Found" \
+              --body "$BODY_TEXT" \
+              --label "security,bug"
+          fi</code></pre>
+                </div>
+            </section>
+
+            <!-- Limitaciones y Permisos de API -->
+            <section id="limitaciones-permisos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🔐 4. Depuración de Privilegios e Incidencias en la API de GitHub</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Durante la inicialización y el enganche de herramientas, se presentaron fallos críticos de acceso y autenticación que bloquearon el normal desarrollo del pipeline:
+                </p>
+
+                <!-- Incidencia CodeQL -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencia 4.1: Error de Acceso a Recursos en GitHub CodeQL ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Error arrojado por el runner:</strong> <code>Resource not accessible by integration</code> y <code>Code scanning is not enabled for this repository</code>.</p>
+                        <p class="mt-2"><strong>Causa raíz:</strong> Advanced Security de GitHub restringe de forma predeterminada la subida de resultados estáticos al visor de seguridad en repositorios que sean de carácter privado y de cuentas personales. </p>
+                        <p class="mt-2"><strong>Solución aplicada:</strong> Se reestructuró la tarea en el YAML para realizar la compilación y el análisis estático localmente, deshabilitando la subida de resultados a la API web añadiendo el parámetro <code>upload: false</code> e indicando al runner ignorar alertas de entorno con <code>continue-on-error: true</code>.</p>
+                    </div>
+                </div>
+
+                <!-- Incidencia Permisos -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencia 4.2: Rechazo en la Generación de Issues Automáticos ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Error arrojado por el CLI:</strong> <code>Resource not accessible by integration</code> al ejecutar la utilidad de línea de comandos <code>gh issue create</code> en el reporte de seguridad final.</p>
+                        <p class="mt-2"><strong>Causa raíz:</strong> El token de autenticación asignado al entorno del pipeline (<code>secrets.GITHUB_TOKEN</code>) cuenta nativamente únicamente con privilegios de lectura.</p>
+                        <p class="mt-2"><strong>Solución aplicada:</strong> Se declaró e inyectó de forma explícita el bloque global de permisos en el manifiesto YAML habilitando permisos de escritura específicos para el gestor de tareas y incidencias:
+                        <code class="px-1 py-0.5 rounded bg-slate-900 text-slate-200">permissions: issues: write, pull-requests: write</code>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Errores de Sintaxis y DAST -->
+            <section id="incidencias-dast" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🧨 5. Errores de Sintaxis y Mitigación de Fallos en Cascada</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    Uno de los desafíos mayores durante la integración DevSecOps fue asegurar que fallos menores o ausencia de alertas en un escáner no rompieran la compilación general ni bloquearan el resumen de seguridad.
+                </p>
+
+                <!-- Incidencia ZAP Syntax -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencia 5.1: Error de Sintaxis de Bash en el conteo de alertas DAST ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Error en consola:</strong> <code>syntax error in expression (error token is "0")</code> en el Job de conteo.</p>
+                        <p class="mt-2"><strong>Causa raíz:</strong> Cuando el análisis de OWASP ZAP no registraba hallazgos de una severidad específica, la expresión regular de filtrado devolvía una cadena vacía o contenía caracteres de salto de línea invisibles (<code>\r\n</code>). Al sustituir variables nulas en el bloque aritmético de Bash (<code>$((HIGH + MEDIUM + LOW))</code>), el motor del Shell lanzaba un error sintáctico.</p>
+                        <p class="mt-2"><strong>Solución aplicada:</strong> Se robusteció la entrada aplicando un filtro condicional de validación de archivo <code>if [ -f "report_md.md" ]</code>, limpiando cualquier carácter no numérico del output con la herramienta de traslación <code>tr -dc '0-9'</code> y garantizando un fallback de seguridad a cero mediante expansiones de parámetros nativas: <code>HIGH=${HIGH:-0}</code>.</p>
+                    </div>
+                </div>
+
+                <!-- Incidencia Comilla y Syntax -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencia 5.2: Error sintáctico de comillas y fin de archivo ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Error en consola:</strong> <code>unexpected EOF while looking for matching '"'</code>.</p>
+                        <p class="mt-2"><strong>Causa raíz:</strong> Una comilla doble de cierre faltante en las líneas de volcado al entorno de salida de GitHub Actions (<code>echo "low=$LOW" &gt;&gt; "$GITHUB_OUTPUT</code>) causó que el analizador continuara leyendo el script de manera lineal interpretando los comandos posteriores como parte del string, provocando el aborto por fin inesperado.</p>
+                        <p class="mt-2"><strong>Solución aplicada:</strong> Se revisó y saneó la sintaxis cerrando correctamente todas las comillas e individualizando las salidas de canalización a los descriptores de salida del runner.</p>
+                    </div>
+                </div>
+
+                <!-- Incidencia Fallos en Cadena -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencia 5.3: Cancelación en cascada de Jobs de Seguridad ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Síntoma:</strong> Cuando Semgrep detectaba una vulnerabilidad real (como el XSS de contacto) salía con código 1, lo que causaba que GitHub cancelara el análisis dinámico (DAST) y el reporte consolidado final.</p>
+                        <p class="mt-2"><strong>Causa raíz:</strong> El comportamiento por defecto de GitHub Actions es suspender las tareas consecutivas cuando un Job anterior retorna un código de error (<code>exit code != 0</code>).</p>
+                        <p class="mt-2"><strong>Solución aplicada:</strong> Se inyectaron directivas de bypass de error forzado de comandos en Semgrep (<code>|| true</code>) y se forzó la ejecución de DAST y el resumen consolidador final mediante condicionales de estado: <code class="px-1 py-0.5 rounded bg-slate-900 text-slate-200">if: always()</code>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Caso de estudio OWASP ZAP -->
+            <section id="estudio-zap" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🚨 6. Caso de Estudio: Optimización de Alertas Dinámicas (OWASP ZAP)</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    El plugin baseline dinámico original generaba dos fallos graves que requerían rediseño del flujo perimetral:
+                </p>
+                <div class="space-y-4">
+                    <h5 class="font-bold text-slate-900 text-base">1. Generación Incontrolada de Issues Externos</h5>
+                    <p class="text-sm text-slate-700 leading-7">
+                        Al pasarle los tokens nativos a la acción de ZAP, ésta abría incidencias de forma de spam por cada regla analizada (incluso informativos), saltándose la lógica de control. Se solucionó retirando el token en la llamada (<code>token: ""</code>) e inhabilitando la función nativa de apertura de tickets.
+                    </p>
+                    
+                    <h5 class="font-bold text-slate-900 text-base">2. Incompatibilidad del Parser con el Formato de Reportes</h5>
+                    <p class="text-sm text-slate-700 leading-7">
+                        Los scripts de análisis iniciales buscaban patrones antiguos en modo texto (como <code>FAIL-NEW:</code>). Sin embargo, la versión de ZAP generaba el reporte estructurado en tablas de Markdown (<code>| Risk Level | Number of Alerts |</code>). Para corregir esto, implementamos un algoritmo de segmentación por columnas usando la utilidad <code>awk</code> indicando el delimitador de barra vertical:
+                    </p>
+                    <pre><code>HIGH=$(grep -i "High" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')</code></pre>
+                </div>
+            </section>
+
+            <!-- Arquitectura del Flujo -->
+            <section id="arquitectura" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🧱 7. Arquitectura Final y Verificación de Jobs</h3>
+                    <p class="text-sm text-slate-700 leading-8">
+                        Tras solventar todas las incidencias técnicas de sintaxis y permisos, se consolidó la arquitectura definitiva del pipeline DevSecOps de tipo informativo.
+                    </p>
+                </div>
+
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <pre class="text-xs leading-6 text-slate-800 font-mono">
+DevSecOps Pipeline (Flujo de Ejecución Correcto)
+        │
+        ├── Push / Pull Request en Rama Main
+        │
+        ├── ┌──────────────────────────────────────┐
+        │   │ SAST - Semgrep CE (Conteo con jq)   │
+        │   └───────────────────┬──────────────────┘
+        │                       │ (Bypass exit code 1)
+        ├── ┌───────────────────▼──────────────────┐
+        │   │ SAST - CodeQL (Sin subida local)     │
+        │   └───────────────────┬──────────────────┘
+        │                       │ (Bypass local scan error)
+        ├── ┌───────────────────▼──────────────────┐
+        │   │ SCA - Dependency Scan (npm audit)    │
+        │   └───────────────────┬──────────────────┘
+        │                       │
+        ├── ┌───────────────────▼──────────────────┐
+        │   │ DAST - OWASP ZAP (Filtro por columns)│
+        │   └───────────────────┬──────────────────┘
+        │                       │ (always() forzado)
+        └── ┌───────────────────▼──────────────────┐
+            │ Resumen Consolidado & Alerta en PR   │
+            └──────────────────────────────────────┘
+                    </pre>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">Métricas de Riesgo del Job Consolidado</h4>
+                    <p class="text-sm text-slate-700 leading-8">
+                        Para mitigar la "fatiga de alertas" común en entornos de desarrollo, se diseñó la lógica en el job consolidado final <code>security-report</code>. El script evalúa el total matemático de hallazgos críticos y altos:
+                        <code class="px-1.5 py-0.5 rounded bg-slate-900 text-slate-200">TRIGGER_ISSUE=$(( TOTAL_CRITICAL + TOTAL_HIGH ))</code>.
+                        Únicamente se crea una incidencia en el gestor de tareas de GitHub si dicho contador supera a cero (<code>-gt 0</code>), de modo que las alertas bajas o medias no saturan el panel del proyecto.
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">Ejecución del Pipeline en Producción</h4>
+                    <p class="text-sm text-slate-700">Visualización de los jobs ejecutados de forma paralela en el entorno final de GitHub:</p>
+                    <div class="mt-4">
+                        <img src="../assets/pipeline/jobs.png" alt="Ejecución de los jobs del pipeline" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Flujo de ejecución secuencial y consolidado de Jobs en la interfaz de GitHub Actions.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

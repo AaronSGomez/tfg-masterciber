@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline DevSecOps: Correcciones y Mitigaciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.textContent;
+                button.textContent = 'Copiado';
+                button.classList.add('bg-emerald-500/20', 'text-emerald-200');
+                setTimeout(() => {
+                    button.textContent = original;
+                    button.classList.remove('bg-emerald-500/20', 'text-emerald-200');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'No disponible';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="montajes.html" class="nav-link">Volver a Montaje (Config)</a>
+                    <a href="analisis.html" class="nav-link">Volver a Análisis (Paso 1)</a>
+                    <a href="#estrategia" class="nav-link">1. Estrategia y Planificación</a>
+                    <a href="#cabeceras-vercel" class="nav-link">2. Cabeceras en Vercel</a>
+                    <a href="#sri-fonts" class="nav-link">3. Mitigación SRI y Fuentes</a>
+                    <a href="#desarrollo-dev" class="nav-link">4. Fallo de Pantalla en Blanco</a>
+                    <a href="#iteracion-csp" class="nav-link">5. Refinamiento de CSP (ZAP)</a>
+                    <a href="#conclusiones" class="nav-link">6. Conclusiones y Excepciones</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">PASO 2 — Endurecimiento y Parcheo</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Mitigación de Vulnerabilidades y Endurecimiento del Entorno</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Aplicación de contramedidas técnicas para solventar los fallos dinámicos y estáticos encontrados, separando las configuraciones de desarrollo y producción para no interrumpir el desarrollo local.
+                </p>
+            </header>
+
+            <!-- Estrategia y Planificacion -->
+            <section id="estrategia" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">🎯 1. Estrategia de Mitigación Seleccionada</h3>
+                <p class="text-sm text-slate-700 leading-7">
+                    De las 11 alertas reportadas en el escaneo inicial, se priorizó la corrección de **5 advertencias críticas** que impactan directamente el endurecimiento de la aplicación, clasificando el resto (directivas de caché o informativas) como aceptables dentro del análisis de riesgo del TFG:
+                </p>
+                <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
+                    <li><strong>X-Frame-Options</strong> (Protección contra secuestro de clics / Clickjacking)</li>
+                    <li><strong>X-Content-Type-Options</strong> (Protección contra sniffing de tipo MIME)</li>
+                    <li><strong>Content-Security-Policy</strong> (Defensa moderna contra inyecciones XSS)</li>
+                    <li><strong>Permissions-Policy</strong> (Limitación del uso de APIs intrusivas de hardware)</li>
+                    <li><strong>Subresource Integrity</strong> (Verificación de firma de tramas en CDNs externos)</li>
+                </ol>
+            </section>
+
+            <!-- Cabeceras en Vercel -->
+            <section id="cabeceras-vercel" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🛡️ 2. Corrección 1: Cabeceras de Seguridad en Next.js</h3>
+                    <p class="text-sm text-slate-700 mt-2 leading-7">
+                        Vercel y el servidor Node de Next.js permiten inyectar directivas de cabeceras HTTP en todas las respuestas del servidor mediante el método <code>headers()</code> declarado en <code>next.config.js</code>:
+                    </p>
+                </div>
+
+                <div class="code-shell mt-3">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>next.config.js (Implementación Parcial)</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-config-headers')">Copiar</button>
+                    </div>
+                    <pre id="code-config-headers"><code>/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Permissions-Policy", value: "geolocation=(), microphone=(), camera=()" },
+          { key: "Content-Security-Policy", value: "default-src 'self'; img-src 'self' https:; script-src 'self'; style-src 'self' 'unsafe-inline';" }
+        ]
+      }
+    ];
+  }
+};
+module.exports = nextConfig;</code></pre>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900 text-lg">Estado de Alertas tras la Corrección 1</h4>
+                    <div class="overflow-x-auto mt-2">
+                        <table class="min-w-full divide-y divide-slate-200 text-sm">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 bg-slate-50 font-bold">Alerta Reportada</th>
+                                    <th class="px-4 py-2 bg-slate-50 font-bold">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-4 py-2 font-semibold">Missing Anti-clickjacking Header</td>
+                                    <td class="px-4 py-2 text-emerald-700 font-bold">✔ Corregido (DENY)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 font-semibold">X-Content-Type-Options Missing</td>
+                                    <td class="px-4 py-2 text-emerald-700 font-bold">✔ Corregido (nosniff)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 font-semibold">Permissions-Policy Missing</td>
+                                    <td class="px-4 py-2 text-emerald-700 font-bold">✔ Corregido (Hardware acotado)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 font-semibold">CSP Not Set</td>
+                                    <td class="px-4 py-2 text-emerald-700 font-bold">✔ Corregido (CSP Básica)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SRI y Fuentes -->
+            <section id="sri-fonts" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">📦 3. Corrección 2: Integridad del Subrecurso (SRI)</h3>
+                    <p class="text-sm text-slate-700 leading-7">
+                        Para recursos que deben cargarse desde CDNs de terceros lícitos, se documentó el método de verificación utilizando firmas criptográficas.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="font-bold text-slate-900 text-base">Ejemplo de Firma de Google Fonts en _document.tsx</h4>
+                    <pre><code>&lt;link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Permanent+Marker&amp;family=Roboto+Mono:wght@400;700&amp;display=swap"
+  integrity="sha384-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  crossOrigin="anonymous"
+/&gt;</code></pre>
+                    <p class="text-sm text-slate-700">
+                        El hash exacto se genera desde el CLI local consultando el enlace directo del CDN:
+                    </p>
+                    <pre><code>npx sri-tool https://fonts.googleapis.com/css2?family=Permanent+Marker&amp;family=Roboto+Mono:wght@400;700&amp;display=swap</code></pre>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h5 class="font-bold text-slate-900">Parche Definitivo Aplicado en el TFG</h5>
+                    <p class="text-sm text-slate-700 leading-7 mt-2">
+                        En lugar de depender de CDNs externos (que obligan a abrir conexiones externas en la directiva <code>font-src</code> de la CSP), se descargaron las fuentes locales (Roboto Mono, Permanent Marker, Patrick Hand), almacenándose en <code>/public/assets/fonts/</code> e importándose en <code>globals.css</code> mediante reglas <code>@font-face</code> locales, eliminando del todo el warning.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Fallo de pantalla en blanco -->
+            <section id="desarrollo-dev" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🧱 4. Corrección 3: Fallo de Compilación Local y Pantalla en Blanco</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        Al trasladar las directivas CSP de producción a local, el servidor de desarrollo arrojaba múltiples errores lógicos bloqueando la carga.
+                    </p>
+                </div>
+
+                <!-- Incidencia -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Incidencias ⚠️</div>
+                    <div class="warning-box-content text-sm leading-6">
+                        <p><strong>Causa Raíz:</strong> Next.js utiliza funciones de inyección y evaluación en caliente (<code>eval()</code>) para la recarga rápida (HMR). Deshabilitar <code>'unsafe-eval'</code> impedía la compilación en local. Asimismo, la cabecera estricta COEP bloqueaba la visualización de imágenes externas.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900">Solución: Lógica Condicional de Entornos</h4>
+                    <p class="text-sm text-slate-700 leading-7">
+                        Se implementó una separación lógica en <code>next.config.js</code> mediante la detección de <code>process.env.NODE_ENV</code>:
+                    </p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1 text-sm text-slate-700">
+                        <li><strong>Modo Desarrollo:</strong> Permite <code>'unsafe-eval'</code> y <code>'unsafe-inline'</code> en scripts para dar soporte a Hot Module Replacement, omitiendo cabeceras de origen cruzado estrictas.</li>
+                        <li><strong>Modo Producción:</strong> CSP ultra-estricta sin permisos de evaluación dinámica (<code>'unsafe-eval'</code>) y aplicación de aislamiento estricto de recursos.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Refinamiento de CSP -->
+            <section id="iteracion-csp" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">⚡ 5. Refinamiento de CSP y Mitigación de Nuevos Warnings en ZAP</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        En la segunda ejecución, ZAP arrojó avisos medios indicando el uso de comodines dinámicos (<code>*.supabase.co</code>) y falta de fallbacks alternativos de CSP:
+                    </p>
+                </div>
+
+                <div class="mt-4">
+                    <img src="../assets/pipeline/jobs_sumary.png" alt="Reporte de vulnerabilidades ZAP inicial" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Reporte indicando advertencias activas en CSP y Clickjacking inicial.</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 space-y-4">
+                    <h4 class="font-bold text-slate-900 text-lg">Parches de Seguridad Aplicados</h4>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-700">
+                        <li><strong>Falta de directivas de fallback:</strong> Se individualizó la declaración de cada una de las tramas de directivas de orígenes (<code>default-src</code>, <code>font-src</code>, etc.) en producción.</li>
+                        <li><strong>Comodines Wildcard:</strong> Se restringieron las conexiones salientes retirando el asterisco comodín general de base de datos e inyectando las URIs exclusivas asignadas a la instancia de producción en Supabase: <code>https://awlgujnnrynrovthstbi.supabase.co</code> y <code>wss://awlgujnnrynrovthstbi.supabase.co</code>.</li>
+                    </ul>
+                </div>
+
+                <div class="code-shell mt-3">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600">
+                        <span>frontend/next.config.js (Descriptor Final de Producción)</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-emerald-900" onclick="copyCode(this, 'code-config-final-full')">Copiar</button>
+                    </div>
+                    <pre id="code-config-final-full"><code>/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async headers() {
+    const isDev = process.env.NODE_ENV === "development";
+
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY"
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff"
+          },
+          {
+            key: "Permissions-Policy",
+            value: "geolocation=(), microphone=(), camera=()"
+          },
+          {
+            key: "Content-Security-Policy",
+            value: isDev
+              ? `
+                default-src 'self';
+                img-src 'self' data: https:;
+                script-src 'self' 'unsafe-inline' 'unsafe-eval';
+                style-src 'self' 'unsafe-inline';
+                font-src 'self';
+                connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+              `.replace(/\s+/g, " ")
+              : `
+                default-src 'self';
+                img-src 'self' data: https://asga.vercel.app;
+                script-src 'self';
+                style-src 'self' 'unsafe-inline';
+                font-src 'self';
+                connect-src 'self' https://awlgujnnrynrovthstbi.supabase.co wss://awlgujnnrynrovthstbi.supabase.co;
+                frame-ancestors 'none';
+              `.replace(/\s+/g, " ")
+          }
+        ]
+      },
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ];
+  }
+};
+
+module.exports = nextConfig;</code></pre>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                    <div>
+                        <h5 class="font-bold text-slate-900 mb-2">Reporte de Segunda Ejecución</h5>
+                        <img src="../assets/pipeline/jobs_sumary2.png" alt="Reporte intermedio ZAP" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Disminución drástica de warnings tras aplicar la CSP inicial.</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-slate-900 mb-2">Reporte Final Mitigado</h5>
+                        <img src="../assets/pipeline/jobs_sumary3.png" alt="Reporte final ZAP" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Consolidación final con los únicos avisos justificados inevitables.</p>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between bg-cyan-50 p-4 rounded-2xl border border-cyan-100">
+                    <div>
+                        <p class="text-sm font-bold text-cyan-950">Reporte Técnico Final Mitigado</p>
+                        <p class="text-xs text-cyan-800">Visualiza el archivo HTML original emitido por el escáner al cierre de las pruebas.</p>
+                    </div>
+                    <a href="../assets/pipeline/report_final_html.html" target="_blank" class="copy-btn rounded-xl bg-cyan-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md shadow-cyan-600/25 hover:bg-cyan-700">Ver Reporte HTML</a>
+                </div>
+            </section>
+
+            <!-- Conclusiones -->
+            <section id="conclusiones" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">📌 6. Resumen de Mitigaciones y Justificaciones de Excepciones</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 bg-slate-50 font-bold text-left">Alerta de Seguridad (ZAP)</th>
+                                <th class="px-4 py-2 bg-slate-50 font-bold text-left">Estado Final</th>
+                                <th class="px-4 py-2 bg-slate-50 font-bold text-left">Mecanismo / Justificación en la Memoria del TFG</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">CSP: Failure to Define Directive</td>
+                                <td class="px-4 py-2 text-emerald-700 font-bold">✔ Mitigado</td>
+                                <td class="px-4 py-2 text-slate-700">Declaración explícita e individualizada de todos los orígenes de carga.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">CSP: Wildcard Directive</td>
+                                <td class="px-4 py-2 text-emerald-700 font-bold">✔ Mitigado</td>
+                                <td class="px-4 py-2 text-slate-700">Acotado a dominios y subdominios exactos del backend de Supabase.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">CSP: style-src unsafe-inline</td>
+                                <td class="px-4 py-2 text-amber-700 font-bold">Aceptado (Excepción)</td>
+                                <td class="px-4 py-2 text-slate-700 font-medium">Requerido de forma nativa por Next.js para hidratar estilos inline e inyectar estilos críticos SSR en el cliente.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Cross-Domain Misconfiguration</td>
+                                <td class="px-4 py-2 text-amber-700 font-bold">Aceptado (Excepción)</td>
+                                <td class="px-4 py-2 text-slate-700 font-medium">Es un comportamiento esperado y legítimo derivado de la arquitectura desacoplada al conectarse a la API y WebSockets externos de Supabase.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

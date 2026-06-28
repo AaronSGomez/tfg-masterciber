@@ -93,10 +93,10 @@
             { id: 6, title: "Acceso a máquina Linux explotado", block: "Ofensivo", desc: "Detonación del exploit de RCE React2Shell obteniendo consola reversa.", evidence: "Captura de la shell interactiva en Kali Linux ejecutando los comandos whoami e id.", link: "ofensivo/explotacion.html" },
             { id: 7, title: "Post-explotación documentada", block: "Ofensivo", desc: "Inyección de persistencia cron, pivoteo a MariaDB y exfiltración.", evidence: "Terminal evidenciando la persistencia inyectada y los comandos de exfiltración de bases de datos.", link: "ofensivo/post_explotacion.html" },
             { id: 8, title: "Informe de pentest redactado", block: "Ofensivo", desc: "Elaboración formal del informe de auditoría técnica.", evidence: "Documento formal con estructura ejecutiva y matriz de severidades estimadas según CVSS v3.1.", link: "ofensivo/pentest.html" },
-            { id: 9, title: "Análisis SAST ejecutado", block: "Dev Seguro", desc: "Ejecución del análisis estático del código Next.js mediante Semgrep.", evidence: "Captura del reporte generado por Semgrep categorizando vulnerabilidades de inyección." },
-            { id: 10, title: "Análisis DAST ejecutado", block: "Dev Seguro", desc: "Escaneo dinámico activo apuntando a tus subdominios reales de DuckDNS.", evidence: "Informe de vulnerabilidades dinámicas generado en formato HTML/PDF por OWASP ZAP." },
+            { id: 9, title: "Análisis SAST ejecutado", block: "Dev Seguro", desc: "Ejecución del análisis estático del código Next.js mediante Semgrep.", evidence: "Captura del reporte generado por Semgrep categorizando vulnerabilidades de inyección.", link: "pipeline/analisis.html#sast", time: "2 horas (Paso 1: Análisis SAST con Semgrep - 4h en total para SAST/DAST)" },
+            { id: 10, title: "Análisis DAST ejecutado", block: "Dev Seguro", desc: "Escaneo dinámico activo apuntando a tus subdominios reales de DuckDNS.", evidence: "Informe de vulnerabilidades dinámicas generado en formato HTML/PDF por OWASP ZAP.", link: "pipeline/analisis.html#dast", time: "2 horas (Paso 1: Análisis DAST con OWASP ZAP - 4h en total para SAST/DAST)" },
             { id: 11, title: "Modelado de amenazas realizado", block: "Dev Seguro", desc: "Creación del DFD lógico de la aplicación moderna en OWASP Threat Dragon.", evidence: "Capturas de pantalla del modelado gráfico STRIDE exportado de Threat Dragon." },
-            { id: 12, title: "Pipeline DevSecOps funcional", block: "Dev Seguro", desc: "Pipeline automatizado ejecutando Semgrep, Trivy y Gitleaks.", evidence: "Captura de la ejecución del flujo CI/CD en la interfaz web de GitHub Actions." },
+            { id: 12, title: "Pipeline DevSecOps funcional", block: "Dev Seguro", desc: "Pipeline automatizado ejecutando Semgrep, Trivy y Gitleaks.", evidence: "Captura de la ejecución del flujo CI/CD en la interfaz web de GitHub Actions.", link: "pipeline/montajes.html", time: "5 horas y 15 min (2h 15m montaje + 3h correcciones de security.yml y depuración de contadores ZAP)" },
             { id: 13, title: "Política de contraseñas y MFA", block: "Protección", desc: "Configuración de complejidad de credenciales y activación de OTP.", evidence: "Capturas del panel web forzando contraseña robusta e inicio validando con token." },
             { id: 14, title: "Reglas de firewall deny-by-default", block: "Protección", desc: "Configuración restrictiva de puertos a nivel de sistema host mediante UFW.", evidence: "Consola de la Raspberry Pi 5 ejecutando el comando sudo ufw status verbose." },
             { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Nginx.", evidence: "Reporte con calificación A+ obtenido en la plataforma externa de análisis securityheaders.com.", link: "laboratorio/tfg_instalacion.html#apache", time: "0.5 horas (30 min - Configuración Apache, certificados SSL y cabeceras)" },
@@ -116,6 +116,9 @@
             1: true,   // Diagrama de red
             2: true,   // Máquinas víctimas
             3: true,   // Reconocimiento perimetral
+            9: true,   // Análisis SAST
+            10: true,  // Análisis DAST
+            12: true,  // Pipeline DevSecOps
             15: true,  // Headers HTTP
             17: true,  // SIEM
             25: true   // SOAR Extra

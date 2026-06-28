@@ -401,3 +401,5 @@ Esta cabecera es necesaria para:
 | COEP Missing | Bajo-Medio | Medio | Recomendado |
 
 ---
+aqui incuimos enlace directo para abrir en otra pagina  C:\Proyectos\TFG_MasterCiber\assets\pipeline\report_inicial_html.html
+

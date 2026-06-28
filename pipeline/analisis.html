@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline DevSecOps: Reportes y Análisis Iniciales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body class="flex justify-center bg-slate-100 text-slate-900">
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-600 text-white font-bold">CI</div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-700">DevSecOps</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Pipelines</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="montajes.html" class="nav-link">Volver a Montaje (Config)</a>
+                    <a href="#sast-semgrep" class="nav-link">1. SAST - XSS Hallazgo</a>
+                    <a href="#sast-explotacion" class="nav-link">2. Explotación y Mitigaciones</a>
+                    <a href="#sast-tabla" class="nav-link">3. Tabla Clasificación SAST</a>
+                    <a href="#sca" class="nav-link">4. SCA - npm audit</a>
+                    <a href="#dast" class="nav-link">5. DAST - OWASP ZAP</a>
+                    <a href="#dast-detalles" class="nav-link">6. Desglose de los 11 Warnings</a>
+                    <a href="#warnings-tabla" class="nav-link">7. Matriz de Warnings DAST</a>
+                    <a href="#issues-creados" class="nav-link">8. Optimización e Issues</a>
+                    <a href="correcciones.html" class="nav-link border-emerald-200 bg-emerald-50 text-emerald-900">Ir a Correcciones (Paso 2)</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+                <p class="hero-pill">PASO 1 — Evidencias Técnicas</p>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Reportes de Seguridad e Identificación de Hallazgos</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Mapeo, clasificación y análisis técnico pormenorizado de las alertas de seguridad detectadas en la ejecución del pipeline inicial.
+                </p>
+            </header>
+
+            <!-- SAST - Semgrep -->
+            <section id="sast-semgrep" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🔍 1. Análisis Estático (SAST) — Clasificación de Hallazgo en Código</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        El escaneo estático automatizado en el código fuente de la aplicación reportó una alerta en las directivas de tratamiento de datos de contacto:
+                    </p>
+                </div>
+
+                <ul class="list-none space-y-2 text-sm text-slate-700 pl-2 border-l-2 border-amber-500">
+                    <li><strong>Archivo afectado:</strong> <code>frontend/pages/api/contact.ts</code></li>
+                    <li><strong>Líneas afectadas:</strong> 48–51</li>
+                    <li><strong>Severidad:</strong> WARNING (Real)</li>
+                    <li><strong>Vulnerabilidad:</strong> Cross-Site Scripting (XSS)</li>
+                    <li><strong>Identificadores:</strong> CWE-79 | OWASP A07:2017, A03:2021, A05:2025</li>
+                </ul>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-900 text-lg">Descripción Técnica del Hallazgo</h4>
+                    <p class="text-sm text-slate-700 leading-7 mt-2">
+                        El motor de Semgrep detectó que la API construye de forma manual HTML dinámico interpolando variables del usuario directamente:
+                    </p>
+                    <pre><code>&lt;p&gt;&lt;strong&gt;Nombre:&lt;/strong&gt; ${name}&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Email:&lt;/strong&gt; ${email}&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; ${subject}&lt;/p&gt;</code></pre>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-100 text-sm">
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                        <span class="block font-bold text-amber-900">Probabilidad: ALTA</span>
+                        <span class="text-xs text-amber-800 leading-5 block mt-1">Las entradas de usuario (formulario) son leídas sin procesos intermedios de sanitización y Express no restringe las tramas HTML de forma automática.</span>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <span class="block font-bold text-blue-900">Impacto: MEDIO</span>
+                        <span class="text-xs text-blue-800 leading-5 block mt-1">El endpoint REST no renderiza el HTML directamente al emisor de la llamada, sino que se emplea para el envío asíncrono de un correo electrónico.</span>
+                    </div>
+                    <div class="bg-slate-100 p-4 rounded-xl border border-slate-200">
+                        <span class="block font-bold text-slate-900">Confianza: MEDIA</span>
+                        <span class="text-xs text-slate-800 leading-5 block mt-1">El analizador estático identifica de forma inequívoca el patrón de construcción de strings, mas carece del contexto de renderizado final en cliente.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Explotacion y Mitigacion -->
+            <section id="sast-explotacion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🧱 2. Vector de Explotación y Propuestas de Mitigación</h3>
+                
+                <div class="space-y-4">
+                    <h4 class="font-bold text-slate-900 text-lg">Mecánica del Ataque (PoC)</h4>
+                    <p class="text-sm text-slate-700 leading-7">
+                        Un atacante remoto puede suministrar el siguiente payload malicioso a través del campo de texto de contacto:
+                    </p>
+                    <pre><code>&lt;script&gt;alert("XSS")&lt;/script&gt;</code></pre>
+                    <p class="text-sm text-slate-700 leading-7">
+                        Si este bloque de texto se incrusta sin codificación en el HTML y el administrador abre dicho correo en un lector o cliente web vulnerable que renderice HTML dinámico sin filtrado, el script de JavaScript se ejecutará en su contexto local, facilitando la exfiltración de cookies de sesión o redirecciones maliciosas.
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 space-y-4">
+                    <h4 class="font-bold text-slate-900 text-lg">Propuestas Profesionales de Remediación</h4>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-bold text-sm text-slate-800">Opción A: Sanitización del Input (isomorphic-dompurify)</h5>
+                            <p class="text-xs text-slate-600 mt-1">Filtrado lógico de tramas de scripting antes de construir la salida:</p>
+                            <pre><code>import DOMPurify from 'isomorphic-dompurify';
+const safeMessage = DOMPurify.sanitize(message);</code></pre>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold text-sm text-slate-800">Opción B: Escapado de Entidades HTML</h5>
+                            <p class="text-xs text-slate-600 mt-1">Sustitución de caracteres de control para forzar la visualización como texto plano en lugar de código ejecutable:</p>
+                            <pre><code>function escape(str: string) {
+  return str
+    .replace(/&/g, "&amp;amp;")
+    .replace(/&lt;/g, "&amp;lt;")
+    .replace(/&gt;/g, "&amp;gt;");
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <img src="../assets/pipeline/semgrep_deteccion.png" alt="Detección de Semgrep en el código de contacto" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Alerta XSS en contact.ts señalada por Semgrep en el workflow.</p>
+                </div>
+            </section>
+
+            <!-- Tabla Clasificacion SAST -->
+            <section id="sast-tabla" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">📊 3. Clasificación Final del Hallazgo SAST</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2 font-bold text-slate-950 bg-slate-50 text-left">Dimensión</th>
+                                <th class="px-4 py-2 font-bold text-slate-950 bg-slate-50 text-left">Valoración</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Tipo de Vulnerabilidad</td>
+                                <td class="px-4 py-2 text-slate-700">Cross-Site Scripting (XSS)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Debilidad (CWE ID)</td>
+                                <td class="px-4 py-2 text-slate-700 font-mono">CWE-79</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">OWASP Top 10</td>
+                                <td class="px-4 py-2 text-slate-700">A07:2017, A03:2021, A05:2025</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Probabilidad / Explotabilidad</td>
+                                <td class="px-4 py-2 text-slate-700">Alta / Moderada</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Severidad del Escáner</td>
+                                <td class="px-4 py-2 text-amber-700 font-bold">Warning (Real)</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Corrección Recomendada</td>
+                                <td class="px-4 py-2 text-slate-700 font-medium">Escapado de entidades + Sanitización de Inputs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SCA -->
+            <section id="sca" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">📦 4. Análisis de Dependencias (SCA) — npm audit</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        El escaneo de composición de dependencias (SCA) en la raíz del frontend no identificó brechas críticas de seguridad en dependencias externas.
+                    </p>
+                </div>
+
+                <div class="mt-4">
+                    <img src="../assets/pipeline/SCA.png" alt="Ejecución de npm audit sin fallos graves" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Consola indicando un estado correcto (verde) y el volcado en formato JSON del reporte de dependencias.</p>
+                </div>
+            </section>
+
+            <!-- DAST -->
+            <section id="dast" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">⚡ 5. Análisis Dinámico (DAST) — OWASP ZAP</h3>
+                    <p class="text-sm text-slate-700 mt-2">
+                        El escaneo dinámico pasivo (Baseline) sobre la URI de producción <code>https://asga.vercel.app</code> detectó 11 avisos (Warnings) estructurados.
+                    </p>
+                </div>
+
+                <div class="mt-4">
+                    <img src="../assets/pipeline/DAST.png" alt="Resultado de OWASP ZAP Baseline Scan" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <p class="text-xs text-slate-500 mt-2 text-center">Captura: Consola del job DAST detallando las reglas auditadas, con 56 superadas y 11 alertas registradas.</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between bg-cyan-50 p-4 rounded-2xl border border-cyan-100">
+                    <div>
+                        <p class="text-sm font-bold text-cyan-950">Reporte Técnico Inicial ZAP</p>
+                        <p class="text-xs text-cyan-800">Visualiza el archivo HTML original emitido por el escáner al inicio de las pruebas.</p>
+                    </div>
+                    <a href="../assets/pipeline/report_inicial_html.html" target="_blank" class="copy-btn rounded-xl bg-cyan-600 px-4 py-2 text-white font-semibold text-xs text-center shadow-md shadow-cyan-600/25 hover:bg-cyan-700">Ver Reporte HTML</a>
+                </div>
+            </section>
+
+            <!-- Desglose de los 11 Warnings -->
+            <section id="dast-detalles" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">🛡️ 6. Desglose y Detalles Técnicos de las Alertas Detectadas</h3>
+                <p class="text-sm text-slate-700">
+                    Análisis individualizado de los principales fallos perimetrales de cabeceras identificados por el escaneo dinámico pasivo:
+                </p>
+
+                <div class="space-y-6 divide-y divide-slate-100">
+                    <!-- Warning 1 -->
+                    <div class="pt-4 first:pt-0 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-lg">6.1. Re-examine Cache-Control Directives [10015] / [10049] / [10050]</h4>
+                        <p class="text-xs text-slate-500"><strong>Descripción:</strong> Ausencia de directivas restrictivas de almacenamiento de caché o retención en cliente.</p>
+                        <p class="text-xs text-slate-700 leading-5"><strong>Impacto y Riesgo:</strong> El navegador del cliente puede retener y cachear páginas dinámicas con información confidencial, facilitando la fuga de datos tras cierres de sesión. Al ser un portfolio estático público, el riesgo real es <strong>Bajo</strong>, aunque representa una brecha de buenas prácticas.</p>
+                        <p class="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 font-medium"><strong>Mitigación:</strong> Configurar la directiva HTTP <code>Cache-Control: no-store</code> en endpoints lógicos o configurar caché inmutable para recursos puramente estáticos.</p>
+                    </div>
+
+                    <!-- Warning 2 -->
+                    <div class="pt-4 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-lg">6.2. Missing Anti-clickjacking Header [10020]</h4>
+                        <p class="text-xs text-slate-500"><strong>Descripción:</strong> Omisión de la cabecera <code>X-Frame-Options</code> o su homólogo en CSP.</p>
+                        <p class="text-xs text-slate-700 leading-5"><strong>Impacto y Riesgo:</strong> Permite que un portal malicioso incruste la web en un iframe invisible para superponer botones engañosos y secuestrar interacciones del usuario. Riesgo real: <strong>Medio</strong>.</p>
+                        <p class="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 font-medium"><strong>Mitigación:</strong> Servir la cabecera <code>X-Frame-Options: DENY</code> o declarar <code>frame-ancestors 'none'</code> en la CSP.</p>
+                    </div>
+
+                    <!-- Warning 3 -->
+                    <div class="pt-4 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-lg">6.3. X-Content-Type-Options Header Missing [10021]</h4>
+                        <p class="text-xs text-slate-500"><strong>Descripción:</strong> Omisión del parámetro protector de MIME sniffing.</p>
+                        <p class="text-xs text-slate-700 leading-5"><strong>Impacto y Riesgo:</strong> El navegador intenta autodetectar el tipo de datos omitiendo la declaración del servidor. Un atacante podría subir código script camuflado como imagen (.jpg) para forzar su ejecución. Riesgo real: <strong>Medio</strong>.</p>
+                        <p class="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 font-medium"><strong>Mitigación:</strong> Declarar y transmitir la cabecera <code>X-Content-Type-Options: nosniff</code> en todas las llamadas.</p>
+                    </div>
+
+                    <!-- Warning 4 -->
+                    <div class="pt-4 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-lg">6.4. Content Security Policy (CSP) Header Not Set [10038]</h4>
+                        <p class="text-xs text-slate-500"><strong>Descripción:</strong> Inexistencia total de directivas restrictivas de orígenes de carga de scripts y estilos.</p>
+                        <p class="text-xs text-slate-700 leading-5"><strong>Impacto y Riesgo:</strong> Deja la web totalmente indefensa ante ataques XSS, pues el cliente cargará y ejecutará cualquier script inyectado desde cualquier servidor remoto. Riesgo real: <strong>Medio-Alto</strong> (Crítico al coexistir con la debilidad de Semgrep).</p>
+                        <p class="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 font-medium"><strong>Mitigación:</strong> Establecer una cabecera de <code>Content-Security-Policy</code> acotando el origen de los recursos.</p>
+                    </div>
+
+                    <!-- Warning 5 -->
+                    <div class="pt-4 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-lg">6.5. Permissions Policy Header Not Set [10063]</h4>
+                        <p class="text-xs text-slate-500"><strong>Descripción:</strong> Falta de delimitación de acceso a APIs físicas del dispositivo en el cliente.</p>
+                        <p class="text-xs text-slate-700 leading-5"><strong>Impacto y Riesgo:</strong> Un script comprometido podría solicitar acceso intrusivo a periféricos (cámara, micrófono, geolocalización) del navegador de las visitas. Riesgo real: <strong>Medio</strong>.</p>
+                        <p class="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 font-medium"><strong>Mitigación:</strong> Enviar cabecera <code>Permissions-Policy: geolocation=(), microphone=(), camera=()</code>.</p>
+                    </div>
+
+                    <!-- Warning 6 -->
+                    <div class="pt-4 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-lg">6.6. Subresource Integrity (SRI) Attribute Missing [90003]</h4>
+                        <p class="text-xs text-slate-500"><strong>Descripción:</strong> Inexistencia de hashes de comprobación en enlaces de hojas de estilos o recursos procedentes de CDNs externos.</p>
+                        <p class="text-xs text-slate-700 leading-5"><strong>Impacto y Riesgo:</strong> Si el servidor de CDN de Google Fonts o similar es comprometido por un actor malicioso, la web cargaría los estilos infectados ejecutando código inyectado. Riesgo real: <strong>Medio-Alto</strong>.</p>
+                        <p class="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-100 font-medium"><strong>Mitigación:</strong> Declarar atributos <code>integrity</code> y <code>crossorigin</code> en elementos cargados externamente o auto-alojar los archivos de fuentes locales.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Warnings Tabla -->
+            <section id="warnings-tabla" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-950">📊 7. Matriz de Criticidad de las Alertas DAST</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2.5 font-bold text-slate-950 bg-slate-50 text-left">Alerta (Regla ID)</th>
+                                <th class="px-4 py-2.5 font-bold text-slate-950 bg-slate-50 text-left">Severidad</th>
+                                <th class="px-4 py-2.5 font-bold text-slate-950 bg-slate-50 text-left">Impacto Estimado</th>
+                                <th class="px-4 py-2.5 font-bold text-slate-950 bg-slate-50 text-left">Relevancia</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Anti-clickjacking Header (10020)</td>
+                                <td class="px-4 py-2 text-amber-700 font-bold">Medio</td>
+                                <td class="px-4 py-2 text-slate-700">Incrustación en iFrames para secuestro de clics.</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Recomendado</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">X-Content-Type-Options (10021)</td>
+                                <td class="px-4 py-2 text-amber-700 font-bold">Medio</td>
+                                <td class="px-4 py-2 text-slate-700">Ataques de suplantación de tipo de archivo (MIME sniffing).</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Recomendado</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">CSP Header Missing (10038)</td>
+                                <td class="px-4 py-2 text-red-600 font-bold">Medio-Alto</td>
+                                <td class="px-4 py-2 text-slate-700">Inyección y ejecución arbitraria de scripts de terceros (XSS).</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Crítico</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Permissions Policy Missing (10063)</td>
+                                <td class="px-4 py-2 text-amber-700 font-bold">Medio</td>
+                                <td class="px-4 py-2 text-slate-700">Invasión y lectura abusiva de APIs de cliente.</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Recomendado</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">SRI Attribute Missing (90003)</td>
+                                <td class="px-4 py-2 text-red-600 font-bold">Medio-Alto</td>
+                                <td class="px-4 py-2 text-slate-700">Compromiso y envenenamiento de código servido por CDNs.</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Importante</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">Cross-Domain Misconfiguration (10098)</td>
+                                <td class="px-4 py-2 text-slate-700 font-bold">Medio</td>
+                                <td class="px-4 py-2 text-slate-700">Carga incontrolada de recursos multi-origen.</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Relevante</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900 font-mono text-xs">Cache-Control Directives (10015 / 10049 / 10050)</td>
+                                <td class="px-4 py-2 text-slate-600 font-bold">Bajo</td>
+                                <td class="px-4 py-2 text-slate-700">Fuga de información residual persistida en caché local.</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Buenas prácticas</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold text-slate-900">COEP Missing (90004)</td>
+                                <td class="px-4 py-2 text-slate-500 font-bold">Bajo-Medio</td>
+                                <td class="px-4 py-2 text-slate-700">Incrustación desprotegida de recursos de orígenes cruzados.</td>
+                                <td class="px-4 py-2 text-slate-500 font-mono text-xs">Opcional</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Issues creados -->
+            <section id="issues-creados" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-950">🧩 8. Optimización en la Apertura de Incidencias en GitHub</h3>
+                    <p class="text-sm text-slate-700 mt-2 leading-7">
+                        <strong>Incidencia inicial de "Fatiga de Alertas":</strong> En las primeras ejecuciones del pipeline, el flujo de trabajo abría incidencias de forma incondicional por cada reporte o regla detectada (incluyendo avisos de severidad baja o media), saturando el gestor de tareas del proyecto.
+                    </p>
+                    <p class="text-sm text-slate-700 mt-2 leading-7">
+                        <strong>Corrección técnica aplicada:</strong> Se integró un filtro selectivo mediante un script condicional que unifica todos los escaneos y calcula la severidad acumulada: <code>TRIGGER_ISSUE=$(( TOTAL_CRITICAL + TOTAL_HIGH ))</code>. De esta forma, el pipeline <strong>solo abre un issue en GitHub si el contador de vulnerabilidades Críticas o Altas es superior a cero (<code>-gt 0</code>)</strong>, dejando las alertas informativas, bajas o medias dentro del reporte consolidado de ejecución sin ensuciar el panel de desarrollo.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <h5 class="font-bold text-slate-900 mb-2">Issue Inicial creado de ZAP</h5>
+                        <img src="../assets/pipeline/issues.png" alt="Issue de ZAP en GitHub" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Registro automático del reporte base subido a los Issues del repositorio.</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-slate-900 mb-2">Lógica de Alertas de Criticidad Alta</h5>
+                        <img src="../assets/pipeline/issue1.png" alt="Consolidación de alertas en GitHub" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <p class="text-xs text-slate-500 mt-2 text-center">Captura: Issue unificado de alerta roja detallando los fallos críticos de seguridad detectados.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

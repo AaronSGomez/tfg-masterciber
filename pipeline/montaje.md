@@ -230,7 +230,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
@@ -294,36 +295,41 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: "https://asga.vercel.app"
+          # CRÍTICO: Al NO pasarle el GITHUB_TOKEN a la acción de ZAP,
+          # le impedimos que cree issues automáticos por su cuenta en cada despliegue.
+          token: "" 
 
       - name: Count findings
         id: zap
         run: |
           if [ -f "report_md.md" ]; then
-            HIGH=$(grep -c "FAIL" report_md.md | tr -dc '0-9')
-            MEDIUM=$(grep -c "WARN" report_md.md | tr -dc '0-9')
-            LOW=$(grep -c "PASS" report_md.md | tr -dc '0-9')
+            # Buscamos la línea que contiene el nivel de riesgo y extraemos la segunda columna de la tabla
+            HIGH=$(grep -i "High" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+            MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+            LOW=$(grep -i "Low" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
           else
             HIGH=0
             MEDIUM=0
             LOW=0
           fi
 
+          # Forzar a 0 si las variables quedaron vacías
           HIGH=${HIGH:-0}
           MEDIUM=${MEDIUM:-0}
           LOW=${LOW:-0}
           
           TOTAL=$((HIGH + MEDIUM + LOW))
 
-          echo "findings=$TOTAL" >> $GITHUB_OUTPUT
-          echo "high=$HIGH" >> $GITHUB_OUTPUT
-          echo "medium=$MEDIUM" >> $GITHUB_OUTPUT
-          echo "low=$LOW" >> $GITHUB_OUTPUT
+          echo "findings=$TOTAL" >> "$GITHUB_OUTPUT"
+          echo "high=$HIGH" >> "$GITHUB_OUTPUT"
+          echo "medium=$MEDIUM" >> "$GITHUB_OUTPUT"
+          echo "low=$LOW" >> "$GITHUB_OUTPUT"
 
           {
             echo "## ✔ DAST - OWASP ZAP"
             echo ""
             echo "**Findings:** $TOTAL"
-          } >> $GITHUB_STEP_SUMMARY
+          } >> "$GITHUB_STEP_SUMMARY"
           
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4
@@ -356,7 +362,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Cálculos con valores por defecto seguros para evitar fallos de sintaxis en Bash
           SEMGREP_FINDINGS=${{ needs.semgrep.outputs.findings || 0 }}
           SEMGREP_CRITICAL=${{ needs.semgrep.outputs.critical || 0 }}
           SEMGREP_HIGH=${{ needs.semgrep.outputs.high || 0 }}
@@ -376,14 +381,12 @@ jobs:
 
           CODEQL_FINDINGS=${{ needs.codeql.outputs.findings || 0 }}
 
-          # Totales Consolidados
           TOTAL_FINDINGS=$(( SEMGREP_FINDINGS + SCA_FINDINGS + DAST_FINDINGS ))
           TOTAL_CRITICAL=$(( SEMGREP_CRITICAL + SCA_CRITICAL ))
           TOTAL_HIGH=$(( SEMGREP_HIGH + SCA_HIGH + DAST_HIGH ))
           TOTAL_MEDIUM=$(( SEMGREP_MEDIUM + SCA_MEDIUM + DAST_MEDIUM ))
           TOTAL_LOW=$(( SEMGREP_LOW + SCA_LOW + DAST_LOW ))
 
-          # Generar la Tabla en el Summary de GitHub Actions
           {
             echo "# 🛡️ DevSecOps Security Report"
             echo ""
@@ -401,7 +404,6 @@ jobs:
             echo "- zap-report"
           } >> $GITHUB_STEP_SUMMARY
 
-          # Lógica para la creación de Issues de vulnerabilidades altas o críticas
           TRIGGER_ISSUE=$(( TOTAL_CRITICAL + TOTAL_HIGH ))
 
           if [ "$TRIGGER_ISSUE" -gt 0 ]; then
@@ -984,3 +986,28 @@ Para complementar la estructura y llevar tu pipeline a un estándar profesional 
 1. **Centralización Inteligente:** En lugar de hacer que cada herramienta individual sature el repositorio abriendo múltiples tickets por separado (lo que genera fatiga de alertas para el desarrollador), el pipeline recopila y analiza los resultados en un único job consolidado tras finalizar todos los escaneos.
 2. **Filtrado por Severidad (Métrica de Riesgo):** Configuramos una lógica condicional matemática (`TRIGGER_ISSUE=$(( TOTAL_CRITICAL + TOTAL_HIGH ))`). El pipeline evalúa el total global de vulnerabilidades graves y **únicamente genera un Issue si el contador de fallos Críticos o Altos es mayor a cero (`-gt 0`)**. Los fallos medios o bajos se siguen mostrando visualmente en la tabla de resumen pero no ensucian el gestor de tareas.
 3. **Generación de Cierre Limpio (Markdown dinámico):** Usamos bloques `cat <<EOF` dentro del CLI oficial de GitHub (`gh issue create`) para redactar un cuerpo de issue limpio, dinámico y estético, detallando de forma exacta cuántas vulnerabilidades críticas y altas encontró cada herramienta (Semgrep, npm audit u OWASP ZAP) con etiquetas automatizadas (`security`, `bug`).
+
+
+
+---
+
+### Caso de Estudio: Corrección en el Parseo y Flujo de Alertas de DAST (OWASP ZAP)
+
+#### ❌ Error Detectado
+
+Se identificó que el pipeline generaba falsos positivos y "fatiga de alertas" debido a dos fallos en la acción oficial de OWASP ZAP (`v0.12.0`):
+
+1. **Falta de concordancia en el formato del reporte:** Las expresiones regulares iniciales buscaban cadenas de texto plano antiguas (como `FAIL-NEW:`). La nueva versión de ZAP generaba los resultados en una tabla estructurada de Markdown (`| Risk Level | Number of Alerts |`), lo que provocaba que el script leyera `0` fallos de forma errónea, perdiendo visibilidad de las vulnerabilidades medias y bajas detectadas.
+2. **Generación incondicional de incidencias:** La acción de ZAP utilizaba de manera nativa los permisos de escritura del repositorio para abrir un *Issue* de forma autónoma en cada despliegue, ignorando la lógica condicional y centralizada del pipeline DevSecOps.
+
+#### ✔️ Solución Aplicada
+
+Se reestructuró el flujo de trabajo en el archivo YAML aplicando una corrección doble:
+
+1. **Orquestación y Desactivación de Issues Nativos:** Se añadió el parámetro explícito `create_issue: false` en la configuración de la tarea de ZAP. Esto retiró la potestad de la herramienta para crear tickets por su cuenta, centralizando la toma de decisiones exclusivamente en el bloque matemático final del pipeline.
+2. **Filtrado Estructural mediante `Awk`:** Se sustituyó el parseo por texto plano por un algoritmo de procesamiento por columnas utilizando `awk`, definiendo la barra vertical (`|`) como delimitador. Esto permitió aislar y sumar el número exacto de alertas de cada fila de la tabla de forma totalmente robusta:
+```yaml
+HIGH=$(grep -i "High" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')
+
+```
