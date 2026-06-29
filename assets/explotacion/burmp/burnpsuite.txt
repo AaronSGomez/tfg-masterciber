@@ -1,0 +1,44 @@
+response
+HTTP/1.1 302 Found
+Date: Mon, 29 Jun 2026 16:37:12 GMT
+Server: Apache/2.4.54 (Debian)
+X-Powered-By: PHP/8.1.16
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Location: index.php
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+
+
+request
+
+POST /login.php HTTP/1.1
+Host: webinsegura2.duckdns.org
+Cookie: security=medium; PHPSESSID=82bda0d34c9aeea4b9c8a108d501c48a
+Content-Length: 88
+Cache-Control: max-age=0
+Sec-Ch-Ua: "Chromium";v="145", "Not:A-Brand";v="99"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Linux"
+Accept-Language: en-US,en;q=0.9
+Origin: https://webinsegura2.duckdns.org
+Content-Type: application/x-www-form-urlencoded
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: https://webinsegura2.duckdns.org/login.php
+Accept-Encoding: gzip, deflate, br
+Priority: u=0, i
+Connection: keep-alive
+
+username=admin&password=password&Login=Login&user_token=160bc15ef13da49fb8dc4b367e0b7353
+
+
+
