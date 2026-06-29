@@ -388,25 +388,104 @@ zap-baseline.py -t https://webinsegura1.duckdns.org -r reporte_zap1.html</code><
                                 <h5 class="text-lg font-black text-slate-950 mb-3">3. Progreso del Escaneo Activo sobre webinsegura2 (DVWA)</h5>
                                 <img src="../assets/explotacion/zap3_webinsegura2_progreso.png" alt="Progreso de escaneo de webinsegura2" class="tfg-image">
                                 <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura en tiempo real del progreso del motor de escaneo activo apuntando a la aplicación de DVWA.</figcaption>
-                                
-                                <div class="mt-4 p-4 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 space-y-3 leading-relaxed">
-                                    <p class="font-bold text-slate-900 flex items-center gap-1.5">
-                                        ⏱️ Análisis de Rendimiento del Escaneo (Duración: ~2 horas de ejecución):
-                                    </p>
-                                    <p>
-                                        El escaneo activo sobre el contenedor de <strong>webinsegura2</strong> se prolonga en el tiempo debido a la arquitectura interna del objetivo y restricciones de red:
-                                    </p>
-                                    <ul class="list-disc pl-4 space-y-1.5 text-slate-700">
-                                        <li><strong>Mayor superficie en rutas y formularios:</strong> DVWA expone rutas independientes para cada vulnerabilidad (<code>/login.php</code>, <code>/vulnerabilities/*</code>, <code>/security.php</code>, <code>/setup.php</code>), forzando a ZAP a rastrear un volumen elevado de parámetros GET/POST y cookies.</li>
-                                        <li><strong>Gestión de Sesión y Redirecciones 302:</strong> Cada payload inyectado fuerza redirecciones y re-validaciones de sesión que obligan al motor a repetir peticiones secuenciales.</li>
-                                        <li><strong>Timeouts y Latencia DDNS:</strong> El acceso perimetral mediante el túnel DuckDNS y Apache introduce retrasos de red y DNS ocasionales. ZAP reintenta cada petición fallida automáticamente, extendiendo el tiempo de escaneo.</li>
-                                        <li><strong>Agresividad del Active Scan:</strong> Ejecución sistemática de pruebas complejas (SQLi, XSS, LFI/RFI, Command Injection y Directory Traversal) contra cada formulario del entorno DVWA.</li>
-                                    </ul>
-                                    <p class="text-slate-650 italic mt-2">
-                                        Conclusión: El avance lento pero continuo valida la robustez de los reintentos automáticos del escáner dinámico ante la latencia perimetral, sin pérdida de datos en el reporte final.
-                                    </p>
-                                </div>
                             </figure>
+                                
+                            <div class="mt-4 p-5 rounded-2xl border border-slate-200 bg-white text-sm text-slate-800 space-y-3 leading-relaxed">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5 text-base">
+                                    ⏱️ Análisis de Rendimiento del Escaneo (Duración: ~2 horas de ejecución)
+                                </p>
+                                <p class="text-slate-600">
+                                    El escaneo activo sobre el contenedor de <strong>webinsegura2</strong> se prolonga en el tiempo debido a la arquitectura interna del objetivo y restricciones de red:
+                                </p>
+                                <ul class="list-disc pl-5 space-y-2 text-slate-700">
+                                    <li><strong>Mayor superficie en rutas y formularios:</strong> DVWA expone rutas independientes para cada vulnerabilidad (<code>/login.php</code>, <code>/vulnerabilities/*</code>, <code>/security.php</code>, <code>/setup.php</code>), forzando a ZAP a rastrear un volumen elevado de parámetros GET/POST y cookies.</li>
+                                    <li><strong>Gestión de Sesión y Redirecciones 302:</strong> Cada payload inyectado fuerza redirecciones y re-validaciones de sesión que obligan al motor a repetir peticiones secuenciales.</li>
+                                    <li><strong>Timeouts y Latencia DDNS:</strong> El acceso perimetral mediante el túnel DuckDNS y Apache introduce retrasos de red y DNS ocasionales. ZAP reintenta cada petición fallida automáticamente, extendiendo el tiempo de escaneo.</li>
+                                    <li><strong>Agresividad del Active Scan:</strong> Ejecución sistemática de pruebas complejas (SQLi, XSS, LFI/RFI, Command Injection y Directory Traversal) contra cada formulario del entorno DVWA.</li>
+                                </ul>
+                                <p class="text-slate-650 italic mt-2 border-t border-slate-100 pt-2">
+                                    <strong>Conclusión:</strong> El avance lento pero continuo valida la robustez de los reintentos automáticos del escáner dinámico ante la latencia perimetral, sin pérdida de datos en el reporte final.
+                                </p>
+                            </div>
+                            
+                            <div class="mt-4 p-5 rounded-2xl border border-blue-200 bg-blue-50/40 text-sm text-slate-800 space-y-3 leading-relaxed">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5 text-base">
+                                    💡 Conclusión Metodológica y Limitaciones de DAST
+                                </p>
+                                <p class="text-slate-700">
+                                    El análisis comparativo entre los dos entornos expone una valiosa lección metodológica sobre los límites y capacidades de las auditorías DAST automatizadas frente a los métodos de explotación manual:
+                                </p>
+                                <ul class="list-disc pl-5 space-y-2 text-slate-700">
+                                    <li><strong>React2Shell / RCE en Next.js:</strong> Al tratarse de una vulnerabilidad ligada a una versión específica y a un comportamiento muy particular del framework (RSC Deserialization), es factible que herramientas de escaneo y plantillas especializadas de detección perimetral la identifiquen de manera rápida buscando firmas conocidas o respuestas de error de deserialización.</li>
+                                    <li><strong>SQL Injection de DVWA:</strong> A pesar de estar diseñada específicamente como vulnerable, la inyección SQL no suele ser detectada ni explotada de forma automática por herramientas generalistas desde Internet por varias razones críticas:
+                                        <ul class="list-circle pl-5 mt-1 space-y-1.5 text-slate-600">
+                                            <li>Requiere mantener la persistencia de una sesión autenticada (mediante cookies como <code>PHPSESSID</code> y la configuración del nivel de seguridad <code>security=low</code>).</li>
+                                            <li>Necesita de cargas útiles (payloads) específicas y un análisis milimétrico de las respuestas del servidor para confirmar el fallo.</li>
+                                            <li>Los escáneres DAST estándar aplican criterios conservadores para eludir falsos positivos y suelen carecer de la capacidad de navegar formularios interactivos complejos sin una parametrización exhaustiva previa.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="mt-4 p-5 rounded-2xl border border-emerald-300 bg-emerald-100/40 text-sm text-slate-800 space-y-3 leading-relaxed shadow-sm">
+                                <p class="font-extrabold text-slate-950 flex items-center gap-2 text-base">
+                                    🧪 Aportación Metodológica: ¿Por qué las herramientas automáticas no lo detectan todo?
+                                </p>
+                                <p class="text-slate-700">
+                                    Esta comparación nos deja una lección clarísima: <strong>los escáneres automáticos (como OWASP ZAP) son geniales para buscar fallos conocidos a primera vista, pero se quedan ciegos cuando hay que iniciar sesión o interactuar con la web de forma lógica.</strong>
+                                </p>
+                                <p class="text-slate-700">
+                                    Por ejemplo, el fallo RCE (React2Shell) de Next.js se detecta al segundo porque la herramienta solo busca la firma de una versión vulnerable. En cambio, la inyección SQL de DVWA no se ve a menos que:
+                                </p>
+                                <ul class="list-disc pl-5 space-y-1.5 text-slate-700">
+                                    <li>Inicies sesión en la web y mantengas esa sesión activa con la cookie <code>PHPSESSID</code>.</li>
+                                    <li>Configures a mano el nivel de seguridad a "bajo" (<code>security=low</code>).</li>
+                                    <li>Pruebes payloads específicos analizando milimétricamente cómo responde el servidor en cada intento.</li>
+                                </ul>
+                                <p class="text-slate-900 bg-white/95 border border-emerald-200/90 rounded-xl p-3.5 mt-2">
+                                    💡 <strong>En resumen:</strong> Los programas de escaneo automático son un buen primer filtro. Sin embargo, para encontrar e interactuar con fallos reales detrás de un formulario de login, sigue siendo totalmente necesario usar herramientas manuales como <strong>Burp Suite</strong> (para ver y modificar las peticiones de red) y <strong>SQLMap</strong> (para exfiltrar los datos). ¡El factor humano sigue siendo clave!
+                                </p>
+                            </div>
+
+                            <figure class="tfg-figure">
+                                <h5 class="text-lg font-black text-slate-950 mb-3">4. Resultados Finales del Escaneo Dinámico en webinsegura1 (Next.js)</h5>
+                                <img src="../assets/explotacion/webinsegura1.png" alt="Resultados de escaneo en webinsegura1" class="tfg-image">
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura de pantalla detallando las alertas finales y severidades reportadas por OWASP ZAP sobre la aplicación webinsegura1.</figcaption>
+                            </figure>
+
+                            <figure class="tfg-figure">
+                                <h5 class="text-lg font-black text-slate-950 mb-3">5. Resultados Finales del Escaneo Dinámico en webinsegura2 (DVWA)</h5>
+                                <img src="../assets/explotacion/webinsegura2.png" alt="Resultados de escaneo en webinsegura2" class="tfg-image">
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura de pantalla detallando las alertas finales y severidades reportadas por OWASP ZAP sobre la aplicación webinsegura2.</figcaption>
+                            </figure>
+                        </div>
+
+                        <!-- Enlaces a Reportes ZAP Interactivos al final del apartado -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                            <a href="../assets/explotacion/webinsegura1_report.html" target="_blank" class="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white hover:border-red-500 hover:shadow-md transition-all group">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-650 font-bold group-hover:bg-red-650 group-hover:text-white transition-colors">
+                                        1
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Reporte Interactivo DAST</p>
+                                        <h5 class="text-sm font-bold text-slate-900">webinsegura1 (Next.js)</h5>
+                                    </div>
+                                </div>
+                                <span class="text-slate-400 group-hover:text-red-600 transition-colors text-lg font-bold">→</span>
+                            </a>
+                            <a href="../assets/explotacion/webinsegura2_report.html" target="_blank" class="flex items-center justify-between p-4 rounded-2xl border border-slate-200 bg-white hover:border-red-500 hover:shadow-md transition-all group">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 text-red-650 font-bold group-hover:bg-red-650 group-hover:text-white transition-colors">
+                                        2
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Reporte Interactivo DAST</p>
+                                        <h5 class="text-sm font-bold text-slate-900">webinsegura2 (DVWA)</h5>
+                                    </div>
+                                </div>
+                                <span class="text-slate-400 group-hover:text-red-600 transition-colors text-lg font-bold">→</span>
+                            </a>
                         </div>
                     </div>
 
