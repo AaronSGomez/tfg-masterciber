@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/polyfill/3.25.1/polyfill.min.js"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
     <style>
         #sidebar {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -31,7 +31,7 @@
         }
     </style>
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="flex justify-center text-slate-900">
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
         <aside id="sidebar" class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0 relative">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
@@ -65,7 +65,8 @@
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
 
-            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-amber-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">Trabajo Fin de Grado (TFG)</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Diseño, Implementación y Aseguramiento de un Laboratorio de Ciberseguridad Distribuido</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">

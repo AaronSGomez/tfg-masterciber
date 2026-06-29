@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fase Ofensiva: Reconocimiento Pasivo y Mapeo Perimetral</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="bg-theme-atk flex justify-center text-slate-900">
     <script>
         async function copyCode(button, targetId) {
             const node = document.getElementById(targetId);
@@ -31,9 +31,9 @@
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
                 <div class="flex items-start gap-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-600 text-white font-bold">RECO</div>
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white font-bold">RECO</div>
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-orange-700">Fase Ofensiva</p>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Fase Ofensiva</p>
                         <h1 class="mt-1 text-2xl font-black text-slate-950">Mapeo y Recon</h1>
                     </div>
                 </div>
@@ -47,8 +47,7 @@
                     <a href="#whois-harvester" class="nav-link">WHOIS & theHarvester</a>
                     <a href="#spiderfoot" class="nav-link">SpiderFoot</a>
                     <a href="#auditoria-auto" class="nav-link">Auditoría Automática</a>
-                    <a href="pendiente.html" class="nav-link border-red-200 bg-red-50 text-red-900">Ir a Análisis (Parte 2)</a>
-                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                    <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
@@ -60,7 +59,8 @@
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
-            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-red-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">Auditoría Ofensiva — Parte 1</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Reconocimiento Pasivo y Escaneo Perimetral</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
@@ -111,7 +111,7 @@ done</code></pre>
             <!-- webinsegura1 -->
             <section id="webinsegura1" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🟦 1. Análisis de webinsegura1.duckdns.org</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🟦 Análisis de webinsegura1.duckdns.org</h3>
                     <p class="text-sm text-slate-600 mt-1">Máquina correspondiente al backend y la aplicación moderna (React2Shell en Next.js).</p>
                 </div>
 
@@ -187,7 +187,7 @@ done</code></pre>
             <!-- webinsegura2 -->
             <section id="webinsegura2" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🟩 2. Análisis de webinsegura2.duckdns.org</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🟩 Análisis de webinsegura2.duckdns.org</h3>
                     <p class="text-sm text-slate-600 mt-1">Máquina correspondiente al entorno vulnerable DVWA expuesto sobre el servidor Apache.</p>
                 </div>
 
@@ -258,7 +258,7 @@ done</code></pre>
             <!-- WhatWeb & DIG -->
             <section id="whatweb-dig" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🔍 3. WhatWeb y Consultas DIG</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🔍 WhatWeb y Consultas DIG</h3>
                     <p class="text-sm text-slate-600 mt-1">Fingerprinting del servidor HTTP y análisis estructural de registros DNS directos.</p>
                 </div>
 
@@ -314,7 +314,7 @@ done</code></pre>
                                     <td class="px-4 py-3 text-slate-700">El servicio DuckDNS deniega por completo las peticiones ANY para mitigar ataques de amplificación DNS.</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-4 py-3 font-mono font-bold text-amber-700">dig NS</td>
+                                    <td class="px-4 py-3 font-mono font-bold text-red-700">dig NS</td>
                                     <td class="px-4 py-3 text-slate-650">Vacío (No DATA)</td>
                                     <td class="px-4 py-3 text-slate-700">No existe delegación de servidores de nombres en subdominios dinámicos individuales. Solo la raíz posee NS.</td>
                                 </tr>
@@ -345,7 +345,7 @@ done</code></pre>
             <!-- WHOIS & theHarvester -->
             <section id="whois-harvester" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">📌 4. WHOIS y theHarvester</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">📌 WHOIS y theHarvester</h3>
                     <p class="text-sm text-slate-600 mt-1">Análisis de la información de titularidad pública y auditoría de metadatos/direcciones indexadas.</p>
                 </div>
 
@@ -391,7 +391,7 @@ done</code></pre>
             <!-- SpiderFoot -->
             <section id="spiderfoot" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🟪 5. SpiderFoot — Comparativa de Exposición de Nodos</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🟪 SpiderFoot — Comparativa de Exposición de Nodos</h3>
                     <p class="text-sm text-slate-600 mt-1">Análisis automatizado pasivo de la superficie digital a través de correlación de fuentes abiertas.</p>
                 </div>
 
@@ -414,13 +414,13 @@ done</code></pre>
                             <tbody class="divide-y divide-slate-100">
                                 <tr>
                                     <td class="px-4 py-3 font-semibold text-slate-900">webinsegura2 (DVWA)</td>
-                                    <td class="px-4 py-3 font-bold text-amber-700 text-center">5 Nodos</td>
+                                    <td class="px-4 py-3 font-bold text-red-700 text-center">5 Nodos</td>
                                     <td class="px-4 py-3 text-slate-700">Registros MX, Internet Name (alias) y Raw DNS.</td>
                                     <td class="px-4 py-3 text-slate-700">Entorno estático y aislado. Sin librerías externas ni referencias de JS complejas. Huella digital sumamente reducida.</td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-3 font-semibold text-slate-900">webinsegura1 (Next.js)</td>
-                                    <td class="px-4 py-3 font-bold text-orange-600 text-center">40 Nodos (31 Únicos)</td>
+                                    <td class="px-4 py-3 font-bold text-red-600 text-center">40 Nodos (31 Únicos)</td>
                                     <td class="px-4 py-3 text-slate-700">Múltiples JS de soporte, metadatos, cookies de sesión, NS asociados al dominio raíz, y subdominios del proveedor DNS.</td>
                                     <td class="px-4 py-3 text-slate-700">Arquitectura dinámica moderna. Expone metadatos de configuración, librerías del cliente y cabeceras que delatan su infraestructura interna.</td>
                                 </tr>
@@ -458,7 +458,7 @@ done</code></pre>
             <!-- Auditoría Automática -->
             <section id="auditoria-auto" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🟪 6. Auditoría automatizada con auditor_seguridad.sh</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🟪 Auditoría automatizada con auditor_seguridad.sh</h3>
                     <p class="text-sm text-slate-600 mt-1">Automatización del reconocimiento pasivo y mapeo técnico perimetral.</p>
                 </div>
 
@@ -540,7 +540,13 @@ Set-Cookie: PHPSESSID=...</pre>
                         </blockquote>
                     </div>
                 </div>
-            </section>
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="explotacion.html" class="inline-flex items-center gap-2 rounded-xl bg-red-650 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-orange-700 transition-colors">
+                    Siguiente: Explotación y Detección &rarr;
+                </a>
+            </footer>
         </section>
     </main>
     <script src="../assets/js/sidebar.js"></script>

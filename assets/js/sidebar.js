@@ -13,10 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Detectar el color de acento de la página para pintar la flecha del mismo color
     let accentBg = 'bg-amber-600';
-    if (sidebarContent.querySelector('.bg-emerald-600') || sidebarContent.querySelector('.text-emerald-700')) {
+    if (sidebarContent.querySelector('.bg-emerald-600') || sidebarContent.querySelector('.text-emerald-700') || sidebarContent.querySelector('.bg-emerald-650')) {
         accentBg = 'bg-emerald-600';
     } else if (sidebarContent.querySelector('.bg-cyan-600') || sidebarContent.querySelector('.text-cyan-700')) {
         accentBg = 'bg-cyan-600';
+    } else if (sidebarContent.querySelector('.bg-red-650') || sidebarContent.querySelector('.text-red-700') || sidebarContent.querySelector('.bg-red-600')) {
+        accentBg = 'bg-red-600';
+    } else if (sidebarContent.querySelector('.bg-orange-600') || sidebarContent.querySelector('.text-orange-700')) {
+        accentBg = 'bg-orange-600';
+    } else if (sidebarContent.querySelector('.bg-amber-600') || sidebarContent.querySelector('.text-amber-700')) {
+        accentBg = 'bg-amber-600';
     }
 
     // Crear el indicador flotante para bajar (Down)
@@ -110,9 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(checkSidebarScroll, 300);
 
     // ==========================================
-    // BOTONERA DE FLUJO DEVSECOPS FLOTANTE FIJA (SUPERIOR DERECHA)
+    // BOTONERA DE FLUJO DEVSECOPS Y OFENSIVO FLOTANTE FIJA (SUPERIOR DERECHA)
     // ==========================================
-    const pasos = [
+    const isOfensivo = window.location.pathname.includes('/ofensivo/');
+    const pasos = isOfensivo ? [
+        { url: 'reconocimiento.html', label: 'Reconocimiento' },
+        { url: 'explotacion.html', label: 'Explotación y Detección' },
+        { url: 'post_explotacion.html', label: 'Post-Explotación' },
+        { url: 'pentest.html', label: 'Informe de Pentest' }
+    ] : [
         { url: 'montajes.html', label: 'Montaje (Config)' },
         { url: 'analisis.html', label: 'Paso 1 (Análisis)' },
         { url: 'dast_vulnerabilidad.html', label: 'Paso 2 (Mitigación DAST)' },
@@ -146,8 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentIndex < pasos.length - 1) {
             const next = pasos[currentIndex + 1];
+            
+            // Detectar el color de acento activo para el botón Siguiente
+            let nextBtnBg = accentBg;
+            
             nextButton = `
-                <a href="${next.url}" title="Siguiente: ${next.label}" class="flex h-9 w-9 items-center justify-center rounded-full bg-cyan-600 text-white transition-all hover:bg-cyan-500 shadow-md hover:shadow-cyan-500/20">
+                <a href="${next.url}" title="Siguiente: ${next.label}" class="flex h-9 w-9 items-center justify-center rounded-full ${nextBtnBg} text-white transition-all hover:opacity-90 shadow-md">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
                     </svg>

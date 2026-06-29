@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modelado de Amenazas - OWASP Threat Dragon</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="bg-theme-ci flex justify-center text-slate-900">
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
@@ -20,9 +20,9 @@
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#dfd-logico" class="nav-link">1. DFD Lógico Completo</a>
-                    <a href="#stride-analisis" class="nav-link">2. Análisis STRIDE</a>
-                    <a href="#entregables" class="nav-link">3. Entregables y Exportación</a>
+                    <a href="#dfd-logico" class="nav-link">DFD Lógico Completo</a>
+                    <a href="#stride-analisis" class="nav-link">Análisis STRIDE</a>
+                    <a href="#entregables" class="nav-link">Entregables y Exportación</a>
                     <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
                 </nav>
 
@@ -35,7 +35,8 @@
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
-            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-cyan-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">Modelado de Amenazas — Dev Seguro</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Modelado de Amenazas con OWASP Threat Dragon</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
@@ -67,7 +68,7 @@
 
             <!-- 1. DFD lógico completo de la aplicación -->
             <section id="dfd-logico" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">1. DFD Lógico Completo de la Aplicación</h3>
+                <h3 class="text-2xl font-bold text-slate-950">DFD Lógico Completo de la Aplicación</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     El Data Flow Diagram (DFD) define de forma gráfica los procesos, los almacenes de datos, los actores externos y los límites de confianza (trust boundaries) que componen la topología lógica de la aplicación:
                 </p>
@@ -91,7 +92,7 @@
 
             <!-- 2. Análisis STRIDE -->
             <section id="stride-analisis" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">2. Análisis STRIDE y Modelado de Riesgos</h3>
+                <h3 class="text-2xl font-bold text-slate-950">Análisis STRIDE y Modelado de Riesgos</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Se mapearon y clasificaron las amenazas lógicas potenciales identificadas en los límites de confianza y tráficos de red HTTPS / WSS:
                 </p>
@@ -151,7 +152,7 @@
 
             <!-- 3. Entregables y Exportación -->
             <section id="entregables" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">3. Entregables y Proyecto Threat Dragon</h3>
+                <h3 class="text-2xl font-bold text-slate-950">Entregables y Proyecto Threat Dragon</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Puedes descargar o abrir el archivo del proyecto original de Threat Dragon en formato estructurado JSON para importarlo en tu herramienta de modelado o utilizarlo como evidencia adjunta del TFG:
                 </p>

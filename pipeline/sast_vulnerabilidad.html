@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipeline DevSecOps: Introducción y Reparación de Vulnerabilidad Grave</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="bg-theme-ci flex justify-center text-slate-900">
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
@@ -20,13 +20,13 @@
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#objetivos" class="nav-link">1. Objetivos del Paso 4</a>
-                    <a href="#vulnerabilidades" class="nav-link">2. Vulnerabilidades Introducidas</a>
-                    <a href="#depuracion" class="nav-link">3. Depuración del Pipeline</a>
-                    <a href="#mitigacion" class="nav-link">4. Mitigación y Corrección</a>
-                    <a href="#comparativa" class="nav-link">5. Reporte y Comparativa SAST</a>
-                    <a href="#evidencias" class="nav-link">6. Evidencias Visuales</a>
-                    <a href="#conclusiones" class="nav-link">7. Conclusiones del Ciclo</a>
+                    <a href="#objetivos" class="nav-link">Objetivos del Paso 4</a>
+                    <a href="#vulnerabilidades" class="nav-link">Vulnerabilidades Introducidas</a>
+                    <a href="#depuracion" class="nav-link">Depuración del Pipeline</a>
+                    <a href="#mitigacion" class="nav-link">Mitigación y Corrección</a>
+                    <a href="#comparativa" class="nav-link">Reporte y Comparativa SAST</a>
+                    <a href="#evidencias" class="nav-link">Evidencias Visuales</a>
+                    <a href="#conclusiones" class="nav-link">Conclusiones del Ciclo</a>
                     <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-750">Volver al menú principal</a>
                 </nav>
 
@@ -39,7 +39,8 @@
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
-            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-cyan-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">PASO 4 — Ciclo de Vulnerabilidad Grave</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Introducción, Detección y Reparación de Vulnerabilidad Grave (SAST)</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
@@ -49,7 +50,7 @@
 
             <!-- Objetivos del Paso 4 -->
             <section id="objetivos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">🎯 1. Objetivo del Paso 4</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🎯 Objetivo del Paso 4</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     El propósito de esta fase del laboratorio es evidenciar empíricamente la efectividad del enfoque <strong>"Shifting Left"</strong> (Seguridad en fases tempranas del desarrollo). Para ello se realiza un ciclo DevSecOps cerrado de 5 fases secuenciales:
                 </p>
@@ -84,7 +85,7 @@
 
             <!-- Vulnerabilidades Introducidas -->
             <section id="vulnerabilidades" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">💻 2. Vulnerabilidades Introducidas en `contact.ts`</h3>
+                <h3 class="text-2xl font-bold text-slate-950">💻 Vulnerabilidades Introducidas en `contact.ts`</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Para elevar la severidad a niveles <strong>HIGH / ERROR</strong> en el motor estático de Semgrep, se modificó el endpoint de la API <code>frontend/pages/api/contact.ts</code> inyectando deliberadamente tres tipos de vulnerabilidades severas controladas:
                 </p>
@@ -112,7 +113,7 @@
 
             <!-- Depuración del Pipeline -->
             <section id="depuracion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">⚙️ 3. Depuración del Pipeline e Incidencias Resueltas</h3>
+                <h3 class="text-2xl font-bold text-slate-950">⚙️ Depuración del Pipeline e Incidencias Resueltas</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     La orquestación automática en GitHub Actions para el flujo de vulnerabilidades arrojó incidencias lógicas específicas que fueron solventadas durante el laboratorio:
                 </p>
@@ -125,7 +126,7 @@
 
             <!-- Mitigacion y Correccion -->
             <section id="mitigacion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">🟢 4. Mitigación y Corrección Técnica</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🟢 Mitigación y Corrección Técnica</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Para resolver las debilidades y restaurar el pipeline a verde, se implementó una estrategia de parcheo en tres ejes:
                 </p>
@@ -160,7 +161,7 @@ const finalHtml = emailTemplate
 
             <!-- Comparativa SAST -->
             <section id="comparativa" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">📊 5. Reporte y Comparativa SAST (Antes vs Después)</h3>
+                <h3 class="text-2xl font-bold text-slate-950">📊 Reporte y Comparativa SAST (Antes vs Después)</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Detalle del estado del escaneo estático en el endpoint <code>contact.ts</code> durante las dos fases del ciclo:
                 </p>
@@ -205,7 +206,7 @@ const finalHtml = emailTemplate
  
              <!-- Evidencias Visuales -->
             <section id="evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">📸 6. Detalle del Ciclo de Ejecución en GitHub Actions</h3>
+                <h3 class="text-2xl font-bold text-slate-950">📸 Detalle del Ciclo de Ejecución en GitHub Actions</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     A continuación se detalla el comportamiento del flujo automatizado diseñado en <code>security.yml</code> durante cada etapa del ciclo de vida del hallazgo:
                 </p>
@@ -239,7 +240,7 @@ const finalHtml = emailTemplate
 
             <!-- Conclusiones del Ciclo -->
             <section id="conclusiones" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">💡 7. Conclusiones del Ciclo para la Defensa del TFG</h3>
+                <h3 class="text-2xl font-bold text-slate-950">💡 Conclusiones del Ciclo para la Defensa del TFG</h3>
                 <div class="space-y-4 text-sm text-slate-700 leading-7">
                     <p>
                         Este laboratorio práctico del <strong>Paso 4</strong> constituye el núcleo empírico de la memoria técnica de tu TFG en el área DevSecOps, demostrando conceptos clave exigidos por el tribunal académico:

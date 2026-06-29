@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipeline DevSecOps: Correcciones y Mitigaciones</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="bg-theme-ci flex justify-center text-slate-900">
     <script>
         async function copyCode(button, targetId) {
             const node = document.getElementById(targetId);
@@ -39,12 +39,12 @@
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#estrategia" class="nav-link">1. Estrategia y Planificación</a>
-                    <a href="#cabeceras-vercel" class="nav-link">2. Cabeceras en Vercel</a>
-                    <a href="#sri-fonts" class="nav-link">3. Mitigación SRI y Fuentes</a>
-                    <a href="#desarrollo-dev" class="nav-link">4. Fallo de Pantalla en Blanco</a>
-                    <a href="#iteracion-csp" class="nav-link">5. Refinamiento de CSP (ZAP)</a>
-                    <a href="#conclusiones" class="nav-link">6. Conclusiones y Excepciones</a>
+                    <a href="#estrategia" class="nav-link">Estrategia y Planificación</a>
+                    <a href="#cabeceras-vercel" class="nav-link">Cabeceras en Vercel</a>
+                    <a href="#sri-fonts" class="nav-link">Mitigación SRI y Fuentes</a>
+                    <a href="#desarrollo-dev" class="nav-link">Fallo de Pantalla en Blanco</a>
+                    <a href="#iteracion-csp" class="nav-link">Refinamiento de CSP (ZAP)</a>
+                    <a href="#conclusiones" class="nav-link">Conclusiones y Excepciones</a>
                     <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
                 </nav>
 
@@ -57,7 +57,8 @@
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
-            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-cyan-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">PASO 2 — Endurecimiento y Parcheo</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Mitigación de Vulnerabilidades y Endurecimiento del Entorno</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
@@ -67,7 +68,7 @@
 
             <!-- Estrategia y Planificacion -->
             <section id="estrategia" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">🎯 1. Estrategia de Mitigación Seleccionada</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🎯 Estrategia de Mitigación Seleccionada</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     De las 11 alertas reportadas en el escaneo inicial, se priorizó la corrección de **5 advertencias críticas** que impactan directamente el endurecimiento de la aplicación, clasificando el resto (directivas de caché o informativas) como aceptables dentro del análisis de riesgo del TFG:
                 </p>
@@ -83,7 +84,7 @@
             <!-- Cabeceras en Vercel -->
             <section id="cabeceras-vercel" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🛡️ 2. Corrección 1: Cabeceras de Seguridad en Next.js</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🛡️ Corrección 1: Cabeceras de Seguridad en Next.js</h3>
                     <p class="text-sm text-slate-700 mt-2 leading-7">
                         Vercel y el servidor Node de Next.js permiten inyectar directivas de cabeceras HTTP en todas las respuestas del servidor mediante el método <code>headers()</code> declarado en <code>next.config.js</code>:
                     </p>
@@ -149,7 +150,7 @@ module.exports = nextConfig;</code></pre>
             <!-- SRI y Fuentes -->
             <section id="sri-fonts" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">📦 3. Corrección 2: Integridad del Subrecurso (SRI)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">📦 Corrección 2: Integridad del Subrecurso (SRI)</h3>
                     <p class="text-sm text-slate-700 leading-7">
                         Para recursos que deben cargarse desde CDNs de terceros lícitos, se documentó el método de verificación utilizando firmas criptográficas.
                     </p>
@@ -180,7 +181,7 @@ module.exports = nextConfig;</code></pre>
             <!-- Fallo de pantalla en blanco -->
             <section id="desarrollo-dev" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">🧱 4. Corrección 3: Fallo de Compilación Local y Pantalla en Blanco</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">🧱 Corrección 3: Fallo de Compilación Local y Pantalla en Blanco</h3>
                     <p class="text-sm text-slate-700 mt-2">
                         Al trasladar las directivas CSP de producción a local, el servidor de desarrollo arrojaba múltiples errores lógicos bloqueando la carga.
                     </p>
@@ -209,7 +210,7 @@ module.exports = nextConfig;</code></pre>
             <!-- Refinamiento de CSP -->
             <section id="iteracion-csp" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">⚡ 5. Refinamiento de CSP y Mitigación de Nuevos Warnings en ZAP</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">⚡ Refinamiento de CSP y Mitigación de Nuevos Warnings en ZAP</h3>
                     <p class="text-sm text-slate-700 mt-2">
                         En la segunda ejecución, ZAP arrojó avisos medios indicando el uso de comodines dinámicos (<code>*.supabase.co</code>) y falta de fallbacks alternativos de CSP:
                     </p>
@@ -317,7 +318,7 @@ module.exports = nextConfig;</code></pre>
 
             <!-- Conclusiones -->
             <section id="conclusiones" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">📌 6. Resumen de Mitigaciones y Justificaciones de Excepciones</h3>
+                <h3 class="text-2xl font-bold text-slate-950">📌 Resumen de Mitigaciones y Justificaciones de Excepciones</h3>
                 
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200 text-sm">

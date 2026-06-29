@@ -30,6 +30,8 @@ body {
         radial-gradient(circle at top left, rgba(16, 185, 129, 0.10), transparent 26%),
         radial-gradient(circle at top right, rgba(14, 165, 233, 0.09), transparent 22%),
         linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: var(--text);
     -webkit-text-size-adjust: 100%;
 }
@@ -453,6 +455,52 @@ main:has(aside) {
         width: 20rem !important; /* w-80 (320px) */
         flex-shrink: 0 !important;
     }
+}
+
+/* Estilo unificado para figuras e imágenes en el TFG (soar.html style) */
+.tfg-figure {
+    margin-top: 1.25rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--border) !important;
+    background-color: var(--surface-soft) !important;
+    padding: 1rem;
+}
+
+.tfg-image {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border) !important;
+    object-fit: cover;
+    background-color: #ffffff;
+}
+
+/* Fondos degradados temáticos por módulo */
+body.bg-theme-atk {
+    background:
+        radial-gradient(circle at top left, rgba(239, 68, 68, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(248, 113, 113, 0.06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+body.bg-theme-ci {
+    background:
+        radial-gradient(circle at top left, rgba(6, 182, 212, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(34, 211, 238, 0.06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+body.bg-theme-soc {
+    background:
+        radial-gradient(circle at top left, rgba(16, 185, 129, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(52, 211, 153, 0.06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
 }
 
 

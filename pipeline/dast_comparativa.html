@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipeline DevSecOps: Re-ejecución y Comparativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../assets/css/site.css">
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.1">
 </head>
-<body class="flex justify-center bg-slate-100 text-slate-900">
+<body class="bg-theme-ci flex justify-center text-slate-900">
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
@@ -20,12 +20,12 @@
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#resumen" class="nav-link">1. Resumen Ejecutivo</a>
-                    <a href="#warnings-medium" class="nav-link">2. Warnings MEDIUM</a>
-                    <a href="#warnings-low" class="nav-link">3. Warnings LOW</a>
-                    <a href="#warnings-info" class="nav-link">4. Warnings Informational</a>
-                    <a href="#comparativa-completa" class="nav-link">5. Comparativa Técnica Completa</a>
-                    <a href="#conclusiones" class="nav-link">6. Conclusiones y Ciclo DevSecOps</a>
+                    <a href="#resumen" class="nav-link">Resumen Ejecutivo</a>
+                    <a href="#warnings-medium" class="nav-link">Warnings MEDIUM</a>
+                    <a href="#warnings-low" class="nav-link">Warnings LOW</a>
+                    <a href="#warnings-info" class="nav-link">Warnings Informational</a>
+                    <a href="#comparativa-completa" class="nav-link">Comparativa Técnica Completa</a>
+                    <a href="#conclusiones" class="nav-link">Conclusiones y Ciclo DevSecOps</a>
                     <a href="../index.html" class="nav-link border-slate-200 bg-slate-50 text-slate-700">Volver al menú principal</a>
                 </nav>
 
@@ -38,7 +38,8 @@
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
-            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10">
+            <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-cyan-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <p class="hero-pill">PASO 3 — Re-ejecución y Comparativa</p>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Comparativa Profesional "Antes vs Después" del Hardening ZAP</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
@@ -75,7 +76,7 @@
 
             <!-- Resumen Ejecutivo -->
             <section id="resumen" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">📌 1. Resumen Ejecutivo</h3>
+                <h3 class="text-2xl font-bold text-slate-950">📌 Resumen Ejecutivo</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     El proceso de endurecimiento (hardening) realizado sobre la infraestructura web en Vercel ha reducido significativamente la superficie de exposición y las alertas reportadas por el analizador dinámico:
                 </p>
@@ -128,7 +129,7 @@
 
             <!-- Warnings Medium -->
             <section id="warnings-medium" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">🧩 2. Warnings MEDIUM — ANTES vs DESPUÉS</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🧩 Warnings MEDIUM — ANTES vs DESPUÉS</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-red-50/55 p-5 rounded-2xl border border-red-100">
@@ -171,7 +172,7 @@ Cross-Domain Misconfiguration</pre>
 
             <!-- Warnings Low -->
             <section id="warnings-low" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">🧩 3. Warnings LOW — ANTES vs DESPUÉS</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🧩 Warnings LOW — ANTES vs DESPUÉS</h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-red-50/55 p-5 rounded-2xl border border-red-100">
@@ -210,7 +211,7 @@ Cross-Origin-Opener-Policy Missing or Invalid</pre>
 
             <!-- Warnings Informational -->
             <section id="warnings-info" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <h3 class="text-2xl font-bold text-slate-950">🧩 4. Warnings Informational (Invariantes)</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🧩 Warnings Informational (Invariantes)</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Las alertas informativas se mantienen estables en 5 ítems, siendo notificaciones descriptivas de arquitectura y optimización que no constituyen una debilidad de seguridad:
                 </p>
@@ -225,7 +226,7 @@ Cross-Origin-Opener-Policy Missing or Invalid</pre>
 
             <!-- Comparativa Completa -->
             <section id="comparativa-completa" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">🧩 5. Comparativa Técnica Completa para la Memoria del TFG</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🧩 Comparativa Técnica Completa para la Memoria del TFG</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     Mapeo comparativo con fechas y marcas temporales de ejecución del pipeline, demostrando la validación del hardening ante auditores:
                 </p>
@@ -321,7 +322,7 @@ Cross-Origin-Opener-Policy Missing or Invalid</pre>
 
             <!-- Conclusiones -->
             <section id="conclusiones" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-950">🛡️ 6. Conclusión y Cierre del Ciclo DevSecOps</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🛡️ Conclusión y Cierre del Ciclo DevSecOps</h3>
                 <p class="text-sm text-slate-700 leading-7">
                     La re-ejecución del pipeline tras las mitigaciones certifica la eficacia del ciclo de mejora continua en la seguridad del portfolio. Se han corregido las cabeceras críticas originales, se han suprimido CDNs externos vulnerables mediante almacenamiento local y los warnings remanentes se encuentran debidamente acotados y justificados bajo excepciones de arquitectura del framework (Next.js) y conectividad (Supabase).
                 </p>
