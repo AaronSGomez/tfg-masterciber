@@ -388,6 +388,24 @@ zap-baseline.py -t https://webinsegura1.duckdns.org -r reporte_zap1.html</code><
                                 <h5 class="text-lg font-black text-slate-950 mb-3">3. Progreso del Escaneo Activo sobre webinsegura2 (DVWA)</h5>
                                 <img src="../assets/explotacion/zap3_webinsegura2_progreso.png" alt="Progreso de escaneo de webinsegura2" class="tfg-image">
                                 <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura en tiempo real del progreso del motor de escaneo activo apuntando a la aplicación de DVWA.</figcaption>
+                                
+                                <div class="mt-4 p-4 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 space-y-3 leading-relaxed">
+                                    <p class="font-bold text-slate-900 flex items-center gap-1.5">
+                                        ⏱️ Análisis de Rendimiento del Escaneo (Duración: ~2 horas de ejecución):
+                                    </p>
+                                    <p>
+                                        El escaneo activo sobre el contenedor de <strong>webinsegura2</strong> se prolonga en el tiempo debido a la arquitectura interna del objetivo y restricciones de red:
+                                    </p>
+                                    <ul class="list-disc pl-4 space-y-1.5 text-slate-700">
+                                        <li><strong>Mayor superficie en rutas y formularios:</strong> DVWA expone rutas independientes para cada vulnerabilidad (<code>/login.php</code>, <code>/vulnerabilities/*</code>, <code>/security.php</code>, <code>/setup.php</code>), forzando a ZAP a rastrear un volumen elevado de parámetros GET/POST y cookies.</li>
+                                        <li><strong>Gestión de Sesión y Redirecciones 302:</strong> Cada payload inyectado fuerza redirecciones y re-validaciones de sesión que obligan al motor a repetir peticiones secuenciales.</li>
+                                        <li><strong>Timeouts y Latencia DDNS:</strong> El acceso perimetral mediante el túnel DuckDNS y Apache introduce retrasos de red y DNS ocasionales. ZAP reintenta cada petición fallida automáticamente, extendiendo el tiempo de escaneo.</li>
+                                        <li><strong>Agresividad del Active Scan:</strong> Ejecución sistemática de pruebas complejas (SQLi, XSS, LFI/RFI, Command Injection y Directory Traversal) contra cada formulario del entorno DVWA.</li>
+                                    </ul>
+                                    <p class="text-slate-650 italic mt-2">
+                                        Conclusión: El avance lento pero continuo valida la robustez de los reintentos automáticos del escáner dinámico ante la latencia perimetral, sin pérdida de datos en el reporte final.
+                                    </p>
+                                </div>
                             </figure>
                         </div>
                     </div>

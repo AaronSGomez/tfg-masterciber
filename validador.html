@@ -89,7 +89,7 @@
             { id: 1, title: "Diagrama de red del laboratorio", block: "Setup", desc: "Modelado de la topología distribuida de tres nodos con WAN.", evidence: "Diagrama de arquitectura de red detallando IPs públicas y subredes internas Docker.", link: "laboratorio/tfg_instalacion.html#topologia", time: "4 horas (Despliegue de red y corrección de errores)" },
             { id: 2, title: "Máquinas víctimas activas con IPs", block: "Setup", desc: "Arranque del docker-compose en la Raspberry Pi 5.", evidence: "Captura del comando docker ps mostrando nombres de contenedores e IPs de subredes.", link: "laboratorio/tfg_instalacion.html#compose", time: "3 horas (Arranque de contenedores e IPs)" },
             { id: 3, title: "Reconocimiento con 5 herramientas", block: "Ofensivo", desc: "Ejecución del set de herramientas OSINT/Escaneo desde Kali.", evidence: "Capturas de consola con: Nmap, DNSdumpster, The Harvester, SpiderFoot y script Python.", link: "ofensivo/reconocimiento.html", time: "7 horas (Análisis pasivo, dig, Spiderfoot y automatización)" },
-            { id: 4, title: "Análisis de vulnerabilidades con CVE", block: "Ofensivo", desc: "Ejecución del análisis con OpenVAS identificando CVE-2025-55182.", evidence: "Reporte PDF de OpenVAS / Greenbone con el CVSS Score y mitigación recomendada.", link: "ofensivo/analisis.html" },
+            { id: 4, title: "Análisis de vulnerabilidades con CVE", block: "Ofensivo", desc: "Ejecución del análisis con OpenVAS identificando CVE-2025-55182.", evidence: "Reporte PDF de OpenVAS / Greenbone con el CVSS Score y mitigación recomendada.", link: "ofensivo/analisis.html", time: "4.75 horas (4h 45m de trabajo)" },
             { id: 5, title: "Acceso web explotado (Vector 1)", block: "Ofensivo", desc: "Evasión del panel de login web mediante inyección SQL clásica.", evidence: "Pantallazo del bypass exitoso del login en el navegador y las cookies interceptadas.", link: "ofensivo/explotacion.html" },
             { id: 6, title: "Acceso a máquina Linux explotado", block: "Ofensivo", desc: "Detonación del exploit de RCE React2Shell obteniendo consola reversa.", evidence: "Captura de la shell interactiva en Kali Linux ejecutando los comandos whoami e id.", link: "ofensivo/explotacion.html" },
             { id: 7, title: "Post-explotación documentada", block: "Ofensivo", desc: "Inyección de persistencia cron, pivoteo a MariaDB y exfiltración.", evidence: "Terminal evidenciando la persistencia inyectada y los comandos de exfiltración de bases de datos.", link: "ofensivo/post_explotacion.html" },
@@ -117,6 +117,7 @@
             1: true,   // Diagrama de red
             2: true,   // Máquinas víctimas
             3: true,   // Reconocimiento perimetral
+            4: true,   // Análisis de vulnerabilidades (OpenVAS)
             9: true,   // Análisis SAST
             10: true,  // Análisis DAST
             11: true,  // Modelado de Amenazas
