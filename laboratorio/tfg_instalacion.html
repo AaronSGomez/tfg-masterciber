@@ -30,6 +30,7 @@
                     <a href="#script" class="nav-link">Script de IP</a>
                     <a href="#wazuh" class="nav-link">Wazuh</a>
                     <a href="#wazuh-avanzado" class="nav-link">Wazuh Logs Avanzado</a>
+                    <a href="#incidencia-proxy" class="nav-link">Incidencia Proxy (DVWA)</a>
                     <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
                 </nav>
 
@@ -59,7 +60,7 @@
             <section id="topologia" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
                 <div class="flex flex-wrap items-end justify-between gap-3">
                     <div>
-                        <h3 class="text-2xl font-bold text-slate-950">Topología de entrada</h3>
+                        <h3 class="text-2xl font-bold text-slate-950">🌐 Topología de entrada</h3>
                         <p class="mt-2 text-sm leading-7 text-slate-700">Esquema WAN con Apache2 nativo como puerta de entrada y publicación de los subdominios de prueba.</p>
                     </div>
                     <span class="progress-status">Tal cual en el .md</span>
@@ -78,7 +79,7 @@
             </section>
 
             <section id="compose" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Configuración docker-compose.yml</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🐳 Configuración docker-compose.yml</h3>
                 <p class="mt-3 leading-8 text-slate-700">Se elimina el proxy intermedio de Docker y se publican los servicios vulnerables en puertos locales altos para que Apache reenvíe el tráfico.</p>
 
                 <div class="code-shell mt-5">
@@ -203,7 +204,7 @@ CMD ["npm", "run", "dev"]</code></pre>
             </section>
 
             <section id="errores" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Errores críticos detectados en el despliegue inicial</h3>
+                <h3 class="text-2xl font-bold text-slate-950">⚠️ Errores críticos detectados en el despliegue inicial</h3>
                 <div class="warning-box">
                     <div class="warning-box-header">
                         <span>Incidencias</span>
@@ -219,7 +220,7 @@ CMD ["npm", "run", "dev"]</code></pre>
             </section>
 
             <section id="duckdns" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Subdominios y captura de DuckDNS</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🦆 Subdominios y captura de DuckDNS</h3>
                 <p class="mt-3 leading-8 text-slate-700">La vinculación de las apps se documenta con los subdominios <code>webinsegura1.duckdns.org</code> y <code>webinsegura2.duckdns.org</code>. La imagen siguiente corresponde a la captura referenciada en el documento original.</p>
 
                 <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
@@ -229,7 +230,7 @@ CMD ["npm", "run", "dev"]</code></pre>
             </section>
 
             <section id="apache" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Apache: IP permitida y VirtualHost</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🛡️ Apache: IP permitida y VirtualHost</h3>
                 <p class="mt-3 leading-8 text-slate-700">Se crea el archivo de configuración para la IP autorizada y se habilitan los módulos necesarios antes de definir los VirtualHost para cada subdominio.</p>
 
                 <div class="mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm leading-7 text-slate-700">
@@ -289,7 +290,7 @@ sudo systemctl restart apache2</code></pre>
             </section>
 
             <section id="certificados" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Errores y soluciones en Proxy y Certificados</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🔑 Errores y soluciones en Proxy y Certificados</h3>
                 <div class="warning-box">
                     <div class="warning-box-header">
                         <span>Incidencias</span>
@@ -304,7 +305,7 @@ sudo systemctl restart apache2</code></pre>
             </section>
 
             <section id="script" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Script de Python para cambiar la IP de forma remota</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🐍 Script de Python para cambiar la IP de forma remota</h3>
                 <p class="mt-3 leading-8 text-slate-700">El script actualiza la IP permitida en Apache, valida la sintaxis y recarga el servicio sin cortar conexiones activas.</p>
 
                 <div class="code-shell mt-5">
@@ -363,7 +364,7 @@ if __name__ == "__main__":
             </section>
 
             <section id="wazuh" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
-                <h3 class="text-2xl font-bold text-slate-950">Instalación y configuración del agente Wazuh</h3>
+                <h3 class="text-2xl font-bold text-slate-950">🦅 Instalación y configuración del agente Wazuh</h3>
                 <p class="mt-3 leading-8 text-slate-700">Este bloque continúa el levantamiento del laboratorio con la monitorización de la Raspberry Pi 5 como agente nativo ARM64.</p>
 
                 <h4 class="mt-6 text-lg font-bold text-slate-950">1. Firma y repositorios oficiales</h4>
@@ -433,7 +434,7 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
 
             <section id="wazuh-avanzado" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-8">
                 <div>
-                    <h3 class="text-2xl font-bold text-slate-950">Ampliación de Configuración de Registros de Wazuh</h3>
+                    <h3 class="text-2xl font-bold text-slate-950">📊 Ampliación de Configuración de Registros de Wazuh</h3>
                     <p class="mt-3 leading-8 text-slate-700">
                         Para que los ataques ofensivos perimetrales e intentos de inyección web dirigidos a la aplicación vulnerable queden registrados correctamente en los paneles de análisis del SOC, es crucial ampliar la telemetría por defecto del Wazuh Manager y configurar reglas específicas de severidad crítica.
                     </p>
@@ -631,6 +632,219 @@ sudo systemctl restart filebeat</code></pre>
                             <p><strong>Causa raíz:</strong> El motor del validador de Wazuh clasifica como "estático" el mapeo directo de un campo JSON ya decodificado (<code>&lt;field name="status"&gt;</code>) al usar reglas secundarias asociadas a un <code>&lt;if_sid&gt;</code>.</p>
                             <p><strong>Solución implementada:</strong> Se realizó la transición desde la estructura de correspondencia de campos directos hacia el uso de <code>&lt;match&gt;malicious_input_detected&lt;/match&gt;</code>. Esto permite al motor realizar una comprobación por patrones en todo el evento sin restricción de tipo, logrando una carga correcta.</p>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="incidencia-proxy" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-950">🔄 Ajuste de Arquitectura: Exclusión de Proxy Inverso para DVWA</h3>
+                        <p class="mt-2 text-sm leading-7 text-slate-700">Incidencia técnica documentada sobre la incompatibilidad de la aplicación clásica con proxies inversos y su resolución en el laboratorio.</p>
+                    </div>
+                    <span class="progress-status bg-amber-100 text-amber-800 border-amber-200">Incidencia Resuelta</span>
+                </div>
+
+                <div class="rounded-2xl border border-red-200 bg-red-50/40 p-5 text-sm leading-7 text-red-900 shadow-sm">
+                    <div class="flex items-center gap-2 font-extrabold text-red-950 mb-2">
+                        <span>🚨 DETECCIÓN DE INCIDENCIA EN LA EXPLOTACIÓN SQL</span>
+                    </div>
+                    <p>
+                        Este ajuste de la arquitectura del laboratorio es el resultado de <strong>subsanar una incidencia de bloqueo y corrupción de sesiones</strong> detectada durante las pruebas de explotación web ofensiva (SQL Injection). La configuración proxy original impedía el paso limpio de las cookies y peticiones de herramientas externas como Burp Suite, por lo que se procedió a documentar y aplicar este cambio como la solución técnica definitiva.
+                    </p>
+                    <p class="mt-2 text-xs text-red-800">
+                        La incidencia fue descubierta durante la fase de ataque documentada en el siguiente apartado:
+                    </p>
+                    <div class="mt-4">
+                        <a href="../ofensivo/explotacion.html#sqli" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-red-900/10 hover:bg-red-700 hover:shadow-lg transition-all duration-200">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Sección de Explotación SQL (Vector 1)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-slate-950">1. Problema Detectado: Incompatibilidad de DVWA con Proxy Inverso</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Durante la fase ofensiva del laboratorio, se configuró inicialmente la aplicación clásica DVWA (Damn Vulnerable Web Application) detrás del servidor web Apache2 actuando como proxy inverso (mediante las directivas <code>ProxyPass</code> y <code>ProxyPassReverse</code>). Esta configuración provocó fallos críticos de funcionamiento:
+                    </p>
+                    <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 space-y-1">
+                        <li><strong>Invalidación de Sesiones:</strong> Pérdida de la sesión del usuario inmediatamente después de autenticarse con éxito.</li>
+                        <li><strong>Gestión de Cookies:</strong> Fallo en el envío de las cookies de sesión (incluyendo <code>PHPSESSID</code>) al navegador cliente.</li>
+                        <li><strong>Rechazo de Tokens CSRF:</strong> Los tokens de validación contra falsificación de peticiones en los formularios de DVWA eran denegados sistemáticamente.</li>
+                        <li><strong>Redirecciones Corruptas:</strong> Generación de bucles de redirección y errores intermitentes HTTP 500/502.</li>
+                        <li><strong>Dificultad de Auditoría:</strong> Imposibilidad de interceptar y repetir peticiones correctamente utilizando herramientas de auditoría externa como Burp Suite o lanzar ataques automatizados sin que Apache bloqueara la conexión o alterara el flujo.</li>
+                    </ul>
+                    <p class="text-sm leading-7 text-slate-700">
+                        La causa raíz técnica reside en que DVWA es una aplicación deliberadamente obsoleta e insegura que no procesa de forma nativa cabeceras SSL/TLS terminadas por un proxy inverso, ni cabeceras de reenvío habituales (tales como <code>X-Forwarded-For</code>, <code>X-Forwarded-Proto</code>, o la reescritura del host y de rutas absolutas).
+                    </p>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-slate-950">2. Transición del Diseño de Exposición ("Apache/localhost proxy inverso interferiendo")</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        En el diseño inicial del laboratorio, todos los servicios estaban expuestos en <code>127.0.0.1:puerto</code> protegidos detrás del proxy de Apache. Sin embargo, esto presentaba dos desventajas fundamentales para las pruebas del TFG:
+                    </p>
+                    <ul class="list-disc pl-5 text-sm leading-7 text-slate-700 space-y-1">
+                        <li>No permitía atacar cómodamente los servicios desde el exterior de la Raspberry Pi de forma directa.</li>
+                        <li>El tráfico ofensivo pasaba obligatoriamente por capas de filtrado intermedio de Apache que introducían ruido o mitigaciones que no correspondían a la vulnerabilidad propia de la aplicación.</li>
+                    </ul>
+                    <p class="text-sm leading-7 text-slate-700">
+                        En el diseño corregido, <strong>DVWA se expone directamente en el host en los puertos altos 90:80 u 81:80 (sin restringir a la interfaz 127.0.0.1)</strong>, mientras que <code>modern_app</code> se publica en el puerto <code>80:8000</code> o a través de su puerto proxy correspondiente. Al eliminar el proxy inverso frente a la aplicación clásica, el tráfico ofensivo interactúa de forma directa y sin interferencias desde Kali Linux o Burp Suite.
+                    </p>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-slate-950">3. Configuración de VirtualHost en Apache para la Aplicación Moderna (webinsegura1)</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Debido a este cambio, solo la aplicación moderna (React + API en Next.js) permanece servida y protegida mediante Apache2. A continuación, se detalla la configuración final aplicada en el VirtualHost de <code>webinsegura1.duckdns.org</code>, incluyendo la redirección permanente a HTTPS y el redireccionamiento interno del tráfico al backend de Docker:
+                    </p>
+                    
+                    <div class="code-shell mt-3">
+                        <div class="px-4 py-3 text-xs text-slate-650 border-b border-slate-200">/etc/apache2/sites-available/tfg_vulnerable.conf (Fragmento)</div>
+                        <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>Include /etc/apache2/conf-available/allowed_ip.conf
+
+# ==========================================
+#  HTTP -> HTTPS REDIRECT
+# ==========================================
+&lt;VirtualHost *:80&gt;
+    ServerName webinsegura1.duckdns.org
+    Redirect permanent / https://webinsegura1.duckdns.org/
+&lt;/VirtualHost&gt;
+
+# ==========================================
+#  HTTPS - REACT CVE (webinsegura1)
+# ==========================================
+&lt;VirtualHost *:443&gt;
+    ServerName webinsegura1.duckdns.org
+
+    SSLEngine on
+    SSLCertificateFile /etc/letsencrypt/live/webinsegura1.duckdns.org/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/webinsegura1.duckdns.org/privkey.pem
+
+    # Limitación opcional de acceso a las subredes del atacante e IP autorizada
+    &lt;Location /&gt;
+        Require ip ${ALLOWED_ATTACKER_IP}
+        Require ip 192.168.1.0/24
+    &lt;/Location&gt;
+
+    ProxyPreserveHost On
+    ProxyPass / http://192.168.1.40:82/
+    ProxyPassReverse / http://192.168.1.40:82/
+&lt;/VirtualHost&gt;</code></pre>
+                    </div>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-slate-950">4. Esquema de Arquitectura Híbrida Resultante</h4>
+                    
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <span>Esquema de la Arquitectura de Transición (Extra)</span>
+                            <span>⚙️</span>
+                        </div>
+                        <div class="warning-box-content">
+                            <pre class="overflow-x-auto text-xs leading-6 text-slate-800 font-mono">
+                         ┌──────────────────────────┐
+                         │        Internet          │
+                         └──────────────┬───────────┘
+                                        │
+                                        ▼
+                          https://webinsegura1.duckdns.org (Modern App)
+                                        │
+                                        ▼
+                         ┌──────────────────────────┐
+                         │         Apache2          │
+                         │    TLS + Filtro IP       │
+                         └──────────────┬───────────┘
+                                        │ (ProxyPass)
+                                        ▼
+                         ┌──────────────────────────┐
+                         │   Modern App (React/API) │
+                         │   Docker: 192.168.1.40:82│
+                         └──────────────────────────┘
+
+
+                         ┌──────────────────────────┐
+                         │          DVWA            │
+                         │   Docker: Port 80/TCP    │
+                         └──────────────┬───────────┘
+                                        │
+                                        ▼
+                         http://&lt;IP-del-servidor&gt;:90 (o puerto local 81)
+                         (Acceso directo desde Kali/Red local sin Apache)
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-slate-950">5. Docker Compose Auxiliar de Explotación</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        A continuación, se detalla el archivo de despliegue alternativo que se habilitó para subsanar los errores de inyección SQL de DVWA exponiendo el puerto directo (en este caso el puerto <code>90:80</code> o <code>81:80</code> de la Raspberry Pi 5):
+                    </p>
+
+                    <div class="code-shell mt-3">
+                        <div class="px-4 py-3 text-xs text-slate-650 border-b border-slate-200">docker-compose-dvwa.yml (Despliegue Directo)</div>
+                        <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>services:
+  dvwa_db:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: dvwa
+      MYSQL_USER: dvwa
+      MYSQL_PASSWORD: dvwa
+
+  dvwa:
+    image: cytopia/dvwa:latest     # Imagen nativa compatible con ARM64 (Raspberry Pi 5)
+    ports:
+      - "90:80"                    # Publicado directamente sin localhost para bypass del proxy
+    environment:
+      MYSQL_HOSTNAME: dvwa_db
+      MYSQL_DATABASE: dvwa
+      MYSQL_USERNAME: dvwa
+      MYSQL_PASSWORD: dvwa
+    depends_on:
+      - dvwa_db</code></pre>
+                    </div>
+
+                    <div class="code-shell mt-4">
+                        <div class="px-4 py-3 text-xs text-slate-650 border-b border-slate-200">docker-compose-modern.yml (App Moderna)</div>
+                        <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>version: "3.8"
+
+services:
+  modern_db:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: lab_modern_db
+      MYSQL_USER: modern
+      MYSQL_PASSWORD: modern123
+    volumes:
+      - modern_db_data:/var/lib/mysql
+
+  modern_app:
+    build: ./modern_app
+    ports:
+      - "82:8000"
+    environment:
+      DB_HOST: modern-db
+      DB_USER: modern
+      DB_PASS: modern123
+      DB_NAME: lab_modern_db
+      NODE_ENV: development
+    depends_on:
+      - modern_db
+
+volumes:
+  modern_db_data:</code></pre>
+                    </div>
+                </div>
+
+                <div class="space-y-4 border-t border-slate-100 pt-6">
+                    <h4 class="text-lg font-bold text-slate-950">6. Justificación Académica para el TFG</h4>
+                    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-250 text-sm leading-7 text-emerald-900">
+                        <strong>Justificación Técnica del Despliegue Híbrido:</strong><br>
+                        "Para mantener la viabilidad docente e investigativa del laboratorio, se optó por un modelo híbrido de exposición. La aplicación web moderna (React + API) interactúa adecuadamente con proxy inverso (Apache2) permitiendo su protección y análisis mediante SSL/TLS bajo <code>webinsegura1.duckdns.org</code>. Por su parte, la aplicación clásica (DVWA) se aisló del proxy inverso para evitar problemas en el procesado de cookies e identificadores de sesión durante las fases de bypass de login con SQL Injection. De esta forma, DVWA queda accesible directamente vía puerto 90/81 en la red local/WAN, permitiendo una explotación fidedigna con herramientas como Burp Suite y SQLMap, sin que la capa del proxy inverso genere distorsiones o falsos negativos."
                     </div>
                 </div>
             </section>

