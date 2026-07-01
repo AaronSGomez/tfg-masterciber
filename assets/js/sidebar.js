@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pasos = isOfensivo ? [
         { url: 'recon.html', label: 'Reconocimiento' },
         { url: 'exploit.html', label: 'Explotación y Detección' },
-        { url: 'post_exploit.html', label: 'Post-Explotación' },
+        { url: 'post.html', label: 'Post-Explotación' },
         { url: 'pentest.html', label: 'Informe de Pentest' }
     ] : [
         { url: 'setup.html', label: 'Montaje (Config)' },
