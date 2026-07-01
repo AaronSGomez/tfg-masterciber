@@ -216,7 +216,7 @@ const finalHtml = emailTemplate
                     <div class="border-t border-slate-100 pt-6">
                         <h4 class="font-bold text-slate-900 text-base mb-1">Fase A: Detección Estática y Quiebre del Pipeline</h4>
                         <p class="text-xs text-slate-500 mb-3"><strong>Proceso en Actions:</strong> El runner ejecuta el Job <code>SAST - Semgrep</code>, el cual analiza sintácticamente el archivo <code>contact.ts</code> modificado. Al detectar las firmas de RCE, Eval y XSS Crítico, Semgrep arroja avisos de criticidad <code>ERROR</code>. Como el script condicional evalúa fallos graves superiores a cero, el job finaliza con código de error, rompiendo la compilación e impidiendo la integración del código defectuoso en la rama principal.</p>
-                        <img src="../assets/pipeline/devsec_semgrep_high.png" alt="Detección de Semgrep con criticidad alta" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <img src="../assets/img/pipeline/devsec_semgrep_high.png" alt="Detección de Semgrep con criticidad alta" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
                         <p class="text-xs text-slate-500 mt-2 text-center">Captura: Consola de ejecución en GitHub indicando el quiebre de la tarea de análisis estático (SAST).</p>
                     </div>
 
@@ -224,7 +224,7 @@ const finalHtml = emailTemplate
                     <div class="border-t border-slate-100 pt-6">
                         <h4 class="font-bold text-slate-900 text-base mb-1">Fase B: Gestión de Incidentes mediante Apertura Automática de Issue</h4>
                         <p class="text-xs text-slate-500 mb-3"><strong>Proceso en Actions:</strong> El Job <code>security-report</code> evalúa las variables exportadas por el analizador. Al confirmar la existencia de hallazgos <code>HIGH</code> o <code>CRITICAL</code> (contador <code>TRIGGER_ISSUE > 0</code>), invoca mediante el token de escritura a la API CLI de GitHub (<code>gh issue create</code>). Esto genera automáticamente una incidencia asignada con etiquetas de depuración para su resolución.</p>
-                        <img src="../assets/pipeline/semgrep_issue high.png" alt="Issue de GitHub abierto de forma automática" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <img src="../assets/img/pipeline/semgrep_issue high.png" alt="Issue de GitHub abierto de forma automática" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
                         <p class="text-xs text-slate-500 mt-2 text-center">Captura: Panel de Issues del repositorio de GitHub mostrando el reporte detallado generado de forma autónoma por la pipeline.</p>
                     </div>
 
@@ -232,7 +232,7 @@ const finalHtml = emailTemplate
                     <div class="border-t border-slate-100 pt-6">
                         <h4 class="font-bold text-slate-900 text-base mb-1">Fase C: Verificación y Saneamiento (Pipeline en Verde)</h4>
                         <p class="text-xs text-slate-500 mb-3"><strong>Proceso en Actions:</strong> Tras subir al repositorio el archivo saneado por el desarrollador (utilizando reemplazo por placeholders y escape de entidades), se dispara nuevamente el pipeline. El Job de Semgrep ejecuta el escaneo estático y reporta 0 vulnerabilidades de cualquier severidad. La pipeline continúa su curso sin disparar alertas ni issues, habilitando la integración segura.</p>
-                        <img src="../assets/pipeline/devsec_semgrep_0errors.png" alt="Pipeline exitoso sin alertas tras aplicar remediación" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <img src="../assets/img/pipeline/devsec_semgrep_0errors.png" alt="Pipeline exitoso sin alertas tras aplicar remediación" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
                         <p class="text-xs text-slate-500 mt-2 text-center">Captura: Flujo de integración continua completado satisfactoriamente en verde tras la remediación.</p>
                     </div>
                 </div>
@@ -256,7 +256,7 @@ const finalHtml = emailTemplate
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
                 <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
-                <a href="sast_comparativa.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                <a href="sast_comp.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
                     Siguiente: Paso 5 (Reporte SAST) &rarr;
                 </a>
             </footer>

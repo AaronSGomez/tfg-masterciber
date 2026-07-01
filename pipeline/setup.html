@@ -75,27 +75,27 @@
                     A continuación se detallan las fases y pasos interactivos que componen la memoria de laboratorio del bloque DevSecOps. Puedes navegar secuencialmente por ellos usando el panel de control flotante fijo:
                 </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-                    <a href="analisis.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                    <a href="analysis.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
                         <strong class="text-slate-900 block mb-1">Paso 1: Análisis Inicial &rarr;</strong>
                         <span class="text-slate-500">Reporte inicial DAST/SAST y detección de 11 warnings.</span>
                     </a>
-                    <a href="dast_vulnerabilidad.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                    <a href="dast_vuln.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
                         <strong class="text-slate-900 block mb-1">Paso 2: Mitigación DAST &rarr;</strong>
                         <span class="text-slate-500">Hardening de cabeceras HTTP y políticas CSP.</span>
                     </a>
-                    <a href="dast_comparativa.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                    <a href="dast_comp.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
                         <strong class="text-slate-900 block mb-1">Paso 3: Comparativa DAST &rarr;</strong>
                         <span class="text-slate-500">Análisis dinámico comparativo antes/después.</span>
                     </a>
-                    <a href="sast_vulnerabilidad.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                    <a href="sast_vuln.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
                         <strong class="text-slate-900 block mb-1">Paso 4: Vulnerabilidad SAST &rarr;</strong>
                         <span class="text-slate-500">Inyección controlada de código y fallo del pipeline.</span>
                     </a>
-                    <a href="sast_comparativa.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                    <a href="sast_comp.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
                         <strong class="text-slate-900 block mb-1">Paso 5: Reporte SAST &rarr;</strong>
                         <span class="text-slate-500">Remediación y comparativa final de código limpio.</span>
                     </a>
-                    <a href="conclusiones.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
+                    <a href="summary.html" class="p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-cyan-50/30 hover:border-cyan-200 transition-all block">
                         <strong class="text-slate-900 block mb-1">Paso Final: Conclusiones &rarr;</strong>
                         <span class="text-slate-500">Cierre metodológico y modelado de amenazas STRIDE.</span>
                     </a>
@@ -112,7 +112,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <img src="../assets/pipeline/imagen error en carpeta.png" alt="Error de detección de carpeta en GitHub Actions" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                    <img src="../assets/img/pipeline/imagen error en carpeta.png" alt="Error de detección de carpeta en GitHub Actions" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
                     <p class="text-xs text-slate-500 mt-2 text-center">Captura: Interfaz de GitHub Actions indicando la ausencia de workflows detectados en el repositorio.</p>
                 </div>
 
@@ -130,7 +130,7 @@
                         Se renombró de manera estructurada el directorio raíz a <code>.github/</code> en el entorno de desarrollo local y se movieron los descriptores del pipeline dentro de su subdirectorio de workflows. Tras realizar el commit y empujar los cambios, GitHub Actions indexó los jobs y comenzó a ejecutarlos automáticamente.
                     </p>
                     <div class="mt-4">
-                        <img src="../assets/pipeline/workflows.png" alt="Directorio de workflows corregido" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <img src="../assets/img/pipeline/workflows.png" alt="Directorio de workflows corregido" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
                         <p class="text-xs text-slate-500 mt-2 text-center">Captura: Estructura de directorios corregida y sincronizada en la interfaz web de GitHub.</p>
                     </div>
                 </div>
@@ -659,7 +659,7 @@ DevSecOps Pipeline (Flujo de Ejecución Correcto)
                     <h4 class="font-bold text-slate-900">Ejecución del Pipeline en Producción</h4>
                     <p class="text-sm text-slate-700">Visualización de los jobs ejecutados de forma paralela en el entorno final de GitHub:</p>
                     <div class="mt-4">
-                        <img src="../assets/pipeline/jobs.png" alt="Ejecución de los jobs del pipeline" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
+                        <img src="../assets/img/pipeline/jobs.png" alt="Ejecución de los jobs del pipeline" class="rounded-xl border border-slate-200 shadow-sm max-w-full">
                         <p class="text-xs text-slate-500 mt-2 text-center">Captura: Flujo de ejecución secuencial y consolidado de Jobs en la interfaz de GitHub Actions.</p>
                     </div>
                 </div>
@@ -668,7 +668,7 @@ DevSecOps Pipeline (Flujo de Ejecución Correcto)
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             <footer class="flex items-center justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
                 <span class="text-xs text-slate-500 font-medium">Nota: Puedes volver atrás en cualquier momento pulsando la flecha flotante en la esquina superior derecha.</span>
-                <a href="analisis.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
+                <a href="analysis.html" class="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors">
                     Siguiente: Paso 1 (Análisis) &rarr;
                 </a>
             </footer>

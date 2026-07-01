@@ -118,21 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // BOTONERA DE FLUJO DEVSECOPS Y OFENSIVO FLOTANTE FIJA (SUPERIOR DERECHA)
     // ==========================================
-    const isOfensivo = window.location.pathname.includes('/ofensivo/');
+    const isOfensivo = window.location.pathname.includes('/exploit/');
     const pasos = isOfensivo ? [
-        { url: 'reconocimiento.html', label: 'Reconocimiento' },
-        { url: 'explotacion.html', label: 'Explotación y Detección' },
-        { url: 'post_explotacion.html', label: 'Post-Explotación' },
+        { url: 'recon.html', label: 'Reconocimiento' },
+        { url: 'exploit.html', label: 'Explotación y Detección' },
+        { url: 'post_exploit.html', label: 'Post-Explotación' },
         { url: 'pentest.html', label: 'Informe de Pentest' }
     ] : [
-        { url: 'montajes.html', label: 'Montaje (Config)' },
-        { url: 'analisis.html', label: 'Paso 1 (Análisis)' },
-        { url: 'dast_vulnerabilidad.html', label: 'Paso 2 (Mitigación DAST)' },
-        { url: 'dast_comparativa.html', label: 'Paso 3 (Comparativa DAST)' },
-        { url: 'sast_vulnerabilidad.html', label: 'Paso 4 (Vulnerabilidad SAST)' },
-        { url: 'sast_comparativa.html', label: 'Paso 5 (Reporte SAST)' },
-        { url: 'conclusiones.html', label: 'Paso Final (Conclusiones)' },
-        { url: 'threat_dragon.html', label: 'Modelado (Threat Dragon)' }
+        { url: 'setup.html', label: 'Montaje (Config)' },
+        { url: 'analysis.html', label: 'Paso 1 (Análisis)' },
+        { url: 'dast_vuln.html', label: 'Paso 2 (Mitigación DAST)' },
+        { url: 'dast_comp.html', label: 'Paso 3 (Comparativa DAST)' },
+        { url: 'sast_vuln.html', label: 'Paso 4 (Vulnerabilidad SAST)' },
+        { url: 'sast_comp.html', label: 'Paso 5 (Reporte SAST)' },
+        { url: 'summary.html', label: 'Paso Final (Conclusiones)' },
+        { url: 'threat.html', label: 'Modelado (Threat Dragon)' }
     ];
 
     const currentUrl = window.location.pathname.split('/').pop();

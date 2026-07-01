@@ -166,7 +166,7 @@ volumes:
                         Una vez levantado el entorno con docker-compose, validamos que los contenedores del motor de base de datos MariaDB (<code>lab-db-server</code>), la aplicación moderna Next.js vulnerable (<code>lab-modern-app</code>) y la aplicación clásica DVWA (<code>lab-classic-app</code>) están arriba y estables:
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/docker_levantado.png" alt="Contenedores Docker activos" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/docker_levantado.png" alt="Contenedores Docker activos" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura: Contenedores MariaDB, Next.js y DVWA levantados y operativos</figcaption>
                     </figure>
 
@@ -176,17 +176,17 @@ volumes:
                         </p>
                         
                         <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <img src="../assets/service_dvwa.png" alt="Logs del contenedor DVWA" class="w-full rounded-xl border border-slate-200 object-cover">
+                            <img src="../assets/img/lab/service_dvwa.png" alt="Logs del contenedor DVWA" class="w-full rounded-xl border border-slate-200 object-cover">
                             <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Logs del servicio web clásico DVWA levantado sobre ARM64</figcaption>
                         </figure>
 
                         <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <img src="../assets/service_db_server.png" alt="Logs del contenedor MariaDB" class="w-full rounded-xl border border-slate-200 object-cover">
+                            <img src="../assets/img/lab/service_db_server.png" alt="Logs del contenedor MariaDB" class="w-full rounded-xl border border-slate-200 object-cover">
                             <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Inicialización y logs del motor de base de datos MariaDB Server</figcaption>
                         </figure>
 
                         <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <img src="../assets/service_react_cve.png" alt="Logs del contenedor React" class="w-full rounded-xl border border-slate-200 object-cover">
+                            <img src="../assets/img/lab/service_react_cve.png" alt="Logs del contenedor React" class="w-full rounded-xl border border-slate-200 object-cover">
                             <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Logs de compilación y servidor Next.js/React vulnerable</figcaption>
                         </figure>
                     </div>
@@ -224,7 +224,7 @@ CMD ["npm", "run", "dev"]</code></pre>
                 <p class="mt-3 leading-8 text-slate-700">La vinculación de las apps se documenta con los subdominios <code>webinsegura1.duckdns.org</code> y <code>webinsegura2.duckdns.org</code>. La imagen siguiente corresponde a la captura referenciada en el documento original.</p>
 
                 <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                    <img src="../assets/image.png" alt="Captura de subdominios DuckDNS" class="w-full rounded-xl border border-slate-200 object-cover">
+                    <img src="../assets/img/lab/image.png" alt="Captura de subdominios DuckDNS" class="w-full rounded-xl border border-slate-200 object-cover">
                     <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura de subdominios y vínculo DuckDNS</figcaption>
                 </figure>
             </section>
@@ -409,14 +409,14 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
                         Tras habilitar e iniciar el demonio en la Raspberry Pi 5, verificamos el arranque exitoso de sus módulos locales de monitorización para descartar errores en el arranque:
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/wazuh_service.png" alt="Estado del servicio wazuh-agent" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/wazuh_service.png" alt="Estado del servicio wazuh-agent" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura: Estado activo y diagnóstico de arranque del servicio de wazuh-agent en la Raspberry Pi 5</figcaption>
                     </figure>
                     <p class="text-sm leading-7 text-slate-700">
                         Paralelamente, verificamos el estado general y el arranque de todos los componentes distribuidos dentro del servidor Ubuntu donde se aloja el Wazuh Manager centralizado:
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/wazuh_manager.png" alt="Estado de los servicios del Wazuh Manager" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/wazuh_manager.png" alt="Estado de los servicios del Wazuh Manager" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Captura: Comprobación de demonios y puertos activos en el Wazuh Manager</figcaption>
                     </figure>
                 </div>
@@ -426,7 +426,7 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
                         Una vez levantado el agente en el nodo de escucha local, la conexión TLS mutua (cifrada en el puerto 1514) se realiza de forma automática. Desde el panel central se visualiza que la Raspberry Pi 5 se ha enlazado de forma segura y se encuentra en estado activo de monitorización.
                     </p>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/wazuh_agentes.png" alt="Agentes de Wazuh Activos" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/wazuh_agentes.png" alt="Agentes de Wazuh Activos" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Consola de Wazuh Dashboard con la Raspberry Pi 5 en estado activo</figcaption>
                     </figure>
                 </div>
@@ -476,7 +476,7 @@ sudo tail -n 20 /var/ossec/logs/ossec.log | grep -E "agentd|connected|status"</c
 &lt;/global&gt;</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/configwazuh ossec_conf.png" alt="Configuración de ossec.conf en Wazuh Manager" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/configwazuh ossec_conf.png" alt="Configuración de ossec.conf en Wazuh Manager" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Habilitación de jsonout_output y logall_json en el host del Manager</figcaption>
                     </figure>
                 </div>
@@ -559,7 +559,7 @@ sudo systemctl restart filebeat</code></pre>
 &lt;/group&gt;</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/configwazuh local_rules_xml.png" alt="Fichero local_rules.xml editado" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/configwazuh local_rules_xml.png" alt="Fichero local_rules.xml editado" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Incorporación de firmas personalizadas XML para telemetría JSON de Next.js</figcaption>
                     </figure>
                 </div>
@@ -590,7 +590,7 @@ sudo systemctl restart filebeat</code></pre>
 &lt;/ossec_config&gt;</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/configpi5 ossec_conf.png" alt="Configuración de ossec.conf del agente" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/configpi5 ossec_conf.png" alt="Configuración de ossec.conf del agente" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Declaración de los ficheros de log que el agente de la Raspberry Pi 5 debe enviar</figcaption>
                     </figure>
                     <p class="text-sm leading-7 text-slate-700">Reinicio del servicio para aplicar los cambios del demonio del agente:</p>
@@ -612,7 +612,7 @@ sudo systemctl restart filebeat</code></pre>
                         <pre class="overflow-x-auto p-4 text-sm leading-7 text-slate-900"><code>{"source":"app_server","context":"rsc_deserialization","status":"malicious_input_detected","input_received":"1:I","error_message":"Intento de inyección de módulo crítico detectado."}</code></pre>
                     </div>
                     <figure class="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                        <img src="../assets/logtest.png" alt="Salida del comando wazuh-logtest" class="w-full rounded-xl border border-slate-200 object-cover">
+                        <img src="../assets/img/lab/logtest.png" alt="Salida del comando wazuh-logtest" class="w-full rounded-xl border border-slate-200 object-cover">
                         <figcaption class="mt-3 text-[13px] italic text-slate-600 text-center">Salida de wazuh-logtest indicando el disparo de la alerta ID 100503 con nivel 14</figcaption>
                     </figure>
                     <p class="text-sm leading-7 text-slate-700">
@@ -656,7 +656,7 @@ sudo systemctl restart filebeat</code></pre>
                         La incidencia fue descubierta durante la fase de ataque documentada en el siguiente apartado:
                     </p>
                     <div class="mt-4">
-                        <a href="../ofensivo/explotacion.html#sqli" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-red-900/10 hover:bg-red-700 hover:shadow-lg transition-all duration-200">
+                        <a href="../exploit/exploit.html#sqli" class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-red-900/10 hover:bg-red-700 hover:shadow-lg transition-all duration-200">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Sección de Explotación SQL (Vector 1)
                         </a>
                     </div>
