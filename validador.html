@@ -92,8 +92,8 @@
             { id: 4, title: "Análisis de vulnerabilidades con CVE", block: "Ofensivo", desc: "Ejecución del análisis con OpenVAS identificando CVE-2025-55182.", evidence: "Reporte PDF de OpenVAS / Greenbone con el CVSS Score y mitigación recomendada.", link: "exploit/exploit.html#vuln", time: "5.15 horas" },
             { id: 5, title: "Acceso web explotado (Vector 1)", block: "Ofensivo", desc: "Evasión del panel de login web mediante inyección SQL clásica.", evidence: "Pantallazo del bypass exitoso del login en el navegador y las cookies interceptadas.", link: "exploit/exploit.html", time: "15 horas" },
             { id: 6, title: "Acceso a máquina Linux explotado", block: "Ofensivo", desc: "Detonación del exploit de RCE React2Shell obteniendo ejecución remota de comandos sobre HTTPS.", evidence: "Capturas de Burp Repeater mostrando el payload inyectado, la ejecución de comandos (ls -la) y la lectura final de la bandera exfiltrada.", link: "exploit/exploit.html", time: "4 horas" },
-            { id: 7, title: "Post-explotación documentada", block: "Ofensivo", desc: "Inyección de persistencia cron, pivoteo a MariaDB y exfiltración.", evidence: "Terminal evidenciando la persistencia inyectada y los comandos de exfiltración de bases de datos.", link: "exploit/post.html" },
-            { id: 8, title: "Informe de pentest redactado", block: "Ofensivo", desc: "Elaboración formal del informe de auditoría técnica.", evidence: "Documento formal con estructura ejecutiva y matriz de severidades estimadas según CVSS v3.1.", link: "exploit/pentest.html" },
+            { id: 7, title: "Post-explotación documentada", block: "Ofensivo", desc: "Secuestro de sesión en DVWA, exfiltración de MariaDB y ejecución de comandos en React2Shell.", evidence: "Capturas de robo de cookies, tablas y hashes de MariaDB exfiltrados, y lectura de flag.txt en Burp Repeater.", link: "exploit/post.html", time: "30 min" },
+            { id: 8, title: "Informe de pentest redactado", block: "Ofensivo", desc: "Elaboración formal del informe de auditoría técnica con directivas de mitigación.", evidence: "Reporte de auditoría con índice técnico, matriz de severidades CVSS v3.1, planes de remediación y 5 evidencias clave en columna.", link: "exploit/pentest.html", time: "40 min" },
             { id: 9, title: "Análisis SAST ejecutado", block: "Dev Seguro", desc: "Ejecución del análisis estático del código Next.js mediante Semgrep.", evidence: "Captura del reporte generado por Semgrep categorizando vulnerabilidades de inyección.", link: "pipeline/analysis.html#sast-semgrep", time: "2 horas (Paso 1: Análisis SAST con Semgrep - 4h en total para SAST/DAST)" },
             { id: 10, title: "Análisis DAST ejecutado", block: "Dev Seguro", desc: "Escaneo dinámico activo apuntando a tus subdominios reales de DuckDNS.", evidence: "Informe de vulnerabilidades dinámicas generado en formato HTML/PDF por OWASP ZAP.", link: "pipeline/analysis.html#dast", time: "3.75 horas (3h 45m total - 2h inicial + 1h 45m de depuración de CSP/ZAP)" },
             { id: 11, title: "Modelado de amenazas realizado", block: "Dev Seguro", desc: "Creación del DFD lógico de la aplicación moderna en OWASP Threat Dragon.", evidence: "Capturas de pantalla del modelado gráfico STRIDE exportado de Threat Dragon.", link: "pipeline/threat.html", time: "1.5 horas" },
@@ -120,6 +120,8 @@
             4: true,   // Análisis de vulnerabilidades (OpenVAS)
             5: true,   // Acceso web explotado (Vector 1)
             6: true,   // Acceso a máquina Linux explotado
+            7: true,   // Post-explotación documentada
+            8: true,   // Informe de Pentest redactado
             9: true,   // Análisis SAST
             10: true,  // Análisis DAST
             11: true,  // Modelado de Amenazas
