@@ -120,19 +120,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const isOfensivo = window.location.pathname.includes('/exploit/');
     const pasos = isOfensivo ? [
-        { url: 'recon.html', label: 'Reconocimiento' },
-        { url: 'exploit.html', label: 'Explotación y Detección' },
+        { url: 'recon.html', label: 'Reconocimiento y Escaneo' },
+        { url: 'exploit.html', label: 'Explotación y Wazuh' },
         { url: 'post.html', label: 'Post-Explotación' },
         { url: 'pentest.html', label: 'Informe de Pentest' }
     ] : [
-        { url: 'setup.html', label: 'Montaje (Config)' },
-        { url: 'analysis.html', label: 'Paso 1 (Análisis)' },
-        { url: 'dast_vuln.html', label: 'Paso 2 (Mitigación DAST)' },
-        { url: 'dast_comp.html', label: 'Paso 3 (Comparativa DAST)' },
-        { url: 'sast_vuln.html', label: 'Paso 4 (Vulnerabilidad SAST)' },
-        { url: 'sast_comp.html', label: 'Paso 5 (Reporte SAST)' },
-        { url: 'summary.html', label: 'Paso Final (Conclusiones)' },
-        { url: 'threat.html', label: 'Modelado (Threat Dragon)' }
+        { url: 'setup.html', label: 'Montaje Pipeline' },
+        { url: 'analysis.html', label: 'Análisis Inicial' },
+        { url: 'dast_vuln.html', label: 'Mitigación DAST' },
+        { url: 'dast_comp.html', label: 'Comparativa DAST' },
+        { url: 'sast_vuln.html', label: 'Vulnerabilidad SAST' },
+        { url: 'sast_comp.html', label: 'Reporte SAST' },
+        { url: 'summary.html', label: 'Conclusiones Finales' },
+        { url: 'threat.html', label: 'Modelado Threat' }
     ];
 
     const currentUrl = window.location.pathname.split('/').pop();
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (currentIndex !== -1) {
         const floatNav = document.createElement('div');
-        floatNav.className = 'fixed top-6 right-6 z-50 flex items-center gap-1.5 bg-slate-950/80 text-white rounded-full p-1.5 shadow-2xl border border-slate-700/40 backdrop-blur-md transition-all duration-300';
+        floatNav.className = 'fixed top-6 right-6 z-50 flex items-center gap-1.5 bg-white/90 text-slate-800 rounded-full p-1.5 shadow-xl border border-slate-200/80 backdrop-blur-md transition-all duration-300';
         
         let prevButton = '';
         let nextButton = '';
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentIndex > 0) {
             const prev = pasos[currentIndex - 1];
             prevButton = `
-                <a href="${prev.url}" title="Anterior: ${prev.label}" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-slate-200 transition-all hover:bg-slate-800 hover:text-white border border-slate-800">
+                <a href="${prev.url}" title="Anterior: ${prev.label}" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-50 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-800 border border-slate-200">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
                     </svg>
@@ -171,11 +171,167 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
 
+        // Hamburguesa flotante
+        const menuHtml = `
+            <div class="relative">
+                <button id="float-menu-btn" title="Menú de Navegación" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-50 text-slate-600 transition-all hover:bg-slate-100 hover:text-slate-800 border border-slate-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <div id="float-menu-dropdown" class="hidden absolute right-0 top-12 w-56 rounded-2xl bg-white border border-slate-200 p-2 shadow-xl text-xs space-y-1 backdrop-blur-md">
+                    ${pasos.map((p, idx) => `
+                        <a href="${p.url}" class="block px-3 py-2 rounded-lg transition-colors ${idx === currentIndex ? accentBg + ' text-white font-bold' : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'}">
+                            ${p.label}
+                        </a>
+                    `).join('')}
+                    <div class="border-t border-slate-100 my-1"></div>
+                    <a href="../index.html" class="block px-3 py-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                        ← Menú Principal
+                    </a>
+                </div>
+            </div>
+        `;
+
         floatNav.innerHTML = `
             ${prevButton}
+            ${menuHtml}
             ${nextButton}
         `;
 
         document.body.appendChild(floatNav);
+
+        // Inyectar CSS de vibración si no existe en la cabecera
+        if (!document.getElementById('float-menu-shake-css')) {
+            const style = document.createElement('style');
+            style.id = 'float-menu-shake-css';
+            style.innerHTML = `
+                @keyframes floatMenuShake {
+                    0%, 100% { transform: scale(1) rotate(0deg); }
+                    15%, 45%, 75% { transform: scale(1.1) rotate(-4deg); }
+                    30%, 60% { transform: scale(1.1) rotate(4deg); }
+                }
+                .shake-attention {
+                    animation: floatMenuShake 0.7s ease-in-out 3;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Determinar si es la página de entrada de cada flujo para mostrar siempre el aviso
+        const neverShowAgain = localStorage.getItem('float_menu_tutorial_never_show') === 'true';
+        const isFirstPageOfFlow = (currentUrl === 'recon.html' || currentUrl === 'setup.html');
+
+        // Ejecutar vibración visual al cargar la página SOLO en la primera página de cada flujo y si ya se ha marcado el "no volver a mostrar"
+        if (neverShowAgain && isFirstPageOfFlow) {
+            setTimeout(() => {
+                // Primera ejecución de la vibración
+                floatNav.classList.add('shake-attention');
+                setTimeout(() => {
+                    floatNav.classList.remove('shake-attention');
+                    
+                    // Pausa de 2.2s antes de lanzar la segunda ejecución
+                    setTimeout(() => {
+                        floatNav.classList.add('shake-attention');
+                        setTimeout(() => {
+                            floatNav.classList.remove('shake-attention');
+                        }, 2200);
+                    }, 2200);
+                    
+                }, 2200);
+            }, 800);
+        }
+
+        const showTutorial = !neverShowAgain && (isFirstPageOfFlow || !localStorage.getItem('float_menu_tutorial_shown'));
+
+        if (showTutorial) {
+            // Mapear colores de tema según el acento calculado de la página
+            let themeBg = 'bg-amber-50';
+            let themeBorder = 'border-amber-200';
+            let themeText = 'text-amber-950';
+            let themeTitle = 'text-amber-900';
+            let themeButton = 'bg-amber-600 hover:bg-amber-700';
+
+            if (accentBg === 'bg-red-600') {
+                themeBg = 'bg-red-50';
+                themeBorder = 'border-red-200';
+                themeText = 'text-red-950';
+                themeTitle = 'text-red-900';
+                themeButton = 'bg-red-600 hover:bg-red-700';
+            } else if (accentBg === 'bg-emerald-600') {
+                themeBg = 'bg-emerald-50';
+                themeBorder = 'border-emerald-200';
+                themeText = 'text-emerald-950';
+                themeTitle = 'text-emerald-900';
+                themeButton = 'bg-emerald-600 hover:bg-emerald-700';
+            } else if (accentBg === 'bg-cyan-600') {
+                themeBg = 'bg-cyan-50';
+                themeBorder = 'border-cyan-200';
+                themeText = 'text-cyan-955';
+                themeTitle = 'text-cyan-900';
+                themeButton = 'bg-cyan-600 hover:bg-cyan-700';
+            }
+
+            const tutorialTip = document.createElement('div');
+            // Tooltip estático (sin animación de rebote para fácil lectura) y con la flecha arriba señalando el botón
+            tutorialTip.className = `absolute right-0 top-14 w-64 p-5 ${themeBg} border ${themeBorder} ${themeText} rounded-2xl shadow-2xl text-xs leading-relaxed z-50 flex flex-col gap-3 transition-opacity duration-300`;
+            tutorialTip.innerHTML = `
+                <div class="absolute -top-2 right-4 w-3.5 h-3.5 rotate-45 border-l border-t ${themeBorder} ${themeBg}"></div>
+                <div class="font-extrabold text-sm flex items-center gap-1.5 ${themeTitle}">
+                    <span>💡 Tip de Navegación</span>
+                </div>
+                <p class="font-medium text-[11px] leading-relaxed">Pulsa este botón para desplegar el menú general con todas las páginas de este laboratorio.</p>
+                <div class="flex items-center gap-2 py-0.5 border-t border-slate-200/50 mt-1">
+                    <input type="checkbox" id="never-show-again-chk" class="rounded border-slate-300 text-slate-700 focus:ring-0 cursor-pointer h-3.5 w-3.5">
+                    <label for="never-show-again-chk" class="select-none cursor-pointer font-semibold text-[10px] text-slate-600">No volver a mostrar</label>
+                </div>
+                <button id="close-tutorial-btn" class="w-full ${themeButton} text-white font-bold rounded-xl py-2 transition-colors uppercase tracking-wider text-[10px] shadow-sm">Entendido</button>
+            `;
+            const relativeWrapper = floatNav.querySelector('.relative');
+            if (relativeWrapper) {
+                relativeWrapper.appendChild(tutorialTip);
+
+                const closeTutorialBtn = tutorialTip.querySelector('#close-tutorial-btn');
+                const neverShowChk = tutorialTip.querySelector('#never-show-again-chk');
+                if (closeTutorialBtn) {
+                    closeTutorialBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        tutorialTip.remove();
+                        localStorage.setItem('float_menu_tutorial_shown', 'true');
+                        // Si marca el checkbox, guardamos la exclusión definitiva
+                        if (neverShowChk && neverShowChk.checked) {
+                            localStorage.setItem('float_menu_tutorial_never_show', 'true');
+                        }
+                    });
+                }
+
+                // Autocierre después de 15 segundos si el usuario no interactúa
+                setTimeout(() => {
+                    if (tutorialTip.parentNode) {
+                        tutorialTip.remove();
+                        localStorage.setItem('float_menu_tutorial_shown', 'true');
+                    }
+                }, 15000);
+            }
+        }
+
+        // Control del toggle del menú hamburguesa
+        const menuBtn = floatNav.querySelector('#float-menu-btn');
+        const dropdown = floatNav.querySelector('#float-menu-dropdown');
+        if (menuBtn && dropdown) {
+            menuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('hidden');
+                // Al abrir el menú principal, removemos el tutorial por si seguía activo
+                const activeTutorial = floatNav.querySelector('.animate-bounce');
+                if (activeTutorial) {
+                    activeTutorial.remove();
+                    localStorage.setItem('float_menu_tutorial_shown', 'true');
+                }
+            });
+            document.addEventListener('click', () => {
+                dropdown.classList.add('hidden');
+            });
+        }
     }
 });
