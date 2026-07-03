@@ -503,4 +503,34 @@ body.bg-theme-soc {
     background-repeat: no-repeat !important;
 }
 
+body.bg-theme-mfa {
+    background:
+        radial-gradient(circle at top left, rgba(168, 85, 247, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(217, 70, 239, 0.06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+body.bg-theme-orange {
+    background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(251, 146, 60, 0.06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+body.bg-theme-forensic {
+    background:
+        radial-gradient(circle at top left, rgba(99, 102, 241, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(139, 92, 246, 0.06), transparent 28%),
+        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+
+
+
+
 

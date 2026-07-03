@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adquisición Forense y Análisis con Autopsy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-theme-forensic flex justify-center text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado';
+                button.classList.add('bg-indigo-500/20', 'text-indigo-700');
+                setTimeout(() => {
+                    button.innerHTML = original;
+                    button.classList.remove('bg-indigo-500/20', 'text-indigo-700');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'Error';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Sidebar lateral -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-700">Evidencia #21</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Forense</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link"><i class="fas fa-door-open mr-2 text-slate-400"></i>Portada</a>
+                    <a href="#principios-forenses" class="nav-link"><i class="fas fa-gavel mr-2 text-slate-400"></i>Principios Forenses</a>
+                    <a href="#adquisicion-datos" class="nav-link"><i class="fas fa-hdd mr-2 text-slate-400"></i>Adquisición de Imagen</a>
+                    <a href="#guia-autopsy" class="nav-link"><i class="fas fa-paste mr-2 text-slate-400"></i>Manual de Ejecución</a>
+                    <a href="#analisis-avanzado" class="nav-link"><i class="fas fa-chart-line mr-2 text-slate-400"></i>Análisis de Resultados</a>
+                    <a href="#panel-evidencias" class="nav-link"><i class="fas fa-images mr-2 text-slate-400"></i>Evidencias Panel</a>
+                    <a href="../validador.html" class="nav-link border-rose-200 bg-rose-50/50 text-rose-900 hover:bg-rose-100/70"><i class="fas fa-check-double mr-2"></i>Volver al Validador</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">Aarón S. Gómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenedor de Contenido -->
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            
+            <!-- Portada / Cabecera -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-indigo-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div class="flex items-center gap-2">
+                    <span class="hero-pill border-indigo-500/20 bg-indigo-100 text-indigo-800">Análisis Forense Digital</span>
+                    <span class="progress-status border-indigo-500/20 bg-indigo-100 text-indigo-800">Objetivo 21</span>
+                </div>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Manual Forense: Adquisición Lógica y Análisis con Autopsy</h2>
+                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
+                    Guía de análisis forense digital bajo directrices **NIST SP 800-86**: desde la extracción física y lógica del volumen comprometido de base de datos MariaDB (Raw Image `dd`), la verificación criptográfica SHA-256, hasta la investigación minuciosa en la plataforma **Autopsy**.
+                </p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-search-dollar mr-1.5"></i>Autopsy Suite</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-fingerprint mr-1.5"></i>Hash SHA-256</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-save mr-1.5"></i>Raw Image (.dd)</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-database mr-1.5"></i>MariaDB Forensic</span>
+                </div>
+            </header>
+
+            <!-- Sección 1: Principios Forenses -->
+            <section id="principios-forenses" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-gavel text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">1. Principios de Integridad y Cadena de Custodia</h3>
+                </div>
+                <p class="leading-8 text-slate-700">
+                    El análisis forense digital se rige por la preservación rigurosa de las pruebas. La regla fundamental es <strong>nunca realizar análisis directamente sobre el dispositivo o volumen de almacenamiento original</strong>. Se debe realizar una copia bit a bit (clonado físico o adquisición lógica) y validar su integridad matemática utilizando funciones hash criptográficas (como MD5 o SHA-256).
+                </p>
+                
+                <div class="grid gap-4 md:grid-cols-3 mt-6">
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
+                        <h4 class="font-bold text-slate-950 text-sm mb-2 flex items-center text-indigo-800">
+                            <i class="fas fa-lock mr-2"></i> Preservación
+                        </h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Aislamiento del volumen de almacenamiento comprometido antes de realizar cualquier lectura para impedir que el sistema de archivos altere metadatos críticos como las fechas MAC (Modify, Access, Create).
+                        </p>
+                    </div>
+                    
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
+                        <h4 class="font-bold text-slate-950 text-sm mb-2 flex items-center text-indigo-800">
+                            <i class="fas fa-hashtag mr-2"></i> Verificación
+                        </h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Generación de la firma hash SHA-256 del dispositivo origen y su posterior contraste con el archivo de imagen generado (`.dd`). Ambos hashes deben coincidir con precisión absoluta.
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
+                        <h4 class="font-bold text-slate-950 text-sm mb-2 flex items-center text-indigo-800">
+                            <i class="fas fa-file-invoice mr-2"></i> Documentación
+                        </h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Registro minucioso de cada fase de adquisición, incluyendo marcas temporales, comandos ejecutados, herramientas utilizadas y firmas del analista forense a cargo.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 2: Adquisición / dd -->
+            <section id="adquisicion-datos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-hdd text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">2. Adquisición del Volumen Comprometido</h3>
+                </div>
+                <p class="leading-8 text-slate-700">
+                    En el escenario del TFM, la base de datos MariaDB (que contenía las tablas y hashes vulnerados en la fase ofensiva) se aloja dentro del contenedor <code>lab-db-server</code> con un volumen mapeado persistente. El proceso de adquisición se centra en realizar un volcado *raw* (copia exacta de bloques) de dicho volumen de datos persistente.
+                </p>
+
+                <!-- Flujo de comandos -->
+                <div class="space-y-4">
+                    <h4 class="font-extrabold text-slate-950 text-base">Comandos de Adquisición en Consola Forense (Linux)</h4>
+                    <p class="text-sm text-slate-600">
+                        Paso a paso técnico para la localización, firma y volcado del volumen comprometido de MariaDB:
+                    </p>
+
+                    <div class="code-shell relative">
+                        <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-650 border-b border-slate-200">
+                            <span>Bash Forensic Work - Adquisición dd</span>
+                            <button onclick="copyCode(this, 'code-forensic-dd')" class="copy-btn text-indigo-600 hover:text-indigo-800">
+                                <i class="fas fa-copy"></i> Copiar
+                            </button>
+                        </div>
+                        <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-forensic-dd"># 1. Identificar la ruta del volumen de datos del contenedor Docker de MariaDB
+docker volume inspect ciber_db_data
+
+# 2. Generar el hash SHA-256 del bloque/directorio origen antes de la lectura
+sudo sha256sum /var/lib/docker/volumes/ciber_db_data/_data/ibdata1
+
+# 3. Realizar la copia exacta bit a bit en formato raw (.dd / .raw) del archivo ibdata1
+sudo dd if=/var/lib/docker/volumes/ciber_db_data/_data/ibdata1 of=/forensics/mariadb_ibdata1.raw bs=4M status=progress
+
+# 4. Generar y registrar la firma hash del archivo de salida para verificar su integridad
+sha256sum /forensics/mariadb_ibdata1.raw
+
+# 5. Comparar ambos hashes. El hash del archivo de salida debe coincidir perfectamente:
+# [Consola]: f896207cda7e271a3378fb8f731110022f30ee941199341aa5019889ff0277bd /forensics/mariadb_ibdata1.raw</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 3: Manual de Ejecución con Autopsy -->
+            <section id="guia-autopsy" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-paste text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">3. Manual de Ejecución Paso a Paso en Autopsy</h3>
+                </div>
+                <p class="leading-8 text-slate-700">
+                    Sigue esta guía técnica estructurada para configurar, cargar y analizar la imagen forense obtenida en el laboratorio:
+                </p>
+
+                <!-- Workflow de Autopsy -->
+                <div class="space-y-6 mt-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50/20 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <span class="h-6 w-6 rounded-full bg-indigo-100 text-indigo-800 text-xs flex items-center justify-center font-bold mr-2">1</span>
+                            Creación de Caso (Case Setup)
+                        </h4>
+                        <p class="text-xs text-slate-650 leading-relaxed">
+                            1. Inicia Autopsy y haz clic en **"New Case"**.<br>
+                            2. En la ventana emergente, introduce el nombre del caso: <code>MariaDB_Security_Breach_Incident</code>.<br>
+                            3. Elige la **Base Directory** de tu equipo para alojar los datos de indexación del caso.<br>
+                            4. Configura los metadatos del investigador:
+                        </p>
+                        <ul class="list-disc pl-5 text-[11px] text-slate-650 space-y-1">
+                            <li><strong>Case Number:</strong> <code>TFM-SOC-IR-2026</code></li>
+                            <li><strong>Examiner Name:</strong> <code>Aarón S. Gómez</code></li>
+                            <li><strong>Contact Details:</strong> (Email y teléfono para firmar el reporte final).</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50/20 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <span class="h-6 w-6 rounded-full bg-indigo-100 text-indigo-800 text-xs flex items-center justify-center font-bold mr-2">2</span>
+                            Carga e Ingesta del Origen de Datos (Add Data Source)
+                        </h4>
+                        <p class="text-xs text-slate-650 leading-relaxed">
+                            1. Selecciona **"Add Data Source"** en la barra superior.<br>
+                            2. Marca el tipo de fuente como **"Disk Image or VM File"** y pulsa Siguiente.<br>
+                            3. En la ruta del archivo, selecciona la imagen extraída: <code>mariadb_ibdata1.raw</code>.<br>
+                            4. <strong>Verificación de Integridad:</strong> En el cuadro **"Hash Values"**, introduce el hash SHA-256 obtenido en la fase de adquisición (<code>f896207cda7e271a3378fb8f731110022f30ee941199341aa5019889ff0277bd</code>). Autopsy verificará que el archivo coincida bit a bit antes de indexarlo.
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50/20 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <span class="h-6 w-6 rounded-full bg-indigo-100 text-indigo-800 text-xs flex items-center justify-center font-bold mr-2">3</span>
+                            Configuración de Módulos de Ingesta (Ingest Modules)
+                        </h4>
+                        <p class="text-xs text-slate-650 leading-relaxed font-semibold">
+                            Para optimizar el tiempo de ejecución y centrar la telemetría en la base de datos, marca/desmarca los módulos siguiendo estas pautas:
+                        </p>
+                        <ul class="space-y-2 text-[11px] text-slate-650">
+                            <li class="flex items-start gap-1.5">
+                                <i class="fas fa-check-square text-indigo-600 mt-0.5"></i>
+                                <div><strong>File Type Identification:</strong> Activo. Compara los números mágicos del archivo para validar que ibdata1 sea en efecto una estructura InnoDB válida.</div>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fas fa-check-square text-indigo-600 mt-0.5"></i>
+                                <div><strong>Extension Mismatch Detector:</strong> Activo. Alertará si se ha renombrado algún fichero de base de datos o logs para esconderlo.</div>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fas fa-check-square text-indigo-600 mt-0.5"></i>
+                                <div><strong>Keyword Search (Configuración Manual):</strong> Activo. Haz clic en este módulo y ve a **"Manage Lists"**. Crea una lista nueva llamada <code>TFM_Exfiltracion_Firma</code> y añade los siguientes términos clave a indexar en crudo:
+                                    <div class="bg-slate-950 text-indigo-300 font-mono p-2 rounded-lg mt-1 text-[10px] space-y-0.5">
+                                        <div>- db_modern_user</div>
+                                        <div>- InsecureAIPassword_123</div>
+                                        <div>- flag.txt</div>
+                                        <div>- AARONSGOMEZ</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-1.5">
+                                <i class="fas fa-minus-square text-slate-400 mt-0.5"></i>
+                                <div><strong>Recent Activity / Email Parser / Central Repository:</strong> Desactiva estos módulos. Al ser una imagen lógica del motor InnoDB (`ibdata1`) y no una imagen completa del sistema operativo Windows/Linux, estos módulos ralentizan la ingesta de manera innecesaria.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Análisis Avanzado y Recuperación de Pruebas -->
+            <section id="analisis-avanzado" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">4. Metodología de Análisis Forense de Base de Datos</h3>
+                </div>
+                <p class="leading-8 text-slate-700">
+                    Una vez completada la ingesta en Autopsy, la estructura interna del volumen InnoDB se indexa en memoria. Sigue este procedimiento para extraer las evidencias del compromiso del servidor de base de datos:
+                </p>
+
+                <div class="grid gap-6 md:grid-cols-2 mt-4 text-xs text-slate-750">
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-2.5">
+                        <h4 class="font-bold text-slate-950 flex items-center text-indigo-850"><i class="fas fa-search-minus mr-2"></i> A. Inspección en el Visor Hexadecimal</h4>
+                        <p>
+                            Haz clic derecho sobre el archivo <code>mariadb_ibdata1.raw</code> y selecciona **"View in Hex"**. InnoDB organiza la base de datos en páginas de 16KB. Las páginas de índice almacenan las tuplas de datos de forma secuencial.
+                        </p>
+                        <p>
+                            Desplázate por el visor para buscar los offsets y las cabeceras binarias típicas de MariaDB. Los registros que han sido borrados de las tablas permanecen visibles en crudo en el espacio libre (*Slack Space*) hasta que se realice una operación <code>OPTIMIZE TABLE</code> o nuevas transacciones sobrescriban esos bloques físicos.
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-2.5">
+                        <h4 class="font-bold text-slate-950 flex items-center text-indigo-850"><i class="fas fa-file-signature mr-2"></i> B. Ejecución de la Lista de Palabras Clave</h4>
+                        <p>
+                            Haz clic en el nodo **"Keyword Hits"** en el árbol lateral izquierdo de Autopsy. Selecciona tu lista <code>TFM_Exfiltracion_Firma</code>.
+                        </p>
+                        <p>
+                            La consola listará las páginas exactas de InnoDB donde se han localizado las cadenas. Por ejemplo, al buscar <code>InsecureAIPassword_123</code>, Autopsy revelará la página de datos que contiene las contraseñas de las cuentas de usuario exfiltradas por inyección SQL, proporcionando la evidencia forense irrefutable del compromiso de la integridad del almacenamiento del TFM.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección 5: Zonas de Evidencias (Capturas) -->
+            <section id="panel-evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-images text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">5. Evidencias del Proceso Forense (Capturas)</h3>
+                </div>
+                <p class="leading-8 text-slate-700">
+                    Zonas destinadas a la inserción de las capturas de pantalla de validación criptográfica y auditoría del caso en la consola de Autopsy.
+                </p>
+
+                <!-- Grid de evidencias -->
+                <div class="grid gap-6 md:grid-cols-2 mt-6">
+                    <!-- Marcador 1: Hash y Extracción dd -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col justify-between">
+                        <div class="mb-4">
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-[10px] font-bold text-indigo-800 uppercase mb-2">Evidencia A</span>
+                            <h4 class="font-bold text-slate-950 text-base">Extracción dd y Hash SHA-256</h4>
+                            <p class="text-xs text-slate-650 mt-1">
+                                Captura de pantalla de la terminal en el host ejecutando los comandos de generación de hash `sha256sum` en el archivo origen del volumen Docker y en el archivo `.raw` resultante del comando `dd`. Ambos hashes deben ser idénticos.
+                            </p>
+                        </div>
+                        <div class="h-56 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
+                            <i class="fas fa-code text-3xl mb-2 text-indigo-500/60"></i>
+                            <span class="font-semibold text-slate-650 text-xs">Cargar captura de terminal con hash SHA-256 coincidente</span>
+                            <span class="text-[10px] text-slate-450 mt-1">Sugerido: guardar como <code>hash_preservacion.png</code> en <code>assets/img/lab/</code></span>
+                        </div>
+                    </div>
+
+                    <!-- Marcador 2: Caso e Importación Autopsy -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col justify-between">
+                        <div class="mb-4">
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-[10px] font-bold text-indigo-800 uppercase mb-2">Evidencia B</span>
+                            <h4 class="font-bold text-slate-950 text-base">Importación del Data Source y Autenticidad</h4>
+                            <p class="text-xs text-slate-650 mt-1">
+                                Captura de pantalla en el asistente de Autopsy "Add Data Source" durante la introducción de la firma SHA-256 y la verificación de integridad que ratifica que la imagen no ha sido modificada.
+                            </p>
+                        </div>
+                        <div class="h-56 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
+                            <i class="fas fa-plus-square text-3xl mb-2 text-indigo-500/60"></i>
+                            <span class="font-semibold text-slate-650 text-xs">Cargar captura del asistente "Add Data Source" en Autopsy</span>
+                            <span class="text-[10px] text-slate-450 mt-1">Sugerido: guardar como <code>autopsy_import_hash.png</code> en <code>assets/img/lab/</code></span>
+                        </div>
+                    </div>
+
+                    <!-- Marcador 3: Dashboard y Keyword Search Autopsy -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col justify-between md:col-span-2">
+                        <div class="mb-4">
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-[10px] font-bold text-indigo-800 uppercase mb-2">Evidencia C</span>
+                            <h4 class="font-bold text-slate-950 text-base">Análisis Forense y Keyword Search en Autopsy</h4>
+                            <p class="text-xs text-slate-650 mt-1">
+                                Captura de pantalla de la interfaz general de Autopsy con la vista del árbol de datos y el resultado del buscador de palabras clave encontrando registros dentro de la base de datos MariaDB comprometida.
+                            </p>
+                        </div>
+                        <div class="h-60 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
+                            <i class="fas fa-search-plus text-4xl mb-3 text-indigo-500/60"></i>
+                            <span class="font-semibold text-slate-650 text-sm">Cargar captura de pantalla del análisis e interfaz de Autopsy</span>
+                            <span class="text-xs text-slate-450 mt-1">Sugerido: guardar como <code>autopsy_analysis_dashboard.png</code> en <code>assets/img/lab/</code></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+    <script src="../assets/js/sidebar.js"></script>
+</body>
+</html>

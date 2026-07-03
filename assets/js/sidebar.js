@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         accentBg = 'bg-red-600';
     } else if (sidebarContent.querySelector('.bg-orange-600') || sidebarContent.querySelector('.text-orange-700')) {
         accentBg = 'bg-orange-600';
+    } else if (sidebarContent.querySelector('.bg-purple-600') || sidebarContent.querySelector('.text-purple-700')) {
+        accentBg = 'bg-purple-600';
     } else if (sidebarContent.querySelector('.bg-amber-600') || sidebarContent.querySelector('.text-amber-700')) {
         accentBg = 'bg-amber-600';
     }
@@ -270,6 +272,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeText = 'text-cyan-955';
                 themeTitle = 'text-cyan-900';
                 themeButton = 'bg-cyan-600 hover:bg-cyan-700';
+            } else if (accentBg === 'bg-purple-600') {
+                themeBg = 'bg-purple-50';
+                themeBorder = 'border-purple-200';
+                themeText = 'text-purple-950';
+                themeTitle = 'text-purple-900';
+                themeButton = 'bg-purple-600 hover:bg-purple-700';
             }
 
             const tutorialTip = document.createElement('div');
