@@ -44,12 +44,12 @@
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#portada" class="nav-link"><i class="fas fa-door-open mr-2 text-slate-400"></i>Portada</a>
-                    <a href="#detonacion-exploit" class="nav-link"><i class="fas fa-biohazard mr-2 text-slate-400"></i>Detonación React2Shell</a>
-                    <a href="#alerta-siem" class="nav-link"><i class="fas fa-bell mr-2 text-slate-400"></i>Alerta SIEM (#18)</a>
-                    <a href="#playbook-seccion" class="nav-link"><i class="fas fa-sitemap mr-2 text-slate-400"></i>Playbook SOC (#19)</a>
-                    <a href="#simulacro-pri" class="nav-link"><i class="fas fa-fire-extinguisher mr-2 text-slate-400"></i>Simulacro PRI (#20)</a>
-                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#detonacion-exploit" class="nav-link">Detonación React2Shell</a>
+                    <a href="#alerta-siem" class="nav-link">Alerta SIEM</a>
+                    <a href="#playbook-seccion" class="nav-link">Playbook SOC</a>
+                    <a href="#simulacro-pri" class="nav-link">Simulacro PRI</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Menú Principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
@@ -71,7 +71,7 @@
                 </div>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Monitoreo SIEM y Protocolos de Respuesta SOC</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
-                    Consolidación defensiva del Blue Team mediante la ingesta y correlación de alertas en <strong>Wazuh SIEM</strong>, el diseño de un diagrama de respuesta del SOC y la ejecución del protocolo PRI ante la explotación del exploit <strong>React2Shell</strong> desde la IP externa real <code>178.139.228.237</code>.
+                    Consolidación defensiva del Blue Team mediante la ingesta y correlación de alertas en <strong>Wazuh SIEM</strong>, el diseño de un diagrama de respuesta del SOC y la ejecución del protocolo PRI ante la explotación del exploit <strong>React2Shell</strong> desde la IP externa real <code>31.4.238.51</code>.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3">
                     <span class="chip border-orange-500/25 bg-orange-50 text-orange-700"><i class="fas fa-shield-alt mr-1.5"></i>Wazuh SIEM</span>
@@ -110,31 +110,67 @@
                     <h3 class="text-2xl font-bold text-slate-950 font-sans">Detonación del Exploit React2Shell RCE (CVE-2025-55182)</h3>
                 </div>
                 <p class="leading-8 text-slate-700">
-                    La vulnerabilidad crítica <strong>React2Shell</strong> está ligada a la deserialización insegura de componentes de servidor React (RSC Deserialization) en Next.js. El ataque se ejecutó remotamente desde una máquina externa utilizando la dirección IP móvil probada <strong><code>178.139.228.237</code></strong>, apuntando al servidor físico Raspberry Pi 5 configurado con <strong>HTTPS seguro (puerto 443)</strong>, haciendo uso del proxy inverso Apache2 y certificados firmados por <strong>Let's Encrypt</strong>.
+                    La vulnerabilidad crítica <strong>React2Shell</strong> está ligada a la deserialización insegura de componentes de servidor React (RSC Deserialization) en Next.js. El ataque se ejecutó remotamente desde una máquina externa utilizando la dirección IP móvil probada <strong><code>31.4.238.51</code></strong>, apuntando al servidor físico Raspberry Pi 5 configurado con <strong>HTTPS seguro (puerto 443)</strong>, haciendo uso del proxy inverso Apache2 y certificados firmados por <strong>Let's Encrypt</strong>.
                 </p>
                 
-                <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-4">
-                    <h4 class="font-bold text-slate-950 text-sm flex items-center text-orange-850">
-                        <i class="fas fa-search-plus mr-2"></i> Flujo Técnico del Ataque Identificado
-                    </h4>
-                    <ul class="space-y-3 text-xs text-slate-750">
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
-                            <div><strong>1. Interceptación:</strong> Se intercepta la petición inicial mediante Burp Proxy, identificando que el endpoint vulnerable <code>/api/deserialize</code> procesa un JSON en el que el campo <code>rsc_payload</code> en Base64 contiene la lógica de deserialización.</div>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
-                            <div><strong>2. Envío al Repeater:</strong> La solicitud se traslada a Burp Repeater. Se inyecta la payload maliciosa que hace uso de la función dinámica <code>eval()</code> nativa del backend para forzar la ejecución remota de comandos en el host Next.js.</div>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
-                            <div><strong>3. Ejecución y Reconocimiento:</strong> Se inyecta el comando <code>ls -la /app</code>. El servidor procesa el exploit y devuelve el árbol de directorios de desarrollo crítico (<code>node_modules</code>, <code>.next</code>, <code>Dockerfile</code>, <code>package.json</code>).</div>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
-                            <div><strong>4. Exfiltración de Bandera:</strong> Se inyecta el comando <code>cat /app/flag.txt</code> para leer la bandera de integridad introducida en el contenedor <code>ciber_tfg-modern_app-1</code>, extrayendo exitosamente la firma del alumno <code>||| AARONSGOMEZ — REMOTE SHELL ACCESS ||| ...</code> sobre HTTPS en el puerto 443.</div>
-                        </li>
-                    </ul>
+                <div class="grid gap-6 grid-cols-1">
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-4">
+                        <h4 class="font-bold text-slate-950 text-base flex items-center text-orange-850">
+                            <i class="fas fa-search-plus mr-2"></i> Flujo Técnico del Ataque Identificado
+                        </h4>
+                        <ul class="space-y-3 text-sm text-slate-650">
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
+                                <div><strong>1. Interceptación:</strong> Se intercepta la petición inicial mediante Burp Proxy, identificando que el endpoint vulnerable <code>/api/deserialize</code> procesa un JSON en el que el campo <code>rsc_payload</code> en Base64 contiene la lógica de deserialización.</div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
+                                <div><strong>2. Envío al Repeater:</strong> La solicitud se traslada a Burp Repeater. Se inyecta la payload maliciosa que hace uso de la función dinámica <code>eval()</code> nativa del backend para forzar la ejecución remota de comandos en el host Next.js.</div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
+                                <div><strong>3. Ejecución y Reconocimiento:</strong> Se inyecta el comando <code>ls -la /app</code>. El servidor procesa el exploit y devuelve el árbol de directorios de desarrollo crítico (<code>node_modules</code>, <code>.next</code>, <code>Dockerfile</code>, <code>package.json</code>).</div>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fas fa-arrow-circle-right text-orange-600 mt-0.5"></i>
+                                <div><strong>4. Exfiltración de Bandera:</strong> Se inyecta el comando <code>cat /app/flag.txt</code> para leer la bandera de integridad introducida en el contenedor <code>ciber_tfg-modern_app-1</code>, extrayendo exitosamente la firma del alumno <code>||| AARONSGOMEZ — REMOTE SHELL ACCESS ||| ...</code> sobre HTTPS en el puerto 443.</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-4 flex flex-col justify-center">
+                        <h4 class="font-bold text-slate-950 text-base flex items-center text-orange-850">
+                            <i class="fas fa-exclamation-triangle mr-2"></i> Análisis Forense e Imprecisión Inicial
+                        </h4>
+                        <div class="space-y-3 text-sm text-slate-650 leading-relaxed">
+                            <p>
+                                <strong>El Falso Positivo (SQLi):</strong> Durante la validación inicial, al no tener una firma específica para <code>CVE-2025-55182</code>, el motor de Wazuh clasificó incorrectamente el payload de React2Shell bajo la regla <code>100003</code> (Intento de SQL Injection). Esto evidenció la necesidad de realizar un ajuste/afinación (Tuning) del motor para evitar la fatiga de alertas.
+                            </p>
+                            <p>
+                                <strong>El "Silent Fail" del Contenedor:</strong> Intentar capturar trazas mediante un agente leyendo los logs del contenedor (Docker stdout/stderr) reveló un punto ciego: el exploit causa un crash abrupto en el runtime de Node.js, impidiendo que el proceso escriba los logs del comando ejecutado en la consola antes de cerrarse de manera repentina.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 pt-2">
+                    <h4 class="font-bold text-slate-950 text-base">Evidencias del Entorno y Ejecución del Ataque</h4>
+                    <div class="grid gap-6 grid-cols-1">
+                        <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between">
+                            <div class="mb-2">
+                                <h5 class="font-bold text-slate-950 text-sm">Autorización de IP Atacante y Levantamiento de Docker</h5>
+                            </div>
+                            <img src="../assets/img/siem/ip_atacante_docker.png" alt="Autorización de IP y despliegue del contenedor" class="w-full rounded-lg border border-slate-200 object-cover">
+                            <p class="text-xs italic text-slate-500 mt-3">Ejecución del script python para autorizar la IP móvil del atacante en Apache2 y el despliegue del contenedor de la aplicación.</p>
+                        </div>
+                        <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between">
+                            <div class="mb-2">
+                                <h5 class="font-bold text-slate-950 text-sm">Logs en Consola de Apache2 (Peticiones de Ataque)</h5>
+                            </div>
+                            <img src="../assets/img/siem/apache_log.png" alt="Logs de acceso de Apache2 registrando el ataque" class="w-full rounded-lg border border-slate-200 object-cover">
+                            <p class="text-xs italic text-slate-500 mt-3">Trazas visualizadas en consola del servidor web Apache2 registrando los impactos HTTP POST de los payloads de explotación.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -144,18 +180,72 @@
                     <div class="p-2.5 bg-orange-50 rounded-xl text-orange-700">
                         <i class="fas fa-bell text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">1. Caso de Uso SIEM y Alerta Disparada (Evidencia #18)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Caso de Uso SIEM e Ingeniería de Detección</h3>
                 </div>
                 <p class="leading-8 text-slate-700">
-                    Dado que el proxy inverso de producción (el servidor web <strong>Apache2</strong>) reside físicamente en el sistema operativo host (la Raspberry Pi 5), las peticiones maliciosas externas provenientes de la IP atacante <code>178.139.228.237</code> quedan registradas de forma permanente en el archivo <code>/var/log/apache2/access.log</code>. El agente de Wazuh instalado en el host monitoriza este log en tiempo real y transmite los datos al Wazuh Manager (Ubuntu Server).
+                    Dado que el proxy inverso de producción (el servidor web <strong>Apache2</strong>) reside físicamente en el sistema operativo host (la Raspberry Pi 5), las peticiones maliciosas externas provenientes de la IP atacante <code>31.4.238.51</code> quedan registradas de forma permanente en el archivo <code>/var/log/apache2/access.log</code>. El agente de Wazuh instalado en el host monitoriza este log en tiempo real y transmite los datos al Wazuh Manager (Ubuntu Server).
                 </p>
+
+                <!-- Optimización e Ingeniería de Detección -->
+                <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-3">
+                    <h4 class="font-bold text-slate-950 text-base flex items-center text-orange-850">
+                        <i class="fas fa-cogs mr-2"></i> Optimización SOC (Ingeniería de Detección)
+                    </h4>
+                    <p class="text-sm text-slate-650 leading-relaxed">
+                        Ante la clasificación errónea de SQL Injection y la volatilidad de los logs internos por el crash del runtime de Node.js al recibir el RCE, se optimizó la arquitectura del SIEM. Se abandonó la detección de payloads en el cuerpo de la petición y se implementó una <strong>detección conductual en la capa perimetral</strong>:
+                    </p>
+                    <ol class="list-decimal pl-5 text-sm text-slate-650 space-y-2">
+                        <li><strong>Supresión del Ruido:</strong> Se depuró la regla <code>100072</code>, eliminando términos genéricos (como la palabra <code>chunk</code>) que causaban falsos positivos con el tráfico normal de assets estáticos de Next.js.</li>
+                        <li><strong>Correlación del Crash Perimetral:</strong> Se creó la regla <code>100071</code> para correlacionar la alerta genérica de error interno del servidor web (HTTP 500, Regla 31122). Un error 500 generado tras un <code>POST</code> directo hacia la raíz de la aplicación es un indicador de compromiso (IoC) altamente fiable de la explotación de React2Shell.</li>
+                    </ol>
+                </div>
+
+                <!-- Tabla Comparativa -->
+                <div class="space-y-3">
+                    <h4 class="font-extrabold text-slate-950 text-base">Evolución y Afinación de Reglas (Tuning)</h4>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="min-w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-orange-50/80 border-b border-slate-200">
+                                    <th class="p-3 font-bold text-slate-950 text-xs">Métrica</th>
+                                    <th class="p-3 font-bold text-slate-950 text-xs">Fase Inicial (Sin Optimizar)</th>
+                                    <th class="p-3 font-bold text-slate-950 text-xs">Fase Optimizada (Actual)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-100 hover:bg-slate-50/40">
+                                    <td class="p-3 text-xs font-semibold text-slate-900">Regla Disparada</td>
+                                    <td class="p-3 text-xs text-slate-650">Alerta 100003</td>
+                                    <td class="p-3 text-xs text-slate-650 font-semibold text-orange-700">Alerta 100071</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-slate-50/40">
+                                    <td class="p-3 text-xs font-semibold text-slate-900">Nivel de Severidad</td>
+                                    <td class="p-3 text-xs text-slate-650">12</td>
+                                    <td class="p-3 text-xs text-slate-650 font-semibold text-red-700">14</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-slate-50/40">
+                                    <td class="p-3 text-xs font-semibold text-slate-900">Clasificación SIEM</td>
+                                    <td class="p-3 text-xs text-slate-650">Intento de SQL Injection</td>
+                                    <td class="p-3 text-xs text-slate-650">Posible Explotación - Crash 500 en POST</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-slate-50/40">
+                                    <td class="p-3 text-xs font-semibold text-slate-900">Precisión del Evento</td>
+                                    <td class="p-3 text-xs text-slate-650 text-red-600 font-medium">Falso Positivo / Clasificación Errónea</td>
+                                    <td class="p-3 text-xs text-slate-650 text-green-600 font-medium">Exacta (Detección Conductual Confirmada)</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/40">
+                                    <td class="p-3 text-xs font-semibold text-slate-900">Falsos Positivos</td>
+                                    <td class="p-3 text-xs text-slate-650">Altos (por regla 100072 desajustada)</td>
+                                    <td class="p-3 text-xs text-slate-650 text-green-600 font-medium">Nulos (Filtros de heurística corregidos)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- Regla de Wazuh -->
                 <div class="space-y-3">
-                    <h4 class="font-extrabold text-slate-950 text-base">Ingesta y Configuración de Reglas Críticas (Wazuh XML)</h4>
-                    <p class="text-sm text-slate-650">
-                        La regla personalizada del SOC detecta firmas de exploit en las peticiones entrantes. Al coincidir los parámetros <code>/api/deserialize</code> o la firma <code>rsc_payload</code> en Base64, se dispara una alerta crítica mapeada con tácticas de MITRE ATT&CK:
-                    </p>
+                    <h4 class="font-extrabold text-slate-950 text-base">Configuración de Reglas en Wazuh (local_rules.xml)</h4>
                     <div class="code-shell relative">
                         <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-650 border-b border-slate-200">
                             <span>/var/ossec/etc/rules/local_rules.xml</span>
@@ -163,55 +253,91 @@
                                 <i class="fas fa-copy"></i> Copiar
                             </button>
                         </div>
-                        <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-wazuh-rules">&lt;group name="web,app_moderna,"&gt;
-  &lt;!-- Regla base de monitorización HTTP de Apache --&gt;
-  &lt;rule id="100500" level="3"&gt;
+                        <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-wazuh-rules">&lt;group name="web,attack,"&gt;
+
+  &lt;rule id="100000" level="0"&gt;
     &lt;if_sid&gt;31100&lt;/if_sid&gt;
-    &lt;match&gt;webinsegura1.duckdns.org&lt;/match&gt;
-    &lt;description&gt;Tráfico web dirigido al subdominio moderno del TFM&lt;/description&gt;
+    &lt;match&gt;AH00558|Could not reliably determine&lt;/match&gt;
+    &lt;description&gt;Ignorar errores administrativos de Apache&lt;/description&gt;
   &lt;/rule&gt;
 
-  &lt;!-- Regla crítica de detección del exploit React2Shell --&gt;
-  &lt;rule id="100503" level="12"&gt;
-    &lt;if_sid&gt;100500&lt;/if_sid&gt;
-    &lt;match&gt;/api/deserialize|rsc_payload|React2Shell&lt;/match&gt;
-    &lt;description&gt;SOC Critical Alert: Intento de explotación RCE React2Shell detectado en endpoint de deserialización&lt;/description&gt;
-    &lt;mitre&gt;
-      &lt;id&gt;T1190&lt;/id&gt; &lt;!-- Exploit Public-Facing Application --&gt;
-      &lt;id&gt;T1203&lt;/id&gt; &lt;!-- Exploitation for Client Execution --&gt;
-    &lt;/mitre&gt;
-    &lt;group&gt;web_incident,attack,rce,mitre_defense&lt;/group&gt;
+  &lt;rule id="100003" level="12"&gt;
+    &lt;if_sid&gt;31100&lt;/if_sid&gt;
+    &lt;match&gt;UNION|SELECT|INSERT|DELETE|--|'&lt;/match&gt;
+    &lt;description&gt;Intento de SQL Injection detectado&lt;/description&gt;
   &lt;/rule&gt;
+
+  &lt;rule id="100050" level="12"&gt;
+    &lt;if_sid&gt;31100&lt;/if_sid&gt;
+    &lt;match&gt;sqlmap&lt;/match&gt;
+    &lt;description&gt;Intento de ataque detectado con SQLMap&lt;/description&gt;
+  &lt;/rule&gt;
+
+&lt;/group&gt;
+
+&lt;group name="web,attack,cve-2022-26134,"&gt;
+
+  &lt;rule id="100060" level="13"&gt;
+    &lt;if_sid&gt;31100&lt;/if_sid&gt;
+    &lt;match&gt;java.lang.Runtime|java.lang.ProcessBuilder|%24%7B|%25%7B&lt;/match&gt;
+    &lt;description&gt;Intento de explotacion CVE-2022-26134 (Text4Shell) detectado&lt;/description&gt;
+  &lt;/rule&gt;
+
+&lt;/group&gt;
+
+&lt;group name="web,attack,cve-2025-55182,"&gt;
+
+  &lt;rule id="100071" level="14"&gt;
+    &lt;if_sid&gt;31122&lt;/if_sid&gt;
+    &lt;match&gt;"POST / HTTP&lt;/match&gt;
+    &lt;description&gt;CVE-2025-55182 (React2Shell): Posible Explotacion - Crash 500 en POST detectado&lt;/description&gt;
+  &lt;/rule&gt;
+
+  &lt;rule id="100072" level="12"&gt;
+    &lt;if_sid&gt;31100&lt;/if_sid&gt;
+    &lt;match&gt;%24%7B|%25%7B|dollar&lt;/match&gt;
+    &lt;description&gt;CVE-2025-55182 (React2Shell): Uso de caracteres de control en React Flight&lt;/description&gt;
+  &lt;/rule&gt;
+
+&lt;/group&gt;
+
+&lt;group name="web,attack,post-exploitation,"&gt;
+
+  &lt;rule id="100080" level="15"&gt;
+    &lt;if_sid&gt;31100&lt;/if_sid&gt;
+    &lt;match&gt;/dev/tcp/|bash -i|nc -e|python -c 'import socket'|perl -e 'exec'&lt;/match&gt;
+    &lt;description&gt;ALERTA CRITICA: Deteccion de Reverse Shell establecida&lt;/description&gt;
+  &lt;/rule&gt;
+
+  &lt;rule id="100081" level="14"&gt;
+    &lt;if_sid&gt;31100&lt;/if_sid&gt;
+    &lt;match&gt;system\(|exec\(|shell_exec\(|passthru\(|base64_decode\(&lt;/match&gt;
+    &lt;description&gt;Intento de ejecucion de Web Shell detectado&lt;/description&gt;
+  &lt;/rule&gt;
+
 &lt;/group&gt;</code></pre>
                     </div>
                 </div>
 
                 <div class="space-y-4">
-                    <h4 class="font-extrabold text-slate-950 text-base">Evidencias Reales del Monitoreo SIEM</h4>
+                    <h4 class="font-extrabold text-slate-950 text-base">Evidencias Reales de Detección en Wazuh SIEM</h4>
                     <p class="text-sm text-slate-650">
-                        La telemetría demuestra la efectividad de la detección correlacionando los estados antes y después del ataque:
+                        Los siguientes paneles muestran la telemetría tras aplicar las reglas afinadas:
                     </p>
-                    <div class="grid gap-6 md:grid-cols-2">
+                    <div class="grid gap-6 grid-cols-1">
                         <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between">
-                            <div>
-                                <h5 class="font-bold text-slate-950 text-xs mb-2">1. Panel de Eventos del SIEM</h5>
-                                <p class="text-[11px] text-slate-600 mb-3">Vista del dashboard general de Wazuh mostrando la actividad del sistema tras los primeros incidentes.</p>
+                            <div class="mb-2">
+                                <h5 class="font-bold text-slate-950 text-sm">Panel del Dashboard de Wazuh (Modo Debug)</h5>
                             </div>
-                            <img src="../assets/img/exploit/soar/soar_despues.png" alt="Dashboard general de eventos en Wazuh" class="w-full rounded-lg border border-slate-200 object-cover">
+                            <img src="../assets/img/siem/wazuh_events.png" alt="Wazuh dashboard de eventos de depuración" class="w-full rounded-lg border border-slate-200 object-cover">
+                            <p class="text-xs italic text-slate-500 mt-3">Registro de errores de depuración del SIEM (las alertas críticas mostradas se generaron para diagnosticar fallas de detección y calibrar las reglas custom).</p>
                         </div>
                         <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between">
-                            <div>
-                                <h5 class="font-bold text-slate-950 text-xs mb-2">2. Consola RCE React2Shell (18 Eventos)</h5>
-                                <p class="text-[11px] text-slate-600 mb-3">Registro específico en Wazuh consolidando 18 alertas críticas de nivel de severidad 12 para el RCE.</p>
+                            <div class="mb-2">
+                                <h5 class="font-bold text-slate-950 text-sm">Registro de Eventos y Detección MITRE</h5>
                             </div>
-                            <img src="../assets/img/exploit/soar/soar_despuesReact.png" alt="18 eventos nivel 12 en Wazuh" class="w-full rounded-lg border border-slate-200 object-cover">
-                        </div>
-                        <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between md:col-span-2">
-                            <div>
-                                <h5 class="font-bold text-slate-950 text-xs mb-2">3. Logs Analíticos de Intrusion</h5>
-                                <p class="text-[11px] text-slate-600 mb-3">Trazas pormenorizadas e indexación MITRE ATT&CK de cada firma de ataque detectada en el SOC.</p>
-                            </div>
-                            <img src="../assets/img/exploit/soar/detecciones_react2shell.png" alt="Trazas y logs detallados en Wazuh SIEM" class="w-full rounded-lg border border-slate-200 object-cover">
+                            <img src="../assets/img/siem/wazuh_logs.png" alt="Registro de logs correctos de Wazuh con mapping MITRE" class="w-full rounded-lg border border-slate-200 object-cover">
+                            <p class="text-xs italic text-slate-500 mt-3">Consolidación final de eventos con logs correctos mapeados bajo las tácticas correspondientes de MITRE y detección perfecta del exploit perimetral.</p>
                         </div>
                     </div>
                 </div>
@@ -223,10 +349,10 @@
                     <div class="p-2.5 bg-orange-50 rounded-xl text-orange-700">
                         <i class="fas fa-sitemap text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">2. Playbook de Detección Desarrollado (Evidencia #19)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Playbook de Detección Desarrollado</h3>
                 </div>
                 <p class="leading-8 text-slate-700">
-                    Este playbook de respuesta rápida se basa en las directrices de <strong>NIST SP 800-61 (Computer Security Incident Handling Guide)</strong> y el marco **SANS PICERL** para aplicaciones contenedorizadas. Dado que los atacantes utilizan redes dinámicas o IPs móviles (como la IP analizada <code>178.139.228.237</code>) que rotan constantemente, <strong>el bloqueo de IPs individuales resulta ineficaz</strong> en escenarios reales. La contención se enfoca directamente en aislar la infraestructura de software afectada y aplicar un ciclo de actualización seguro (*Shift-Left Patching*).
+                    Este playbook de respuesta rápida se basa en las directrices de <strong>NIST SP 800-61 (Computer Security Incident Handling Guide)</strong> y el marco **SANS PICERL** para aplicaciones contenedorizadas. Dado que los atacantes utilizan redes dinámicas o IPs móviles (como la IP analizada <code>31.4.238.51</code>) que rotan constantemente, <strong>el bloqueo de IPs individuales resulta ineficaz</strong> en escenarios reales. La contención se enfoca directamente en aislar la infraestructura de software afectada y aplicar un ciclo de actualización seguro (*Shift-Left Patching*).
                 </p>
 
                 <!-- Playbook y Criterios del SOC -->
@@ -236,7 +362,7 @@
                     <div class="grid gap-4 md:grid-cols-4 text-xs text-center">
                         <div class="p-4 bg-orange-600 text-white rounded-xl font-bold shadow flex flex-col justify-center items-center">
                             <span class="block text-[10px] uppercase opacity-75">1. Alerta SIEM</span>
-                            <span>Alerta crítica RCE verificada desde IP 178.139.228.237</span>
+                            <span>Alerta crítica RCE verificada desde IP 31.4.238.51</span>
                         </div>
                         
                         <div class="p-4 bg-white border border-orange-200 rounded-xl text-slate-800 shadow flex flex-col justify-center items-center">
@@ -270,37 +396,30 @@
                         <tbody>
                             <tr>
                                 <td class="p-3 text-xs font-semibold text-blue-700 bg-blue-50/30">NIVEL 1</td>
-                                <td class="p-3 text-xs">Escaneo de vulnerabilidad con payloads HTTP de prueba que devuelven errores 400.</td>
-                                <td class="p-3 text-xs text-slate-650">Registrar IP dinámica y observar tendencias. No requiere bloqueo.</td>
+                                <td class="p-3 text-xs">Falsos positivos generados por firmas genéricas (ej. alertas de la regla 100072 al coincidir con el tráfico legítimo de assets estáticos Next.js).</td>
+                                <td class="p-3 text-xs text-slate-650">Aplicar tuning en la regla personalizada (Supresión del Ruido) para evitar falsos positivos en el SOC. No requiere bloqueo.</td>
                             </tr>
                             <tr>
                                 <td class="p-3 text-xs font-semibold text-amber-700 bg-amber-50/30">NIVEL 2</td>
-                                <td class="p-3 text-xs">Múltiples peticiones POST exitosas pero sin comandos de consola confirmados.</td>
-                                <td class="p-3 text-xs text-slate-650">Escalar a L2 para inspección de memoria/procesos. Pre-alertar al administrador del sistema.</td>
+                                <td class="p-3 text-xs">Peticiones POST anómalas intermitentes que no generan caídas de servicio ni errores perimetrales 500.</td>
+                                <td class="p-3 text-xs text-slate-650">Escalar para análisis de telemetría de red. Observar tendencias de IP atacante sin interrupción del servicio.</td>
                             </tr>
                             <tr>
                                 <td class="p-3 text-xs font-semibold text-red-700 bg-red-50/30">NIVEL 3 (Crítico)</td>
-                                <td class="p-3 text-xs">Ejecución de comandos confirmada en logs (RCE) mediante deserialización insegura.</td>
-                                <td class="p-3 text-xs text-slate-650"><strong>Contención Inmediata:</strong> Detener el contenedor del servicio afectado, notificar al responsable de la aplicación y proceder a la reconstrucción segura de la imagen.</td>
+                                <td class="p-3 text-xs">Explotación confirmada de React2Shell (RCE) mediante la correlación conductual perimetral (POST a raíz con crash HTTP 500, Regla 100071).</td>
+                                <td class="p-3 text-xs text-slate-650"><strong>Contención Inmediata:</strong> Detener físicamente el contenedor del microservicio comprometido (ciber_tfg-modern_app-1), alertar al responsable y desplegar la versión segura corregida.</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Contenedor para Captura del Playbook -->
-                <div class="border-2 border-dashed border-orange-200 bg-orange-50/20 p-6 rounded-2xl">
-                    <div class="mb-4">
-                        <span class="inline-flex rounded-full bg-orange-200/50 px-2.5 py-0.5 text-[10px] font-bold text-orange-850 uppercase mb-2">Captura Requerida</span>
-                        <h4 class="font-bold text-slate-950 text-base">Evidencia #19: Diagrama del Playbook en Formato Gráfico</h4>
-                        <p class="text-sm text-slate-650 mt-1">
-                            Cargar el diagrama lógico de flujo del playbook de contención por contenedor y actualización segura de versión frente a vulnerabilidades RCE.
-                        </p>
+                <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between">
+                    <div class="mb-2">
+                        <h4 class="font-bold text-slate-950 text-base">Diagrama del Playbook en Formato Gráfico</h4>
                     </div>
-                    <div class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                        <i class="fas fa-project-diagram text-4xl mb-3 text-orange-500/60"></i>
-                        <span class="font-semibold text-slate-650 text-sm">Subir diagrama lógico del playbook</span>
-                        <span class="text-xs text-slate-450 mt-1">Sugerido: guardar como <code>playbook_flowchart.png</code> en <code>assets/img/soar/</code></span>
-                    </div>
+                    <img src="../assets/img/soar/playbook_flowchart.png" alt="Diagrama lógico de flujo del playbook de contención" class="w-full rounded-lg border border-slate-200 object-cover">
+                    <p class="text-xs italic text-slate-500 mt-3">Diagrama lógico de flujo del playbook de contención por contenedor y actualización segura de versión frente a vulnerabilidades RCE. <em>(Imagen generada por Inteligencia Artificial).</em></p>
                 </div>
             </section>
 
@@ -311,7 +430,7 @@
                         <div class="p-2.5 bg-orange-50 rounded-xl text-orange-700">
                             <i class="fas fa-fire-extinguisher text-xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-slate-950 font-sans">3. Plan de Respuesta a Incidentes (PRI) (Evidencia #20)</h3>
+                        <h3 class="text-2xl font-bold text-slate-950 font-sans">Plan de Respuesta a Incidentes (PRI)</h3>
                     </div>
                 </div>
                 <p class="leading-8 text-slate-700">
@@ -322,9 +441,9 @@
                 <div class="space-y-4">
                     <h4 class="font-bold text-slate-950 text-base flex items-center gap-2"><i class="fas fa-clock text-orange-600"></i> Bitácora Técnica de Eventos (Timeline Real del Laboratorio)</h4>
                     <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl text-xs space-y-2 text-slate-700 leading-relaxed">
-                        <div><strong>23:01:14 (Alerta SIEM / Identificación):</strong> El agente de Wazuh en el host detecta una petición POST anómala desde la IP externa real <code>178.139.228.237</code> al endpoint <code>/api/deserialize</code> con código de estado HTTP 200. Se dispara la alarma ID 100503.</div>
-                        <div><strong>23:02:30 (Investigación & Triage):</strong> El analista del SOC verifica los logs y constata una payload Base64 que contiene la firma del exploit React2Shell y la ejecución de los comandos <code>whoami</code> e <code>id</code>.</div>
-                        <div><strong>23:04:00 (Aislamiento & Contención):</strong> Se clasifica el incidente como crítico de nivel 3. Se procede a la detención física del contenedor Docker afectado para aislar el host y detener el compromiso de inmediato. Se emite un aviso urgente al responsable del servicio informando del incidente y del apagado controlado.</div>
+                        <div><strong>23:01:14 (Alerta SIEM / Identificación):</strong> El agente de Wazuh en el host detecta un error interno del servidor (HTTP 500) tras una petición POST realizada desde la IP externa real <code>31.4.238.51</code>. La regla custom de correlación perimetral dispara la **alarma crítica ID 100071** (nivel de severidad 14), evidenciando la explotación de React2Shell (RCE).</div>
+                        <div><strong>23:02:30 (Investigación & Triage):</strong> El analista del SOC realiza el triage del incidente y verifica en los logs de acceso de Apache (<code>/var/log/apache2/access.log</code>) la ráfaga de peticiones maliciosas. Confirma que el exploit provocó un silent crash abrupto en el contenedor (evitando que el runtime vuelque errores en docker stdout antes de morir).</div>
+                        <div><strong>23:04:00 (Aislamiento & Contención):</strong> Se clasifica el incidente como crítico de nivel 3. Se procede a la detención física del contenedor Docker <code>ciber_tfg-modern_app-1</code> en la Raspberry Pi 5 para aislar el host y detener el compromiso. Se notifica de inmediato al responsable técnico mediante canales internos.</div>
                         <div><strong>23:15:00 (Erradicación):</strong> El responsable técnico modifica el código base del backend, eliminando el uso de la función insegura <code>eval()</code> y aplicando validación estática Ajv sobre los parámetros de entrada. Se construye una nueva imagen segura.</div>
                         <div><strong>23:25:00 (Recuperación y Cierre):</strong> Se despliega la versión corregida de la aplicación en producción. Se ejecutan pruebas automatizadas de validación del sistema completo para asegurar que no hay regresiones. Se confirma el retorno a la normalidad del dashboard de Wazuh.</div>
                     </div>
@@ -334,7 +453,7 @@
                 <div class="space-y-3 pt-2">
                     <h4 class="font-bold text-slate-950 text-base flex items-center gap-2"><i class="fas fa-shield-virus text-orange-600"></i> 1. Fase de Contención (Aislamiento de Servicio y Notificación)</h4>
                     <p class="text-sm text-slate-650">
-                        Puesto que el atacante opera desde una IP móvil rotativa (<code>178.139.228.237</code>), aplicar reglas de bloqueo de red (como <code>ufw deny</code>) resulta insuficiente y poco profesional en producción. El procedimiento correcto consiste en detener la ejecución del microservicio vulnerado de inmediato para evitar movimientos laterales y exfiltración:
+                        Puesto que el atacante opera desde una IP móvil rotativa (<code>31.4.238.51</code>), aplicar reglas de bloqueo de red (como <code>ufw deny</code>) resulta insuficiente y poco profesional en producción. El procedimiento correcto consiste en detener la ejecución del microservicio vulnerado de inmediato para evitar movimientos laterales y exfiltración:
                     </p>
                     <div class="code-shell relative">
                         <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-650 border-b border-slate-200">
@@ -344,10 +463,10 @@
                             </button>
                         </div>
                         <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-contain-commands"># Detener preventivamente el contenedor comprometido en la Raspberry Pi 5
-docker stop lab-modern-app
+docker stop ciber_tfg-modern_app-1
 
 # Notificar mediante canal interno al responsable del servicio del incidente crítico
-# [IR-Aviso-2304]: "Servicio 'lab-modern-app' detenido temporalmente tras alertar RCE desde IP 178.139.228.237."</code></pre>
+# [IR-Aviso-2304]: "Servicio 'ciber_tfg-modern_app-1' detenido temporalmente tras alertar RCE desde IP 31.4.238.51."</code></pre>
                     </div>
                 </div>
 
@@ -399,23 +518,17 @@ app.post('/api/deserialize', (req, res) => {
                 </div>
 
                 <!-- Contenedor para Documento PRI PDF o Captura -->
-                <div class="border-2 border-dashed border-orange-200 bg-orange-50/20 p-6 rounded-2xl">
-                    <div class="mb-4">
-                        <span class="inline-flex rounded-full bg-orange-200/50 px-2.5 py-0.5 text-[10px] font-bold text-orange-850 uppercase mb-2">Captura Requerida</span>
-                        <h4 class="font-bold text-slate-950 text-base">Evidencia #20: Documento Formal del PRI (Respuesta a Incidentes)</h4>
-                        <p class="text-sm text-slate-650 mt-1">
-                            Cargar captura de pantalla que contenga el reporte PRI o el dashboard de telemetría forense demostrando la caída de la IP atacante y el cese de alertas.
-                        </p>
+                <div class="p-4 border border-slate-100 bg-slate-50/50 rounded-2xl flex flex-col justify-between">
+                    <div class="mb-2">
+                        <h4 class="font-bold text-slate-950 text-base">Documento Formal del PRI (Respuesta a Incidentes)</h4>
                     </div>
-                    <div class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                        <i class="fas fa-file-invoice text-4xl mb-3 text-orange-500/60"></i>
-                        <span class="font-semibold text-slate-650 text-sm">Subir captura del informe PRI o comando forense en terminal</span>
-                        <span class="text-xs text-slate-450 mt-1">Sugerido: guardar como <code>pri_incident_report.png</code> en <code>assets/img/soar/</code></span>
-                    </div>
+                    <img src="../assets/img/soar/pri_incident_report.png" alt="Reporte de incidente y dashboard de telemetría forense" class="w-full rounded-lg border border-slate-200 object-cover">
+                    <p class="text-xs italic text-slate-500 mt-3">Reporte formal del Plan de Respuesta a Incidentes (PRI) y dashboard de telemetría forense demostrando la caída de la IP atacante y el cese completo de alertas de seguridad. <em>(Imagen generada por Inteligencia Artificial).</em></p>
                 </div>
             </section>
         </section>
     </main>
     <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>

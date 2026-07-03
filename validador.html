@@ -62,7 +62,9 @@
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <header class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
                 <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-cyan-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
-                <p class="hero-pill">Auditoría del Anexo A</p>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="progress-status border-cyan-500/20 bg-cyan-100 text-cyan-800">Objetivos 1 al 24</span>
+                </div>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Validador de Objetivos y Evidencias Obligatorias</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
                     Esta herramienta te permite auditar de forma interactiva y guardar tu progreso con respecto a las 24 evidencias obligatorias indicadas en el anexo académico del archivo <span class="font-semibold text-slate-900">tfm-ciberseguridad.pdf</span>. Marca los objetivos a medida que los valides en tu laboratorio.
@@ -103,9 +105,9 @@
             { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Apache2.", evidence: "Reporte con calificación A obtenido en la plataforma externa de análisis securityheaders.com.", link: "lab/install.html#apache", time: "0.5 horas (30 min - Configuración Apache, certificados SSL y cabeceras)" },
             { id: 16, title: "Campaña de Gophish ejecutada", block: "Protección", desc: "Simulación local controlada de phishing enviando correos dirigidos.", evidence: "Captura del panel analítico principal de Gophish mostrando tasas de clics y credenciales expuestas." },
             { id: 17, title: "SIEM unificado con 2 fuentes de logs", block: "SOC / IR", desc: "Wazuh Server en Ubuntu recibiendo logs remotos de la Raspberry Pi 5.", evidence: "Dashboard de Wazuh evidenciando la telemetría remota de logs auth.log y JSON del agente.", link: "lab/install.html#wazuh", time: "6 horas (4h despliegue Wazuh + 2h agentes locales y reglas JSON)" },
-            { id: 18, title: "Caso de uso SIEM con alerta disparada", block: "SOC / IR", desc: "Detonación del exploit ofensivo React2Shell contra la aplicación.", evidence: "Captura en el panel de eventos de la consola de Wazuh del disparo de la alerta ID 100503.", link: "siem/siem.html#alerta-siem", time: "2 horas (Detonación de exploit y correlación de alertas)" },
-            { id: 19, title: "Playbook de detección desarrollado", block: "SOC / IR", desc: "Diseño del diagrama lógico de toma de decisiones del SOC.", evidence: "Diagrama de flujo detallando criterios de triage, severidades y escalado de incidencias.", link: "siem/siem.html#playbook-seccion", time: "1.5 horas (Diseño del flujo lógico y mapeo de severidad)" },
-            { id: 20, title: "Simulacro de incidente documentado (PRI)", block: "SOC / IR", desc: "Flujo completo de respuesta y mitigación frente al ataque React2Shell.", evidence: "Documento formal describiendo bitácora, timeline, comandos de aislamiento y código corregido.", link: "siem/siem.html#simulacro-pri", time: "3.5 horas (Redacción de bitácora, comandos de contención y corrección de código)" },
+            { id: 18, title: "Caso de uso SIEM con alerta disparada", block: "SOC / IR", desc: "Detonación del exploit ofensivo React2Shell contra la aplicación.", evidence: "Captura en el panel de eventos de la consola de Wazuh del disparo de la alerta ID 100503.", link: "siem/siem.html#alerta-siem", time: "1.5 horas (Detonación de exploit y correlación de alertas)" },
+            { id: 19, title: "Playbook de detección desarrollado", block: "SOC / IR", desc: "Diseño del diagrama lógico de toma de decisiones del SOC.", evidence: "Diagrama de flujo detallando criterios de triage, severidades y escalado de incidencias.", link: "siem/siem.html#playbook-seccion", time: "1 hora (Diseño del flujo lógico y severidades)" },
+            { id: 20, title: "Simulacro de incidente documentado (PRI)", block: "SOC / IR", desc: "Flujo completo de respuesta y mitigación frente al ataque React2Shell.", evidence: "Documento formal describiendo bitácora, timeline, comandos de aislamiento y código corregido.", link: "siem/siem.html#simulacro-pri", time: "2 horas (Simulacro PRI y bitácora de incidente)" },
             { id: 21, title: "Adquisición forense básica realizada", block: "SOC / IR", desc: "Extracción lógica mediante volcado raw del volumen comprometido de base de datos.", evidence: "Terminal con el comando de generación de hash SHA256 y vista del análisis forense en Autopsy.", link: "forensics/forensics.html", time: "4 horas (Adquisición lógica dd, hashes y análisis con Autopsy)" },
             { id: 22, title: "Política de Seguridad redactada", block: "Gobierno", desc: "Elaboración de las directrices de seguridad aplicables al laboratorio.", evidence: "Capítulo formal describiendo políticas de acceso mínimo, backup y gestión de identidades." },
             { id: 24, title: "PDS básico de 12 meses elaborado", block: "Gobierno", desc: "Plan Director de Seguridad a un año para mitigar riesgos identificados.", evidence: "Diagrama de Gantt detallando iniciativas trimestrales de hardening, MFA e infraestructura defensiva." },
@@ -128,6 +130,9 @@
             12: true,  // Pipeline DevSecOps
             15: true,  // Headers HTTP
             17: true,  // SIEM
+            18: true,  // Caso de uso SIEM
+            19: true,  // Playbook de detección
+            20: true,  // Simulacro PRI
             25: true   // SOAR Extra
         };
         let state = JSON.parse(localStorage.getItem('tfg_validator_state_v2'));

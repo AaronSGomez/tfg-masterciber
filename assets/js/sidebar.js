@@ -1,8 +1,146 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Asegurar que FontAwesome esté cargado para los iconos del menú
+    if (!document.querySelector('link[href*="font-awesome"]') && !document.querySelector('link[href*="all.min.css"]')) {
+        const fa = document.createElement('link');
+        fa.rel = 'stylesheet';
+        fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+        document.head.appendChild(fa);
+    }
+
+    // Detectar el color de acento de la página
+    let accentBg = 'bg-amber-600';
+    const sidebar = document.querySelector('aside');
+    if (sidebar) {
+        const sidebarContent = sidebar.querySelector('div');
+        if (sidebarContent) {
+            if (sidebarContent.querySelector('.bg-emerald-600') || sidebarContent.querySelector('.text-emerald-700') || sidebarContent.querySelector('.bg-emerald-650')) {
+                accentBg = 'bg-emerald-600';
+            } else if (sidebarContent.querySelector('.bg-cyan-600') || sidebarContent.querySelector('.text-cyan-700')) {
+                accentBg = 'bg-cyan-600';
+            } else if (sidebarContent.querySelector('.bg-red-650') || sidebarContent.querySelector('.text-red-700') || sidebarContent.querySelector('.bg-red-600')) {
+                accentBg = 'bg-red-600';
+            } else if (sidebarContent.querySelector('.bg-orange-600') || sidebarContent.querySelector('.text-orange-700')) {
+                accentBg = 'bg-orange-600';
+            } else if (sidebarContent.querySelector('.bg-purple-600') || sidebarContent.querySelector('.text-purple-700')) {
+                accentBg = 'bg-purple-600';
+            } else if (sidebarContent.querySelector('.bg-amber-600') || sidebarContent.querySelector('.text-amber-700')) {
+                accentBg = 'bg-amber-600';
+            }
+        }
+    }
+
+    // Inyectar iconos dinámicamente en los .nav-link y links dentro de <nav>
+    const navLinks = document.querySelectorAll('.nav-link, nav a');
+    navLinks.forEach(link => {
+        const text = link.textContent.trim().toLowerCase();
+
+        // 1. Quitar/Evitar iconos para "portada" y "volver al menú principal" / "inicio"
+        if (text.includes('portada') || text.includes('principal') || text.includes('inicio') || text.includes('volver')) {
+            const existingIcon = link.querySelector('i');
+            if (existingIcon) existingIcon.remove();
+
+            // Quitar clases previas de color fuerte/básico de Tailwind si las tiene
+            link.classList.remove('bg-slate-50', 'border-slate-200', 'text-slate-800');
+
+            if (text.includes('portada')) {
+                let softBorder = 'border-amber-200', softBg = 'bg-amber-50/70', softText = 'text-amber-900';
+                if (accentBg === 'bg-emerald-600') {
+                    softBorder = 'border-emerald-200'; softBg = 'bg-emerald-50/70'; softText = 'text-emerald-900';
+                } else if (accentBg === 'bg-cyan-600') {
+                    softBorder = 'border-cyan-200'; softBg = 'bg-cyan-50/70'; softText = 'text-cyan-900';
+                } else if (accentBg === 'bg-red-600') {
+                    softBorder = 'border-red-200'; softBg = 'bg-red-50/70'; softText = 'text-red-900';
+                } else if (accentBg === 'bg-orange-600') {
+                    softBorder = 'border-orange-200'; softBg = 'bg-orange-50/70'; softText = 'text-orange-900';
+                } else if (accentBg === 'bg-purple-600') {
+                    softBorder = 'border-purple-200'; softBg = 'bg-purple-50/70'; softText = 'text-purple-900';
+                }
+                link.classList.add('border', softBorder, softBg, softText, 'font-semibold');
+            } else {
+                // Volver / Menú Principal
+                link.classList.add('border', 'border-cyan-200', 'bg-cyan-50/70', 'text-cyan-900', 'font-semibold');
+            }
+            return;
+        }
+
+        // Si ya tiene un tag <i> dentro, no hacemos nada
+        if (link.querySelector('i')) return;
+
+        let iconClass = 'fas fa-link';
+ 
+        if (text.includes('detonación') || text.includes('detonacion')) {
+            iconClass = 'fas fa-biohazard';
+        } else if (text.includes('siem') || text.includes('alerta')) {
+            iconClass = 'fas fa-bell';
+        } else if (text.includes('playbook')) {
+            iconClass = 'fas fa-sitemap';
+        } else if (text.includes('pri') || text.includes('simulacro')) {
+            iconClass = 'fas fa-fire-extinguisher';
+        } else if (text.includes('arquitectura')) {
+            iconClass = 'fas fa-network-wired';
+        } else if (text.includes('topología') || text.includes('topologia')) {
+            iconClass = 'fas fa-project-diagram';
+        } else if (text.includes('compose') || text.includes('docker')) {
+            iconClass = 'fab fa-docker';
+        } else if (text.includes('errores') || text.includes('problemas') || text.includes('incidencia')) {
+            iconClass = 'fas fa-bug';
+        } else if (text.includes('duckdns') || text.includes('dns') || text.includes('captura')) {
+            iconClass = 'fas fa-globe';
+        } else if (text.includes('apache') || text.includes('virtualhost')) {
+            iconClass = 'fas fa-server';
+        } else if (text.includes('proxy') || text.includes('certificados') || text.includes('ssl')) {
+            iconClass = 'fas fa-lock';
+        } else if (text.includes('script') || text.includes('python') || text.includes('ip')) {
+            iconClass = 'fas fa-code';
+        } else if (text.includes('reconocimiento') || text.includes('escaneo') || text.includes('requisito')) {
+            iconClass = 'fas fa-search';
+        } else if (text.includes('sqli') || text.includes('inyección sql') || text.includes('inyeccion sql')) {
+            iconClass = 'fas fa-database';
+        } else if (text.includes('rce') || text.includes('explotación') || text.includes('explotacion')) {
+            iconClass = 'fas fa-terminal';
+        } else if (text.includes('soc') || text.includes('wazuh') || text.includes('detección') || text.includes('deteccion')) {
+            iconClass = 'fas fa-shield-halved';
+        } else if (text.includes('instalación') || text.includes('instalacion') || text.includes('setup') || text.includes('montaje') || text.includes('archivos') || text.includes('arranque')) {
+            iconClass = 'fas fa-tools';
+        } else if (text.includes('análisis') || text.includes('analisis')) {
+            iconClass = 'fas fa-chart-line';
+        } else if (text.includes('mitigación') || text.includes('mitigacion')) {
+            iconClass = 'fas fa-shield-virus';
+        } else if (text.includes('comparativa')) {
+            iconClass = 'fas fa-balance-scale';
+        } else if (text.includes('vulnerabilidad')) {
+            iconClass = 'fas fa-exclamation-triangle';
+        } else if (text.includes('reporte') || text.includes('informe') || text.includes('sast') || text.includes('dast') || text.includes('verificación') || text.includes('verificacion')) {
+            iconClass = 'fas fa-file-alt';
+        } else if (text.includes('conclusiones') || text.includes('resumen')) {
+            iconClass = 'fas fa-clipboard-check';
+        } else if (text.includes('threat') || text.includes('modelado') || text.includes('amenazas')) {
+            iconClass = 'fas fa-spider';
+        } else if (text.includes('post')) {
+            iconClass = 'fas fa-unlock-alt';
+        } else if (text.includes('mfa')) {
+            iconClass = 'fas fa-key';
+        } else if (text.includes('investigación') || text.includes('investigacion') || text.includes('research')) {
+            iconClass = 'fas fa-microscope';
+        } else if (text.includes('soar') || text.includes('workflow') || text.includes('cortex') || text.includes('thehive') || text.includes('n8n')) {
+            iconClass = 'fas fa-cogs';
+        } else if (text.includes('incidencias')) {
+            iconClass = 'fas fa-exclamation-circle';
+        }
+
+        const iconEl = document.createElement('i');
+        iconEl.className = `${iconClass} mr-2 text-slate-400`;
+        
+        if (link.classList.contains('border-cyan-200') || link.classList.contains('bg-cyan-50')) {
+            iconEl.className = `${iconClass} mr-2`;
+        }
+
+        link.insertBefore(iconEl, link.firstChild);
+    });
+
     // Aplicar únicamente en PC y Tablet (ancho de pantalla >= 1024px)
     if (!window.matchMedia("(min-width: 1024px)").matches) return;
 
-    const sidebar = document.querySelector('aside');
     if (!sidebar) return;
 
     // Asegurar que el aside padre tenga posicionamiento relativo
@@ -10,22 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const sidebarContent = sidebar.querySelector('div');
     if (!sidebarContent) return;
-
-    // Detectar el color de acento de la página para pintar la flecha del mismo color
-    let accentBg = 'bg-amber-600';
-    if (sidebarContent.querySelector('.bg-emerald-600') || sidebarContent.querySelector('.text-emerald-700') || sidebarContent.querySelector('.bg-emerald-650')) {
-        accentBg = 'bg-emerald-600';
-    } else if (sidebarContent.querySelector('.bg-cyan-600') || sidebarContent.querySelector('.text-cyan-700')) {
-        accentBg = 'bg-cyan-600';
-    } else if (sidebarContent.querySelector('.bg-red-650') || sidebarContent.querySelector('.text-red-700') || sidebarContent.querySelector('.bg-red-600')) {
-        accentBg = 'bg-red-600';
-    } else if (sidebarContent.querySelector('.bg-orange-600') || sidebarContent.querySelector('.text-orange-700')) {
-        accentBg = 'bg-orange-600';
-    } else if (sidebarContent.querySelector('.bg-purple-600') || sidebarContent.querySelector('.text-purple-700')) {
-        accentBg = 'bg-purple-600';
-    } else if (sidebarContent.querySelector('.bg-amber-600') || sidebarContent.querySelector('.text-amber-700')) {
-        accentBg = 'bg-amber-600';
-    }
 
     // Crear el indicador flotante para bajar (Down)
     const scrollDownIndicator = document.createElement('div');
@@ -342,4 +464,72 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // Inyectar botones de copiar dinámicamente en bloques de código (.code-shell)
+    const codeShells = document.querySelectorAll('.code-shell');
+    codeShells.forEach((shell) => {
+        // Verificar si ya tiene un botón de copiar para no duplicar
+        if (shell.querySelector('.copy-btn')) return;
+
+        let header = shell.querySelector('div.border-b');
+        if (!header) {
+            // Si no tiene cabecera, creamos una por defecto
+            header = document.createElement('div');
+            header.className = 'flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650';
+            header.innerHTML = '<span>Código</span>';
+            shell.insertBefore(header, shell.firstChild);
+        } else {
+            // Si ya tiene cabecera, la convertimos en flexbox
+            header.classList.add('flex', 'items-center', 'justify-between', 'gap-4');
+            // Envolver texto existente en un span si no lo está
+            const text = header.textContent.trim();
+            header.innerHTML = `<span>${text}</span>`;
+        }
+
+        // Crear el botón de copiar
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn rounded-lg border border-emerald-300 bg-emerald-100 px-3 py-1.5 text-[11px] font-semibold text-emerald-900 transition hover:bg-emerald-250';
+        copyBtn.textContent = 'Copiar';
+        
+        // Asignar evento de copiar
+        copyBtn.addEventListener('click', async () => {
+            const pre = shell.querySelector('pre');
+            const code = pre ? pre.querySelector('code') || pre : null;
+            if (!code) return;
+            try {
+                await navigator.clipboard.writeText(code.textContent);
+                const original = copyBtn.textContent;
+                copyBtn.textContent = 'Copiado';
+                copyBtn.classList.add('bg-emerald-500/20', 'text-emerald-200');
+                setTimeout(() => {
+                    copyBtn.textContent = original;
+                    copyBtn.classList.remove('bg-emerald-500/20', 'text-emerald-200');
+                }, 1600);
+            } catch (err) {
+                copyBtn.textContent = 'Error';
+                setTimeout(() => copyBtn.textContent = 'Copiar', 1600);
+            }
+        });
+
+        header.appendChild(copyBtn);
+    });
 });
+
+// Función de copiar global para soporte legacy
+window.copyCode = async function(button, targetId) {
+    const node = document.getElementById(targetId);
+    if (!node) return;
+    try {
+        await navigator.clipboard.writeText(node.textContent);
+        const original = button.textContent;
+        button.textContent = 'Copiado';
+        button.classList.add('bg-emerald-500/20', 'text-emerald-200');
+        setTimeout(() => {
+            button.textContent = original;
+            button.classList.remove('bg-emerald-500/20', 'text-emerald-200');
+        }, 1600);
+    } catch (error) {
+        button.textContent = 'Error';
+        setTimeout(() => button.textContent = 'Copiar', 1600);
+    }
+};
