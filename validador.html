@@ -100,7 +100,7 @@
             { id: 10, title: "Análisis DAST ejecutado", block: "Dev Seguro", desc: "Escaneo dinámico activo apuntando a tus subdominios reales de DuckDNS.", evidence: "Informe de vulnerabilidades dinámicas generado en formato HTML/PDF por OWASP ZAP.", link: "pipeline/analysis.html#dast", time: "3.75 horas (3h 45m total - 2h inicial + 1h 45m de depuración de CSP/ZAP)" },
             { id: 11, title: "Modelado de amenazas realizado", block: "Dev Seguro", desc: "Creación del DFD lógico de la aplicación moderna en OWASP Threat Dragon.", evidence: "Capturas de pantalla del modelado gráfico STRIDE exportado de Threat Dragon.", link: "pipeline/threat.html", time: "1.5 horas" },
             { id: 12, title: "Pipeline DevSecOps funcional", block: "Dev Seguro", desc: "Pipeline automatizado ejecutando Semgrep, Trivy y Gitleaks.", evidence: "Captura de la ejecución del flujo CI/CD en la interfaz web de GitHub Actions.", link: "pipeline/setup.html", time: "5.25 horas (5h 15m montaje y corrección de workflows)" },
-            { id: 13, title: "Política de contraseñas y MFA", block: "Protección", desc: "Configuración de complejidad de credenciales y activación de OTP.", evidence: "Capturas del panel web forzando contraseña robusta e inicio validando con token.", link: "mfa/mfa.html", time: "3 horas (Configuración de Supabase, MFA y políticas de contraseña)" },
+            { id: 13, title: "Política de contraseñas y MFA", block: "Protección", desc: "Configuración de complejidad de credenciales y activación de OTP.", evidence: "Capturas del panel web forzando contraseña robusta e inicio validando con token.", link: "mfa/mfa.html", time: "2.5 horas (Configuración de Supabase, MFA y RLS)" },
             { id: 14, title: "Reglas de firewall deny-by-default", block: "Protección", desc: "Configuración restrictiva de puertos a nivel de sistema host mediante UFW.", evidence: "Consola de la Raspberry Pi 5 ejecutando el comando sudo ufw status verbose." },
             { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Apache2.", evidence: "Reporte con calificación A obtenido en la plataforma externa de análisis securityheaders.com.", link: "lab/install.html#apache", time: "0.5 horas (30 min - Configuración Apache, certificados SSL y cabeceras)" },
             { id: 16, title: "Campaña de Gophish ejecutada", block: "Protección", desc: "Simulación local controlada de phishing enviando correos dirigidos.", evidence: "Captura del panel analítico principal de Gophish mostrando tasas de clics y credenciales expuestas." },
@@ -128,6 +128,7 @@
             10: true,  // Análisis DAST
             11: true,  // Modelado de Amenazas
             12: true,  // Pipeline DevSecOps
+            13: true,  // Politica de contraseñas y MFA
             15: true,  // Headers HTTP
             17: true,  // SIEM
             18: true,  // Caso de uso SIEM
@@ -135,10 +136,10 @@
             20: true,  // Simulacro PRI
             25: true   // SOAR Extra
         };
-        let state = JSON.parse(localStorage.getItem('tfg_validator_state_v2'));
+        let state = JSON.parse(localStorage.getItem('tfg_validator_state_v3'));
         if (state === null) {
             state = defaultState;
-            localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
+            localStorage.setItem('tfg_validator_state_v3', JSON.stringify(state));
         } else {
             // Asegurar que las nuevas claves por defecto se unan al estado existente del navegador
             Object.keys(defaultState).forEach(key => {
@@ -146,7 +147,7 @@
                     state[key] = defaultState[key];
                 }
             });
-            localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
+            localStorage.setItem('tfg_validator_state_v3', JSON.stringify(state));
         }
 
         function renderChecklist() {
@@ -213,7 +214,7 @@
             const card = document.getElementById(`card-${id}`);
             
             state[id] = checkbox.checked;
-            localStorage.setItem('tfg_validator_state_v2', JSON.stringify(state));
+            localStorage.setItem('tfg_validator_state_v3', JSON.stringify(state));
 
             if (checkbox.checked) {
                 card.classList.remove('border-slate-200', 'bg-slate-50/40');
@@ -251,7 +252,7 @@
         function resetValidator() {
             if (confirm('¿Seguro que deseas reiniciar el progreso del validador?')) {
                 state = {};
-                localStorage.removeItem('tfg_validator_state_v2');
+                localStorage.removeItem('tfg_validator_state_v3');
                 renderChecklist();
             }
         }

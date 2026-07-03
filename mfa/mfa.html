@@ -45,11 +45,11 @@
 
                 <nav class="mt-8 space-y-2 text-sm">
                     <a href="#portada" class="nav-link"><i class="fas fa-door-open mr-2 text-slate-400"></i>Portada</a>
-                    <a href="#politica-contrasenas" class="nav-link"><i class="fas fa-key mr-2 text-slate-400"></i>Políticas de Contraseña</a>
-                    <a href="#config-supabase" class="nav-link"><i class="fas fa-cloud mr-2 text-slate-400"></i>Configuración Supabase</a>
-                    <a href="#codigo-mfa" class="nav-link"><i class="fas fa-code mr-2 text-slate-400"></i>Código de Integración</a>
-                    <a href="#simulador" class="nav-link"><i class="fas fa-laptop-code mr-2 text-slate-400"></i>Simulador de Login</a>
-                    <a href="#evidencias-seccion" class="nav-link"><i class="fas fa-images mr-2 text-slate-400"></i>Evidencias del Sistema</a>
+                    <a href="#arquitectura-iam" class="nav-link"><i class="fas fa-network-wired mr-2 text-slate-400"></i>Arquitectura IAM</a>
+                    <a href="#politicas-rls" class="nav-link"><i class="fas fa-database mr-2 text-slate-400"></i>Políticas RLS</a>
+                    <a href="#registro-incidencias" class="nav-link"><i class="fas fa-exclamation-triangle mr-2 text-slate-400"></i>Incidencias Resueltas</a>
+                    <a href="#simulador" class="nav-link"><i class="fas fa-laptop-code mr-2 text-slate-400"></i>Simulador de Flujo</a>
+                    <a href="#evidencias-capturas" class="nav-link"><i class="fas fa-images mr-2 text-slate-400"></i>Capturas del Sistema</a>
                     <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900"><i class="fas fa-home mr-2"></i>Menú Principal</a>
                 </nav>
 
@@ -71,228 +71,151 @@
                     <span class="progress-status border-purple-500/20 bg-purple-100 text-purple-800">Objetivo 13</span>
                 </div>
                 <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Política de Contraseñas y Doble Factor (MFA)</h2>
-                <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
-                    Implementación y documentación del proceso de securización del portal mediante políticas estrictas de complejidad de credenciales y autenticación multifactor (MFA/TOTP) haciendo uso del backend de <strong>Supabase Auth</strong>.
+                <p class="mt-4 max-w-4xl text-sm leading-8 text-slate-700 md:text-base">
+                    Implementación y documentación del proceso de robustecimiento del portal mediante políticas estrictas de complejidad de credenciales y autenticación multifactor (MFA/TOTP) utilizando el backend gestionado de <strong>Supabase Auth</strong>.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3">
                     <span class="chip border-purple-500/25 bg-purple-50 text-purple-700"><i class="fas fa-user-lock mr-1.5"></i>Supabase Auth</span>
                     <span class="chip border-purple-500/25 bg-purple-50 text-purple-700"><i class="fas fa-qrcode mr-1.5"></i>TOTP MFA</span>
-                    <span class="chip border-purple-500/25 bg-purple-50 text-purple-700"><i class="fas fa-shield-virus mr-1.5"></i>Hardening</span>
-                    <span class="chip border-purple-500/25 bg-purple-50 text-purple-700"><i class="fas fa-key mr-1.5"></i>Complejidad</span>
+                    <span class="chip border-purple-500/25 bg-purple-50 text-purple-700"><i class="fas fa-key-skeleton mr-1.5"></i>AAL1 a AAL2</span>
+                    <span class="chip border-purple-500/25 bg-purple-50 text-purple-700"><i class="fas fa-database mr-1.5"></i>Políticas RLS</span>
                 </div>
             </header>
 
-            <!-- Sección 1: Política de Contraseñas -->
-            <section id="politica-contrasenas" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+            <!-- Sección 1: Arquitectura de Control de Acceso -->
+            <section id="arquitectura-iam" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-purple-50 rounded-xl text-purple-700">
-                        <i class="fas fa-key text-xl"></i>
+                        <i class="fas fa-network-wired text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">1. Política de Complejidad de Credenciales</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Arquitectura de Control de Acceso (MFA - TOTP)</h3>
                 </div>
-                <p class="mt-3 leading-8 text-slate-700">
-                    Para mitigar los ataques de diccionario y de fuerza bruta, se ha establecido una política estricta de robustez de contraseñas a nivel de backend y frontend. Las reglas mínimas exigidas a las credenciales en el registro y cambio de contraseña son:
+                <p class="text-sm leading-7 text-slate-700">
+                    La transición de <strong>AAL1</strong> (Autenticación de un solo factor) a <strong>AAL2</strong> (Autenticación multifactor) es una de las defensas más robustas en la gestión de identidades y accesos (IAM). Protege al portfolio contra ataques de credenciales comprometidas. El flujo implementado consta de dos etapas críticas:
                 </p>
 
-                <div class="grid gap-4 md:grid-cols-2 mt-6">
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
-                        <h4 class="font-bold text-slate-950 mb-3 flex items-center text-purple-800">
-                            <i class="fas fa-clipboard-check mr-2"></i> Requisitos Obligatorios
+                <div class="flex flex-col gap-6 mt-4">
+                    <div class="p-6 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-purple-800">
+                            <i class="fas fa-qrcode mr-2 text-base"></i> Fase A: Registro y Enrolamiento
                         </h4>
-                        <ul class="space-y-2 text-sm text-slate-700">
-                            <li class="flex items-center gap-2"><i class="fas fa-check-circle text-purple-600"></i> Mínimo de 10 caracteres</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-check-circle text-purple-600"></i> Al menos una letra mayúscula (A-Z)</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-check-circle text-purple-600"></i> Al menos una letra minúscula (a-z)</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-check-circle text-purple-600"></i> Al menos un dígito numérico (0-9)</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-check-circle text-purple-600"></i> Al menos un carácter especial (ej. @, $, !, %, *, ?, &)</li>
-                        </ul>
+                        <p class="text-sm text-slate-700 leading-7">
+                            El usuario, una vez autenticado en AAL1, inicia la activación. El sistema realiza una llamada a <code>supabase.auth.mfa.enroll({ factorType: 'totp' })</code>, devolviendo un secreto criptográfico y un código QR en formato SVG. Tras escanear el QR en la aplicación autenticadora (ej. Microsoft Authenticator), el usuario envía el primer token de 6 dígitos que se valida en el servidor mediante <code>challenge()</code> y <code>verify()</code>, marcando el factor como activo.
+                        </p>
                     </div>
-                    
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
-                        <h4 class="font-bold text-slate-950 mb-3 flex items-center text-purple-800">
-                            <i class="fas fa-ban mr-2"></i> Restricciones y Buenas Prácticas
+
+                    <div class="p-6 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-purple-800">
+                            <i class="fas fa-key-skeleton mr-2 text-base"></i> Fase B: Interceptación en Login
                         </h4>
-                        <ul class="space-y-2 text-sm text-slate-700">
-                            <li class="flex items-center gap-2"><i class="fas fa-minus-circle text-amber-600"></i> Prohibición de palabras de diccionario comunes.</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-minus-circle text-amber-600"></i> Bloqueo de uso de datos personales (email, nombre).</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-minus-circle text-amber-600"></i> Supresión de contraseñas previamente filtradas.</li>
-                            <li class="flex items-center gap-2"><i class="fas fa-minus-circle text-amber-600"></i> Bloqueo temporal tras 5 intentos fallidos consecutivos.</li>
-                        </ul>
+                        <p class="text-sm text-slate-700 leading-7">
+                            Al iniciar sesión con email y contraseña, el usuario obtiene una sesión AAL1. El frontend evalúa el estado del nivel de aseguramiento asíncronamente con <code>supabase.auth.mfa.getAuthenticatorAssuranceLevel()</code>. Si la cuenta posee MFA habilitado (<code>nextLevel === 'aal2'</code>), el sistema oculta el panel principal de administración y exige el código TOTP para elevar la sesión a AAL2.
+                        </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección 2: Configuración de Supabase -->
-            <section id="config-supabase" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+            <!-- Sección 2: Políticas RLS en Supabase -->
+            <section id="politicas-rls" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-purple-50 rounded-xl text-purple-700">
-                        <i class="fas fa-cloud text-xl"></i>
+                        <i class="fas fa-database text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">2. Configuración en la Consola de Supabase</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Endurecimiento de Seguridad (Políticas RLS en Base de Datos)</h3>
                 </div>
-                <p class="mt-3 leading-8 text-slate-700">
-                    Supabase delega el control de la robustez de contraseñas y la activación de MFA al módulo GoTrue (Supabase Auth). A continuación, se detallan las directivas para configurarlo desde el Panel Web de Supabase:
+                <p class="text-sm leading-7 text-slate-700">
+                    Para neutralizar la posibilidad de que un atacante evada las restricciones de seguridad del frontend (bypass de cliente), se ha implementado un control estricto a nivel de base de datos en PostgreSQL mediante <strong>Row Level Security (RLS)</strong>.
+                </p>
+                <p class="text-sm leading-7 text-slate-700">
+                    Se han modificado las políticas en la base de datos para exigir que el JSON Web Token (JWT) enviado por el cliente contenga el parámetro <code>aal</code> con valor estrictamente igual a <code>'aal2'</code> para cualquier consulta de administración sensible o de modificación de datos:
                 </p>
 
-                <div class="timeline mt-6">
-                    <div class="timeline-item">
-                        <h4 class="font-bold text-slate-950">Paso 1: Forzar Robustez de Contraseña</h4>
-                        <p class="text-sm text-slate-600 mt-1">
-                            Accede a tu proyecto en Supabase, ve a <strong>Authentication > Provider Settings</strong>. En la sección <strong>Password Policy</strong>, habilita las restricciones de complejidad e indica la longitud mínima (10 caracteres) y el requerimiento de caracteres numéricos y especiales.
-                        </p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4 class="font-bold text-slate-950">Paso 2: Activación de MFA / TOTP</h4>
-                        <p class="text-sm text-slate-600 mt-1">
-                            En <strong>Authentication > User Actions</strong>, asegúrate de que Multi-Factor Authentication (MFA) está configurado como <strong>Enabled</strong>. Por defecto, Supabase soporta la autenticación basada en tiempo (TOTP) utilizando aplicaciones autenticadoras estándar (Google Authenticator, Authy, Microsoft Authenticator).
-                        </p>
-                    </div>
-                    <div class="timeline-item">
-                        <h4 class="font-bold text-slate-950">Paso 3: Definición de Políticas RLS (Row Level Security)</h4>
-                        <p class="text-sm text-slate-600 mt-1">
-                            Para evitar accesos no autorizados a datos confidenciales en caso de credenciales comprometidas (AAL1), configuramos políticas RLS en la base de datos que exijan un nivel de autenticación <code>aal2</code> (Autenticado con MFA).
-                        </p>
-                        <div class="code-shell mt-3 relative">
-                            <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-600 border-b border-slate-200">
-                                <span>SQL Policy Definition</span>
-                                <button onclick="copyCode(this, 'sql-rls')" class="copy-btn text-purple-600 hover:text-purple-800">
-                                    <i class="fas fa-copy"></i> Copiar
-                                </button>
-                            </div>
-                            <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="sql-rls">-- Política RLS para exigir MFA (AAL2) en la tabla 'datos_seguros'
-CREATE POLICY "Solo usuarios autenticados con doble factor pueden leer datos"
-ON datos_seguros
-FOR SELECT
-TO authenticated
-USING (
-  (select auth.jwt() ->> 'aal') = 'aal2'
-);</code></pre>
+                <!-- Bloques SQL -->
+                <div class="space-y-4">
+                    <div class="code-shell relative">
+                        <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-650 border-b border-slate-200">
+                            <span>Políticas de Seguridad en SQL - Supabase</span>
+                            <button onclick="copyCode(this, 'code-rls-sql')" class="copy-btn text-purple-600 hover:text-purple-800">
+                                <i class="fas fa-copy"></i> Copiar
+                            </button>
                         </div>
+                        <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-rls-sql">-- 1. Forzar nivel AAL2 (MFA) para interactuar con la tabla de proyectos
+CREATE POLICY "Administrador gestiona proyectos" 
+ON public.projects FOR ALL TO authenticated 
+USING ((select auth.jwt() ->> 'aal') = 'aal2') 
+WITH CHECK ((select auth.jwt() ->> 'aal') = 'aal2');
+
+-- 2. Restringir la subida de archivos al Bucket de almacenamiento del portfolio
+CREATE POLICY "Administrador sube archivos en porfolio" 
+ON storage.objects FOR INSERT TO authenticated 
+WITH CHECK (bucket_id = 'porfolio' AND (select auth.jwt() ->> 'aal') = 'aal2');
+
+-- 3. Acceso de lectura y borrado de mensajes de contacto únicamente con AAL2
+CREATE POLICY "Administrador gestiona contactos"
+ON public.contacts FOR ALL TO authenticated
+USING ((select auth.jwt() ->> 'aal') = 'aal2');</code></pre>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección 3: Implementación de Código -->
-            <section id="codigo-mfa" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+            <!-- Sección 3: Registro de Incidencias con warning-box -->
+            <section id="registro-incidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-purple-50 rounded-xl text-purple-700">
-                        <i class="fas fa-code text-xl"></i>
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">3. Integración en el Frontend (Javascript SDK)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Registro de Incidencias Resueltas durante la Integración</h3>
                 </div>
-                <p class="mt-3 leading-8 text-slate-700">
-                    El flujo de doble factor consta de dos etapas: <strong>Inscripción (Enrollment)</strong> y <strong>Desafío/Verificación (Challenge/Verify)</strong> en cada inicio de sesión subsiguiente.
+                <p class="text-sm leading-7 text-slate-700">
+                    Durante el proceso de desarrollo y despliegue del doble factor y la robustez de credenciales en el porfolio, se identificaron y subsanaron los siguientes fallos técnicos:
                 </p>
 
-                <!-- Acordeón / Subsecciones de código -->
-                <div class="space-y-4 mt-6">
-                    <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/30">
-                        <h4 class="font-bold text-slate-950 flex items-center gap-2">
-                            <span class="h-6 w-6 rounded-full bg-purple-100 text-purple-800 text-xs flex items-center justify-center font-bold">A</span>
-                            Fase de Enrolamiento (MFA Setup)
-                        </h4>
-                        <p class="text-sm text-slate-600 mt-1 mb-4">
-                            Llamamos a <code>supabase.auth.mfa.enroll()</code> para inicializar el factor TOTP, obtener el QR code en Base64 y presentar el secreto al usuario para su escaneo.
-                        </p>
-                        
-                        <div class="code-shell relative">
-                            <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-600 border-b border-slate-200">
-                                <span>javascript - enroll.js</span>
-                                <button onclick="copyCode(this, 'code-enroll')" class="copy-btn text-purple-600 hover:text-purple-800">
-                                    <i class="fas fa-copy"></i> Copiar
-                                </button>
-                            </div>
-                            <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-enroll">// 1. Iniciar enrolamiento de MFA
-const enrollMFA = async () => {
-  const { data, error } = await supabase.auth.mfa.enroll({
-    factorType: 'totp',
-    issuer: 'MasterCiber Portfolio',
-    friendlyName: 'Dispositivo Principal'
-  });
-
-  if (error) throw error;
-
-  // data.id es el factorId
-  // data.totp.qr_code es la imagen QR en formato SVG/Base64
-  // data.totp.secret es la clave en texto para ingreso manual
-  return data;
-};
-
-// 2. Verificar el token inicial para activar el factor
-const verifyInitialToken = async (factorId, code) => {
-  const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
-  if (challengeError) throw challengeError;
-
-  const { data, error } = await supabase.auth.mfa.verify({
-    factorId,
-    challengeId: challengeData.id,
-    code // Código de 6 dígitos introducido por el usuario
-  });
-
-  if (error) throw error;
-  return data; // MFA activado correctamente
-};</code></pre>
+                <div class="space-y-4">
+                    <!-- Incidencia 1 -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <span>Incompatibilidad de tipos en SDK (camelCase vs snake_case)</span>
+                            <span>⚠️</span>
+                        </div>
+                        <div class="warning-box-content text-sm leading-7">
+                            <p><strong>Causa raíz:</strong> El compilador de TypeScript fallaba al intentar recuperar la propiedad <code>factorType</code> sobre los factores de autenticación devueltos por <code>listFactors()</code>, dado que el servidor GoTrue de Supabase utiliza la nomenclatura nativa de base de datos (snake_case) para los objetos de retorno.</p>
+                            <p><strong>Solución aplicada:</strong> Se reconfiguró el acceso a la propiedad modificándola por <code>factor.factor_type</code>, resolviendo de forma efectiva el bloqueo del tipado estricto.</p>
                         </div>
                     </div>
 
-                    <div class="border border-slate-200 rounded-2xl p-5 bg-slate-50/30">
-                        <h4 class="font-bold text-slate-950 flex items-center gap-2">
-                            <span class="h-6 w-6 rounded-full bg-purple-100 text-purple-800 text-xs flex items-center justify-center font-bold">B</span>
-                            Fase de Verificación en Login (Verificar Desafío)
-                        </h4>
-                        <p class="text-sm text-slate-600 mt-1 mb-4">
-                            Al iniciar sesión, si el usuario tiene habilitado el MFA, el nivel de aseguramiento (Assurance Level) devuelto por Supabase será <code>aal1</code>. Debemos guiarlo a la pantalla de ingreso del código MFA para elevar su nivel a <code>aal2</code>.
-                        </p>
-                        
-                        <div class="code-shell relative">
-                            <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-600 border-b border-slate-200">
-                                <span>javascript - verify.js</span>
-                                <button onclick="copyCode(this, 'code-verify')" class="copy-btn text-purple-600 hover:text-purple-800">
-                                    <i class="fas fa-copy"></i> Copiar
-                                </button>
-                            </div>
-                            <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-verify">// 1. Comprobar el nivel de autenticación del usuario
-const checkAssuranceLevel = async () => {
-  const { data, error } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-  
-  if (error) throw error;
-  
-  // data.currentLevel será 'aal1' si sólo usó contraseña
-  // data.nextLevel será 'aal2' si tiene MFA configurado
-  if (data.currentLevel === 'aal1' && data.nextLevel === 'aal2') {
-    // Redirigir al usuario al formulario de verificación MFA
-    mostrarPantallaMFA();
-  }
-};
+                    <!-- Incidencia 2 -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <span>Carrera de Datos (Race Condition) en la carga inicial</span>
+                            <span>⚠️</span>
+                        </div>
+                        <div class="warning-box-content text-sm leading-7">
+                            <p><strong>Causa raíz:</strong> El panel cargaba fugazmente datos privados y elementos de la interfaz en lo que tardaba la consulta asíncrona a Supabase en validar la sesión, debido a que el estado de verificación se inicializaba por defecto en <code>false</code>.</p>
+                            <p><strong>Solución aplicada:</strong> Se programó una máquina de estados estricta (<code>checking | verified | pending_verification | no_mfa</code>). El renderizado del dashboard y las peticiones a la base de datos permanecen bloqueados y en espera a menos que el estado sea estrictamente <code>verified</code>.</p>
+                        </div>
+                    </div>
 
-// 2. Retar y validar el token introducido
-const completeMFAChallenge = async (code) => {
-  const { data: factors, error: factorsError } = await supabase.auth.mfa.listFactors();
-  if (factorsError) throw factorsError;
+                    <!-- Incidencia 3 -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <span>Renderizado incorrecto del código QR SVG</span>
+                            <span>⚠️</span>
+                        </div>
+                        <div class="warning-box-content text-sm leading-7">
+                            <p><strong>Causa raíz:</strong> En lugar de renderizarse la imagen del código QR, la pantalla mostraba la cadena de texto plano de la URI <code>data:image/svg+xml;utf-8,...</code> ya que el SDK de Supabase entrega el SVG codificado en una Data URL.</p>
+                            <p><strong>Solución aplicada:</strong> Se diseñó un validador condicional: si el string comienza por <code>data:</code>, se renderiza mediante una etiqueta estándar <code>&lt;img src={qrCode} /&gt;</code>, asegurando compatibilidad en cualquier navegador.</p>
+                        </div>
+                    </div>
 
-  // Obtenemos el factor TOTP activo
-  const activeFactor = factors.totp.find(f => f.status === 'verified');
-  if (!activeFactor) return;
-
-  const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ 
-    factorId: activeFactor.id 
-  });
-  if (challengeError) throw challengeError;
-
-  const { data, error } = await supabase.auth.mfa.verify({
-    factorId: activeFactor.id,
-    challengeId: challenge.id,
-    code
-  });
-
-  if (error) {
-    alert("Código incorrecto, por favor intente de nuevo");
-    throw error;
-  }
-  
-  // Exito: Ahora el Assurance Level se eleva a 'aal2'
-  irAlDashboard();
-};</code></pre>
+                    <!-- Incidencia 4 -->
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <span>Distorsión perspectiva del QR para escaneo móvil</span>
+                            <span>⚠️</span>
+                        </div>
+                        <div class="warning-box-content text-sm leading-7">
+                            <p><strong>Causa raíz:</strong> La inclinación aleatoria y rotaciones físicas (`transform: rotate(1deg)`) aplicadas a las tarjetas de estilo "libreta" del porfolio impedían la lectura del código QR con las cámaras de los teléfonos móviles.</p>
+                            <p><strong>Solución aplicada:</strong> Se inyectaron reglas CSS para anular la rotación (`transform: none`) exclusivamente en el contenedor de MFA. Además, se dividió el formulario en dos columnas y se incluyó la clave en texto plano con selección rápida al toque (`user-select: all`) como alternativa de accesibilidad.</p>
                         </div>
                     </div>
                 </div>
@@ -304,10 +227,10 @@ const completeMFAChallenge = async (code) => {
                     <div class="p-2.5 bg-purple-50 rounded-xl text-purple-700">
                         <i class="fas fa-laptop-code text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">4. Simulador Interactivo del Flujo de Hardening</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Simulador Interactivo de Login y Desafío MFA</h3>
                 </div>
-                <p class="mt-3 leading-8 text-slate-700">
-                    Interactúa con el simulador inferior para comprobar visualmente la lógica de validación de contraseñas robustas y la posterior validación del token TOTP de doble factor.
+                <p class="mt-3 text-sm leading-7 text-slate-700 font-sans">
+                    Prueba el simulador interactivo para comprobar cómo la lógica del frontend valida las contraseñas complejas y gestiona la redirección asíncrona hacia el código de doble factor.
                 </p>
 
                 <!-- Contenedor del simulador interactivo -->
@@ -322,14 +245,14 @@ const completeMFAChallenge = async (code) => {
                         <span class="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 font-bold font-mono">SIMULATION</span>
                     </div>
 
-                    <div class="p-6 md:p-8 min-h-[350px] flex flex-col justify-center">
+                    <div class="p-6 md:p-8 min-h-[350px] flex flex-col justify-center text-slate-100">
                         
                         <!-- PANTALLA 1: Login e Intento de Contraseña -->
                         <div id="sim-step-1" class="space-y-6">
-                            <div class="text-center max-w-md mx-auto">
+                            <div class="text-center max-w-md mx-auto text-slate-100">
                                 <i class="fas fa-lock text-3xl text-purple-400 mb-2"></i>
-                                <h4 class="text-lg font-bold">Paso 1: Credencial del Portfolio</h4>
-                                <p class="text-xs text-slate-400">Introduce un correo y crea una contraseña para validar los requisitos de robustez exigidos.</p>
+                                <h4 class="text-lg font-bold">Credencial del Portfolio</h4>
+                                <p class="text-xs text-slate-400 font-sans">Introduce un correo y crea una contraseña para validar los requisitos de robustez exigidos.</p>
                             </div>
                             
                             <div class="max-w-md mx-auto space-y-4">
@@ -339,7 +262,7 @@ const completeMFAChallenge = async (code) => {
                                 </div>
                                 <div>
                                     <label class="block text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">Contraseña Nueva</label>
-                                    <div class="relative">
+                                    <div class="relative font-sans">
                                         <input type="password" id="sim-password" placeholder="Min. 10 chars, uppercase, digit, special..." class="w-full bg-slate-850 border border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 transition text-slate-100" />
                                         <button onclick="toggleSimPass()" class="absolute right-3 top-3 text-slate-400 hover:text-slate-200">
                                             <i id="sim-pass-icon" class="fas fa-eye"></i>
@@ -374,10 +297,10 @@ const completeMFAChallenge = async (code) => {
 
                         <!-- PANTALLA 2: Configuración MFA (QR Code Setup) -->
                         <div id="sim-step-2" class="hidden space-y-6">
-                            <div class="text-center max-w-md mx-auto">
+                            <div class="text-center max-w-md mx-auto text-slate-100 font-sans">
                                 <i class="fas fa-qrcode text-3xl text-purple-400 mb-2"></i>
-                                <h4 class="text-lg font-bold">Paso 2: Registro del MFA en tu Dispositivo</h4>
-                                <p class="text-xs text-slate-400">Escanea el código QR con Google Authenticator o introduce el secreto.</p>
+                                <h4 class="text-lg font-bold">Registro del MFA en tu Dispositivo</h4>
+                                <p class="text-xs text-slate-400 font-sans">Escanea el código QR con tu aplicación autenticadora.</p>
                             </div>
 
                             <div class="max-w-md mx-auto flex flex-col items-center gap-4 bg-slate-950 p-6 rounded-2xl border border-slate-800">
@@ -385,7 +308,6 @@ const completeMFAChallenge = async (code) => {
                                     <!-- QR code mock generator -->
                                     <div class="w-32 h-32 bg-slate-200 flex flex-col items-center justify-center border-4 border-slate-900 relative">
                                         <div class="absolute inset-0 bg-slate-950 flex flex-wrap justify-between p-2">
-                                            <!-- Just a stylized grid to resemble a QR code -->
                                             <div class="w-6 h-6 bg-white border border-black"></div>
                                             <div class="w-6 h-4 bg-white"></div>
                                             <div class="w-6 h-6 bg-white border border-black"></div>
@@ -418,17 +340,17 @@ const completeMFAChallenge = async (code) => {
                                 </div>
 
                                 <div class="flex gap-3 w-full">
-                                    <button onclick="gotoStep(1)" class="w-1/3 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded-xl py-2 text-xs font-bold transition">Atrás</button>
-                                    <button onclick="verifyOTPFinal()" class="w-2/3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-2 text-xs font-bold transition">Verificar Token</button>
+                                    <button onclick="gotoStep(1)" class="w-1/3 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded-xl py-2 text-xs font-bold transition font-sans">Atrás</button>
+                                    <button onclick="verifyOTPFinal()" class="w-2/3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-2 text-xs font-bold transition font-sans">Verificar Token</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- PANTALLA 3: Simulación de Éxito -->
-                        <div id="sim-step-3" class="hidden space-y-6 text-center max-w-md mx-auto">
+                        <div id="sim-step-3" class="hidden space-y-6 text-center max-w-md mx-auto text-slate-100">
                             <i class="fas fa-check-circle text-5xl text-emerald-400 mb-2 animate-bounce"></i>
                             <h4 class="text-xl font-bold">¡Doble Factor Activado con Éxito!</h4>
-                            <p class="text-xs text-slate-300">
+                            <p class="text-xs text-slate-300 font-sans">
                                 Tu nivel de aseguramiento de sesión ha escalado a <code>aal2</code>. Supabase ha registrado el dispositivo autenticador. Las peticiones a la base de datos que requieren MFA ahora son autorizadas.
                             </p>
                             
@@ -557,7 +479,6 @@ const completeMFAChallenge = async (code) => {
                     }
 
                     function verifyOTP(current) {
-                        // autoverify when 6th box gets inputs
                         if (current.value.length === current.maxLength) {
                             verifyOTPFinal();
                         }
@@ -576,7 +497,6 @@ const completeMFAChallenge = async (code) => {
                             gotoStep(3);
                         } else {
                             alert("Código de verificación incorrecto. Pruebe con '123456'.");
-                            // Clear inputs
                             ['c1','c2','c3','c4','c5','c6'].forEach(id => {
                                 document.getElementById(id).value = '';
                             });
@@ -596,76 +516,104 @@ const completeMFAChallenge = async (code) => {
             </section>
 
             <!-- Sección 5: Zonas de Evidencias (Capturas) -->
-            <section id="evidencias-seccion" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
+            <section id="evidencias-capturas" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20">
                 <div class="flex items-start justify-between gap-3">
                     <div class="flex items-center gap-3">
                         <div class="p-2.5 bg-purple-50 rounded-xl text-purple-700">
                             <i class="fas fa-images text-xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-slate-950 font-sans">5. Panel de Evidencias del Despliegue</h3>
+                        <h3 class="text-2xl font-bold text-slate-950 font-sans">Panel de Evidencias del Despliegue</h3>
                     </div>
                 </div>
-                <p class="mt-3 leading-8 text-slate-700">
-                    A continuación se presenta el registro visual del login original y el panel backend, seguidos de los bloques destinados a mostrar las configuraciones reales de Supabase y el funcionamiento del token.
+                <p class="mt-3 text-sm leading-7 text-slate-700">
+                    A continuación se presenta la secuencia visual del laboratorio dividida en dos niveles de seguridad. Las dos primeras capturas ilustran el estado inicial de **Seguridad Estándar (antes)**, donde el acceso se limita únicamente a la validación de credenciales con complejidad obligatoria de contraseñas. Las siguientes capturas demuestran el flujo de **Seguridad Premium (después)**, donde se integra el enrolamiento y la interceptación por doble factor de autenticación (MFA/TOTP) exigiendo el nivel de aseguramiento AAL2.
                 </p>
 
-                <!-- Grid de imágenes -->
-                <div class="grid gap-6 md:grid-cols-2 mt-8">
+                <!-- Flujo en una sola columna -->
+                <div class="flex flex-col gap-8 mt-8">
                     
-                    <!-- Imagen 1: Login original -->
-                    <div class="border border-slate-200 bg-slate-50 p-4 rounded-2xl flex flex-col justify-between">
-                        <div>
-                            <span class="inline-flex rounded-full bg-slate-200 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 uppercase mb-2">Original</span>
-                            <h4 class="font-bold text-slate-950 text-sm">Vista de Login del Portfolio</h4>
-                            <p class="text-xs text-slate-500 mt-1 mb-4">Pantalla de acceso inicial para introducir las credenciales antes de ser reforzada.</p>
+                    <!-- Captura 1: Login Básico -->
+                    <div class="border-2 border-amber-300 bg-amber-50/20 p-6 rounded-3xl flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-amber-200 pb-2 flex-wrap gap-2">
+                            <h4 class="font-extrabold text-slate-950 text-base">Pantalla de Login Básico (Email y Contraseña)</h4>
+                            <span class="rounded-full bg-amber-100 border border-amber-400 px-3 py-1 text-[10px] font-bold text-amber-800 uppercase">Seguridad Estándar (AAL1)</span>
                         </div>
-                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white">
-                            <img src="../assets/img/mfa/back_login.png" alt="Login Original" class="w-full object-cover max-h-60 hover:scale-105 transition-all duration-300">
+                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white max-w-3xl mx-auto shadow-sm">
+                            <img src="../assets/img/mfa/login.png" alt="Login Básico" class="w-full object-contain max-h-[480px]">
                         </div>
+                        <p class="text-xs italic text-slate-650 text-center leading-relaxed pt-2 border-t border-amber-150">
+                            Interfaz inicial de acceso al portfolio donde el administrador introduce sus credenciales de acceso básicas. En este momento, el nivel de aseguramiento de sesión concedido es aal1.
+                        </p>
                     </div>
 
-                    <!-- Imagen 2: Backend una vez logueado -->
-                    <div class="border border-slate-200 bg-slate-50 p-4 rounded-2xl flex flex-col justify-between">
-                        <div>
-                            <span class="inline-flex rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-850 uppercase mb-2">Acceso Exitoso</span>
-                            <h4 class="font-bold text-slate-950 text-sm">Panel Backend del Portfolio</h4>
-                            <p class="text-xs text-slate-500 mt-1 mb-4">Interfaz interna del administrador protegida tras superar la autenticación.</p>
+                    <!-- Captura 2: Backend Original sin MFA -->
+                    <div class="border-2 border-amber-300 bg-amber-50/20 p-6 rounded-3xl flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-amber-200 pb-2 flex-wrap gap-2">
+                            <h4 class="font-extrabold text-slate-950 text-base">Panel Backend Original (Acceso Directo Sin MFA)</h4>
+                            <span class="rounded-full bg-amber-100 border border-amber-400 px-3 py-1 text-[10px] font-bold text-amber-800 uppercase">Seguridad Estándar (AAL1)</span>
                         </div>
-                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white">
-                            <img src="../assets/img/mfa/backend.png" alt="Backend Autenticado" class="w-full object-cover max-h-60 hover:scale-105 transition-all duration-300">
+                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white max-w-3xl mx-auto shadow-sm">
+                            <img src="../assets/img/mfa/backend.png" alt="Backend sin MFA" class="w-full object-contain max-h-[480px]">
                         </div>
+                        <p class="text-xs italic text-slate-650 text-center leading-relaxed pt-2 border-t border-amber-150">
+                            Panel de administración del portfolio al que se accedía directamente tras superar el login básico en el flujo original sin MFA (nivel de seguridad AAL1), previo al robustecimiento de seguridad.
+                        </p>
                     </div>
 
-                    <!-- Marcador 3: Configuración de contraseña en Supabase -->
-                    <div class="border-2 border-dashed border-purple-200 bg-purple-50/20 p-6 rounded-2xl flex flex-col justify-between md:col-span-2">
-                        <div class="mb-4">
-                            <span class="inline-flex rounded-full bg-purple-200/50 px-2.5 py-0.5 text-[10px] font-bold text-purple-800 uppercase mb-2">Zona para Captura</span>
-                            <h4 class="font-bold text-slate-950 text-base">Evidencia A: Configuración de Robustez de Contraseña en Supabase</h4>
-                            <p class="text-sm text-slate-650 mt-1">
-                                Captura de pantalla que demuestre la directiva habilitada en <strong>Authentication > Providers</strong> forzando longitud y caracteres especiales.
-                            </p>
+                    <!-- Captura 3: Enrolamiento Paso 1 -->
+                    <div class="border-2 border-purple-300 bg-purple-50/30 p-6 rounded-3xl flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-purple-200 pb-2 flex-wrap gap-2">
+                            <h4 class="font-extrabold text-slate-950 text-base">Inicio de Configuración de MFA en el Perfil de Usuario</h4>
+                            <span class="rounded-full bg-purple-100 border border-purple-400 px-3 py-1 text-[10px] font-bold text-purple-800 uppercase">Seguridad Premium (AAL2 Enforced)</span>
                         </div>
-                        <div class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                            <i class="fas fa-cloud-upload-alt text-4xl mb-3 text-purple-500/60"></i>
-                            <span class="font-semibold text-slate-650 text-sm">Subir captura del panel de Supabase Auth</span>
-                            <span class="text-xs text-slate-450 mt-1">Sugerido: guardar como <code>supabase_password_policy.png</code> en <code>assets/img/mfa/</code></span>
+                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white max-w-3xl mx-auto shadow-sm">
+                            <img src="../assets/img/mfa/mfas_step1.png" alt="Enrolamiento Paso 1" class="w-full object-contain max-h-[480px]">
                         </div>
+                        <p class="text-xs italic text-slate-650 text-center leading-relaxed pt-2 border-t border-purple-150">
+                            Sección de seguridad dentro del panel del usuario en la sesión AAL1, configurada para iniciar la vinculación del segundo factor TOTP llamando a las APIs de enrolamiento.
+                        </p>
                     </div>
 
-                    <!-- Marcador 4: Pantalla de solicitud de doble factor en login -->
-                    <div class="border-2 border-dashed border-purple-200 bg-purple-50/20 p-6 rounded-2xl flex flex-col justify-between md:col-span-2">
-                        <div class="mb-4">
-                            <span class="inline-flex rounded-full bg-purple-200/50 px-2.5 py-0.5 text-[10px] font-bold text-purple-800 uppercase mb-2">Zona para Captura</span>
-                            <h4 class="font-bold text-slate-950 text-base">Evidencia B: Desafío de Autenticación de Doble Factor (Vista de Usuario)</h4>
-                            <p class="text-sm text-slate-650 mt-1">
-                                Captura de pantalla de la interfaz solicitando al usuario el token TOTP tras verificar que su nivel de aseguramiento de sesión es <code>aal1</code>.
-                            </p>
+                    <!-- Captura 4: Enrolamiento Paso 2 QR -->
+                    <div class="border-2 border-purple-300 bg-purple-50/30 p-6 rounded-3xl flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-purple-200 pb-2 flex-wrap gap-2">
+                            <h4 class="font-extrabold text-slate-950 text-base">Escaneo de Código QR de Verificación y Activación</h4>
+                            <span class="rounded-full bg-purple-100 border border-purple-400 px-3 py-1 text-[10px] font-bold text-purple-800 uppercase">Seguridad Premium (AAL2 Enforced)</span>
                         </div>
-                        <div class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                            <i class="fas fa-mobile-alt text-4xl mb-3 text-purple-500/60"></i>
-                            <span class="font-semibold text-slate-650 text-sm">Subir captura de pantalla del login exigiendo el token OTP</span>
-                            <span class="text-xs text-slate-450 mt-1">Sugerido: guardar como <code>mfa_challenge_screen.png</code> en <code>assets/img/mfa/</code></span>
+                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white max-w-3xl mx-auto shadow-sm">
+                            <img src="../assets/img/mfa/mfa_step2.png" alt="Enrolamiento Paso 2" class="w-full object-contain max-h-[480px]">
                         </div>
+                        <p class="text-xs italic text-slate-650 text-center leading-relaxed pt-2 border-t border-purple-150">
+                            Generación del código QR y secreto Base32 devueltos por el GoTrue de Supabase Auth para enlazar con Microsoft Authenticator y campo para validar el primer token. <span class="block mt-1 font-semibold text-rose-700">* Nota: Por seguridad se ha borrado de esta página el código manual de enrolamiento y el QR se ha cubierto parcialmente con una marca de calavera; el factor está desactivado, pero nunca se está suficientemente seguro. *</span>
+                        </p>
+                    </div>
+
+                    <!-- Captura 5: Interceptación en Login -->
+                    <div class="border-2 border-purple-300 bg-purple-50/30 p-6 rounded-3xl flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-purple-200 pb-2 flex-wrap gap-2">
+                            <h4 class="font-extrabold text-slate-950 text-base">Desafío de Doble Factor en Login (MFA Challenge)</h4>
+                            <span class="rounded-full bg-purple-100 border border-purple-400 px-3 py-1 text-[10px] font-bold text-purple-800 uppercase">Seguridad Premium (AAL2 Enforced)</span>
+                        </div>
+                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white max-w-3xl mx-auto shadow-sm">
+                            <img src="../assets/img/mfa/login_MFAon.png" alt="MFA Challenge" class="w-full object-contain max-h-[480px]">
+                        </div>
+                        <p class="text-xs italic text-slate-650 text-center leading-relaxed pt-2 border-t border-purple-150">
+                            Pantalla intermedia que intercepta al administrador tras el login de primer factor al detectar que el MFA está activo (nextLevel === 'aal2'), exigiendo el código de 6 dígitos antes de desbloquear el panel.
+                        </p>
+                    </div>
+
+                    <!-- Captura 6: Panel de gestión de RLS (MFA Enforced) -->
+                    <div class="border-2 border-purple-300 bg-purple-50/30 p-6 rounded-3xl flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-purple-200 pb-2 flex-wrap gap-2">
+                            <h4 class="font-extrabold text-slate-950 text-base">Gestión de Portfolio con Nivel de Sesión AAL2</h4>
+                            <span class="rounded-full bg-purple-100 border border-purple-400 px-3 py-1 text-[10px] font-bold text-purple-800 uppercase">Seguridad Premium (AAL2 Enforced)</span>
+                        </div>
+                        <div class="rounded-xl overflow-hidden border border-slate-200/80 bg-white max-w-3xl mx-auto shadow-sm">
+                            <img src="../assets/img/mfa/backend_mfa.png" alt="Dashboard protegido con AAL2" class="w-full object-contain max-h-[480px]">
+                        </div>
+                        <p class="text-xs italic text-slate-650 text-center leading-relaxed pt-2 border-t border-purple-150">
+                            Consola interna del administrador operativa con la sesión ascendida a AAL2, permitiendo realizar operaciones de escritura y cargas al Storage cumpliendo las políticas RLS.
+                        </p>
                     </div>
 
                 </div>
@@ -673,5 +621,6 @@ const completeMFAChallenge = async (code) => {
         </section>
     </main>
     <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>
