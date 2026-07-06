@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adquisición Forense y Análisis con Autopsy</title>
+    <title>Análisis Forense Digital: Caso M57.biz (Jean Jones)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -39,18 +39,20 @@
                     </div>
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-700">Evidencia #21</p>
-                        <h1 class="mt-1 text-2xl font-black text-slate-950">Forense</h1>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Forense M57</h1>
                     </div>
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
                     <a href="#portada" class="nav-link"><i class="fas fa-door-open mr-2 text-slate-400"></i>Portada</a>
-                    <a href="#principios-forenses" class="nav-link"><i class="fas fa-gavel mr-2 text-slate-400"></i>Principios Forenses</a>
-                    <a href="#adquisicion-datos" class="nav-link"><i class="fas fa-hdd mr-2 text-slate-400"></i>Adquisición de Imagen</a>
-                    <a href="#guia-autopsy" class="nav-link"><i class="fas fa-paste mr-2 text-slate-400"></i>Manual de Ejecución</a>
-                    <a href="#analisis-avanzado" class="nav-link"><i class="fas fa-chart-line mr-2 text-slate-400"></i>Análisis de Resultados</a>
-                    <a href="#panel-evidencias" class="nav-link"><i class="fas fa-images mr-2 text-slate-400"></i>Evidencias Panel</a>
-                    <a href="../validador.html" class="nav-link border-rose-200 bg-rose-50/50 text-rose-900 hover:bg-rose-100/70"><i class="fas fa-check-double mr-2"></i>Volver al Validador</a>
+                    <a href="#contexto-caso" class="nav-link"><i class="fas fa-briefcase mr-2 text-slate-400"></i>Contexto del Caso</a>
+                    <a href="#configuracion-autopsy" class="nav-link"><i class="fas fa-cogs mr-2 text-slate-400"></i>Configuración</a>
+                    <a href="#fase-a" class="nav-link"><i class="fas fa-fingerprint mr-2 text-slate-400"></i>Fase A: Reconocimiento</a>
+                    <a href="#fase-b" class="nav-link"><i class="fas fa-envelope-open-text mr-2 text-slate-400"></i>Fase B: Email & Phishing</a>
+                    <a href="#fase-c" class="nav-link"><i class="fas fa-history mr-2 text-slate-400"></i>Fase C: Línea Temporal</a>
+                    <a href="#fase-d" class="nav-link"><i class="fas fa-file-invoice mr-2 text-slate-400"></i>Fase D: Reporte Final</a>
+                    <a href="#mapa-evidencias" class="nav-link"><i class="fas fa-table mr-2 text-slate-400"></i>Mapa de Evidencias</a>
+                    <a href="#panel-capturas" class="nav-link"><i class="fas fa-images mr-2 text-slate-400"></i>Panel de Capturas</a>
                     <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900"><i class="fas fa-home mr-2"></i>Menú Principal</a>
                 </nav>
 
@@ -68,289 +70,545 @@
             <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
                 <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-indigo-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="flex items-center gap-2">
-                    <span class="hero-pill border-indigo-500/20 bg-indigo-100 text-indigo-800">Análisis Forense Digital</span>
-                    <span class="progress-status border-indigo-500/20 bg-indigo-100 text-indigo-800">Objetivo 21</span>
+                    <span class="hero-pill border-indigo-500/20 bg-indigo-100 text-indigo-800">Caso M57.biz</span>
+                    <span class="progress-status border-indigo-500/20 bg-indigo-100 text-indigo-800">Forense Digital</span>
                 </div>
-                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Manual Forense: Adquisición Lógica y Análisis con Autopsy</h2>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl">Guía de Análisis Forense: Caso Jean Jones (M57.biz)</h2>
                 <p class="mt-4 max-w-4xl text-base leading-8 text-slate-700 md:text-lg">
-                    Guía de análisis forense digital bajo directrices **NIST SP 800-86**: desde la extracción física y lógica del volumen comprometido de base de datos MariaDB (Raw Image `dd`), la verificación criptográfica SHA-256, hasta la investigación minuciosa en la plataforma **Autopsy**.
+                    Guía técnica y metodológica paso a paso para la investigación de la exfiltración de documentos confidenciales de la startup M57.biz utilizando la plataforma <strong>Autopsy 4.x</strong>.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3">
-                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-search-dollar mr-1.5"></i>Autopsy Suite</span>
-                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-fingerprint mr-1.5"></i>Hash SHA-256</span>
-                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-save mr-1.5"></i>Raw Image (.dd)</span>
-                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-database mr-1.5"></i>MariaDB Forensic</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-search mr-1.5"></i>Autopsy 4.x</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-user-shield mr-1.5"></i>Spear Phishing</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-envelope-open mr-1.5"></i>Email Headers</span>
+                    <span class="chip border-indigo-500/25 bg-indigo-50 text-indigo-700"><i class="fas fa-clock mr-1.5"></i>Timeline Analysis</span>
                 </div>
             </header>
 
-            <!-- Sección 1: Principios Forenses -->
-            <section id="principios-forenses" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <!-- Contexto del Caso -->
+            <section id="contexto-caso" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
-                        <i class="fas fa-gavel text-xl"></i>
+                        <i class="fas fa-briefcase text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">1. Principios de Integridad y Cadena de Custodia</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Contexto del Caso: ¿Qué pasó en M57.biz?</h3>
                 </div>
-                <p class="leading-8 text-slate-700">
-                    El análisis forense digital se rige por la preservación rigurosa de las pruebas. La regla fundamental es <strong>nunca realizar análisis directamente sobre el dispositivo o volumen de almacenamiento original</strong>. Se debe realizar una copia bit a bit (clonado físico o adquisición lógica) y validar su integridad matemática utilizando funciones hash criptográficas (como MD5 o SHA-256).
+                <p class="leading-8 text-slate-700 text-base">
+                    M57.biz es una startup dedicada al catálogo de arte corporal. Pocas semanas después de su fundación, una hoja de cálculo confidencial con nombres, salarios y números de seguridad social (SSN) de todos los empleados apareció publicada en el foro de su principal competidor.
                 </p>
                 
                 <div class="grid gap-4 md:grid-cols-3 mt-6">
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl">
                         <h4 class="font-bold text-slate-950 text-sm mb-2 flex items-center text-indigo-800">
-                            <i class="fas fa-lock mr-2"></i> Preservación
+                            <i class="fas fa-user mr-2 text-amber-600"></i> Jean Jones
                         </h4>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Aislamiento del volumen de almacenamiento comprometido antes de realizar cualquier lectura para impedir que el sistema de archivos altere metadatos críticos como las fechas MAC (Modify, Access, Create).
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>CFO y propietaria del portátil.</strong> Envió el archivo creyendo que lo pedía la presidenta Alison, pero cometió la imprudencia de incluir a un tercero desconocido en la cadena.
                         </p>
                     </div>
                     
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl">
                         <h4 class="font-bold text-slate-950 text-sm mb-2 flex items-center text-indigo-800">
-                            <i class="fas fa-hashtag mr-2"></i> Verificación
+                            <i class="fas fa-user-tie mr-2 text-cyan-600"></i> Alison Smith
                         </h4>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Generación de la firma hash SHA-256 del dispositivo origen y su posterior contraste con el archivo de imagen generado (`.dd`). Ambos hashes deben coincidir con precisión absoluta.
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>Presidenta de M57.biz.</strong> Niega haber pedido o recibido la hoja de cálculo por correo y desconoce el origen de la filtración.
                         </p>
                     </div>
 
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl">
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl">
                         <h4 class="font-bold text-slate-950 text-sm mb-2 flex items-center text-indigo-800">
-                            <i class="fas fa-file-invoice mr-2"></i> Documentación
+                            <i class="fas fa-user-secret mr-2 text-rose-600"></i> tuckgorge
                         </h4>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Registro minucioso de cada fase de adquisición, incluyendo marcas temporales, comandos ejecutados, herramientas utilizadas y firmas del analista forense a cargo.
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            <strong>Identidad desconocida (externo).</strong> Correo: <code>tuckgorge@gmail.com</code>. Receptor final del archivo confidencial adjunto.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección 2: Adquisición / dd -->
-            <section id="adquisicion-datos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <!-- Configuración / Autopsy -->
+            <section id="configuracion-autopsy" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
-                        <i class="fas fa-hdd text-xl"></i>
+                        <i class="fas fa-cogs text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">2. Adquisición del Volumen Comprometido</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Preparación del Caso en Autopsy</h3>
                 </div>
-                <p class="leading-8 text-slate-700">
-                    En el escenario del TFM, la base de datos MariaDB (que contenía las tablas y hashes vulnerados en la fase ofensiva) se aloja dentro del contenedor <code>lab-db-server</code> con un volumen mapeado persistente. El proceso de adquisición se centra en realizar un volcado *raw* (copia exacta de bloques) de dicho volumen de datos persistente.
+                <p class="leading-8 text-slate-700 text-base">
+                    Antes de comenzar el análisis, es necesario descargar la imagen forense del laptop y configurar el entorno de trabajo en Autopsy:
                 </p>
 
-                <!-- Flujo de comandos -->
-                <div class="space-y-4">
-                    <h4 class="font-extrabold text-slate-950 text-base">Comandos de Adquisición en Consola Forense (Linux)</h4>
-                    <p class="text-sm text-slate-600">
-                        Paso a paso técnico para la localización, firma y volcado del volumen comprometido de MariaDB:
-                    </p>
-
-                    <div class="code-shell relative">
-                        <div class="flex justify-between items-center px-4 py-2 text-xs text-slate-650 border-b border-slate-200">
-                            <span>Bash Forensic Work - Adquisición dd</span>
-                            <button onclick="copyCode(this, 'code-forensic-dd')" class="copy-btn text-indigo-600 hover:text-indigo-800">
-                                <i class="fas fa-copy"></i> Copiar
-                            </button>
-                        </div>
-                        <pre class="p-4 overflow-x-auto text-sm leading-6"><code id="code-forensic-dd"># 1. Identificar la ruta del volumen de datos del contenedor Docker de MariaDB
-docker volume inspect ciber_db_data
-
-# 2. Generar el hash SHA-256 del bloque/directorio origen antes de la lectura
-sudo sha256sum /var/lib/docker/volumes/ciber_db_data/_data/ibdata1
-
-# 3. Realizar la copia exacta bit a bit en formato raw (.dd / .raw) del archivo ibdata1
-sudo dd if=/var/lib/docker/volumes/ciber_db_data/_data/ibdata1 of=/forensics/mariadb_ibdata1.raw bs=4M status=progress
-
-# 4. Generar y registrar la firma hash del archivo de salida para verificar su integridad
-sha256sum /forensics/mariadb_ibdata1.raw
-
-# 5. Comparar ambos hashes. El hash del archivo de salida debe coincidir perfectamente:
-# [Consola]: f896207cda7e271a3378fb8f731110022f30ee941199341aa5019889ff0277bd /forensics/mariadb_ibdata1.raw</code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sección 3: Manual de Ejecución con Autopsy -->
-            <section id="guia-autopsy" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
-                <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
-                        <i class="fas fa-paste text-xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">3. Manual de Ejecución Paso a Paso en Autopsy</h3>
-                </div>
-                <p class="leading-8 text-slate-700">
-                    Sigue esta guía técnica estructurada para configurar, cargar y analizar la imagen forense obtenida en el laboratorio:
-                </p>
-
-                <!-- Workflow de Autopsy -->
-                <div class="space-y-6 mt-4">
-                    <div class="p-5 border border-slate-200 bg-slate-50/20 rounded-2xl space-y-3">
+                <div class="flex flex-col gap-6 mt-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50 rounded-2xl space-y-3">
                         <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
                             <span class="h-6 w-6 rounded-full bg-indigo-100 text-indigo-800 text-xs flex items-center justify-center font-bold mr-2">1</span>
-                            Creación de Caso (Case Setup)
+                            Descargar Imagen Forense
                         </h4>
-                        <p class="text-xs text-slate-650 leading-relaxed">
-                            1. Inicia Autopsy y haz clic en **"New Case"**.<br>
-                            2. En la ventana emergente, introduce el nombre del caso: <code>MariaDB_Security_Breach_Incident</code>.<br>
-                            3. Elige la **Base Directory** de tu equipo para alojar los datos de indexación del caso.<br>
-                            4. Configura los metadatos del investigador:
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Accede a la URL base de Digital Corpora para descargar los segmentos de la imagen del disco:
                         </p>
-                        <ul class="list-disc pl-5 text-[11px] text-slate-650 space-y-1">
-                            <li><strong>Case Number:</strong> <code>TFM-SOC-IR-2026</code></li>
-                            <li><strong>Examiner Name:</strong> <code>Aarón S. Gómez</code></li>
-                            <li><strong>Contact Details:</strong> (Email y teléfono para firmar el reporte final).</li>
-                        </ul>
+                        <p class="text-sm">
+                            <a href="https://digitalcorpora.org/corpora/scenarios/m57-jean/" target="_blank" class="inline-flex items-center gap-1.5 font-semibold text-cyan-600 hover:underline">
+                                <i class="fas fa-external-link-alt text-xs"></i> https://digitalcorpora.org/corpora/scenarios/m57-jean/
+                            </a>
+                        </p>
+                        <p class="text-sm text-slate-700 leading-relaxed mt-2">
+                            Descarga los segmentos y guárdalos en la misma carpeta local (Autopsy auto-asociará el segundo segmento):
+                        </p>
+                        <pre class="p-3 text-xs leading-relaxed"><code># Descargar segmentos (Guardar en la misma carpeta):
+- nps-2008-jean.E01 (~1.5 GB)
+- nps-2008-jean.E02 (~1.5 GB)</code></pre>
                     </div>
 
-                    <div class="p-5 border border-slate-200 bg-slate-50/20 rounded-2xl space-y-3">
+                    <div class="p-5 border border-slate-200 bg-slate-50 rounded-2xl space-y-3">
                         <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
                             <span class="h-6 w-6 rounded-full bg-indigo-100 text-indigo-800 text-xs flex items-center justify-center font-bold mr-2">2</span>
-                            Carga e Ingesta del Origen de Datos (Add Data Source)
+                            Crear e Ingestar en Autopsy
                         </h4>
-                        <p class="text-xs text-slate-650 leading-relaxed">
-                            1. Selecciona **"Add Data Source"** en la barra superior.<br>
-                            2. Marca el tipo de fuente como **"Disk Image or VM File"** y pulsa Siguiente.<br>
-                            3. En la ruta del archivo, selecciona la imagen extraída: <code>mariadb_ibdata1.raw</code>.<br>
-                            4. <strong>Verificación de Integridad:</strong> En el cuadro **"Hash Values"**, introduce el hash SHA-256 obtenido en la fase de adquisición (<code>f896207cda7e271a3378fb8f731110022f30ee941199341aa5019889ff0277bd</code>). Autopsy verificará que el archivo coincida bit a bit antes de indexarlo.
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Crea un nuevo caso e importa la imagen siguiendo estos pasos:
                         </p>
-                    </div>
-
-                    <div class="p-5 border border-slate-200 bg-slate-50/20 rounded-2xl space-y-3">
-                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
-                            <span class="h-6 w-6 rounded-full bg-indigo-100 text-indigo-800 text-xs flex items-center justify-center font-bold mr-2">3</span>
-                            Configuración de Módulos de Ingesta (Ingest Modules)
-                        </h4>
-                        <p class="text-xs text-slate-650 leading-relaxed font-semibold">
-                            Para optimizar el tiempo de ejecución y centrar la telemetría en la base de datos, marca/desmarca los módulos siguiendo estas pautas:
-                        </p>
-                        <ul class="space-y-2 text-[11px] text-slate-650">
-                            <li class="flex items-start gap-1.5">
-                                <i class="fas fa-check-square text-indigo-600 mt-0.5"></i>
-                                <div><strong>File Type Identification:</strong> Activo. Compara los números mágicos del archivo para validar que ibdata1 sea en efecto una estructura InnoDB válida.</div>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <i class="fas fa-check-square text-indigo-600 mt-0.5"></i>
-                                <div><strong>Extension Mismatch Detector:</strong> Activo. Alertará si se ha renombrado algún fichero de base de datos o logs para esconderlo.</div>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <i class="fas fa-check-square text-indigo-600 mt-0.5"></i>
-                                <div><strong>Keyword Search (Configuración Manual):</strong> Activo. Haz clic en este módulo y ve a **"Manage Lists"**. Crea una lista nueva llamada <code>TFM_Exfiltracion_Firma</code> y añade los siguientes términos clave a indexar en crudo:
-                                    <div class="bg-slate-950 text-indigo-300 font-mono p-2 rounded-lg mt-1 text-[10px] space-y-0.5">
-                                        <div>- db_modern_user</div>
-                                        <div>- InsecureAIPassword_123</div>
-                                        <div>- flag.txt</div>
-                                        <div>- AARONSGOMEZ</div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-1.5">
-                                <i class="fas fa-minus-square text-slate-400 mt-0.5"></i>
-                                <div><strong>Recent Activity / Email Parser / Central Repository:</strong> Desactiva estos módulos. Al ser una imagen lógica del motor InnoDB (`ibdata1`) y no una imagen completa del sistema operativo Windows/Linux, estos módulos ralentizan la ingesta de manera innecesaria.</div>
+                        <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1">
+                            <li><strong>New Case</strong> &rarr; Nombre del caso: <code>M57_Jean_Investigation</code></li>
+                            <li><strong>Add Data Source</strong> &rarr; Seleccionar <code>Disk Image</code> &rarr; Apuntar a <code>nps-2008-jean.E01</code> (Autopsy asocia automáticamente la parte <code>.E02</code>).</li>
+                            <li><strong>Ingest Modules críticos a activar:</strong>
+                                <ul class="list-circle pl-4 mt-1 space-y-0.5">
+                                    <li><code>Recent Activity</code> (Historial web, USBs, actividades recientes)</li>
+                                    <li><code>Windows Registry</code> (Cuentas de usuario y claves del sistema)</li>
+                                    <li><code>Email Parser</code> (<strong>CRÍTICO:</strong> para procesar archivos PST/MBOX)</li>
+                                    <li><code>File Type Identification</code> & <code>Keyword Search</code> (Para indexar textos y palabras clave)</li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección: Análisis Avanzado y Recuperación de Pruebas -->
-            <section id="analisis-avanzado" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <!-- Fase A: Reconocimiento -->
+            <section id="fase-a" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
-                        <i class="fas fa-chart-line text-xl"></i>
+                        <i class="fas fa-fingerprint text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">4. Metodología de Análisis Forense de Base de Datos</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Fase A: Identificación de Sistema, Usuario y Archivo</h3>
                 </div>
-                <p class="leading-8 text-slate-700">
-                    Una vez completada la ingesta en Autopsy, la estructura interna del volumen InnoDB se indexa en memoria. Sigue este procedimiento para extraer las evidencias del compromiso del servidor de base de datos:
+                <p class="leading-8 text-slate-700 text-base">
+                    El primer objetivo consiste en identificar las características generales del sistema operativo y localizar la existencia física de la hoja de cálculo comprometida.
                 </p>
 
-                <div class="grid gap-6 md:grid-cols-2 mt-4 text-xs text-slate-750">
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-2.5">
-                        <h4 class="font-bold text-slate-950 flex items-center text-indigo-850"><i class="fas fa-search-minus mr-2"></i> A. Inspección en el Visor Hexadecimal</h4>
-                        <p>
-                            Haz clic derecho sobre el archivo <code>mariadb_ibdata1.raw</code> y selecciona **"View in Hex"**. InnoDB organiza la base de datos en páginas de 16KB. Las páginas de índice almacenan las tuplas de datos de forma secuencial.
+                <div class="flex flex-col gap-6 mt-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-2">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-850">
+                            <i class="fas fa-desktop mr-2 text-indigo-650"></i> Paso 01: Identificar Sistema y Usuario
+                            <a href="#placeholder-1" class="text-indigo-600 hover:underline font-semibold ml-2"><i class="fas fa-image mr-1"></i>(Ver Captura A)</a>
+                        </h4>
+                        <p class="text-sm text-slate-700">
+                            Navega en el árbol izquierdo de Autopsy a través del nodo <strong>OS Accounts</strong> o inspecciona la colmena SAM en:
                         </p>
-                        <p>
-                            Desplázate por el visor para buscar los offsets y las cabeceras binarias típicas de MariaDB. Los registros que han sido borrados de las tablas permanecen visibles en crudo en el espacio libre (*Slack Space*) hasta que se realice una operación <code>OPTIMIZE TABLE</code> o nuevas transacciones sobrescriban esos bloques físicos.
+                        <code class="block bg-slate-950 p-2 rounded text-indigo-300 font-mono text-xs">C:\Windows\System32\config\SAM</code>
+                        <div class="mt-2 text-sm text-slate-700 space-y-1">
+                            <p><strong>Resultado esperado:</strong></p>
+                            <ul class="list-disc pl-4 space-y-0.5">
+                                <li><strong>Sistema Operativo:</strong> Windows XP</li>
+                                <li><strong>Cuenta Principal de Usuario:</strong> <code>jean</code></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-2">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-850">
+                            <i class="fas fa-file-excel mr-2 text-emerald-600"></i> Paso 02: Localizar m57biz.xls
+                            <a href="#placeholder-2" class="text-indigo-600 hover:underline font-semibold ml-2"><i class="fas fa-image mr-1"></i>(Ver Captura B)</a>
+                        </h4>
+                        <p class="text-sm text-slate-700">
+                            Utiliza la barra de búsqueda en la parte superior derecha <strong>Keyword Search</strong> buscando <code>m57biz</code>, o navega al directorio del usuario:
+                        </p>
+                        <code class="block bg-slate-950 p-2 rounded text-indigo-300 font-mono text-xs">C:\Documents and Settings\jean\My Documents\m57biz.xls</code>
+                        <div class="mt-2 text-sm text-slate-700 space-y-1">
+                            <p><strong>Metadatos en la pestaña "File Metadata":</strong></p>
+                            <ul class="list-disc pl-4 space-y-0.5">
+                                <li><strong>Created Time:</strong> <code>2008-07-20 02:28:03</code></li>
+                                <li><strong>Last Access Time:</strong> <code>~02:28:45</code> (coincidente con la exfiltración)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fase B: Email & Phishing -->
+            <section id="fase-b" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-envelope-open-text text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Fase B: Análisis del Cliente de Correo y Cabeceras</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    El vector de ataque principal fue el correo electrónico. Es necesario analizar los correos entrantes y salientes de Jean para identificar el flujo de información y el método técnico de engaño.
+                </p>
+
+                <div class="space-y-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm text-indigo-800">
+                            Paso 03: Localizar los Emails en el Disco y Determinar el Cliente
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Una vez que finaliza la ingesta de Autopsy, accede a <strong>Data Artifacts &rarr; Email Messages</strong>.
+                        </p>
+                        <p class="text-sm text-slate-700">
+                            <strong>Pregunta clave del PDF:</strong> ¿Qué cliente de correo usaba Jean (Outlook, Thunderbird o webmail)? La respuesta determina dónde se almacenan los mensajes. Para resolver esta incógnita, audita los directorios de programas instalados en la máquina navegando en Autopsy a <code>Data Sources &rarr; Program Files</code>. Tras corroborar la existencia de la suite de Microsoft Office y la ausencia de otros clientes, se certifica que utilizaba <strong>Microsoft Outlook</strong>, cuyos correos (PST) se guardan físicamente en:
+                        </p>
+                        <code class="block bg-slate-950 p-2 rounded text-indigo-300 font-mono text-xs">C:\Documents and Settings\jean\Local Settings\Application Data\Microsoft\Outlook\</code>
+                        <p class="text-sm text-slate-700">
+                            Para encontrar elementos sospechosos y exfiltraciones, ejecuta búsquedas clave en <strong>Keyword Search</strong> de los términos: <code>tuckgorge</code>, <code>m57biz</code>, y <code>@gmail.com</code>.
                         </p>
                     </div>
 
-                    <div class="p-5 border border-slate-100 bg-slate-50/50 rounded-2xl space-y-2.5">
-                        <h4 class="font-bold text-slate-950 flex items-center text-indigo-850"><i class="fas fa-file-signature mr-2"></i> B. Ejecución de la Lista de Palabras Clave</h4>
-                        <p>
-                            Haz clic en el nodo **"Keyword Hits"** en el árbol lateral izquierdo de Autopsy. Selecciona tu lista <code>TFM_Exfiltracion_Firma</code>.
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm text-indigo-800">
+                            Paso 04: Reconstruir la Cadena de Emails y Cabeceras Ocultas
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            El análisis de correos revela tres comunicaciones consecutivas críticas el 20 de julio de 2008:
                         </p>
-                        <p>
-                            La consola listará las páginas exactas de InnoDB donde se han localizado las cadenas. Por ejemplo, al buscar <code>InsecureAIPassword_123</code>, Autopsy revelará la página de datos que contiene las contraseñas de las cuentas de usuario exfiltradas por inyección SQL, proporcionando la evidencia forense irrefutable del compromiso de la integridad del almacenamiento del TFM.
+                        <div class="space-y-2 mt-2">
+                            <div class="p-3 bg-red-50 border-l-4 border-red-500 rounded-r-xl">
+                                <span class="font-bold text-red-950 text-sm block">Email 1 - La Petición Inicial (Suplantación)</span>
+                                <p class="text-sm text-red-900">
+                                    <strong>De:</strong> <code>alison@m57.biz</code> (Remitente visible) &rarr; <strong>Para:</strong> <code>jean@m57.biz</code>.<br>
+                                    <em>Contenido:</em> Solicita urgentemente la hoja de cálculo confidencial con datos de salarios.
+                                </p>
+                            </div>
+
+                            <div class="p-3 bg-amber-50 border-l-4 border-amber-500 rounded-r-xl">
+                                <span class="font-bold text-amber-950 text-sm block">Email 2 - Dudas de Jean Jones</span>
+                                <p class="text-sm text-amber-900">
+                                    <strong>De:</strong> <code>jean@m57.biz</code> &rarr; <strong>Para:</strong> <code>alison@m57.biz</code>.<br>
+                                    <em>Contenido:</em> Jean duda de la dirección de respuesta y le pregunta a la presidenta si debe responder a <code>alex@m57.biz</code> o <code>alison@m57.biz</code>.
+                                </p>
+                            </div>
+
+                            <div class="p-3 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl">
+                                <span class="font-bold text-indigo-950 text-sm block">Email 3 - La Exfiltración</span>
+                                <p class="text-sm text-indigo-900">
+                                    <strong>De:</strong> <code>jean@m57.biz</code> &rarr; <strong>Para:</strong> <code>alison@m57.biz</code> y en copia a <code>tuckgorge@gmail.com</code>.<br>
+                                    <em>Adjunto:</em> <code>m57biz.xls</code>.<br>
+                                    <em>Análisis:</em> Jean envía el archivo exfiltrado a un destinatario externo que no pertenece a la corporación.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Cabeceras Warning -->
+                        <div class="warning-box">
+                            <div class="warning-box-header flex items-center justify-between">
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-exclamation-triangle"></i> Firma Técnica del Phishing: Campo Reply-To
+                                </span>
+                                <a href="#placeholder-3" class="text-orange-700 hover:text-orange-950 hover:underline font-bold text-xs"><i class="fas fa-image mr-1"></i>(Ver Captura C)</a>
+                            </div>
+                            <div class="warning-box-content text-sm text-slate-700">
+                                Selecciona el <strong>Email 1</strong>, y en el panel inferior, haz clic en la pestaña <strong>Text</strong> para auditar las cabeceras de correo SMTP en crudo.
+                                Busca la línea <code>Reply-To:</code>. Observarás que, mientras la cabecera <code>From:</code> muestra falsamente a <code>alison@m57.biz</code>, la cabecera <code>Reply-To:</code> está redirigida a <strong><code>tuckgorge@gmail.com</code></strong>.
+                                <br><br>
+                                Esto provocó que cuando Jean Jones intentó responder al correo original para consultar sus dudas, la respuesta no llegó a la presidenta Alison, sino directamente al buzón del atacante, quien respondió simulando ser la presidenta y validando el envío de la información.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fase C: Timeline -->
+            <section id="fase-c" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-history text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Fase C: Análisis de Línea Temporal y Evaluación de Intencionalidad</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Para discernir si Jean actuó en connivencia con el atacante o si fue víctima de un engaño, debemos evaluar la línea de tiempo de sus acciones en la máquina.
+                </p>
+
+                <div class="space-y-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm text-indigo-800 flex items-center justify-between">
+                            <span>Paso 05: Reconstrucción en la Línea de Tiempo (Timeline)</span>
+                            <a href="#placeholder-4" class="text-indigo-600 hover:underline font-semibold text-xs"><i class="fas fa-image mr-1"></i>(Ver Captura D)</a>
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Haz clic en el botón <strong>Timeline</strong> en el menú superior de Autopsy. Filtra los eventos seleccionando únicamente <strong>File System</strong> y <strong>Email</strong>, y haz zoom en la fecha crítica del <strong>20 de julio de 2008</strong>:
+                        </p>
+                        <div class="timeline ml-4 mt-4">
+                            <div class="timeline-item">
+                                <span class="font-bold text-slate-950 text-sm">02:28:03</span>
+                                <p class="text-sm text-slate-700">Se crea localmente el archivo <code>m57biz.xls</code> con la información confidencial recopilada de los empleados.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="font-bold text-slate-950 text-sm">02:28:45</span>
+                                <p class="text-sm text-slate-700">Se envía el correo con el adjunto a <code>tuckgorge@gmail.com</code>. El campo <strong>Last Access Time</strong> del archivo se actualiza al mismo instante de la transmisión.</p>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-indigo-50/50 rounded-xl border border-indigo-100 text-sm text-indigo-900 mt-4">
+                            <strong>Dato Clave (42 Segundos):</strong> Transcurrieron escasos 42 segundos entre la creación del archivo y su envío por correo. Esto demuestra que Jean Jones no abrió el archivo para revisar su contenido, sino que ejecutó la orden de creación e importación al correo de forma inmediata y automática en respuesta a una petición que consideraba urgente.
+                        </div>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-3">
+                        <h4 class="font-bold text-slate-950 text-sm text-indigo-800">
+                            Paso 06: Conclusión sobre la Culpabilidad
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            La recopilación de evidencias permite estructurar el dictamen forense de la siguiente manera:
+                        </p>
+                        <div class="grid gap-4 md:grid-cols-2 mt-2">
+                            <div class="p-4 bg-emerald-50/50 border border-emerald-200 rounded-xl">
+                                <h5 class="font-bold text-emerald-950 text-sm mb-1 flex items-center"><i class="fas fa-check-circle mr-1.5 text-emerald-600"></i> Apoya que Jean fue VÍCTIMA</h5>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-700 text-sm">
+                                    <li>El correo de suplantación aparentaba ser de su jefa directa (Alison).</li>
+                                    <li>Jean intentó verificar la identidad de forma proactiva respondiendo por correo.</li>
+                                    <li>La cabecera de redirección maliciosa (Reply-To) no es visible en el cliente de correo convencional Outlook sin inspeccionar las cabeceras técnicas.</li>
+                                    <li>No existe ninguna comunicación previa, indicio o rastro en el sistema de archivos de que Jean Jones tuviese relación alguna con el alias "tuckgorge".</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 bg-rose-50/50 border border-rose-200 rounded-xl">
+                                <h5 class="font-bold text-rose-950 text-sm mb-1 flex items-center"><i class="fas fa-exclamation-circle mr-1.5 text-rose-600"></i> Genera SOSPECHA sobre Jean</h5>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-700 text-sm">
+                                    <li>Envió los datos a una dirección externa de Gmail sin autorización.</li>
+                                    <li>Creó y despachó un documento corporativo de alta sensibilidad en 42 segundos sin validación presencial o telefónica.</li>
+                                    <li>Ignoró que en el campo "Para" de su correo de salida figuraba una dirección externa que no pertenecía a M57.biz.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed mt-4">
+                            <strong>Dictamen Académico Final:</strong> Jean Jones fue víctima de un ataque dirigido de ingeniería social (<strong>Spear Phishing</strong>). El atacante (tuckgorge) explotó el campo Reply-To para interceptar las dudas de Jean y autorizar él mismo el envío del archivo. La CFO actuó de buena fe pero de forma negligente e imprudente en sus hábitos de seguridad operativa.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Sección 5: Zonas de Evidencias (Capturas) -->
-            <section id="panel-evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <!-- Fase D: Reporte Final -->
+            <section id="fase-d" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-file-invoice text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Fase D: Generación de Reporte y Marcas de Evidencia</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    El paso final en toda auditoría informática es la generación del informe técnico formal que pueda ser admitido como evidencia pericial:
+                </p>
+
+                <div class="p-5 border border-slate-200 bg-slate-50 p-4 text-slate-900 rounded-2xl space-y-3">
+                    <h4 class="font-bold text-slate-950 text-sm text-indigo-800 flex items-center justify-between">
+                        <span>Paso 07: Marcar Artefactos Clave y Exportar el Reporte HTML</span>
+                        <a href="#placeholder-5" class="text-indigo-600 hover:underline font-semibold text-xs"><i class="fas fa-image mr-1"></i>(Ver Captura E)</a>
+                    </h4>
+                    <p class="text-sm text-slate-700">
+                        1. Haz clic derecho sobre cada uno de los siguientes elementos en Autopsy y selecciona <strong>Add Tag &rarr; Notable Item</strong> para incluirlos en el informe:
+                    </p>
+                    <ul class="list-disc pl-5 text-sm text-slate-700 space-y-1">
+                        <li>El archivo <code>m57biz.xls</code> en su ruta de My Documents.</li>
+                        <li>Las fechas y timestamps de creación del archivo (Pestaña File Metadata).</li>
+                        <li>El correo electrónico de exfiltración que contiene a <code>tuckgorge@gmail.com</code>.</li>
+                        <li>Las cabeceras SMTP del correo inicial con la anomalía del <code>Reply-To</code>.</li>
+                    </ul>
+                    <p class="text-sm text-slate-700 mt-3">
+                        2. Dirígete a la opción del menú superior: <strong>Tools &rarr; Generate Report</strong>.
+                    </p>
+                    <p class="text-sm text-slate-700">
+                        3. Selecciona el tipo de informe: <strong>HTML Report</strong> y haz clic en Siguiente.
+                    </p>
+                    <p class="text-sm text-slate-700">
+                        4. Asegúrate de marcar la casilla <strong>"All Tagged Results"</strong> para estructurar el informe únicamente en base a los hallazgos críticos documentados. Haz clic en Finalizar. El reporte se guardará en la carpeta raíz del caso de Autopsy.
+                    </p>
+                    <div class="mt-4 p-4 bg-indigo-50 border border-indigo-250 rounded-xl space-y-2 text-sm text-indigo-900">
+                        <strong>El reporte final redactado debe responder con claridad a las siguientes preguntas clave del caso:</strong>
+                        <ol class="list-decimal pl-5 space-y-1">
+                            <li>¿Cuándo se creó el archivo <code>m57biz.xls</code> y desde qué dispositivo y cuenta de usuario se exfiltró?</li>
+                            <li>¿A qué dirección de correo electrónico externa llegó realmente la exfiltración del archivo y por qué canal?</li>
+                            <li>¿Existe evidencia objetiva que apunte a una intención criminal o connivencia por parte de la CFO Jean Jones?</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mapa de Evidencias (Tabla) -->
+            <section id="mapa-evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-table text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Mapa Resumen de Evidencias</h3>
+                </div>
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Evidencia Clave</th>
+                                <th>Ubicación en Autopsy</th>
+                                <th>Qué Demuestra / Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>m57biz.xls</strong></td>
+                                <td>Keyword Search &rarr; 'm57biz' o ruta My Documents</td>
+                                <td>Fichero confidencial exfiltrado que contiene los datos sensibles de los empleados.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Created Time</strong></td>
+                                <td>File Metadata del archivo `m57biz.xls`</td>
+                                <td>Establece la fecha y hora exacta de creación: <code>2008-07-20 02:28:03</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email de Exfiltración</strong></td>
+                                <td>Data Artifacts &rarr; Email Messages</td>
+                                <td>Envío del archivo a dos destinatarios: <code>alison@m57.biz</code> y <code>tuckgorge@gmail.com</code>.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reply-To Sospechoso</strong></td>
+                                <td>Pestaña Text &rarr; SMTP Headers (Email 1)</td>
+                                <td>Redirección maliciosa de las respuestas del correo al atacante (tuckgorge@gmail.com).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Diferencia de 42s</strong></td>
+                                <td>Timeline &rarr; Eventos del 2008-07-20</td>
+                                <td>Creación y envío instantáneo; ratifica la actuación por urgencia e ingeniería social.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cuenta de Usuario</strong></td>
+                                <td>OS Accounts</td>
+                                <td>Entorno del sistema comprometido: Usuario <code>jean</code> bajo <code>Windows XP</code>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500 text-center font-semibold">
+                    NOTA LEGAL: El análisis forense digital sobre sistemas reales sin el debido consentimiento o autorización judicial constituye un delito tipificado en el artículo 197 bis del Código Penal (con penas de hasta 2 años de prisión). Esta guía debe ser ejecutada únicamente bajo la imagen de prácticas y en entornos controlados de laboratorio.
+                </div>
+            </section>
+
+            <!-- Panel de Capturas (Evidencias) -->
+            <section id="panel-capturas" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
                     <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
                         <i class="fas fa-images text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">5. Evidencias del Proceso Forense (Capturas)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Panel de Evidencias Gráficas</h3>
                 </div>
-                <p class="leading-8 text-slate-700">
-                    Zonas destinadas a la inserción de las capturas de pantalla de validación criptográfica y auditoría del caso en la consola de Autopsy.
+                <p class="leading-8 text-slate-700 text-base">
+                    A continuación, se disponen los contenedores de las imágenes tomadas durante la realización de la práctica en Autopsy.
                 </p>
 
-                <!-- Grid de evidencias -->
-                <div class="grid gap-6 md:grid-cols-2 mt-6">
-                    <!-- Marcador 1: Hash y Extracción dd -->
-                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col justify-between">
+                <!-- Contenedor de evidencias en una sola columna con pies de foto e imágenes con lightbox integrado -->
+                <div class="flex flex-col gap-8 mt-6">
+                    
+                    <!-- Evidencia 1 -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col">
                         <div class="mb-4">
-                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-[10px] font-bold text-indigo-800 uppercase mb-2">Evidencia A</span>
-                            <h4 class="font-bold text-slate-950 text-base">Extracción dd y Hash SHA-256</h4>
-                            <p class="text-xs text-slate-650 mt-1">
-                                Captura de pantalla de la terminal en el host ejecutando los comandos de generación de hash `sha256sum` en el archivo origen del volumen Docker y en el archivo `.raw` resultante del comando `dd`. Ambos hashes deben ser idénticos.
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-xs font-bold text-indigo-800 uppercase mb-2">Evidencia A</span>
+                            <h4 class="font-bold text-slate-950 text-base">Identificación de SO y Usuario</h4>
+                            <p class="text-sm text-slate-700 mt-1">
+                                Detalle de las cuentas de usuario y la versión de Windows XP detectada desde el análisis del registro del sistema en Autopsy.
                             </p>
                         </div>
-                        <div class="h-56 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                            <i class="fas fa-code text-3xl mb-2 text-indigo-500/60"></i>
-                            <span class="font-semibold text-slate-650 text-xs">Cargar captura de terminal con hash SHA-256 coincidente</span>
-                            <span class="text-[10px] text-slate-450 mt-1">Sugerido: guardar como <code>hash_preservacion.png</code> en <code>assets/img/lab/</code></span>
-                        </div>
+                        <figure class="tfg-figure mt-0">
+                            <img src="../assets/img/forensics/01_so_usuario.png" alt="Identificación de SO y Usuario" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-1').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-1').style.display='none';">
+                            <div id="placeholder-1" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                <i class="fas fa-user-circle text-4xl mb-2 text-indigo-500/60"></i>
+                               <span class="font-semibold text-slate-700 text-sm">Cargar imagen de OS Accounts</span>
+                                <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/01_so_usuario.png</code></span>
+                            </div>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Identificación de SO y Usuario (Windows XP y usuario jean)</figcaption>
+                        </figure>
                     </div>
 
-                    <!-- Marcador 2: Caso e Importación Autopsy -->
-                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col justify-between">
+                    <!-- Evidencia 2 -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col">
                         <div class="mb-4">
-                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-[10px] font-bold text-indigo-800 uppercase mb-2">Evidencia B</span>
-                            <h4 class="font-bold text-slate-950 text-base">Importación del Data Source y Autenticidad</h4>
-                            <p class="text-xs text-slate-650 mt-1">
-                                Captura de pantalla en el asistente de Autopsy "Add Data Source" durante la introducción de la firma SHA-256 y la verificación de integridad que ratifica que la imagen no ha sido modificada.
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-xs font-bold text-indigo-800 uppercase mb-2">Evidencia B</span>
+                            <h4 class="font-bold text-slate-950 text-base">Localización y Metadatos de m57biz.xls</h4>
+                            <p class="text-sm text-slate-700 mt-1">
+                                Ubicación del archivo en el directorio de documentos del usuario y registro de timestamps que detallan la creación e integridad.
                             </p>
                         </div>
-                        <div class="h-56 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                            <i class="fas fa-plus-square text-3xl mb-2 text-indigo-500/60"></i>
-                            <span class="font-semibold text-slate-650 text-xs">Cargar captura del asistente "Add Data Source" en Autopsy</span>
-                            <span class="text-[10px] text-slate-450 mt-1">Sugerido: guardar como <code>autopsy_import_hash.png</code> en <code>assets/img/lab/</code></span>
-                        </div>
+                        <figure class="tfg-figure mt-0">
+                            <img src="../assets/img/forensics/02_metadata_archivo.png" alt="Localización y Timestamps de m57biz.xls" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-2').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-2').style.display='none';">
+                            <div id="placeholder-2" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                <i class="fas fa-file-excel text-4xl mb-2 text-indigo-500/60"></i>
+                                <span class="font-semibold text-slate-700 text-sm">Cargar imagen de metadatos de m57biz.xls</span>
+                                <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/02_metadata_archivo.png</code></span>
+                            </div>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Localización y timestamps de creación de m57biz.xls</figcaption>
+                        </figure>
                     </div>
 
-                    <!-- Marcador 3: Dashboard y Keyword Search Autopsy -->
-                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col justify-between md:col-span-2">
+                    <!-- Evidencia 3 -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col">
                         <div class="mb-4">
-                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-[10px] font-bold text-indigo-800 uppercase mb-2">Evidencia C</span>
-                            <h4 class="font-bold text-slate-950 text-base">Análisis Forense y Keyword Search en Autopsy</h4>
-                            <p class="text-xs text-slate-650 mt-1">
-                                Captura de pantalla de la interfaz general de Autopsy con la vista del árbol de datos y el resultado del buscador de palabras clave encontrando registros dentro de la base de datos MariaDB comprometida.
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-xs font-bold text-indigo-800 uppercase mb-2">Evidencia C</span>
+                            <h4 class="font-bold text-slate-950 text-base">Email de Exfiltración y Cabeceras (Reply-To)</h4>
+                            <p class="text-sm text-slate-700 mt-1">
+                                Cabeceras SMTP del primer correo recibido mostrando la alteración del campo Reply-To como firma técnica del vector de ataque.
                             </p>
                         </div>
-                        <div class="h-60 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-400 text-center p-4">
-                            <i class="fas fa-search-plus text-4xl mb-3 text-indigo-500/60"></i>
-                            <span class="font-semibold text-slate-650 text-sm">Cargar captura de pantalla del análisis e interfaz de Autopsy</span>
-                            <span class="text-xs text-slate-450 mt-1">Sugerido: guardar como <code>autopsy_analysis_dashboard.png</code> en <code>assets/img/lab/</code></span>
+                        <figure class="tfg-figure mt-0">
+                            <img src="../assets/img/forensics/03_reply_to_phishing.png" alt="Email de Exfiltración y Cabeceras (Reply-To)" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-3').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-3').style.display='none';">
+                            <div id="placeholder-3" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                <i class="fas fa-envelope-open-text text-4xl mb-2 text-indigo-500/60"></i>
+                                <span class="font-semibold text-slate-700 text-sm">Cargar imagen de cabeceras SMTP</span>
+                                <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/03_reply_to_phishing.png</code></span>
+                            </div>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Email de exfiltración y cabeceras SMTP con redireccionamiento Reply-To</figcaption>
+                        </figure>
+                    </div>
+
+                    <!-- Evidencia 4 -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col">
+                        <div class="mb-4">
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-xs font-bold text-indigo-800 uppercase mb-2">Evidencia D</span>
+                            <h4 class="font-bold text-slate-950 text-base">Línea de Tiempo (Timeline)</h4>
+                            <p class="text-sm text-slate-700 mt-1">
+                                Representación cronológica del evento en Autopsy que expone la diferencia temporal de 42 segundos entre la creación y la exfiltración.
+                            </p>
                         </div>
+                        <figure class="tfg-figure mt-0">
+                            <img src="../assets/img/forensics/04_timeline_42s.png" alt="Línea de Tiempo (Timeline)" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-4').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-4').style.display='none';">
+                            <div id="placeholder-4" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                <i class="fas fa-chart-line text-4xl mb-2 text-indigo-500/60"></i>
+                                <span class="font-semibold text-slate-700 text-sm">Cargar imagen del Timeline de Autopsy</span>
+                                <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/04_timeline_42s.png</code></span>
+                            </div>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Línea de tiempo (Timeline) mostrando los 42 segundos entre la creación y el envío</figcaption>
+                        </figure>
+                    </div>
+
+                    <!-- Evidencia 5 -->
+                    <div class="border-2 border-dashed border-indigo-200 bg-indigo-50/20 p-6 rounded-2xl flex flex-col">
+                        <div class="mb-4">
+                            <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-xs font-bold text-indigo-800 uppercase mb-2">Evidencia E</span>
+                            <h4 class="font-bold text-slate-950 text-base">Generación del Reporte HTML</h4>
+                            <p class="text-sm text-slate-700 mt-1">
+                                Proceso de exportación de hallazgos periciales del caso a formato web utilizando el configurador nativo de reportes de Autopsy.
+                            </p>
+                        </div>
+                        <figure class="tfg-figure mt-0">
+                            <img src="../assets/img/forensics/05_reporte_html.png" alt="Generación del Reporte HTML" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-5').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-5').style.display='none';">
+                            <div id="placeholder-5" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                <i class="fas fa-file-code text-4xl mb-2 text-indigo-500/60"></i>
+                                <span class="font-semibold text-slate-700 text-sm">Cargar imagen del Reporte HTML Final</span>
+                                <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/05_reporte_html.png</code></span>
+                            </div>
+                            <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Generación del reporte final HTML con los elementos periciales etiquetados</figcaption>
+                        </figure>
                     </div>
                 </div>
             </section>
         </section>
     </main>
     <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>
