@@ -7,6 +7,54 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Sintonizar el menú lateral y hovers con la paleta violeta/indigo de la página forense */
+        .nav-link:hover {
+            background-color: #f5f3ff !important; /* violet-50 */
+            border-color: #c084fc !important;     /* purple-400 */
+            color: #5b21b6 !important;            /* violet-800 */
+        }
+        .nav-link:hover i {
+            color: #a855f7 !important;            /* purple-500 */
+        }
+        /* Ajuste del botón Menú Principal para integrarse con la paleta de color violeta */
+        .nav-link-home {
+            border-color: #ddd6fe !important;      /* violet-200 */
+            background-color: #f5f3ff !important;  /* violet-50 */
+            color: #5b21b6 !important;             /* violet-800 */
+        }
+        .nav-link-home i {
+            color: #7c3aed !important;             /* violet-600 */
+        }
+        .nav-link-home:hover {
+            background-color: #ede9fe !important;  /* violet-100 */
+            border-color: #c084fc !important;      /* purple-400 */
+        }
+        /* Asegurar que las cajas de advertencia/incidencia sean claramente naranjas */
+        .warning-box {
+            background-color: #fff7ed !important; /* orange-50 (fuerte y claro) */
+            border: 1px solid #ffedd5 !important; /* orange-100 */
+            border-top: 4px solid #f97316 !important; /* orange-500 */
+            color: #7c2d12 !important;            /* orange-900 */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02) !important;
+        }
+        .warning-box-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ea580c !important;            /* orange-600 */
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .warning-box-content strong {
+            color: #431407 !important;            /* orange-950 */
+        }
+    </style>
 </head>
 <body class="bg-theme-forensic flex justify-center text-slate-900">
     <script>
@@ -38,22 +86,24 @@
                         <i class="fas fa-search"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-700">Evidencia #21</p>
-                        <h1 class="mt-1 text-2xl font-black text-slate-950">Forense M57</h1>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-700">Laboratorio Forense</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Caso M57 Jean</h1>
                     </div>
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
                     <a href="#portada" class="nav-link"><i class="fas fa-door-open mr-2 text-slate-400"></i>Portada</a>
                     <a href="#contexto-caso" class="nav-link"><i class="fas fa-briefcase mr-2 text-slate-400"></i>Contexto del Caso</a>
+                    <a href="#adquisicion-real" class="nav-link"><i class="fas fa-shield-alt mr-2 text-slate-400"></i>Fase 0: Caso Real</a>
                     <a href="#configuracion-autopsy" class="nav-link"><i class="fas fa-cogs mr-2 text-slate-400"></i>Configuración</a>
                     <a href="#fase-a" class="nav-link"><i class="fas fa-fingerprint mr-2 text-slate-400"></i>Fase A: Reconocimiento</a>
                     <a href="#fase-b" class="nav-link"><i class="fas fa-envelope-open-text mr-2 text-slate-400"></i>Fase B: Email & Phishing</a>
                     <a href="#fase-c" class="nav-link"><i class="fas fa-history mr-2 text-slate-400"></i>Fase C: Línea Temporal</a>
                     <a href="#fase-d" class="nav-link"><i class="fas fa-file-invoice mr-2 text-slate-400"></i>Fase D: Reporte Final</a>
                     <a href="#mapa-evidencias" class="nav-link"><i class="fas fa-table mr-2 text-slate-400"></i>Mapa de Evidencias</a>
+                    <a href="#incidencias" class="nav-link"><i class="fas fa-exclamation-triangle mr-2 text-slate-400"></i>Incidencias</a>
                     <a href="#panel-capturas" class="nav-link"><i class="fas fa-images mr-2 text-slate-400"></i>Panel de Capturas</a>
-                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                    <a href="../index.html" class="nav-link nav-link-home"><i class="fas fa-home mr-2"></i>Menú Principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
@@ -122,6 +172,57 @@
                         </h4>
                         <p class="text-sm text-slate-700 leading-relaxed">
                             <strong>Identidad desconocida (externo).</strong> Correo: <code>tuckgorge@gmail.com</code>. Receptor final del archivo confidencial adjunto.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fase 0: Adquisición Forense y Preservación en Caso Real -->
+            <section id="adquisicion-real" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-shield-alt text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Fase 0: Procedimiento de Adquisición en un Caso Real</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    En este entorno de laboratorio trabajamos directamente con una imagen forense pre-adquirida (los segmentos <code>E01</code> provistos por Digital Corpora). Sin embargo, en un escenario pericial real, es imperativo seguir rigurosamente los siguientes protocolos de adquisición física para garantizar la validez legal de las pruebas:
+                </p>
+
+                <div class="grid gap-6 md:grid-cols-2 mt-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50 rounded-2xl space-y-2">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <i class="fas fa-lock mr-2 text-slate-500"></i> 1. Aislamiento y Cadena de Custodia
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Se debe proceder al aislamiento físico del equipo informático (en este caso, el portátil de Jean Jones) impidiendo cualquier conexión de red o manipulación no autorizada. Cada paso y persona que tenga contacto físico o lógico con el dispositivo debe registrarse minuciosamente en el <strong>documento oficial de cadena de custodia</strong>, etiquetando el hardware con identificadores únicos de precinto.
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50 rounded-2xl space-y-2">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <i class="fas fa-microchip mr-2 text-slate-500"></i> 2. Bloqueo de Escritura (Write Blocking)
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Bajo ninguna circunstancia se debe conectar el disco duro original directamente a una máquina de análisis sin protección. Se deben emplear <strong>bloqueadores de escritura por hardware</strong> (como dispositivos Tableau) o, en su defecto, bloqueadores por software a nivel de kernel. Esto impide que el sistema operativo de análisis escriba metadatos ocultos (como la fecha de último acceso) en el soporte original.
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50 rounded-2xl space-y-2">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <i class="fas fa-clone mr-2 text-slate-500"></i> 3. Duplicación Bit a Bit (Clonación)
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Se realiza una copia exacta de todos los sectores físicos (incluyendo espacio no asignado, áreas holgadas y metadatos) utilizando herramientas periciales de clonación como <code>dd</code>, <code>dcfldd</code>, <code>FTK Imager</code> o duplicadoras físicas portátiles. El resultado suele exportarse en formato crudo (<code>RAW/DD</code>) o en formatos periciales estructurados como el <code>E01</code> (Expert Witness Format), que comprime y segmenta los datos.
+                        </p>
+                    </div>
+
+                    <div class="p-5 border border-slate-200 bg-slate-50 rounded-2xl space-y-2">
+                        <h4 class="font-bold text-slate-950 text-sm flex items-center text-indigo-800">
+                            <i class="fas fa-fingerprint mr-2 text-slate-500"></i> 4. Verificación Criptográfica
+                        </h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Inmediatamente después de clonar el disco, se computa la huella digital criptográfica (usando funciones hash como <strong>SHA-256</strong> o <strong>MD5</strong>) tanto del disco físico original como de la imagen forense resultante. Ambos hashes deben coincidir bit a bit para certificar la total integridad del volcado. A partir de este momento, <strong>todo análisis e ingesta en Autopsy se realiza exclusivamente sobre las imágenes clonadas</strong>, resguardando el disco original en un entorno protegido.
                         </p>
                     </div>
                 </div>
@@ -272,29 +373,46 @@
                         <p class="text-sm text-slate-700 leading-relaxed">
                             El análisis de correos revela tres comunicaciones consecutivas críticas el 20 de julio de 2008:
                         </p>
-                        <div class="space-y-2 mt-2">
-                            <div class="p-3 bg-red-50 border-l-4 border-red-500 rounded-r-xl">
-                                <span class="font-bold text-red-950 text-sm block">Email 1 - La Petición Inicial (Suplantación)</span>
-                                <p class="text-sm text-red-900">
-                                    <strong>De:</strong> <code>alison@m57.biz</code> (Remitente visible) &rarr; <strong>Para:</strong> <code>jean@m57.biz</code>.<br>
-                                    <em>Contenido:</em> Solicita urgentemente la hoja de cálculo confidencial con datos de salarios.
+                        <div class="space-y-3 mt-3">
+                            <!-- Email 1 -->
+                            <div class="p-4 bg-white border border-slate-150 rounded-2xl flex flex-col gap-2 shadow-sm">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border border-rose-100 bg-rose-50 text-rose-700">Email 1</span>
+                                    <span class="text-sm font-bold text-slate-800">Petición Inicial (Suplantación)</span>
+                                </div>
+                                <p class="text-xs text-slate-650 leading-relaxed">
+                                    <span class="font-semibold text-slate-800">De:</span> <code>alison@m57.biz</code> <span class="text-slate-400">&rarr;</span> <span class="font-semibold text-slate-800">Para:</span> <code>jean@m57.biz</code>.
+                                </p>
+                                <p class="text-sm text-slate-700">
+                                    Solicita urgentemente la hoja de cálculo confidencial con datos de salarios de la plantilla.
                                 </p>
                             </div>
 
-                            <div class="p-3 bg-amber-50 border-l-4 border-amber-500 rounded-r-xl">
-                                <span class="font-bold text-amber-950 text-sm block">Email 2 - Dudas de Jean Jones</span>
-                                <p class="text-sm text-amber-900">
-                                    <strong>De:</strong> <code>jean@m57.biz</code> &rarr; <strong>Para:</strong> <code>alison@m57.biz</code>.<br>
-                                    <em>Contenido:</em> Jean duda de la dirección de respuesta y le pregunta a la presidenta si debe responder a <code>alex@m57.biz</code> o <code>alison@m57.biz</code>.
+                            <!-- Email 2 -->
+                            <div class="p-4 bg-white border border-slate-150 rounded-2xl flex flex-col gap-2 shadow-sm">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border border-amber-100 bg-amber-50 text-amber-700">Email 2</span>
+                                    <span class="text-sm font-bold text-slate-800">Dudas de Jean Jones</span>
+                                </div>
+                                <p class="text-xs text-slate-650 leading-relaxed">
+                                    <span class="font-semibold text-slate-800">De:</span> <code>jean@m57.biz</code> <span class="text-slate-400">&rarr;</span> <span class="font-semibold text-slate-800">Para:</span> <code>alison@m57.biz</code>.
+                                </p>
+                                <p class="text-sm text-slate-700">
+                                    Jean duda de la dirección de respuesta y le pregunta a la presidenta si debe responder a <code>alex@m57.biz</code> o a <code>alison@m57.biz</code>.
                                 </p>
                             </div>
 
-                            <div class="p-3 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-xl">
-                                <span class="font-bold text-indigo-950 text-sm block">Email 3 - La Exfiltración</span>
-                                <p class="text-sm text-indigo-900">
-                                    <strong>De:</strong> <code>jean@m57.biz</code> &rarr; <strong>Para:</strong> <code>alison@m57.biz</code> y en copia a <code>tuckgorge@gmail.com</code>.<br>
-                                    <em>Adjunto:</em> <code>m57biz.xls</code>.<br>
-                                    <em>Análisis:</em> Jean envía el archivo exfiltrado a un destinatario externo que no pertenece a la corporación.
+                            <!-- Email 3 -->
+                            <div class="p-4 bg-white border border-slate-150 rounded-2xl flex flex-col gap-2 shadow-sm">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border border-indigo-100 bg-indigo-50 text-indigo-700">Email 3</span>
+                                    <span class="text-sm font-bold text-slate-800">La Exfiltración</span>
+                                </div>
+                                <p class="text-xs text-slate-650 leading-relaxed">
+                                    <span class="font-semibold text-slate-800">De:</span> <code>jean@m57.biz</code> <span class="text-slate-400">&rarr;</span> <span class="font-semibold text-slate-800">Para:</span> <code>alison@m57.biz</code> <span class="text-slate-400">CC:</span> <code>tuckgorge@gmail.com</code>.
+                                </p>
+                                <p class="text-sm text-slate-700">
+                                    Jean envía el archivo <code>m57biz.xls</code> exfiltrado en copia (CC) a un destinatario externo no perteneciente a la corporación.
                                 </p>
                             </div>
                         </div>
@@ -423,13 +541,18 @@
                     <p class="text-sm text-slate-700">
                         4. Asegúrate de marcar la casilla <strong>"All Tagged Results"</strong> para estructurar el informe únicamente en base a los hallazgos críticos documentados. Haz clic en Finalizar. El reporte se guardará en la carpeta raíz del caso de Autopsy.
                     </p>
-                    <div class="mt-4 p-4 bg-indigo-50 border border-indigo-250 rounded-xl space-y-2 text-sm text-indigo-900">
+                    <div class="mt-4 p-4 bg-indigo-50 border border-indigo-250 rounded-xl space-y-3 text-sm text-indigo-900">
                         <strong>El reporte final redactado debe responder con claridad a las siguientes preguntas clave del caso:</strong>
                         <ol class="list-decimal pl-5 space-y-1">
                             <li>¿Cuándo se creó el archivo <code>m57biz.xls</code> y desde qué dispositivo y cuenta de usuario se exfiltró?</li>
                             <li>¿A qué dirección de correo electrónico externa llegó realmente la exfiltración del archivo y por qué canal?</li>
                             <li>¿Existe evidencia objetiva que apunte a una intención criminal o connivencia por parte de la CFO Jean Jones?</li>
                         </ol>
+                        <div class="pt-2">
+                            <a href="../assets/rep/autopsy/report.html" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-indigo-650 px-4 py-2.5 font-bold text-white shadow-lg shadow-indigo-650/20 hover:bg-indigo-700 transition active:scale-95 text-xs">
+                                <i class="fas fa-external-link-alt"></i> Abrir Reporte Forense Autopsy (HTML)
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -487,6 +610,47 @@
                 </div>
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500 text-center font-semibold">
                     NOTA LEGAL: El análisis forense digital sobre sistemas reales sin el debido consentimiento o autorización judicial constituye un delito tipificado en el artículo 197 bis del Código Penal (con penas de hasta 2 años de prisión). Esta guía debe ser ejecutada únicamente bajo la imagen de prácticas y en entornos controlados de laboratorio.
+                </div>
+            </section>
+
+            <!-- Registro de Incidencias Técnicas -->
+            <section id="incidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-indigo-50 rounded-xl text-indigo-700">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Incidencias Técnicas Encontradas</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Registro documentado de los problemas técnicos experimentados durante la ejecución de la auditoría en Autopsy y las correspondientes soluciones aplicadas:
+                </p>
+
+                <div class="space-y-6">
+                    <!-- Incidencia 1 -->
+                    <div class="warning-box mt-0">
+                        <div class="warning-box-header flex items-center gap-2">
+                            <i class="fas fa-memory"></i> <span>Incidencia 1: Saturación de memoria, corrupción de módulos de terceros y bloqueo del hilo de ingesta</span>
+                        </div>
+                        <div class="warning-box-content text-sm text-slate-700 space-y-2">
+                            <p><strong>Descripción del problema:</strong> Durante la primera ejecución del análisis global, el proceso de ingesta se interrumpió de manera crítica, bloqueando la aplicación al intentar inicializar el componente de análisis geográfico <code>GPXParserFileIngestModuleFactory</code> debido a la ausencia del módulo dependiente <code>GPX_Parser_Module</code>. Adicionalmente, el intento de abrir la interfaz gráfica de la línea de tiempo (Timeline) mientras los motores de indexación masiva continuaban ejecutándose en segundo plano provocó un desbordamiento de recursos y el cuelgue definitivo de la herramienta.</p>
+                            <p><strong>Solución técnica:</strong> Se procedió al reinicio controlado del entorno y a la reconfiguración selectiva de la ingesta de datos. Se aislaron y desmarcaron los módulos problemáticos o innecesarios para esta fase, aplicando un enfoque de optimización selectiva. Se ejecutaron de forma exclusiva los motores críticos para el caso: <code>OS Accounts</code>, <code>Operating System Information</code> y <code>E-Mail Messages (Email Parser)</code>. Asimismo, se estableció un protocolo de espera estricto hasta que la barra de progreso general alcanzó el 100%, garantizando que la base de datos relacional interna del caso se consolidara antes de interactuar con herramientas visuales de alta carga como <code>Timeline</code>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Incidencia 2 -->
+                    <div class="warning-box">
+                        <div class="warning-box-header flex items-center gap-2">
+                            <i class="fas fa-envelope-open-text"></i> <span>Incidencia 2: Inconsistencia en el desglose de adjuntos salientes en el visor de mensajería corporativa</span>
+                        </div>
+                        <div class="warning-box-content text-sm text-slate-700 space-y-3">
+                            <p><strong>Descripción del problema:</strong> Una vez estabilizada e indexada la base de datos de correo (<code>outlook.pst</code>), el visor de artefactos estándar de Autopsy reflejaba la existencia de los mensajes de la secuencia de ataque, pero presentaba una anomalía de visualización: la pestaña de objetos adjuntos (Attachments) no lograba desglosar de forma física el archivo exfiltrado en los registros huérfanos de salida. Esto impedía obtener de manera directa la prueba material del envío.</p>
+                            <p><strong>Solución técnica:</strong> Se aplicó un procedimiento forense basado en dos fases:</p>
+                            <ol class="list-decimal pl-5 space-y-2">
+                                <li><strong>Pivotaje y Análisis Estructural MIME:</strong> Se accedió a la pestaña de texto plano (Text / Hex) de los metadatos del correo de salida seleccionado. Mediante el análisis de las cabeceras incrustadas y la estructura MIME del cuerpo del mensaje, se localizó el código de disposición del adjunto (<code>Content-Disposition: attachment; filename="m57biz.xls"</code>), demostrando la huella digital y la inyección del archivo dentro del flujo del correo saliente enviado a la dirección del atacante (<code>tuckgorge@gmail.com</code>).</li>
+                                <li><strong>Validación Dinámica y Correlación Cruzada:</strong> Tras completarse la indexación limpia al 100%, se accedió al módulo <code>Timeline</code> en la vista detallada (Details). Al filtrar exclusivamente por eventos de sistema de archivos y actividad de correo, se logró reconstruir la cascada cronológica exacta del incidente. Se contrastó el instante exacto del envío del correo electrónico (03:28:00 CEST) con el Access Time y la alteración del fichero <code>m57biz.xls</code> en el escritorio del sistema afectado (03:28:03 CEST), validando de forma irrefutable la consumación de la exfiltración mediante pruebas circunstanciales correlacionadas.</li>
+                            </ol>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -551,17 +715,33 @@
                             <span class="inline-flex rounded-full bg-indigo-200/50 px-2.5 py-0.5 text-xs font-bold text-indigo-800 uppercase mb-2">Evidencia C</span>
                             <h4 class="font-bold text-slate-950 text-base">Email de Exfiltración y Cabeceras (Reply-To)</h4>
                             <p class="text-sm text-slate-700 mt-1">
-                                Cabeceras SMTP del primer correo recibido mostrando la alteración del campo Reply-To como firma técnica del vector de ataque.
+                                Cabeceras SMTP del primer correo recibido mostrando la alteración del campo Reply-To como firma técnica del vector de ataque, junto con la muestra del envío del archivo solicitado.
                             </p>
                         </div>
                         <figure class="tfg-figure mt-0">
-                            <img src="../assets/img/forensics/03_reply_to_phishing.png" alt="Email de Exfiltración y Cabeceras (Reply-To)" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-3').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-3').style.display='none';">
-                            <div id="placeholder-3" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
-                                <i class="fas fa-envelope-open-text text-4xl mb-2 text-indigo-500/60"></i>
-                                <span class="font-semibold text-slate-700 text-sm">Cargar imagen de cabeceras SMTP</span>
-                                <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/03_reply_to_phishing.png</code></span>
+                            <div class="flex flex-col gap-6">
+                                <!-- Imagen 1: Cabeceras -->
+                                <div class="flex flex-col">
+                                    <img src="../assets/img/forensics/03_reply_to_phishing.png" alt="Email de Exfiltración y Cabeceras (Reply-To)" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-3a').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-3a').style.display='none';">
+                                    <div id="placeholder-3a" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                        <i class="fas fa-envelope-open-text text-4xl mb-2 text-indigo-500/60"></i>
+                                        <span class="font-semibold text-slate-700 text-sm">Cargar imagen de cabeceras SMTP</span>
+                                        <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/03_reply_to_phishing.png</code></span>
+                                    </div>
+                                    <span class="mt-2 text-xs text-slate-500 text-center italic">Localización de las cabeceras (Reply-To)</span>
+                                </div>
+                                <!-- Imagen 2: Archivo filtrado -->
+                                <div class="flex flex-col">
+                                    <img src="../assets/img/forensics/03_reply_to_phishing_attach.png" alt="Muestra del archivo filtrado" class="w-full rounded-xl border border-slate-200 object-cover cursor-zoom-in" onerror="this.style.display='none'; document.getElementById('placeholder-3b').style.display='flex';" onload="this.style.display='block'; document.getElementById('placeholder-3b').style.display='none';">
+                                    <div id="placeholder-3b" class="h-64 rounded-xl border border-slate-200 bg-slate-100 flex flex-col items-center justify-center text-slate-450 text-center p-4">
+                                        <i class="fas fa-paperclip text-4xl mb-2 text-indigo-500/60"></i>
+                                        <span class="font-semibold text-slate-700 text-sm">Cargar muestra del archivo filtrado</span>
+                                        <span class="text-xs text-slate-500 mt-1">Sugerido: <code>assets/img/forensics/03_reply_to_phishing_attach.png</code></span>
+                                    </div>
+                                    <span class="mt-2 text-xs text-slate-500 text-center italic">Muestra del envío del archivo solicitado</span>
+                                </div>
                             </div>
-                            <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Email de exfiltración y cabeceras SMTP con redireccionamiento Reply-To</figcaption>
+                            <figcaption class="mt-4 text-[13px] italic text-slate-650 text-center">Email de exfiltración, cabeceras SMTP con redireccionamiento Reply-To y comprobación del archivo adjunto filtrado</figcaption>
                         </figure>
                     </div>
 
@@ -603,6 +783,11 @@
                             </div>
                             <figcaption class="mt-3 text-[13px] italic text-slate-650 text-center">Generación del reporte final HTML con los elementos periciales etiquetados</figcaption>
                         </figure>
+                        <div class="mt-4 flex justify-center">
+                            <a href="../assets/rep/autopsy/report.html" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-indigo-650 px-5 py-3 font-bold text-white shadow-lg shadow-indigo-650/20 hover:bg-indigo-700 transition active:scale-95 text-sm">
+                                <i class="fas fa-external-link-alt"></i> Abrir Reporte Forense Autopsy (HTML)
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>

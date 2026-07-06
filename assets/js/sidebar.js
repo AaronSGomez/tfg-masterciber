@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 accentBg = 'bg-orange-600';
             } else if (sidebarContent.querySelector('.bg-purple-600') || sidebarContent.querySelector('.text-purple-700')) {
                 accentBg = 'bg-purple-600';
+            } else if (sidebarContent.querySelector('.bg-indigo-600') || sidebarContent.querySelector('.text-indigo-700') || sidebarContent.querySelector('.bg-indigo-650')) {
+                accentBg = 'bg-indigo-600';
             } else if (sidebarContent.querySelector('.bg-amber-600') || sidebarContent.querySelector('.text-amber-700')) {
                 accentBg = 'bg-amber-600';
             }
@@ -54,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     softBorder = 'border-orange-200'; softBg = 'bg-orange-50/70'; softText = 'text-orange-900';
                 } else if (accentBg === 'bg-purple-600') {
                     softBorder = 'border-purple-200'; softBg = 'bg-purple-50/70'; softText = 'text-purple-900';
+                } else if (accentBg === 'bg-indigo-600') {
+                    softBorder = 'border-indigo-200'; softBg = 'bg-indigo-50/70'; softText = 'text-indigo-900';
                 }
                 link.classList.add('border', softBorder, softBg, softText, 'font-semibold');
             } else {
@@ -400,6 +404,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeText = 'text-purple-950';
                 themeTitle = 'text-purple-900';
                 themeButton = 'bg-purple-600 hover:bg-purple-700';
+            } else if (accentBg === 'bg-indigo-600') {
+                themeBg = 'bg-indigo-50';
+                themeBorder = 'border-indigo-200';
+                themeText = 'text-indigo-950';
+                themeTitle = 'text-indigo-900';
+                themeButton = 'bg-indigo-600 hover:bg-indigo-700';
             }
 
             const tutorialTip = document.createElement('div');

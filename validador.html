@@ -108,7 +108,7 @@
             { id: 18, title: "Caso de uso SIEM con alerta disparada", block: "SOC / IR", desc: "Detonación del exploit ofensivo React2Shell contra la aplicación.", evidence: "Captura en el panel de eventos de la consola de Wazuh del disparo de la alerta ID 100503.", link: "siem/siem.html#alerta-siem", time: "1.5 horas (Detonación de exploit y correlación de alertas)" },
             { id: 19, title: "Playbook de detección desarrollado", block: "SOC / IR", desc: "Diseño del diagrama lógico de toma de decisiones del SOC.", evidence: "Diagrama de flujo detallando criterios de triage, severidades y escalado de incidencias.", link: "siem/siem.html#playbook-seccion", time: "1 hora (Diseño del flujo lógico y severidades)" },
             { id: 20, title: "Simulacro de incidente documentado (PRI)", block: "SOC / IR", desc: "Flujo completo de respuesta y mitigación frente al ataque React2Shell.", evidence: "Documento formal describiendo bitácora, timeline, comandos de aislamiento y código corregido.", link: "siem/siem.html#simulacro-pri", time: "2 horas (Simulacro PRI y bitácora de incidente)" },
-            { id: 21, title: "Adquisición forense básica realizada", block: "SOC / IR", desc: "Extracción lógica mediante volcado raw del volumen comprometido de base de datos.", evidence: "Terminal con el comando de generación de hash SHA256 y vista del análisis forense en Autopsy.", link: "forensics/forensics.html", time: "4 horas (Adquisición lógica dd, hashes y análisis con Autopsy)" },
+            { id: 21, title: "Análisis Forense del Caso M57 Jean", block: "SOC / IR", desc: "Análisis forense en Autopsy sobre la imagen del sistema Windows XP y base de datos de correos del escenario M57.", evidence: "Caso en Autopsy con hallazgos de exfiltración, línea temporal (Timeline) de 42s y Reporte HTML generado.", link: "forensics/forensics.html", time: "3.33 horas (Análisis forense en Autopsy y generación de reporte)" },
             { id: 22, title: "Política de Seguridad redactada", block: "Gobierno", desc: "Elaboración de las directrices de seguridad aplicables al laboratorio.", evidence: "Capítulo formal describiendo políticas de acceso mínimo, backup y gestión de identidades." },
             { id: 24, title: "PDS básico de 12 meses elaborado", block: "Gobierno", desc: "Plan Director de Seguridad a un año para mitigar riesgos identificados.", evidence: "Diagrama de Gantt detallando iniciativas trimestrales de hardening, MFA e infraestructura defensiva." },
             { id: 25, title: "Despliegue del Laboratorio SOAR (Extra)", block: "SOC / IR", desc: "Instalación del orquestador Shuffle, configuración de webhooks e integración inicial.", evidence: "Trazas e interfaz activa del dashboard SOAR evidenciando recepción de eventos de Wazuh.", link: "soar/soar.html", time: "6 horas (Configuración y resolución de incidencias)" }
@@ -134,6 +134,7 @@
             18: true,  // Caso de uso SIEM
             19: true,  // Playbook de detección
             20: true,  // Simulacro PRI
+            21: true,  // Adquisición forense básica (Autopsy)
             25: true   // SOAR Extra
         };
         let state = JSON.parse(localStorage.getItem('tfg_validator_state_v3'));
