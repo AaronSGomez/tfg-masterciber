@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaña de Phishing: Gophish (Simulación y Hardening)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Personalización de colores para la sección de Gophish (#FF573B - Coral/Naranja) */
+        .bg-theme-phishing {
+            background-color: #fff6f5; /* Coral ultra suave */
+        }
+        .nav-link:hover {
+            background-color: #fff6f5 !important;
+            border-color: #ff8a75 !important;
+            color: #b82d14 !important;
+        }
+        .nav-link:hover i {
+            color: #FF573B !important;
+        }
+        .nav-link-home {
+            border-color: #ffd8d1 !important;
+            background-color: #fff6f5 !important;
+            color: #b82d14 !important;
+        }
+        .nav-link-home i {
+            color: #FF573B !important;
+        }
+        .nav-link-home:hover {
+            background-color: #ffebe8 !important;
+            border-color: #ff8a75 !important;
+        }
+
+        /* Caja de avisos para evidencias fotográficas */
+        .evidence-box {
+            background-color: #f8fafc !important; 
+            border: 1px solid #e2e8f0 !important; 
+            color: #334155 !important;            
+            border-top: 4px solid #FF573B !important; /* Coral tab stripe */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+        }
+        .evidence-box-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #d13d24 !important;            
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .evidence-box-content {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .evidence-box-content strong {
+            color: #0f172a !important;
+        }
+    </style>
+</head>
+<body class="bg-theme-phishing flex justify-center text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado';
+                button.classList.add('bg-orange-500/20', 'text-orange-700');
+                setTimeout(() => {
+                    button.innerHTML = original;
+                    button.classList.remove('bg-orange-500/20', 'text-orange-700');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'Error';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Sidebar lateral -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl text-white font-bold" style="background-color: #FF573B !important;">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em]" style="color: #FF573B !important;">Protección</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Gophish</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#instalacion-descarga" class="nav-link">Descarga e Instalación</a>
+                    <a href="#configuracion-inicial" class="nav-link">Configuración Inicial</a>
+                    <a href="#arquitectura-gophish" class="nav-link">Arquitectura</a>
+                    <a href="#configuracion-remitente" class="nav-link">Remitente SMTP</a>
+                    <a href="#plantilla-landing" class="nav-link">Plantilla y Landing</a>
+                    <a href="#ejecucion-campana" class="nav-link">Ejecución Campaña</a>
+                    <a href="#panel-analitica" class="nav-link">Panel y Resultados</a>
+                    <a href="../index.html" class="nav-link nav-link-home"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">Aarón S. Gómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block hover:underline" style="color: #FF573B !important;">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenedor de Contenido -->
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-[#FF573B]/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div class="flex items-center gap-2">
+                    <span class="hero-pill border-[#FF573B]/20 bg-[#FF573B]/10 text-[#FF573B] font-bold">Gophish</span>
+                    <span class="progress-status border-[#FF573B]/20 bg-[#FF573B]/10 text-[#FF573B] font-bold">Objetivo 16</span>
+                </div>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Simulación de Phishing Corporativo con Gophish</h2>
+                <p class="mt-4 text-base leading-8 text-slate-700 md:text-lg">
+                    Guía técnica paso a paso para la instalación, configuración y ejecución de campañas de concienciación sobre ingeniería social. Esta documentación describe los procedimientos periciales para desplegar **Gophish**, configurar credenciales de administración, clonar plantillas reales y auditar las respuestas del factor humano.
+                </p>
+            </header>
+
+            <!-- Nueva Sección: Descarga e Instalación -->
+            <section id="instalacion-descarga" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-download text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Descarga e Instalación</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Gophish está desarrollado en Go, lo que proporciona un binario único auto-contenido libre de dependencias complejas. La descarga oficial se realiza desde <a href="https://getgophish.com/" target="_blank" class="underline font-bold text-orange-600 hover:text-orange-700">getgophish.com</a> o directamente desde su repositorio de GitHub.
+                </p>
+
+                <div class="space-y-4">
+                    <h4 class="font-bold text-slate-950 font-sans">1. Obtención y extracción del software</h4>
+                    <p class="text-sm text-slate-700">Puedes descargar el binario precompilado para tu sistema operativo desde la sección oficial de lanzamientos. A continuación se detallan las instrucciones para su despliegue tanto en Windows 11 (entorno de pruebas local) como en Linux (Kali / Debian):</p>
+                    
+                    <div class="space-y-6 mt-4">
+                        <!-- Windows 11 -->
+                        <div class="p-5 border border-slate-200 bg-white rounded-2xl space-y-3 shadow-sm">
+                            <strong class="text-slate-955 font-bold block text-sm"><i class="fab fa-windows text-blue-500 mr-1.5"></i> Despliegue en Windows 11 (Entorno Local)</strong>
+                            <p class="text-xs text-slate-650 leading-relaxed">
+                                1. Accede a las descargas de Gophish y obtén el paquete ZIP comprimido correspondiente a Windows (ej: <code>gophish-v0.12.1-windows-64bit.zip</code>).<br>
+                                2. Descomprime todo el contenido en una ruta de tu disco local (ej: <code>C:\Proyectos\gophish\</code>).<br>
+                                3. Abre una terminal de **PowerShell** o **Símbolo del sistema** con privilegios de **Administrador** y navega hasta el directorio de la aplicación.
+                            </p>
+                            <div class="code-shell border border-slate-200 rounded-xl overflow-hidden bg-slate-50 mt-2">
+                                <pre class="p-3 text-[11px] font-mono whitespace-pre-wrap break-all overflow-x-visible"><code># Acceso y ejecución en PowerShell (Administrador)
+cd C:\Proyectos\gophish
+.\gophish.exe</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Linux / Kali Linux -->
+                        <div class="p-5 border border-slate-200 bg-white rounded-2xl space-y-3 shadow-sm">
+                            <strong class="text-slate-955 font-bold block text-sm"><i class="fab fa-linux text-orange-600 mr-1.5"></i> Despliegue en Linux (Kali / Debian de Auditoría)</strong>
+                            <p class="text-xs text-slate-655 leading-relaxed">
+                                1. Utiliza <code>wget</code> en tu consola para descargar el paquete de instalación ZIP de 64 bits para Linux.<br>
+                                2. Utiliza <code>unzip</code> para extraer el binario ELF en tu máquina y configúralo como ejecutable mediante <code>chmod</code>.<br>
+                                3. Ejecuta con privilegios de superusuario (<code>sudo</code>) para permitir la apertura de sockets en puertos bajos (puerto 80/443).
+                            </p>
+                            <div class="code-shell border border-slate-200 rounded-xl overflow-hidden bg-slate-50 mt-2">
+                                <pre class="p-3 text-[11px] font-mono whitespace-pre-wrap break-all overflow-x-visible"><code># Comandos en Consola Linux
+wget https://github.com/gophish/gophish/releases/download/v0.12.1/gophish-v0.12.1-linux-64bit.zip
+unzip gophish-v0.12.1-linux-64bit.zip
+chmod +x gophish
+sudo ./gophish</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <h4 class="font-bold text-slate-950 font-sans">2. Primer Lanzamiento y Obtención de Credenciales</h4>
+                    <p class="text-sm text-slate-700">
+                        Al arrancar Gophish por primera vez, el sistema genera de forma segura un **token/contraseña aleatoria de administración** y la imprime en la salida de consola (stdout). Es fundamental copiar esta clave para el primer inicio de sesión.
+                    </p>
+                    <div class="code-shell border border-slate-200 rounded-2xl overflow-hidden bg-white">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650">
+                            <span>Arranque Inicial (Terminal)</span>
+                            <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-run')">Copiar</button>
+                        </div>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-run"># Ejecutar la aplicación como superusuario (requerido para abrir el puerto 80)
+sudo ./gophish</code></pre>
+                    </div>
+
+                    <div class="code-shell border border-slate-200 rounded-2xl overflow-hidden mt-3">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650 bg-white">
+                            <span>Logs de Consola de Gophish (Simulación)</span>
+                            <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-first-log')">Copiar</button>
+                        </div>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-first-log">2026/07/07 11:32:00 [info] Starting admin server at https://127.0.0.1:3330
+2026/07/07 11:32:00 [info] Starting phishing server at http://0.0.0.0:80
+<span style="color: #39ff14;" class="font-bold">2026/07/07 11:32:00 [info] Please login with the username admin and the temporary password: <span style="color: #ff1493;">4a89df8b2c5e7a91</span></span>
+2026/07/07 11:32:00 [info] Trusting certificates in gophish.crt</code></pre>
+                    </div>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 1</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Arranque del Servicio e IP visible:</strong> Captura la consola de ejecución inicial donde se aprecia la carga de los servicios y, especialmente, la generación del log con la contraseña temporal de administración (<code>temporary password</code>) generada por el sistema.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Nueva Sección: Configuración Inicial (config.json) -->
+            <section id="configuracion-inicial" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-sliders-h text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Configuración Inicial (config.json)</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Por defecto, la interfaz de administración de Gophish solo es accesible localmente (`127.0.0.1:3330`). Para administrarlo remotamente o cambiar los puertos de escucha para que no entren en conflicto con otros servicios del laboratorio, editamos el archivo `config.json`.
+                </p>
+
+                <div class="code-shell border border-slate-200 rounded-2xl overflow-hidden bg-white">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650">
+                        <span class="font-mono flex items-center gap-2"><i class="fas fa-file-code text-orange-600"></i> config.json (Configuración Estructurada)</span>
+                        <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-config-json')">Copiar</button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-config-json">{
+  "admin_listener": {
+    # listen_url: Cambiar "127.0.0.1:3330" a "0.0.0.0:3330" para administración remota
+    "listen_url": "0.0.0.0:3330",
+    "use_tls": true,
+    "cert_path": "gophish.crt",
+    "key_path": "gophish.key"
+  },
+  "phish_listener": {
+    # listen_url: Dirección donde escuchará la Landing Page clonada
+    "listen_url": "0.0.0.0:80",
+    "use_tls": false
+  },
+  "db_name": "sqlite3",
+  "db_path": "gophish.db",
+  "migrations_path": "db/db_sqlite3/migrations/"
+}</code></pre>
+                </div>
+
+                <div class="space-y-3 text-sm text-slate-700">
+                    <strong class="text-slate-900 block font-bold">Mantenimiento y Copias de Seguridad:</strong>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Base de Datos (`gophish.db`):</strong> Gophish guarda todo el historial en un único archivo SQLite. Para hacer copias de seguridad de la campaña, basta con respaldar este archivo en frío.</li>
+                        <li><strong>Certificados TLS (`gophish.crt` y `.key`):</strong> El framework auto-genera certificados de prueba SSL al primer arranque. Para producción, deben enlazarse a un certificado válido (ej. Let's Encrypt) para evitar la alerta de sitio peligroso en el navegador del administrador.</li>
+                    </ul>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 2</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Primer Acceso de Administrador:</strong> Captura la interfaz de cambio de contraseña obligatoria en la URL <code>https://localhost:3330</code> después de introducir por primera vez las credenciales temporales generadas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. Entendiendo el Flujo del Ataque -->
+            <section id="arquitectura-gophish" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-network-wired text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Arquitectura y Funcionamiento de la Simulación</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    La plataforma funciona estructurando un embudo de eventos que permite medir la concienciación de los usuarios. Cuando se despacha un email, Gophish inyecta identificadores dinámicos que diferencian las acciones de cada destinatario de manera individualizada:
+                </p>
+                <div class="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl mt-4">
+                    <!-- Caja 1 -->
+                    <div class="flex flex-col items-center p-4 bg-white border border-orange-200 rounded-xl w-48 text-center shadow-sm">
+                        <i class="fas fa-envelope text-2xl mb-1 text-orange-600"></i>
+                        <span class="font-bold text-xs">Email Cebo</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Inyecta píxel tracker e ID</span>
+                    </div>
+                    <div class="text-slate-400"><i class="fas fa-chevron-right lg:rotate-0 rotate-90"></i></div>
+                    <!-- Caja 2 -->
+                    <div class="flex flex-col items-center p-4 bg-white border border-orange-200 rounded-xl w-48 text-center shadow-sm">
+                        <i class="fas fa-mouse-pointer text-2xl mb-1 text-orange-600"></i>
+                        <span class="font-bold text-xs">Acción de Click</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Redirecciona por ID único</span>
+                    </div>
+                    <div class="text-slate-400"><i class="fas fa-chevron-right lg:rotate-0 rotate-90"></i></div>
+                    <!-- Caja 3 -->
+                    <div class="flex flex-col items-center p-4 bg-white border border-orange-200 rounded-xl w-48 text-center shadow-sm">
+                        <i class="fas fa-key text-2xl mb-1 text-red-600"></i>
+                        <span class="font-bold text-xs text-red-700">Captura de Datos</span>
+                        <span class="text-[10px] text-slate-500 mt-1">Guardado en panel central</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Configuración del Perfil de Envío (Sending Profile) -->
+            <section id="configuracion-remitente" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-mail-bulk text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Configuración del Perfil de Envío SMTP</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Para que los correos electrónicos se envíen de manera fiable, Gophish requiere configurarse con un servidor SMTP externo (como Gmail, Outlook, un relé SMTP local o servicios como SendGrid).
+                </p>
+
+                <div class="space-y-4">
+                    <p class="text-sm text-slate-700 font-semibold font-sans">Parámetros del Perfil de Envío SMTP:</p>
+                    <ul class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
+                        <li><strong>Name:</strong> Nombre identificativo (ej. <em>Soporte IT Gmail Relay</em>).</li>
+                        <li><strong>From:</strong> El remitente falso visible (ej. <code>Soporte IT TFG &lt;soporte.it.masterciber@gmail.com&gt;</code>).</li>
+                        <li><strong>Host:</strong> El servidor y puerto SMTP con TLS activo (ej. <code>smtp.gmail.com:587</code>).</li>
+                        <li><strong>Username & Password:</strong> Credenciales de autenticación. En el caso de Gmail, es obligatorio usar una <strong>Contraseña de Aplicación de 16 dígitos</strong> generada desde el panel de seguridad de Google.</li>
+                    </ul>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 3</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Configuración de Sending Profiles:</strong> Captura de pantalla de la ventana modal "New Sending Profile" con todos los parámetros SMTP completos e interactivos. Es fundamental capturar el test de envío exitoso presionando el botón "Send Test Email" confirmando que el correo de prueba llega a la bandeja de destino.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Creación de Plantilla y Clonado de Landing Page -->
+            <section id="plantilla-landing" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-laptop-code text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Creación de Plantilla y Landing Page</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    El éxito pericial del phishing reside en la similitud visual del cebo. Gophish automatiza la generación y captura de estos recursos de forma estructurada.
+                </p>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <div class="p-5 border border-slate-100 bg-[#fff6f5]/50 rounded-2xl space-y-2">
+                        <strong class="text-slate-900 text-sm font-bold block"><i class="fas fa-envelope mr-1.5" style="color: #FF573B;"></i> 1. Email Template (El Cebo)</strong>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Crea la plantilla usando el editor HTML enriquecido. Recuerda activar el seguimiento agregando el tag dinámico <code>{{.Tracker}}</code> al final del cuerpo del correo e inyecta la URL del servidor de phishing mediante el parámetro <code>{{.URL}}</code> en el botón de acción principal.
+                        </p>
+                    </div>
+                    <div class="p-5 border border-slate-100 bg-[#fff6f5]/50 rounded-2xl space-y-2">
+                        <strong class="text-slate-900 text-sm font-bold block"><i class="fas fa-file-invoice mr-1.5" style="color: #FF573B;"></i> 2. Landing Page (El Clon)</strong>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Usa la función **Import Site** para clonar directamente la página de login legítima (ej. Microsoft 365, Google o el propio panel de Supabase). Es imperativo marcar las casillas **Capture Submitted Data** y **Capture Passwords** para interceptar el formulario en Gophish.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIAS RECOMENDADAS 4 Y 5</div>
+                    <div class="evidence-box-content">
+                        <p><strong>4. Plantilla del Email Recibido:</strong> Captura de pantalla de la bandeja de entrada del correo objetivo (Outlook o Gmail) mostrando el correo de simulación recibido. Debe verse limpio, alineado y con el enlace apuntando al dominio de pruebas perimetrales.</p>
+                        <p class="mt-3"><strong>5. Landing Page Falsa en el Navegador:</strong> Captura de la ventana del navegador renderizando el portal de inicio de sesión clonado. Señala con un recuadro o anotación visual que la barra de direcciones del navegador apunta a la IP o subdominio dinámico local y no al dominio real.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Lanzamiento y Ejecución de la Campaña -->
+            <section id="ejecucion-campana" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-rocket text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Lanzamiento y Ejecución de la Campaña</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Una vez configurados los perfiles SMTP, las plantillas y los portales de interceptación, agrupamos los objetivos de prueba agregando una lista en "Users & Groups" e iniciamos el envío controlado.
+                </p>
+
+                <!-- Dozzle docker-compose.yml block -->
+                <div class="code-shell border border-slate-200 rounded-2xl overflow-hidden bg-white">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650">
+                        <span class="font-mono flex items-center gap-2"><i class="fas fa-clipboard-list text-orange-600"></i> Estructura CSV para Carga Masiva de Objetivos (Users & Groups)</span>
+                        <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-csv')">Copiar</button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-csv">First Name,Last Name,Email,Position
+Aaron,Gomez,aarongomez@masterciber.org,Administrador TFG
+Security,Audit,audit@masterciber.org,Auditor SOC</code></pre>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 6</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Formulario de Lanzamiento "Campaigns":</strong> Captura del formulario de creación en Gophish (Campaigns -> New Campaign) donde se agrupan el Sending Profile, el Email Template, la Landing Page y el grupo de usuarios. El botón "Launch Campaign" debe aparecer visible e interactivo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Panel de Analítica y Resultados -->
+            <section id="panel-analitica" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl" style="background-color: #fff6f5; color: #FF573B;">
+                        <i class="fas fa-chart-pie text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Panel Analítico de Control y Resultados periciales</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Gophish dispone de un panel principal dinámico en tiempo real que mide la evolución temporal del impacto pericial, dividiendo los resultados en un embudo secuencial de eventos:
+                </p>
+
+                <div class="grid gap-4 md:grid-cols-4 text-xs text-slate-700">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="font-bold text-slate-400">Paso 1</span>
+                        <strong class="text-slate-955 font-bold block text-sm">Email Sent</strong>
+                        <p class="leading-relaxed">Correos despachados satisfactoriamente por el agente SMTP.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="font-bold text-orange-500">Paso 2</span>
+                        <strong class="text-slate-955 font-bold block text-sm">Email Opened</strong>
+                        <p class="leading-relaxed">El usuario abre el correo detonando la llamada oculta al píxel `track.gif`.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="font-bold text-orange-600">Paso 3</span>
+                        <strong class="text-slate-955 font-bold block text-sm">Clicked Link</strong>
+                        <p class="leading-relaxed">El usuario pulsa el botón del email y es dirigido a la landing page perversa.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                        <span class="font-bold text-red-600">Paso 4</span>
+                        <strong class="text-slate-955 font-bold block text-sm">Submitted Data</strong>
+                        <p class="leading-relaxed">El usuario introduce credenciales en la landing, capturándose en el panel central.</p>
+                    </div>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 7 (CRÍTICA RÚBRICA)</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Dashboard Analítico de la Campaña:</strong> Captura de pantalla de la campaña finalizada en Gophish. Debe mostrar de forma clara el gráfico de quesito o barras con los porcentajes de cada paso del embudo (especialmente <em>Clicked Link</em> y <em>Submitted Data</em>) y el listado inferior detallando las credenciales interceptadas y el estado individual de cada usuario.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

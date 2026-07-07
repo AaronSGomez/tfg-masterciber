@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Detectar el color de acento de la página
     let accentBg = 'bg-amber-600';
     const sidebar = document.querySelector('aside');
-    if (sidebar) {
+    if (window.location.href.includes('gophish')) {
+        accentBg = 'bg-[#FF573B]';
+    } else if (sidebar) {
         const sidebarContent = sidebar.querySelector('div');
         if (sidebarContent) {
             if (sidebarContent.querySelector('.bg-emerald-600') || sidebarContent.querySelector('.text-emerald-700') || sidebarContent.querySelector('.bg-emerald-650')) {
@@ -27,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 accentBg = 'bg-purple-600';
             } else if (sidebarContent.querySelector('.bg-indigo-600') || sidebarContent.querySelector('.text-indigo-700') || sidebarContent.querySelector('.bg-indigo-650')) {
                 accentBg = 'bg-indigo-600';
+            } else if (sidebarContent.querySelector('.bg-sky-600') || sidebarContent.querySelector('.text-sky-700')) {
+                accentBg = 'bg-sky-600';
             } else if (sidebarContent.querySelector('.bg-amber-600') || sidebarContent.querySelector('.text-amber-700')) {
                 accentBg = 'bg-amber-600';
             }
@@ -62,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     softBorder = 'border-purple-200'; softBg = 'bg-purple-50/70'; softText = 'text-purple-900';
                 } else if (accentBg === 'bg-indigo-600') {
                     softBorder = 'border-indigo-200'; softBg = 'bg-indigo-50/70'; softText = 'text-indigo-900';
+                } else if (accentBg === 'bg-[#FF573B]') {
+                    softBorder = 'border-[#ffd8d1]'; softBg = 'bg-[#fff6f5]'; softText = 'text-[#b82d14]';
                 }
                 link.classList.add('border', softBorder, softBg, softText, 'font-semibold');
             } else {
@@ -134,6 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             iconClass = 'fas fa-cogs';
         } else if (text.includes('incidencias')) {
             iconClass = 'fas fa-exclamation-circle';
+        } else if (text.includes('gophish') || text.includes('phishing')) {
+            iconClass = 'fas fa-envelope-open-text';
         } else if (text.includes('cortafuegos') || text.includes('firewall') || text.includes('búnker') || text.includes('nginx')) {
             iconClass = 'fas fa-shield-halved';
         }
@@ -422,6 +430,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeText = 'text-green-955';
                 themeTitle = 'text-green-900';
                 themeButton = 'bg-green-600 hover:bg-green-700';
+            } else if (accentBg === 'bg-[#FF573B]') {
+                themeBg = 'bg-[#fff6f5]';
+                themeBorder = 'border-[#ffd8d1]';
+                themeText = 'text-[#b82d14]';
+                themeTitle = 'text-[#d13d24]';
+                themeButton = 'bg-[#FF573B] hover:bg-[#e0482d]';
             }
 
             const tutorialTip = document.createElement('div');

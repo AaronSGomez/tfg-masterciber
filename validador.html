@@ -103,7 +103,7 @@
             { id: 13, title: "Política de contraseñas y MFA", block: "Protección", desc: "Configuración de complejidad de credenciales y activación de OTP.", evidence: "Capturas del panel web forzando contraseña robusta e inicio validando con token.", link: "mfa/mfa.html", time: "2.5 horas (Configuración de Supabase, MFA y RLS)" },
             { id: 14, title: "Reglas de firewall deny-by-default", block: "Protección", desc: "Configuración restrictiva de puertos a nivel de sistema host mediante UFW y arquitectura de búnker perimetral con Nginx y Docker.", evidence: "Consola de la Raspberry Pi 5 con sudo ufw status verbose y arquitectura de búnker perimetral con Nginx y Docker.", link: "firewall/firewall.html", time: "0.75 horas (45 min - Configuración búnker Nginx)" },
             { id: 15, title: "Headers HTTP de seguridad", block: "Protección", desc: "Hardening de cabeceras en el archivo de proxy reconfigurado en Apache2.", evidence: "Reporte con calificación A obtenido en la plataforma externa de análisis securityheaders.com.", link: "lab/install.html#apache", time: "0.5 horas (30 min - Configuración Apache, certificados SSL y cabeceras)" },
-            { id: 16, title: "Campaña de Gophish ejecutada", block: "Protección", desc: "Simulación local controlada de phishing enviando correos dirigidos.", evidence: "Captura del panel analítico principal de Gophish mostrando tasas de clics y credenciales expuestas." },
+            { id: 16, title: "Campaña de Gophish ejecutada", block: "Protección", desc: "Simulación local controlada de phishing enviando correos dirigidos.", evidence: "Captura del panel analítico principal de Gophish mostrando tasas de clics y credenciales expuestas.", link: "gophish/gophish.html", time: "1.5 horas (Configuración de campaña y templates en Gophish)" },
             { id: 17, title: "SIEM unificado con 2 fuentes de logs", block: "SOC / IR", desc: "Wazuh Server en Ubuntu recibiendo logs remotos de la Raspberry Pi 5.", evidence: "Dashboard de Wazuh evidenciando la telemetría remota de logs auth.log y JSON del agente.", link: "lab/install.html#wazuh", time: "6 horas (4h despliegue Wazuh + 2h agentes locales y reglas JSON)" },
             { id: 18, title: "Caso de uso SIEM con alerta disparada", block: "SOC / IR", desc: "Detonación del exploit ofensivo React2Shell contra la aplicación.", evidence: "Captura en el panel de eventos de la consola de Wazuh del disparo de la alerta ID 100503.", link: "siem/siem.html#alerta-siem", time: "1.5 horas (Detonación de exploit y correlación de alertas)" },
             { id: 19, title: "Playbook de detección desarrollado", block: "SOC / IR", desc: "Diseño del diagrama lógico de toma de decisiones del SOC.", evidence: "Diagrama de flujo detallando criterios de triage, severidades y escalado de incidencias.", link: "siem/siem.html#playbook-seccion", time: "1 hora (Diseño del flujo lógico y severidades)" },
@@ -131,6 +131,7 @@
             13: true,  // Politica de contraseñas y MFA
             14: true,  // Reglas de firewall
             15: true,  // Headers HTTP
+            16: true,  // Campaña Gophish
             17: true,  // SIEM
             18: true,  // Caso de uso SIEM
             19: true,  // Playbook de detección
