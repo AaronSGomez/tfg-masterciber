@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gobierno de Seguridad: Política y PDS 12 Meses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Personalización de colores para la sección de Gobierno (Amber - Dorado) */
+        .bg-theme-gob {
+            background-color: #fffbeb; /* amber-50 */
+        }
+        .nav-link:hover {
+            background-color: #fffbeb !important; /* amber-50 */
+            border-color: #f59e0b !important;     /* amber-500 */
+            color: #b45309 !important;            /* amber-700 */
+        }
+        .nav-link:hover i {
+            color: #d97706 !important;            /* amber-600 */
+        }
+        .nav-link-home {
+            border-color: #fde68a !important;      /* amber-200 */
+            background-color: #fffbeb !important;  /* amber-50 */
+            color: #b45309 !important;             /* amber-700 */
+        }
+        .nav-link-home i {
+            color: #d97706 !important;             /* amber-600 */
+        }
+        .nav-link-home:hover {
+            background-color: #fef3c7 !important;  /* amber-100 */
+            border-color: #f59e0b !important;      /* amber-500 */
+        }
+
+        /* Caja de avisos para evidencias fotográficas */
+        .evidence-box {
+            background-color: #f8fafc !important; 
+            border: 1px solid #e2e8f0 !important; 
+            color: #334155 !important;            
+            border-top: 4px solid #d97706 !important; /* Amber tab stripe */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+        }
+        .evidence-box-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #b45309 !important;            
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .evidence-box-content {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .evidence-box-content strong {
+            color: #0f172a !important;
+        }
+    </style>
+</head>
+<body class="bg-theme-gob flex justify-center text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado';
+                button.classList.add('bg-amber-500/20', 'text-amber-700');
+                setTimeout(() => {
+                    button.innerHTML = original;
+                    button.classList.remove('bg-amber-500/20', 'text-amber-700');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'Error';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Sidebar lateral -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600 text-white font-bold">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-700">Gobierno</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Gobernanza</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#politica-seguridad" class="nav-link">Política de Seguridad</a>
+                    <a href="#roles-responsabilidades" class="nav-link">Roles y Responsabilidades</a>
+                    <a href="#protocolo-incidencias" class="nav-link">Protocolo ante Ataques</a>
+                    <a href="#pds-12meses" class="nav-link">PDS de 12 Meses</a>
+                    <a href="#soluciones-evidencias" class="nav-link">Soluciones y Métricas</a>
+                    <a href="../index.html" class="nav-link nav-link-home"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">Aarón S. Gómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-amber-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenedor de Contenido -->
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-amber-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div class="flex items-center gap-2">
+                    <span class="hero-pill border-amber-500/20 bg-amber-100 text-amber-800">Gobierno</span>
+                    <span class="progress-status border-amber-500/20 bg-amber-100 text-amber-800">Objetivos 22 y 24</span>
+                </div>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Gobierno de Seguridad y Plan Director (PDS)</h2>
+                <p class="mt-4 text-base leading-8 text-slate-700 md:text-lg">
+                    Políticas de gobernanza, asignación de responsabilidades de respuesta a incidentes en una arquitectura distribuida de dos servidores y planificación estratégica a 12 meses (Plan Director de Seguridad) para mitigar riesgos críticos.
+                </p>
+            </header>
+
+            <!-- 1. Política de Seguridad en Arquitectura de Dos Servidores -->
+            <section id="politica-seguridad" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
+                        <i class="fas fa-server text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Política de Seguridad: Entorno Distribuido</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Para este TFG, asumimos un entorno corporativo distribuido compuesto por **dos servidores principales** con funciones bien diferenciadas para minimizar la superficie de exposición y garantizar la resiliencia operativa:
+                </p>
+
+                <div class="grid gap-6 md:grid-cols-2 mt-4">
+                    <div class="p-5 border border-slate-200 bg-slate-50/50 rounded-2xl space-y-2">
+                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block">Servidor 1</span>
+                        <strong class="text-slate-900 text-base font-bold block">Frontal Perimetral (Búnker Nginx DMZ)</strong>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Aloja la Landing Page pública, la pasarela de autenticación y el proxy reverso Nginx. Su función es filtrar payloads sospechosos, gestionar SSL/TLS, aplicar límites de peticiones (Rate Limiting) y reportar logs de acceso.
+                        </p>
+                    </div>
+                    <div class="p-5 border border-slate-200 bg-slate-50/50 rounded-2xl space-y-2">
+                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block">Servidor 2</span>
+                        <strong class="text-slate-900 text-base font-bold block">Servidor Interno de Aplicaciones (Wazuh & DB)</strong>
+                        <p class="text-xs text-slate-650 leading-relaxed">
+                            Ubicado detrás del búnker. Aloja el servidor Wazuh (SIEM), la base de datos privada (MariaDB) y la lógica de negocio (Spring Boot). Solo se comunica con el Servidor 1 por canales aislados de red privada.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Roles y Responsabilidades -->
+            <section id="roles-responsabilidades" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
+                        <i class="fas fa-users-cog text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Roles y Asignación de Responsabilidades</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    En caso de un ataque de seguridad contra los servidores, la política dictamina con claridad **quién se encarga de qué** para evitar solapamientos y retrasos críticos en la mitigación:
+                </p>
+
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 p-4 border-l-4 border-amber-500 bg-amber-50/20 rounded-r-xl">
+                        <div class="font-bold text-slate-900 text-sm min-w-[180px]">Analista de Seguridad SOC</div>
+                        <div class="text-xs text-slate-650 leading-relaxed">
+                            Monitoriza las consolas de Wazuh y las alertas en tiempo real. Responsable de realizar el triage inicial ante anomalías de inyección SQL o de fuerza bruta, validar falsos positivos y notificar al Administrador de Sistemas.
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 border-l-4 border-amber-500 bg-amber-50/20 rounded-r-xl">
+                        <div class="font-bold text-slate-900 text-sm min-w-[180px]">Administrador de Sistemas</div>
+                        <div class="text-xs text-slate-650 leading-relaxed">
+                            Encargado del mantenimiento de la infraestructura. Ejecuta el aislamiento físico o lógico de los servidores usando reglas de UFW, aplica parches de seguridad recomendados, gestiona las políticas de backup y reestablece backups.
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 border-l-4 border-amber-500 bg-amber-50/20 rounded-r-xl">
+                        <div class="font-bold text-slate-900 text-sm min-w-[180px]">Director de Incidentes (CISO)</div>
+                        <div class="text-xs text-slate-650 leading-relaxed">
+                            Responsable estratégico de coordinar la toma de decisiones. Declara el estado de crisis de seguridad, autoriza paradas de producción y lidera la comunicación con la dirección y la redacción del reporte forense.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Directrices de Respuesta a Incidentes (Protocolo ante Ataques) -->
+            <section id="protocolo-incidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
+                        <i class="fas fa-file-signature text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Protocolo de Actuación ante Explotación</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Ante la detección de un evento crítico (como un RCE React2Shell o bypass de autenticación), el protocolo exige la ejecución ordenada de las siguientes fases:
+                </p>
+
+                <div class="grid gap-4 md:grid-cols-3 text-xs text-slate-700">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm">Fase 1: Contención</strong>
+                        <p class="leading-relaxed">El administrador bloquea de forma inmediata las IPs atacantes a nivel de UFW perimetral y Nginx. Si el servidor frontal (Servidor 1) está comprometido, se desvía el tráfico o se aísla de la red privada para salvaguardar el Servidor 2 (SIEM/Base de Datos).</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm">Fase 2: Erradicación</strong>
+                        <p class="leading-relaxed">Se eliminan los procesos sospechosos o shells levantadas, se revocan todas las cookies y sesiones de autenticación persistentes de la cuenta atacada, y se analiza la causa raíz del exploit aplicando parches de código en caliente.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm">Fase 3: Recuperación</strong>
+                        <p class="leading-relaxed">Se restauran los servicios a partir de snapshots limpios e inmutables, se fuerza un cambio general de credenciales del sistema, se activan auditorías de control y se reevalúan las alertas en la consola de Wazuh.</p>
+                    </div>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA (OBJETIVO 22)</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Cuerpo de la Política Documentada:</strong> Captura o texto que demuestre la formalización del documento de políticas y el protocolo de asignación de roles de seguridad (SOC, Sysadmin y CISO) archivados en un repositorio corporativo interno.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Plan Director de Seguridad (PDS) de 12 Meses -->
+            <section id="pds-12meses" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
+                        <i class="fas fa-calendar-alt text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Plan Director de Seguridad (PDS)</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Para consolidar el hardening y asegurar que las vulnerabilidades críticas se mantengan mitigadas a largo plazo, el **Plan Director de Seguridad (PDS)** a 12 meses prioriza y organiza las siguientes fases:
+                </p>
+
+                <div class="space-y-6">
+                    <div class="relative pl-8 border-l-2 border-amber-200">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
+                        <h4 class="font-bold text-slate-900 text-sm">Q1 (Meses 1-3): Hardening de Acceso y Gestión de Identidades (MFA)</h4>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            - Despliegue obligatorio y global de la autenticación de Doble Factor (TOTP MFA) en Supabase para todos los portales.<br>
+                            - Forzar el almacenamiento de contraseñas robustas y auditoría inicial de usuarios.<br>
+                            - Aplicación de políticas deny-by-default y control de puertos con UFW en el sistema host.
+                        </p>
+                    </div>
+
+                    <div class="relative pl-8 border-l-2 border-amber-200">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
+                        <h4 class="font-bold text-slate-900 text-sm">Q2 (Meses 4-6): Monitorización Activa y Detección en Tiempo Real</h4>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            - Centralización y recolección activa de logs en Wazuh Server.<br>
+                            - Configuración de alertas específicas frente a inyecciones web y accesos SSH anómalos.<br>
+                            - Despliegue de escaneos automáticos de SAST (Semgrep) e integración DAST (OWASP ZAP) en la rama principal de Git.
+                        </p>
+                    </div>
+
+                    <div class="relative pl-8 border-l-2 border-amber-200">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
+                        <h4 class="font-bold text-slate-900 text-sm">Q3 (Meses 7-9): Orquestación y Automatización ante Incidentes (SOAR)</h4>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            - Integración y despliegue del software SOAR (Shuffle / n8n) con Wazuh.<br>
+                            - Creación de playbooks automatizados para el bloqueo automático de IPs atacantes a nivel de proxy de Nginx.<br>
+                            - Ejecución y documentación del simulacro anual de Plan de Respuesta a Incidentes (PRI).
+                        </p>
+                    </div>
+
+                    <div class="relative pl-8">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
+                        <h4 class="font-bold text-slate-900 text-sm">Q4 (Meses 10-12): Auditoría de Control y Concienciación frente al Phishing</h4>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            - Ejecución de la primera campaña anual controlada de simulación de phishing corporativo utilizando Gophish.<br>
+                            - Auditoría técnica externa del perímetro y pruebas dinámicas de bypass de seguridad.<br>
+                            - Revisión analítica de resultados y actualización del Plan Director de Seguridad corporativo.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Evidencias, Soluciones y Métricas -->
+            <section id="soluciones-evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
+                        <i class="fas fa-tasks text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Métricas e Indicadores de Éxito del Plan (KPIs)</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Para comprobar la efectividad de las soluciones implantadas a lo largo de los 12 meses, la gobernanza del TFG audita el cumplimiento basándose en las siguientes métricas:
+                </p>
+
+                <div class="grid gap-4 md:grid-cols-2 text-xs text-slate-700">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm"><i class="fas fa-percentage text-amber-600 mr-1.5"></i> 1. Tasa de Adopción de MFA y Hardening</strong>
+                        <p class="leading-relaxed"><strong>Métrica:</strong> 100% de usuarios activos del sistema con MFA validado. 0 cuentas utilizando contraseñas débiles en auditorías de fuerza bruta internas.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm"><i class="fas fa-history text-amber-600 mr-1.5"></i> 2. Tiempo Medio de Mitigación (MTTR)</strong>
+                        <p class="leading-relaxed"><strong>Métrica:</strong> Tiempo medio de respuesta a incidentes inferior a 15 minutos en el bloqueo de IPs mediante reglas automáticas o playbooks SOAR.</p>
+                    </div>
+                </div>
+
+                <div class="evidence-box">
+                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA (OBJETIVO 24)</div>
+                    <div class="evidence-box-content">
+                        <p><strong>Diagrama de Gantt del PDS:</strong> Captura del cronograma visual o diagrama de Gantt elaborado para los 12 meses de planificación (puedes estructurarlo con Excel, Jira o herramientas de planificación de proyectos) detallando los hitos de implementación de MFA, monitorización y simulación de phishing.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>
