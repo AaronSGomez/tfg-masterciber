@@ -139,10 +139,10 @@
             21: true,  // Adquisición forense básica (Autopsy)
             25: true   // SOAR Extra
         };
-        let state = JSON.parse(localStorage.getItem('tfg_validator_state_v3'));
+        let state = JSON.parse(localStorage.getItem('tfg_validator_state_v4'));
         if (state === null) {
             state = defaultState;
-            localStorage.setItem('tfg_validator_state_v3', JSON.stringify(state));
+            localStorage.setItem('tfg_validator_state_v4', JSON.stringify(state));
         } else {
             // Asegurar que las nuevas claves por defecto se unan al estado existente del navegador
             Object.keys(defaultState).forEach(key => {
@@ -150,7 +150,7 @@
                     state[key] = defaultState[key];
                 }
             });
-            localStorage.setItem('tfg_validator_state_v3', JSON.stringify(state));
+            localStorage.setItem('tfg_validator_state_v4', JSON.stringify(state));
         }
 
         function renderChecklist() {
@@ -217,7 +217,7 @@
             const card = document.getElementById(`card-${id}`);
             
             state[id] = checkbox.checked;
-            localStorage.setItem('tfg_validator_state_v3', JSON.stringify(state));
+            localStorage.setItem('tfg_validator_state_v4', JSON.stringify(state));
 
             if (checkbox.checked) {
                 card.classList.remove('border-slate-200', 'bg-slate-50/40');
@@ -255,7 +255,7 @@
         function resetValidator() {
             if (confirm('¿Seguro que deseas reiniciar el progreso del validador?')) {
                 state = {};
-                localStorage.removeItem('tfg_validator_state_v3');
+                localStorage.removeItem('tfg_validator_state_v4');
                 renderChecklist();
             }
         }
