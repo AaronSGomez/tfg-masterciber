@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sidebarContent) {
             if (sidebarContent.querySelector('.bg-emerald-600') || sidebarContent.querySelector('.text-emerald-700') || sidebarContent.querySelector('.bg-emerald-650')) {
                 accentBg = 'bg-emerald-600';
+            } else if (sidebarContent.querySelector('.bg-green-600') || sidebarContent.querySelector('.text-green-700') || sidebarContent.querySelector('.bg-green-650')) {
+                accentBg = 'bg-green-600';
             } else if (sidebarContent.querySelector('.bg-cyan-600') || sidebarContent.querySelector('.text-cyan-700')) {
                 accentBg = 'bg-cyan-600';
             } else if (sidebarContent.querySelector('.bg-red-650') || sidebarContent.querySelector('.text-red-700') || sidebarContent.querySelector('.bg-red-600')) {
@@ -48,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 let softBorder = 'border-amber-200', softBg = 'bg-amber-50/70', softText = 'text-amber-900';
                 if (accentBg === 'bg-emerald-600') {
                     softBorder = 'border-emerald-200'; softBg = 'bg-emerald-50/70'; softText = 'text-emerald-900';
+                } else if (accentBg === 'bg-green-600') {
+                    softBorder = 'border-green-200'; softBg = 'bg-green-50/70'; softText = 'text-green-900';
                 } else if (accentBg === 'bg-cyan-600') {
                     softBorder = 'border-cyan-200'; softBg = 'bg-cyan-50/70'; softText = 'text-cyan-900';
                 } else if (accentBg === 'bg-red-600') {
@@ -130,6 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
             iconClass = 'fas fa-cogs';
         } else if (text.includes('incidencias')) {
             iconClass = 'fas fa-exclamation-circle';
+        } else if (text.includes('cortafuegos') || text.includes('firewall') || text.includes('búnker') || text.includes('nginx')) {
+            iconClass = 'fas fa-shield-halved';
         }
 
         const iconEl = document.createElement('i');
@@ -410,6 +416,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 themeText = 'text-indigo-950';
                 themeTitle = 'text-indigo-900';
                 themeButton = 'bg-indigo-600 hover:bg-indigo-700';
+            } else if (accentBg === 'bg-green-600') {
+                themeBg = 'bg-green-50';
+                themeBorder = 'border-green-200';
+                themeText = 'text-green-955';
+                themeTitle = 'text-green-900';
+                themeButton = 'bg-green-600 hover:bg-green-700';
             }
 
             const tutorialTip = document.createElement('div');

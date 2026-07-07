@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búnker de Seguridad: Nginx y Docker (Zero Trust)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Personalización de colores para la sección de protección (Verde Nginx/Tema) */
+        .bg-theme-firewall {
+            background-color: #f0fdf4; /* green-50 */
+        }
+        .nav-link:hover {
+            background-color: #f0fdf4 !important; /* green-50 */
+            border-color: #4ade80 !important;     /* green-400 */
+            color: #166534 !important;            /* green-800 */
+        }
+        .nav-link:hover i {
+            color: #22c55e !important;            /* green-500 */
+        }
+        .nav-link-home {
+            border-color: #bbf7d0 !important;      /* green-200 */
+            background-color: #f0fdf4 !important;  /* green-50 */
+            color: #166534 !important;             /* green-800 */
+        }
+        .nav-link-home i {
+            color: #16a34a !important;             /* green-600 */
+        }
+        .nav-link-home:hover {
+            background-color: #dcfce7 !important;  /* green-100 */
+            border-color: #4ade80 !important;      /* green-400 */
+        }
+
+        /* Sobreescritura local de .warning-box para usar la gama de verdes de Nginx */
+        .warning-box {
+            background-color: #f0fdf4 !important; /* Soft green bg */
+            border: 1px solid #dcfce7 !important; /* Soft green border */
+            color: #14532d !important;            /* Dark green text */
+            border-top: 4px solid #16a34a !important; /* Green tab stripe */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02) !important;
+        }
+        .warning-box-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #15803d !important;            /* Vivid green for header text */
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .warning-box-content {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .warning-box-content strong {
+            color: #14532d !important;
+        }
+    </style>
+</head>
+<body class="bg-theme-firewall flex justify-center text-slate-900">
+    <script>
+        async function copyCode(button, targetId) {
+            const node = document.getElementById(targetId);
+            if (!node) return;
+            try {
+                await navigator.clipboard.writeText(node.textContent);
+                const original = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado';
+                button.classList.add('bg-green-500/20', 'text-green-700');
+                setTimeout(() => {
+                    button.innerHTML = original;
+                    button.classList.remove('bg-green-500/20', 'text-green-700');
+                }, 1600);
+            } catch (error) {
+                button.textContent = 'Error';
+                setTimeout(() => button.textContent = 'Copiar', 1600);
+            }
+        }
+    </script>
+
+    <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
+        <!-- Sidebar lateral -->
+        <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
+            <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-600 text-white font-bold">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-green-700">Protección</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950">Búnker Nginx</h1>
+                    </div>
+                </div>
+
+                <nav class="mt-8 space-y-2 text-sm">
+                    <a href="#portada" class="nav-link">Portada</a>
+                    <a href="#arquitectura-aislamiento" class="nav-link">Arquitectura</a>
+                    <a href="#aislamiento-docker" class="nav-link">Aislamiento Docker</a>
+                    <a href="#defensas-activas" class="nav-link">Cortafuegos Nginx</a>
+                    <a href="#auditoria-logs" class="nav-link">Auditoría y Logs</a>
+                    <a href="#bloqueo-dozzle" class="nav-link">Bloqueo y Dozzle</a>
+                    <a href="../index.html" class="nav-link nav-link-home"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                </nav>
+
+                <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
+                    <p>Autor: <span class="font-semibold text-slate-800">Aarón S. Gómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-green-600 hover:underline">asga.vercel.app</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenedor de Contenido -->
+        <section class="min-w-0 flex-1 space-y-6 pb-10">
+            <!-- Portada -->
+            <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-green-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div class="flex items-center gap-2">
+                    <span class="hero-pill border-green-500/20 bg-green-100 text-green-800">UFW & Nginx</span>
+                    <span class="progress-status border-green-500/20 bg-green-100 text-green-800">Zero Trust</span>
+                </div>
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Guía Paso a Paso: Búnker de Seguridad con Nginx y Docker</h2>
+                <p class="mt-4 text-base leading-8 text-slate-700 md:text-lg">
+                    Documentación de la arquitectura de defensa perimetral para aislar un backend del acceso público. Se aplican políticas de restricción máxima (Zero Trust y Mínimo Privilegio) limitando drásticamente el tamaño de las peticiones, mitigando ataques DDoS y auditando el tráfico mediante un proxy inverso Nginx contenedorizado.
+                </p>
+            </header>
+
+            <!-- Entendiendo la Arquitectura de Aislamiento -->
+            <section id="arquitectura-aislamiento" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-green-50 rounded-xl text-green-700">
+                        <i class="fas fa-network-wired text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Entendiendo la Arquitectura de Aislamiento</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    La seguridad real empieza por la arquitectura física de la red. En lugar de exponer la base de datos o la aplicación directamente a internet, creamos capas de protección sucesivas (**Arquitectura de Defensa en Profundidad**).
+                </p>
+
+                <!-- Warning box local con diseño de recon.html pero en verde -->
+                <div class="warning-box">
+                    <div class="warning-box-header">Concepto Clave 🛡️</div>
+                    <div class="warning-box-content">
+                        <p>El Backend y la Base de Datos se ejecutan en una red privada virtual de Docker (<code>secure_net</code>). No tienen puertos expuestos al servidor físico host. El único que puede comunicarse con ellos es Nginx, y Nginx solo acepta peticiones que vengan del proxy principal (Apache) a nivel local.</p>
+                    </div>
+                </div>
+
+                <!-- Esquema Visual con Tailwind -->
+                <div class="mt-6 p-6 border border-slate-200 bg-slate-50/50 rounded-2xl flex flex-col gap-6">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 text-center block">Esquema Lógico del Tráfico (Zero-Trust)</span>
+                    
+                    <div class="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8">
+                        <!-- Internet Client -->
+                        <div class="flex flex-col items-center p-4 bg-slate-950 text-white rounded-xl w-48 text-center shadow-md">
+                            <i class="fas fa-globe text-2xl mb-1 text-cyan-400"></i>
+                            <span class="font-bold text-xs">Público / Internet</span>
+                            <span class="text-[10px] text-slate-400 mt-1">HTTPS (Puerto 443)</span>
+                        </div>
+
+                        <div class="text-slate-400 text-center lg:-rotate-90">
+                            <i class="fas fa-arrow-down text-xl"></i>
+                        </div>
+
+                        <!-- Apache Proxy Host -->
+                        <div class="flex flex-col items-center p-4 bg-white border border-green-300 rounded-xl w-48 text-center shadow-md">
+                            <i class="fas fa-server text-2xl mb-1 text-green-600"></i>
+                            <span class="font-bold text-xs text-slate-800">Apache (Host)</span>
+                            <span class="text-[10px] text-slate-500 mt-1">Redirecciona localmente</span>
+                        </div>
+
+                        <div class="text-slate-400 text-center lg:-rotate-90">
+                            <i class="fas fa-arrow-down text-xl"></i>
+                        </div>
+
+                        <!-- Nginx Container -->
+                        <div class="flex flex-col items-center p-4 bg-emerald-50 border border-emerald-300 rounded-xl w-52 text-center shadow-md">
+                            <i class="fab fa-envira text-2xl mb-1 text-emerald-600"></i>
+                            <span class="font-bold text-xs text-slate-800">Nginx Container (Proxy)</span>
+                            <span class="text-[10px] text-slate-500 mt-1">Escucha en <code>127.0.0.1:8081</code></span>
+                            <span class="text-[9px] text-emerald-700 bg-emerald-100/50 px-2 py-0.5 rounded mt-1.5 font-semibold">Rate limit & Max 56k</span>
+                        </div>
+
+                        <div class="text-slate-400 text-center lg:-rotate-90">
+                            <i class="fas fa-arrow-down text-xl"></i>
+                        </div>
+
+                        <!-- Backend API & DB (Aislados) -->
+                        <div class="flex flex-col items-center p-4 bg-indigo-50 border border-indigo-200 rounded-xl w-48 text-center shadow-md relative">
+                            <div class="absolute -top-2.5 right-2 bg-indigo-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Red Privada</div>
+                            <i class="fas fa-network-wired text-2xl mb-1 text-indigo-600"></i>
+                            <span class="font-bold text-xs text-slate-800">Backend & DB</span>
+                            <span class="text-[10px] text-slate-500 mt-1">Sin puertos abiertos al host</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Aislamiento Físico (Docker Compose) -->
+            <section id="aislamiento-docker" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-green-50 rounded-xl text-green-700">
+                        <i class="fas fa-cubes text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Aislamiento Físico (Docker Compose)</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    El primer paso es configurar nuestro entorno de contenedores para cortar el acceso directo al backend y establecer a Nginx como el único embudo de entrada.
+                </p>
+
+                <!-- Archivo docker-compose.yml -->
+                <div class="code-shell rounded-2xl overflow-hidden border border-slate-200">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600 bg-white">
+                        <span class="font-mono flex items-center gap-2"><i class="fas fa-file-code text-green-600"></i> docker-compose.yml</span>
+                        <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-compose')">Copiar</button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-compose">services:
+  api_backend:
+    build: .
+    container_name: app_backend
+    restart: always
+    # ELIMINADO: El bloque 'ports' se suprime para hacerlo invisible al exterior
+    networks:
+      - secure_net
+
+  proxy_nginx:
+    image: nginx:alpine
+    container_name: app_nginx
+    ports:
+      # RESTRICCIÓN MÁXIMA: Nginx expone su puerto 80 SOLO al localhost (127.0.0.1)
+      - "127.0.0.1:8081:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api_backend
+    networks:
+      - secure_net
+
+networks:
+  secure_net:
+    driver: bridge</code></pre>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box-header">Justificación de Seguridad 🛡️</div>
+                    <div class="warning-box-content">
+                        <p>Al atar Nginx estrictamente a <code>127.0.0.1:8081</code>, bloqueamos por diseño que un atacante intente saltarse Apache escaneando o atacando la IP pública del servidor por el puerto 8081. Nginx será completamente sordo a peticiones externas no enrutadas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cortafuegos Restrictivo en Nginx -->
+            <section id="defensas-activas" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-green-50 rounded-xl text-green-700">
+                        <i class="fas fa-shield-virus text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Cortafuegos Restrictivo en Nginx</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Asumiendo que todo tráfico entrante es potencialmente hostil, se configuran reglas en Nginx con umbrales extremadamente bajos, ajustados milimétricamente al uso real de la API.
+                </p>
+
+                <!-- Archivo nginx.conf (Bloque http) -->
+                <div class="code-shell rounded-2xl overflow-hidden border border-slate-200">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600 bg-white">
+                        <span class="font-mono flex items-center gap-2"><i class="fas fa-file-code text-green-600"></i> nginx.conf (Bloque http)</span>
+                        <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-nginx-http')">Copiar</button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-nginx-http">http {
+    # 1. Ocultar huella del servidor a los atacantes (Evita perfilado de CVEs)
+    server_tokens off;
+
+    # 2. Zona de memoria para control estricto de IP (10MB) a un ritmo de 5 peticiones/seg
+    limit_req_zone $binary_remote_addr zone=api_limit:10m rate=5r/s;
+
+    # 3. Balanceador de Carga: Distribuye el tráfico hacia las réplicas del Backend
+    upstream backend_servers {
+        server api_backend:8080; 
+        # Aquí se podrían añadir más réplicas físicas del contenedor backend
+        # server api_backend_replica2:8080;
+    }
+    # ...
+}</code></pre>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-slate-950 font-sans">Reglas de Protección (Bloque server)</h4>
+                    <p class="text-sm text-slate-700">
+                        Dentro del servidor Nginx, aplicamos barreras diseñadas para estrangular cargas maliciosas antes de que consuman ciclos de CPU o memoria en el Backend.
+                    </p>
+                    <p class="text-sm text-slate-700">
+                        Las peticiones JSON estándar envían en promedio unos 3kb; con un tope de <code>56k</code> se tiene un margen de seguridad sumamente amplio para cualquier petición legítima, pero se bloquea de cuajo cualquier intento de subida de archivos o inyección de payloads gigantes.
+                    </p>
+
+                    <!-- Archivo nginx.conf (Bloque server) -->
+                    <div class="code-shell rounded-2xl overflow-hidden border border-slate-200">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600 bg-white">
+                            <span class="font-mono flex items-center gap-2"><i class="fas fa-file-code text-green-600"></i> nginx.conf (Bloque server)</span>
+                            <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-nginx-server')">Copiar</button>
+                        </div>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-nginx-server">server {
+    listen 80;
+
+    # BARRERA 1: Bloqueo de Payloads Pesados (Restricción a 56 Kilobytes)
+    client_max_body_size 56k;
+
+    # BARRERA 2: Timeouts Anti-Zombies (Corte agresivo a 10s)
+    client_body_timeout 10s;
+    client_header_timeout 10s;
+    send_timeout 10s;
+
+    location / {
+        # BARRERA 3: Ejecución implacable del Rate Limiting
+        limit_req zone=api_limit burst=10 nodelay;
+
+        proxy_pass http://backend_servers;
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="grid gap-4 md:grid-cols-3 mt-4 text-xs text-slate-700">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                            <strong class="text-slate-955 font-bold block text-sm">Límite Asfixiante de 56k</strong>
+                            <p class="leading-relaxed">Calculado basándose en el peso real máximo de un JSON legítimo. Bloquea instantáneamente (Error 413) intentos de desbordamiento de búfer o subida de binarios.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                            <strong class="text-slate-955 font-bold block text-sm">Timeouts Agresivos (10s)</strong>
+                            <p class="leading-relaxed">Mitiga ataques tipo "Slowloris", cortando conexiones de clientes que envían cabeceras a cuentagotas para agotar los hilos disponibles en el servidor.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+                            <strong class="text-slate-955 font-bold block text-sm">Burst=10 nodelay</strong>
+                            <p class="leading-relaxed">Permite una ventana inicial de 10 peticiones rápidas para cargas iniciales, pero bloquea sin piedad (Error 503) ráfagas de fuerza bruta o escaneos rápidos.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Auditoría y Trazabilidad (Logs) -->
+            <section id="auditoria-logs" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-green-50 rounded-xl text-green-700">
+                        <i class="fas fa-file-contract text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Auditoría y Trazabilidad (Logs)</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Dado que la API opera detrás de múltiples proxies (Apache &rarr; Nginx &rarr; Docker), las IPs entrantes podrían enmascararse como locales. Se implementa una trazabilidad absoluta para registrar el origen real del tráfico.
+                </p>
+
+                <!-- Archivo nginx.conf (Logs) -->
+                <div class="code-shell rounded-2xl overflow-hidden border border-slate-200">
+                    <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650 bg-white">
+                        <span class="font-mono flex items-center gap-2"><i class="fas fa-file-code text-green-600"></i> nginx.conf (Cabeceras y Logs)</span>
+                        <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-nginx-logs')">Copiar</button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-nginx-logs"># 1. Formato personalizado para capturar la IP real y el Vector de Ataque
+log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                '$status $body_bytes_sent "$http_referer" '
+                '"$http_user_agent" "$http_x_forwarded_for"';
+
+# 2. Aplicar la política de logs
+access_log /var/log/nginx/access.log main;
+
+location / {
+    # 3. Inyectar la IP real a las cabeceras hacia el Backend
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://backend_servers;
+}</code></pre>
+                </div>
+
+                <div class="space-y-4 mt-6">
+                    <h4 class="text-lg font-bold text-slate-950 font-sans">Comandos de Inspección (Respuesta a Incidentes)</h4>
+                    <p class="text-sm text-slate-700">
+                        Comandos operativos esenciales para monitorizar el tráfico en tiempo real, cazar anomalías y detectar intentos de intrusión:
+                    </p>
+
+                    <!-- Comandos Shell -->
+                    <div class="code-shell rounded-2xl overflow-hidden border border-slate-200">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600 bg-white">
+                            <span class="font-mono flex items-center gap-2"><i class="fas fa-terminal text-green-400"></i> Comandos de Auditoría en Tiempo Real</span>
+                            <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-audit')">Copiar</button>
+                        </div>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-audit"># Monitorizar el tráfico en tiempo real atravesando las defensas
+docker logs -f app_nginx
+
+# Cazar IPs bloqueadas por el limitador de velocidad (Rate Limiting)
+docker logs app_nginx | grep "limiting requests"
+
+# Identificar intentos de inyección de payloads gigantes (>56KB)
+docker logs app_nginx | grep "client intended to send too large body"</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bloqueo y Dozzle -->
+            <section id="bloqueo-dozzle" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-green-50 rounded-xl text-green-700">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Pruebas de Carga y Bloqueo en Tiempo Real (OWASP ZAP & Dozzle)</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <h4 class="text-lg font-bold text-slate-900 font-sans">Balanceador de Carga y Proxy Inverso</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Nginx no solo opera como un cortafuegos perimetral, sino que actúa como un **Balanceador de Carga** robusto en la capa de aplicación. Mediante el bloque <code>upstream backend_servers</code>, el proxy inverso es capaz de repartir de forma inteligente las peticiones entrantes entre distintas réplicas del contenedor de la API (Scale-Out), maximizando la alta disponibilidad del servicio y evitando cuellos de botella.
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 space-y-4">
+                    <h4 class="text-lg font-bold text-slate-900 font-sans">Detonación de Ataque con OWASP ZAP</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Durante el transcurso de las sesiones prácticas, realizamos una simulación real de ataque ejecutando un **escaneo dinámico invasivo mediante OWASP ZAP** contra la ruta expuesta de la aplicación. 
+                    </p>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Al lanzar cientos de peticiones automatizadas consecutivas por segundo con payloads inyectables, **Nginx entró en acción de forma automática**:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-700">
+                        <li>Activó la zona de memoria <code>api_limit</code> al superarse la tasa de 5 peticiones/segundo.</li>
+                        <li>Descartó de forma fulminante el tráfico excedente del escáner ZAP devolviendo un error **HTTP 503 (Service Temporarily Unavailable)**.</li>
+                        <li>Bloqueó la inyección de payloads de fuzzing pesados al superar el límite estricto de **56KB**, respondiendo de forma inmediata con un error **HTTP 413 (Payload Too Large)**.</li>
+                    </ul>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 space-y-4">
+                    <h4 class="text-lg font-bold text-slate-900 font-sans">Visualización en Tiempo Real con Dozzle</h4>
+                    <p class="text-sm leading-7 text-slate-700">
+                        Para supervisar la respuesta activa del cortafuegos sin necesidad de ejecutar comandos por consola en la Raspberry Pi 5, desplegamos **Dozzle**, un visor web de logs de Docker en tiempo real, liviano y auto-hospedado.
+                    </p>
+
+                    <!-- Dozzle docker-compose.yml block -->
+                    <div class="code-shell mt-3 border border-slate-200 rounded-2xl overflow-hidden">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600 bg-white">
+                            <span class="font-mono flex items-center gap-2"><i class="fas fa-file-code text-green-600"></i> Despliegue de Dozzle (docker-compose.yml)</span>
+                            <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-dozzle')">Copiar</button>
+                        </div>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-dozzle">services:
+  dozzle:
+    container_name: log_viewer_dozzle
+    image: amir20/dozzle:latest
+    ports:
+      # Expone la interfaz web del lector de logs en el puerto 8888
+      - "127.0.0.1:8888:8080"
+    volumes:
+      # Vinculación del socket del demonio de Docker para lectura en vivo
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always</code></pre>
+                    </div>
+
+                    <!-- Log interceptado -->
+                    <p class="text-sm text-slate-700 mt-4">
+                        A través de Dozzle, pudimos constatar visualmente cómo Nginx registraba e identificaba la **dirección IP real de la máquina atacante** desde la que se detonaba el escaneo dinámico de OWASP ZAP:
+                    </p>
+
+                    <div class="code-shell mt-3 border border-slate-200 rounded-2xl overflow-hidden">
+                        <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-600 bg-white">
+                            <span class="font-mono flex items-center gap-2"><i class="fas fa-clipboard-list text-green-600"></i> Logs del Bloqueo Capturados en Dozzle</span>
+                            <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-log-box')">Copiar</button>
+                        </div>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-log-box"><span style="color: #39ff14;" class="font-bold">2026/07/07 11:15:30</span> [warn] 28#28: *412 limiting requests, excess: 10.322 by zone "api_limit", client: <span style="color: #ffff00;" class="font-bold">192.168.1.85</span>, server: _, request: "GET /api/vulnerable-endpoint?fuzz=../../etc/passwd HTTP/1.1", host: "webinsegura1.duckdns.org"
+<span style="color: #39ff14;" class="font-bold">2026/07/07 11:16:02</span> [warn] 28#28: *415 client intended to send too large body: 124853 bytes, client: <span style="color: #ffff00;" class="font-bold">192.168.1.85</span>, server: _, request: "POST /api/upload HTTP/1.1", host: "webinsegura1.duckdns.org"</code></pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">Efecto del Bloqueo 🛑</div>
+                        <div class="warning-box-content">
+                            <p><strong>Evidencia Operativa:</strong> Las trazas demuestran cómo la IP atacante <code>192.168.1.85</code> (Kali Linux con ZAP) fue interceptada de inmediato por las directivas de seguridad. El primer log muestra el estrangulamiento de velocidad (Rate Limiting), y el segundo log muestra el bloqueo instantáneo del payload que superó la barrera de 56K configurada en Nginx.</p>
+                        </div>
+                    </div>
+
+                    <!-- Caso de Estudio Especial: Logs de Damtrivia y Activación de Google OAuth -->
+                    <div class="pt-4 border-t border-slate-100 space-y-4">
+                        <h4 class="text-lg font-bold text-slate-900 font-sans">Caso de Estudio: Detección de Cuentas Troll en Damtrivia y Transición a Google OAuth</h4>
+                        <p class="text-sm leading-7 text-slate-700">
+                            Además del filtrado perimetral en Nginx, la auditoría y centralización de logs nos permite identificar comportamientos anómalos o abusos a nivel de lógica de negocio. Durante las pruebas de la aplicación de test <em>Damtrivia</em>, la supervisión de logs del backend (Spring Boot) delató un ataque de registro automatizado de cuentas troll con direcciones de correo ficticias u ofensivas que evadían las políticas básicas del sistema.
+                        </p>
+                        
+                        <div class="code-shell mt-3 border border-slate-200 rounded-2xl overflow-hidden">
+                            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650 bg-white">
+                                <span class="font-mono flex items-center gap-2"><i class="fas fa-clipboard-list text-green-600"></i> Logs del Backend Registrando Troll (Damtrivia)</span>
+                                <button class="copy-btn rounded-lg border border-green-300 bg-green-100 px-3 py-1.5 text-green-900 font-semibold" onclick="copyCode(this, 'code-troll-logs')">Copiar</button>
+                            </div>
+                            <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-troll-logs"><span style="color: #39ff14;" class="font-bold">2026-04-21T18:28:59.549Z</span>  INFO 1 --- [nio-8080-exec-4] l.t.a.service.auth.AuthService : user_registered mail=<span style="color: #ff1493;" class="font-bold">yourfckingmother@gmail.com</span> role=USER userId=b8ff63e2-b41b-4814-9e49-a2fbb9e50dc2
+<span style="color: #39ff14;" class="font-bold">2026-04-21T18:28:59.658Z</span>  INFO 1 --- [nio-8080-exec-4] l.t.a.service.auth.AuthService : user_login_success mail=<span style="color: #ff1493;" class="font-bold">yourfckingmother@gmail.com</span> role=USER userId=b8ff63e2-b41b-4814-9e49-a2fbb9e50dc2
+<span style="color: #39ff14;" class="font-bold">2026-04-21T18:28:59.659Z</span>  INFO 1 --- [nio-8080-exec-4] l.t.i.config.RequestTimingFilter : request_id=c608a21c-cdd0-41cd-9e48-693f9d3712f3 method=POST uri=/api/auth/register status=200 duration_ms=260 user=anonymous remote_ip=<span style="color: #ffff00;" class="font-bold">95.127.144.50</span> forwarded_for=null</code></pre>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="warning-box-header">Resolución mediante Hardening 🛡️</div>
+                            <div class="warning-box-content font-sans">
+                                <p><strong>Acción Correctiva:</strong> Tras identificar la IP pública atacante <code>95.127.144.50</code> y la persistencia de registros ofensivos directos, se implementó la **autenticación OAuth 2.0 de Google**. Esta delegación de identidad obliga a los usuarios a autenticarse mediante una cuenta Google verificada y real para registrarse, eliminando por completo el anonimato de creación de cuentas troll. Esto resuelve un problema que el bloqueo clásico de IP ya no soluciona por sí solo, dado que hoy en día cualquier atacante dispone de un acceso sumamente sencillo a IPs móviles y dinámicas que cambian constantemente. Este nuevo método facilita el bloqueo y control de trolls independientemente de la dirección IP de origen empleada para el trolleo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="../assets/js/sidebar.js"></script>
+    <script src="../assets/js/lightbox.js"></script>
+</body>
+</html>

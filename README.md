@@ -6,7 +6,7 @@
 ![Apache](https://img.shields.io/badge/Apache-D22128?style=for-the-badge&logo=apache&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Dedicación](https://img.shields.io/badge/Dedicaci%C3%B3n-74.65%20Horas-purple?style=for-the-badge&logo=clock&logoColor=white)
+![Dedicación](https://img.shields.io/badge/Dedicaci%C3%B3n-75.40%20Horas-purple?style=for-the-badge&logo=clock&logoColor=white)
 
 <div align="center">
   <img src="https://cdn.simpleicons.org/docker" height="50" alt="Docker" />
@@ -88,6 +88,8 @@ TFG_MasterCiber/
 │   └── setup.html            # Auditorías SAST/DAST, modelado STRIDE e integración CI/CD
 ├── mfa/
 │   └── mfa.html              # Hardening de accesos, políticas de contraseñas y Supabase MFA
+├── firewall/
+│   └── firewall.html         # Guía de búnker perimetral con Nginx y Docker (Zero-Trust)
 ├── siem/
 │   └── siem.html             # Monitoreo Wazuh, playbooks del SOC y simulacro PRI
 ├── soar/
@@ -111,12 +113,12 @@ El portal dispone de un **Validador de Objetivos Interactivo** (`validador.html`
 
 ## ⏱️ Registro de Horas de Laboratorio
 
-El proyecto cuenta con un registro detallado de horas dedicadas a las simulaciones en cada fase de laboratorio, acumulando un total de **74.65 horas de trabajo práctico** auditado:
+El proyecto cuenta con un registro detallado de horas dedicadas a las simulaciones en cada fase de laboratorio, acumulando un total de **75.40 horas de trabajo práctico** auditado:
 
 *   **Fase de Setup e Infraestructura**: `7.50 horas` (diagrama de topología, despliegue de red y agentes locales)
 *   **Fase Ofensiva y Pentesting**: `31.32 horas` (reconocimiento, CVEs OpenVAS, SQLi, React2Shell RCE y reporte de pentest)
 *   **Pipeline DevSecOps y Modelado**: `12.50 horas` (workflows de GitHub Actions, Semgrep, OWASP ZAP DAST y modelado Threat Dragon)
-*   **Hardening de Accesos y MFA**: `2.50 horas` (firewall, políticas de contraseña y TOTP con Supabase)
+*   **Hardening de Accesos y MFA**: `3.75 horas` (firewall deny-by-default, búnker perimetral Nginx/Docker, políticas de contraseña y Supabase MFA)
 *   **Monitorización SOC y SIEM**: `14.83 horas` (reglas Wazuh, playbooks SOC, simulacros PRI y las `3.33 horas` del análisis forense del caso M57)
 *   **Automatización SOAR**: `6.00 horas` (despliegue del orquestador Shuffle, webhooks de Wazuh y casos en TheHive)
 
