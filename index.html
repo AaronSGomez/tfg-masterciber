@@ -231,7 +231,8 @@
                 { id: 19, time: "1 hora (Diseño del flujo lógico y severidades)" },
                 { id: 20, time: "2 horas (Simulacro PRI y bitácora de incidente)" },
                 { id: 21, time: "3.33 horas (Análisis forense en Autopsy y generación de reporte)" },
-                { id: 22, time: "1.5 horas (Redacción de política de incidentes y asignación de roles)" },
+                { id: 22, time: "2 horas (Redacción de política de incidentes y asignación de roles)" },
+                { id: 23, time: "1.5 horas (Análisis de riesgos cuantitativo)" },
                 { id: 24, time: "1.5 horas (Desarrollo del Plan Director de Seguridad a 12 meses y KPIs)" },
                 { id: 25, time: "6 horas (Configuración y resolución de incidencias)" }
             ];
@@ -239,7 +240,7 @@
             const defaultState = {
                 1: true, 2: true, 3: true, 4: true, 5: true, 6: true, 7: true, 8: true, 9: true,
                 10: true, 11: true, 12: true, 13: true, 14: true, 15: true, 16: true, 17: true,
-                18: true, 19: true, 20: true, 21: true, 22: true, 24: true, 25: true
+                18: true, 19: true, 20: true, 21: true, 22: true, 23: true, 24: true, 25: true
             };
 
             let state = JSON.parse(localStorage.getItem('tfg_validator_state_v5'));

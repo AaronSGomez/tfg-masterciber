@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POL-SEG-04: Política de Seguridad y Roles - TelcoConnect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .print-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-page {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 py-10 px-4">
+    <div class="flex justify-center items-center min-h-[calc(100vh-5rem)] w-full">
+        <main class="w-full max-w-4xl bg-white border border-slate-200 rounded-3xl p-8 md:p-12 print-page print-shadow relative overflow-hidden font-sans">
+        
+        <!-- Marca de agua de Aprobado -->
+        <div class="absolute top-10 right-10 border-4 border-emerald-500 text-emerald-500 font-black uppercase text-xl px-4 py-2 rounded-lg rotate-12 select-none opacity-80">
+            APROBADO
+        </div>
+
+        <!-- Botón Volver -->
+        <div class="no-print mb-8">
+            <a href="gob.html" class="inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-900 transition-colors">
+                <i class="fas fa-arrow-left"></i> Volver a Gobernanza y PDS
+            </a>
+        </div>
+
+        <!-- Encabezado formal -->
+        <header class="border-b border-slate-200 pb-6 mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="px-2.5 py-1 rounded bg-amber-100 text-amber-800 text-xs font-bold font-mono">CÓDIGO: POL-SEG-04</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-slate-800 text-xs font-bold font-mono">VERSIÓN: 2.1</span>
+            </div>
+            <h1 class="text-3xl font-black tracking-tight text-slate-950 md:text-4xl">Política General de Seguridad de la Información</h1>
+            <p class="text-sm text-slate-500 mt-2"><strong>TelcoConnect Distribuciones S.L.</strong> | Fecha de Aprobación: Junio 2026</p>
+        </header>
+
+        <!-- Tabla de Control de Versiones -->
+        <section class="mb-10">
+            <h2 class="text-lg font-bold text-slate-950 mb-3">Control de Cambios y Firmas</h2>
+            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                            <th class="p-3">Versión</th>
+                            <th class="p-3">Fecha</th>
+                            <th class="p-3">Autor</th>
+                            <th class="p-3">Aprobado por</th>
+                            <th class="p-3">Detalle del Cambio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-650">
+                        <tr>
+                            <td class="p-3 font-mono font-bold">1.0</td>
+                            <td class="p-3">12/01/2025</td>
+                            <td class="p-3">vCISO Externo</td>
+                            <td class="p-3">Gerente</td>
+                            <td class="p-3">Versión inicial de políticas locales (Servidor On-Premise).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono font-bold">2.0</td>
+                            <td class="p-3">18/04/2026</td>
+                            <td class="p-3">vCISO + Técnico IT</td>
+                            <td class="p-3">Comité de Dirección</td>
+                            <td class="p-3">Revisión para la transición de servicios e infraestructura a nube híbrida Azure.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono font-bold">2.1</td>
+                            <td class="p-3">08/06/2026</td>
+                            <td class="p-3">vCISO + Técnico IT</td>
+                            <td class="p-3">CISO + Gerente</td>
+                            <td class="p-3">Integración del control de accesos MDM Intune y plan de copias en nube.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Contenido de las directivas -->
+        <article class="space-y-8 text-sm leading-relaxed text-slate-700">
+            
+            <!-- Capítulo I: Acceso Mínimo -->
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-950 border-b border-slate-100 pb-2">Capítulo I: Política de Control de Accesos y Privilegio Mínimo</h2>
+                <p>
+                    Para garantizar la confidencialidad y limitar el impacto ante posibles intrusiones en la red híbrida, se formaliza el principio de privilegio mínimo para los 40 empleados de TelcoConnect:
+                </p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Acceso Administrativo Segregado:</strong> Queda estrictamente prohibido el uso de cuentas genéricas de administración. Los accesos a la consola de Azure se limitan a perfiles autorizados (vCISO y Técnico IT) y su inicio de sesión se restringe exclusivamente desde rangos de IPs públicas de la oficina central o mediante túnel VPN autenticado.</li>
+                    <li><strong>Control de Red Interna (Azure NSG):</strong> La subred que aloja la lógica de la aplicación <strong>VodaTramit</strong> y la subred de base de datos se despliegan bajo directivas <em>deny-by-default</em>. Únicamente se autoriza el tráfico HTTPS entrante filtrado por el Azure Application Gateway con WAF perimetral.</li>
+                    <li><strong>Conectividad Híbrida Restringida:</strong> 
+                        <ul class="list-circle pl-5 mt-1 space-y-1">
+                            <li>El personal de tiendas (8 dependientas) y oficina (6 tramitadoras) solo puede acceder a VodaTramit a través de los túneles seguros IPSec VPN Site-to-Site.</li>
+                            <li>Los comerciales externos (20 agentes) accederán mediante VPN Point-to-Site. Su inicio de sesión requiere validación de directivas de cumplimiento en <strong>Microsoft Intune</strong> (MFA activo, cortafuegos local habilitado y disco de datos cifrado con BitLocker).</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Capítulo II: Gestión de Identidades -->
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-950 border-b border-slate-100 pb-2">Capítulo II: Política de Gestión de Identidades y Credenciales</h2>
+                <p>
+                    El directorio activo corporativo se centraliza e integra mediante **Microsoft Entra ID** bajo la supervisión del Técnico IT y el vCISO:
+                </p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Complejidad y Caducidad de Contraseñas:</strong> Las credenciales de usuarios activos deben tener una longitud mínima de 12 caracteres, incluyendo combinación de mayúsculas, minúsculas, números y caracteres especiales. Se fuerza la caducidad cada 90 días y se bloquea la reutilización de las últimas 5 contraseñas.</li>
+                    <li><strong>Autenticación de Doble Factor (MFA):</strong> Es mandatorio el uso de MFA (TOTP mediante Microsoft Authenticator o hardware token físico) para todo inicio de sesión en los servicios corporativos, incluyendo correo, CRM y el panel administrativo.</li>
+                    <li><strong>Bloqueo de Cuentas Automático:</strong> Tras 5 intentos fallidos de autenticación, la cuenta afectada se suspenderá temporalmente durante 30 minutos. La reactivación requerirá la verificación de la identidad del empleado por parte del Técnico IT local (Aarón S. Gómez).</li>
+                </ul>
+            </section>
+
+            <!-- Capítulo III: Copias de Seguridad -->
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-950 border-b border-slate-100 pb-2">Capítulo III: Política de Copias de Seguridad y Resiliencia Híbrida</h2>
+                <p>
+                    Para mitigar los riesgos de secuestro de datos por Ransomware y garantizar la continuidad operativa, el plan de backup de bases de datos y expedientes de contratos se estructura de la siguiente manera:
+                </p>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Backup Inmutable en Azure:</strong> Las copias de seguridad de la base de datos MariaDB PaaS y los ficheros de Azure Blob Storage se configuran mediante **Azure Backup** en almacenes de recuperación inmutables (*Recovery Services Vaults*), impidiendo la eliminación o modificación accidental o maliciosa de los respaldos.</li>
+                    <li><strong>Periodicidad y Retención:</strong>
+                        <ul class="list-circle pl-5 mt-1 space-y-1">
+                            <li><strong>Respaldos de Stock y Transacciones:</strong> Copias diferenciales cada 4 horas y copias completas semanales con retención mínima de 6 meses.</li>
+                            <li><strong>Respaldos de Expedientes de Contratos:</strong> Copias completas mensuales con retención de 5 años por imperativos legales.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Simulacros de Restauración:</strong> El Técnico IT, en coordinación con el SOC de Gijón, ejecutará de manera semestral simulacros documentados de recuperación de datos (Restore Test). El tiempo objetivo de recuperación (RTO) establecido es inferior a 4 horas.</li>
+                </ul>
+            </section>
+
+            <!-- Capítulo IV: Protocolo de Asignación de Roles y Conflictos de Interés -->
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-950 border-b border-slate-100 pb-2">Capítulo IV: Asignación de Roles y Mitigación de Conflictos de Interés</h2>
+                <p>
+                    Dada la estructura operativa reducida (1 técnico interno), se segregan las funciones de control para asegurar la objetividad de las auditorías de seguridad:
+                </p>
+                <div class="overflow-x-auto rounded-xl border border-slate-200 mt-2">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold font-sans">
+                                <th class="p-3">Rol de Seguridad</th>
+                                <th class="p-3">Responsable</th>
+                                <th class="p-3">Ámbito de Control</th>
+                                <th class="p-3">Medida de Control de Interés</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650">
+                            <tr>
+                                <td class="p-3 font-bold text-slate-900">Gobernanza y Estrategia (vCISO)</td>
+                                <td class="p-3">Consultor Externo</td>
+                                <td class="p-3 font-semibold">Políticas, cumplimiento y plan estratégico PDS.</td>
+                                <td class="p-3">Reporta de forma directa a Dirección General sin pasar por el área de IT local.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-slate-900">Auditoría y Monitoreo (SOC 24/7)</td>
+                                <td class="p-3">Empresa Externa (Gijón)</td>
+                                <td class="p-3 font-semibold">Triage de alertas en Wazuh y logs perimetrales de WAF.</td>
+                                <td class="p-3">Actúa como observador y validador independiente de los accesos a red del técnico local.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-bold text-slate-900">Operación y Mantenimiento</td>
+                                <td class="p-3">Técnico IT (Aarón S. Gómez)</td>
+                                <td class="p-3 font-semibold">Gestión física de tiendas, Intune MDM y remediaciones.</td>
+                                <td class="p-3">No dispone de permisos para modificar logs de auditoría centralizados en Wazuh.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </article>
+
+        <!-- Pie de página formal -->
+        <footer class="mt-12 pt-6 border-t border-slate-200 text-center text-xs text-slate-400">
+            Documento de Directivas Internas de TelcoConnect S.L. - Confidencial. Queda prohibida su reproducción parcial o total sin autorización escrita del CISO.
+        </footer>
+    </main>
+    </div>
+</body>
+</html>

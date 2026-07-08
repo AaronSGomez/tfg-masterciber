@@ -3,114 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gobierno de Seguridad: Política y PDS 12 Meses</title>
+    <title>Gobierno de Seguridad Híbrido: TelcoConnect Distribuciones</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../assets/css/site.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Personalización de colores para la sección de Gobierno (Amber - Dorado) */
+        /* Personalización de colores para la sección de Gobierno (Amarillo Mostaza Suave) */
         .bg-theme-gob {
-            background-color: #fffbeb; /* amber-50 */
+            background-color: #fdfbe7; /* Amarillo mostaza suave crema */
         }
         .nav-link:hover {
-            background-color: #fffbeb !important; /* amber-50 */
-            border-color: #f59e0b !important;     /* amber-500 */
-            color: #b45309 !important;            /* amber-700 */
+            background-color: #f9f5ce !important; /* Mostaza suave */
+            border-color: #cca210 !important;     /* Borde mostaza */
+            color: #826002 !important;            /* Texto oscuro */
         }
         .nav-link:hover i {
-            color: #d97706 !important;            /* amber-600 */
+            color: #a37c05 !important;            
         }
         .nav-link-home {
-            border-color: #fde68a !important;      /* amber-200 */
-            background-color: #fffbeb !important;  /* amber-50 */
-            color: #b45309 !important;             /* amber-700 */
+            border-color: #f6e8b4 !important;      
+            background-color: #fdfbe7 !important;  
+            color: #826002 !important;             
         }
         .nav-link-home i {
-            color: #d97706 !important;             /* amber-600 */
+            color: #a37c05 !important;             
         }
         .nav-link-home:hover {
-            background-color: #fef3c7 !important;  /* amber-100 */
-            border-color: #f59e0b !important;      /* amber-500 */
-        }
-
-        /* Caja de avisos para evidencias fotográficas */
-        .evidence-box {
-            background-color: #f8fafc !important; 
-            border: 1px solid #e2e8f0 !important; 
-            color: #334155 !important;            
-            border-top: 4px solid #d97706 !important; /* Amber tab stripe */
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-top: 1.25rem;
-            margin-bottom: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
-        }
-        .evidence-box-header {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #b45309 !important;            
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .evidence-box-content {
-            font-size: 0.9rem;
-            line-height: 1.7;
-        }
-        .evidence-box-content strong {
-            color: #0f172a !important;
+            background-color: #f9f5ce !important;  
+            border-color: #cca210 !important;      
         }
     </style>
 </head>
 <body class="bg-theme-gob flex justify-center text-slate-900">
-    <script>
-        async function copyCode(button, targetId) {
-            const node = document.getElementById(targetId);
-            if (!node) return;
-            try {
-                await navigator.clipboard.writeText(node.textContent);
-                const original = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado';
-                button.classList.add('bg-amber-500/20', 'text-amber-700');
-                setTimeout(() => {
-                    button.innerHTML = original;
-                    button.classList.remove('bg-amber-500/20', 'text-amber-700');
-                }, 1600);
-            } catch (error) {
-                button.textContent = 'Error';
-                setTimeout(() => button.textContent = 'Copiar', 1600);
-            }
-        }
-    </script>
-
     <main class="flex min-h-screen w-full max-w-[1440px] flex-col gap-8 px-4 py-6 md:px-8 md:py-10 lg:flex-row lg:items-start">
         <!-- Sidebar lateral -->
         <aside class="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)] lg:w-80 lg:shrink-0">
             <div class="h-full overflow-y-auto rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-300/35 backdrop-blur">
                 <div class="flex items-start gap-4">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600 text-white font-bold">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-600 text-white font-bold" style="background-color: #cca210;">
                         <i class="fas fa-gavel"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-700">Gobierno</p>
-                        <h1 class="mt-1 text-2xl font-black text-slate-950">Gobernanza</h1>
+                        <p class="text-xs font-bold uppercase tracking-[0.3em]" style="color: #a37c05;">Gobierno</p>
+                        <h1 class="mt-1 text-2xl font-black text-slate-950 font-sans">Gobernanza</h1>
                     </div>
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#portada" class="nav-link">Portada</a>
-                    <a href="#politica-seguridad" class="nav-link">Política de Seguridad</a>
-                    <a href="#roles-responsabilidades" class="nav-link">Roles y Responsabilidades</a>
-                    <a href="#protocolo-incidencias" class="nav-link">Protocolo ante Ataques</a>
-                    <a href="#pds-12meses" class="nav-link">PDS de 12 Meses</a>
-                    <a href="#soluciones-evidencias" class="nav-link">Soluciones y Métricas</a>
-                    <a href="../index.html" class="nav-link nav-link-home"><i class="fas fa-home mr-2"></i>Menú Principal</a>
+                    <a href="#portada" class="nav-link font-sans"><i class="fas fa-book-open mr-2"></i>Portada</a>
+                    <a href="#perfil-empresa" class="nav-link font-sans"><i class="fas fa-building mr-2"></i>Identidad y Negocio</a>
+                    <a href="#politica-seguridad" class="nav-link font-sans"><i class="fas fa-cloud mr-2"></i>Arquitectura Híbrida Azure</a>
+                    <a href="#roles-responsabilidades" class="nav-link font-sans"><i class="fas fa-users-cog mr-2"></i>Roles y RACI Híbrido</a>
+                    <a href="#politica-documentada" class="nav-link font-sans"><i class="fas fa-file-contract mr-2"></i>Política Documentada</a>
+                    <a href="#protocolo-incidencias" class="nav-link font-sans"><i class="fas fa-shield-alt mr-2"></i>Protocolo y Contención</a>
+                    <a href="#evaluacion-riesgos" class="nav-link font-sans"><i class="fas fa-calculator mr-2"></i>Evaluación MAGERIT v3</a>
+                    <a href="#pds-12meses" class="nav-link font-sans"><i class="fas fa-route mr-2"></i>PDS & Migración</a>
+                    <a href="#soluciones-evidencias" class="nav-link font-sans"><i class="fas fa-chart-line mr-2"></i>Métricas y KPIs</a>
+                    <a href="../index.html" class="nav-link nav-link-home font-sans"><i class="fas fa-home mr-2"></i>Menú Principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
-                    <p>Autor: <span class="font-semibold text-slate-800">Aarón S. Gómez</span></p>
-                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-amber-600 hover:underline">asga.vercel.app</a>
+                    <p class="font-sans">Autor: <span class="font-semibold text-slate-800">Aarón S. Gómez</span></p>
+                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block hover:underline font-sans" style="color: #a37c05;">asga.vercel.app</a>
                 </div>
             </div>
         </aside>
@@ -119,198 +73,564 @@
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
             <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
-                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-amber-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div class="absolute top-0 right-0 h-40 w-40 bg-gradient-to-br from-yellow-600/10 to-transparent rounded-bl-full pointer-events-none"></div>
                 <div class="flex items-center gap-2">
-                    <span class="hero-pill border-amber-500/20 bg-amber-100 text-amber-800">Gobierno</span>
-                    <span class="progress-status border-amber-500/20 bg-amber-100 text-amber-800">Objetivos 22 y 24</span>
+                    <span class="hero-pill border-yellow-500/20 bg-yellow-100 text-yellow-800 font-sans" style="background-color: #f9f5ce; color: #826002; border-color: #f6e8b4;">Gobierno</span>
+                    <span class="progress-status border-yellow-500/20 bg-yellow-100 text-yellow-800 font-sans" style="background-color: #f9f5ce; color: #826002; border-color: #f6e8b4;">Objetivos 22, 23 y 24</span>
                 </div>
-                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight">Gobierno de Seguridad y Plan Director (PDS)</h2>
-                <p class="mt-4 text-base leading-8 text-slate-700 md:text-lg">
-                    Políticas de gobernanza, asignación de responsabilidades de respuesta a incidentes en una arquitectura distribuida de dos servidores y planificación estratégica a 12 meses (Plan Director de Seguridad) para mitigar riesgos críticos.
+                <h2 class="mt-4 text-3xl font-black tracking-tight text-slate-950 md:text-5xl leading-tight font-sans">Gobierno de Seguridad y Migración Híbrida Azure</h2>
+                <p class="mt-4 leading-8 text-slate-700">
+                    Plan de Transición Tecnológica y Gobierno de Seguridad Híbrida para la empresa <strong>TelcoConnect Distribuciones</strong>, migrando progresivamente servicios a la nube de Microsoft Azure en 12 meses.
                 </p>
             </header>
 
-            <!-- 1. Política de Seguridad en Arquitectura de Dos Servidores -->
+            <!-- 1. Perfil e Identidad de la Empresa -->
+            <section id="perfil-empresa" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-building text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Identidad y Perfil del Negocio</h3>
+                </div>
+                <p class="leading-8 text-slate-700">
+                    <strong>TelcoConnect Distribuciones</strong> es una empresa mediana de 40 trabajadores que opera como distribuidor autorizado oficial de una gran operadora móvil. Su actividad principal es la captación de clientes de fibra/móvil, la tramitación y activación de contratos de líneas telefónicas, y la venta/distribución de dispositivos y accesorios de red en tiendas físicas y en movilidad.
+                </p>
+                
+                <h4 class="font-bold text-slate-900 text-lg font-sans">Estructura Organizativa de la Plantilla</h4>
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase font-semibold">
+                                <th class="p-4">Departamento</th>
+                                <th class="p-4">Rol Específico</th>
+                                <th class="p-4 text-center">Cant.</th>
+                                <th class="p-4">Dependencia</th>
+                                <th class="p-4">Equipamiento TI Asignado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650">
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Dirección General</td>
+                                <td class="p-4 font-medium">Gerente</td>
+                                <td class="p-4 text-center font-bold">1</td>
+                                <td class="p-4">Junta de Socios</td>
+                                <td class="p-4">Portátil y Tablet corporativos para movilidad.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Mandos Intermedios</td>
+                                <td class="p-4 font-medium">Jefes de Departamento (Ventas, Tramitación, Administración)</td>
+                                <td class="p-4 text-center font-bold">3</td>
+                                <td class="p-4">Gerente</td>
+                                <td class="p-4">3 Portátiles corporativos.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Ventas Externas</td>
+                                <td class="p-4 font-medium">Comerciales en campo</td>
+                                <td class="p-4 text-center font-bold">20</td>
+                                <td class="p-4">Jefe de Ventas</td>
+                                <td class="p-4">20 Portátiles y 20 Móviles corporativos.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Operaciones</td>
+                                <td class="p-4 font-medium">Tramitadoras de contratos</td>
+                                <td class="p-4 text-center font-bold">6</td>
+                                <td class="p-4">Jefe de Tramitación</td>
+                                <td class="p-4">6 PCs de sobremesa (Oficina Central en red local).</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Gestión Corporativa</td>
+                                <td class="p-4 font-medium">Administrativas de RRHH / Contabilidad</td>
+                                <td class="p-4 text-center font-bold">2</td>
+                                <td class="p-4">Jefe de Administración</td>
+                                <td class="p-4">2 PCs de sobremesa en Oficina Central.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Puntos de Venta Físicos</td>
+                                <td class="p-4 font-medium">Dependientas de tienda</td>
+                                <td class="p-4 text-center font-bold">8</td>
+                                <td class="p-4">Jefe de Ventas</td>
+                                <td class="p-4">4 PCs de sobremesa (1 PC por tienda en 4 tiendas físicas con turnos rotativos).</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Soporte Técnico Interno</td>
+                                <td class="p-4 font-medium">Técnico Comercial y Mantenimiento de Equipos</td>
+                                <td class="p-4 text-center font-bold">1</td>
+                                <td class="p-4">Gerente</td>
+                                <td class="p-4">1 PC sobremesa y 1 Portátil de gestión (40h semanales). Desempeñado por el autor del proyecto.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-900">Seguridad Externa</td>
+                                <td class="p-4 font-medium">Equipo de Seguridad Externo (Gijón)</td>
+                                <td class="p-4 text-center font-bold">-</td>
+                                <td class="p-4">Gerente</td>
+                                <td class="p-4">Servicio de consultoría estratégica y SOC gestionado (vCISO + SOC Gijón).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="font-bold text-slate-900 text-lg pt-4 font-sans">Detalle de los Activos Críticos para la Migración</h4>
+                <p class="leading-relaxed text-slate-700">
+                    La infraestructura local de TelcoConnect reside originalmente en un único servidor físico obsoleto en la oficina central, con costes de mantenimiento inviables debido a fallos de hardware. Los activos críticos que se migrarán a Azure son:
+                </p>
+                <ul class="list-disc pl-5 text-slate-650 space-y-2">
+                    <li><strong>Aplicación de Tramitación (VodaTramit):</strong> Aplicación web de línea de negocio (Next.js/Spring Boot) empleada por las 6 tramitadoras y las dependientas de las tiendas para tramitar contratos, procesar altas de SIMs y solicitar portabilidades.</li>
+                    <li><strong>Base de Datos y Almacén (MariaDB):</strong> Base de datos de 550 GB con el control de inventario de terminales móviles, SIMs, transacciones diarias y datos de clientes.</li>
+                    <li><strong>Logs de Auditoría y Accesos:</strong> Archivos históricos de operaciones del servidor y accesos de comerciales que requieren almacenamiento centralizado por cumplimiento y control de fraude.</li>
+                </ul>
+            </section>
+
+            <!-- 2. Arquitectura de Nube Híbrida (Azure + Local) -->
             <section id="politica-seguridad" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
-                        <i class="fas fa-server text-xl"></i>
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-network-wired text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Política de Seguridad: Entorno Distribuido</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Arquitectura Híbrida y Transición de Servidores</h3>
                 </div>
-                <p class="leading-8 text-slate-700 text-base">
-                    Para este TFG, asumimos un entorno corporativo distribuido compuesto por **dos servidores principales** con funciones bien diferenciadas para minimizar la superficie de exposición y garantizar la resiliencia operativa:
+                <p class="leading-8 text-slate-700">
+                    Para adaptar la política de servidores tradicional ("Servidor 1: Frontal DMZ" y "Servidor 2: Interno + DB") al entorno híbrido, se realiza la siguiente distribución de servicios en Azure:
                 </p>
 
-                <div class="grid gap-6 md:grid-cols-2 mt-4">
-                    <div class="p-5 border border-slate-200 bg-slate-50/50 rounded-2xl space-y-2">
-                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block">Servidor 1</span>
-                        <strong class="text-slate-900 text-base font-bold block">Frontal Perimetral (Búnker Nginx DMZ)</strong>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Aloja la Landing Page pública, la pasarela de autenticación y el proxy reverso Nginx. Su función es filtrar payloads sospechosos, gestionar SSL/TLS, aplicar límites de peticiones (Rate Limiting) y reportar logs de acceso.
-                        </p>
-                    </div>
-                    <div class="p-5 border border-slate-200 bg-slate-50/50 rounded-2xl space-y-2">
-                        <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block">Servidor 2</span>
-                        <strong class="text-slate-900 text-base font-bold block">Servidor Interno de Aplicaciones (Wazuh & DB)</strong>
-                        <p class="text-xs text-slate-650 leading-relaxed">
-                            Ubicado detrás del búnker. Aloja el servidor Wazuh (SIEM), la base de datos privada (MariaDB) y la lógica de negocio (Spring Boot). Solo se comunica con el Servidor 1 por canales aislados de red privada.
-                        </p>
-                    </div>
-                </div>
+                <h4 class="font-bold text-slate-900 text-base font-sans">Sustitución del Servidor 1 (DMZ Frontal Perimetral)</h4>
+                <p class="text-slate-650 leading-relaxed">
+                    La función de Nginx DMZ se traslada a **Azure Application Gateway con WAF activo (Capa perimetral L7 - VodaTramit)**. Este gateway actúa como única puerta de enlace pública, aplicando reglas de prevención ante inyecciones SQL que comprometan los datos y controlando la expiración de cookies de sesión. Centraliza la terminación SSL/TLS usando certificados almacenados en Azure Key Vault.
+                </p>
+
+                <h4 class="font-bold text-slate-900 text-base font-sans">Sustitución del Servidor 2 (Entorno Interno Wazuh + Base de Datos)</h4>
+                <p class="text-slate-650 leading-relaxed">
+                    Las funciones internas del Servidor 2 se segregan lógicamente dentro de una **Azure Virtual Network (VNet)** protegida por Grupos de Seguridad de Red (NSG) restrictivos bajo directivas <em>deny-by-default</em>:
+                </p>
+                <ul class="list-disc pl-5 text-slate-650 space-y-1.5 font-sans">
+                    <li><strong>Subred de Aplicaciones (Subnet-App):</strong> Aloja la lógica interna de VodaTramit en VMs Linux optimizadas, que solo aceptan tráfico web proveniente del Azure Application Gateway.</li>
+                    <li><strong>Subred de Datos (Subnet-Data):</strong> Sustituye el almacén local por **Azure Database for MariaDB PaaS**, con acceso exclusivo privado a través de **Private Endpoint** desde la subred de aplicaciones (Puerto 3306).</li>
+                    <li><strong>Subred de Seguridad (Subnet-Sec):</strong> Hospeda la máquina virtual del servidor **Wazuh SIEM Manager**, centralizando los eventos de auditoría y logs procedentes de los agentes locales.</li>
+                </ul>
+
+                <h4 class="font-bold text-slate-900 text-base font-sans">Mecanismos de Conectividad Híbrida Segura</h4>
+                <p class="text-slate-650 leading-relaxed">
+                    Dada la distribución física (oficina, 4 tiendas, comerciales en movilidad), la conectividad se divide en dos canales:
+                </p>
+                <ol class="list-decimal pl-5 text-slate-650 space-y-1.5 font-sans">
+                    <li><strong>VPN Site-to-Site (S2S):</strong> Túneles IPSec cifrados permanentes (AES-256) desde el enrutador-firewall de la oficina central y las 4 tiendas físicas hacia el **Azure VPN Gateway**, permitiendo un acceso privado transparente a VodaTramit.</li>
+                    <li><strong>VPN Point-to-Site (P2S):</strong> Conexiones individuales mediante cliente VPN de Azure para los 20 comerciales móviles y el Gerente. Solo se autoriza el establecimiento del túnel si el dispositivo cumple con los parámetros de salud de la consola **Microsoft Intune** (antivirus activo, MFA habilitado y cifrado BitLocker).</li>
+                </ol>
             </section>
 
-            <!-- 2. Roles y Responsabilidades -->
+            <!-- 3. Adaptación de Roles y Responsabilidades -->
             <section id="roles-responsabilidades" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
                         <i class="fas fa-users-cog text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Roles y Asignación de Responsabilidades</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Adaptación de Roles, Distribución y Matriz RACI</h3>
                 </div>
-                <p class="leading-8 text-slate-700 text-base">
-                    En caso de un ataque de seguridad contra los servidores, la política dictamina con claridad **quién se encarga de qué** para evitar solapamientos y retrasos críticos en la mitigación:
+                <p class="leading-8 text-slate-700">
+                    Para una empresa de 40 trabajadores con un único técnico (quien además realiza labores comerciales de cara a la captación de contratos de la operadora), es materialmente imposible asumir la monitorización continua de seguridad. Asimismo, para evitar conflictos de interés en las auditorías de accesos a la red, se externalizan las funciones de seguridad estratégica y monitorización 24/7 en colaboración con una **empresa externa especialista en seguridad y SOC con sede en Gijón**:
                 </p>
 
-                <div class="space-y-4">
-                    <div class="flex items-start gap-4 p-4 border-l-4 border-amber-500 bg-amber-50/20 rounded-r-xl">
-                        <div class="font-bold text-slate-900 text-sm min-w-[180px]">Analista de Seguridad SOC</div>
-                        <div class="text-xs text-slate-650 leading-relaxed">
-                            Monitoriza las consolas de Wazuh y las alertas en tiempo real. Responsable de realizar el triage inicial ante anomalías de inyección SQL o de fuerza bruta, validar falsos positivos y notificar al Administrador de Sistemas.
-                        </div>
+                <div class="grid gap-6 md:grid-cols-3 mt-4 text-slate-700 font-sans">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm">vCISO (Externo)</strong>
+                        <p class="leading-relaxed">Consultor estratégico externo. Es responsable de actualizar el análisis cuantitativo MAGERIT v3, supervisar el cumplimiento de políticas de acceso a Azure, redactar directivas y coordinar los playbooks de respuesta a incidentes.</p>
                     </div>
-                    <div class="flex items-start gap-4 p-4 border-l-4 border-amber-500 bg-amber-50/20 rounded-r-xl">
-                        <div class="font-bold text-slate-900 text-sm min-w-[180px]">Administrador de Sistemas</div>
-                        <div class="text-xs text-slate-650 leading-relaxed">
-                            Encargado del mantenimiento de la infraestructura. Ejecuta el aislamiento físico o lógico de los servidores usando reglas de UFW, aplica parches de seguridad recomendados, gestiona las políticas de backup y reestablece backups.
-                        </div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm">SOC Gijón (Proveedor Externo 24/7)</strong>
+                        <p class="leading-relaxed">Empresa externa de Gijón que opera como MSSP. Monitoriza logs del WAF en Azure, eventos del agente Wazuh y accesos al VPN Gateway. Alerta al técnico interno de anomalías con instrucciones guiadas.</p>
                     </div>
-                    <div class="flex items-start gap-4 p-4 border-l-4 border-amber-500 bg-amber-50/20 rounded-r-xl">
-                        <div class="font-bold text-slate-900 text-sm min-w-[180px]">Director de Incidentes (CISO)</div>
-                        <div class="text-xs text-slate-650 leading-relaxed">
-                            Responsable estratégico de coordinar la toma de decisiones. Declara el estado de crisis de seguridad, autoriza paradas de producción y lidera la comunicación con la dirección y la redacción del reporte forense.
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <strong class="text-slate-955 font-bold block text-sm">Técnico Interno (Aarón S. Gómez)</strong>
+                        <p class="leading-relaxed">Rol del propio autor. Encargado del mantenimiento físico de equipos de tiendas, gestión de endpoints remotos mediante Intune y ejecución en sitio de las directivas operativas guiadas por el SOC de Gijón.</p>
+                    </div>
+                </div>
+
+                <h4 class="font-bold text-slate-900 text-base pt-4 font-sans">Matriz de Asignación de Responsabilidades (RACI)</h4>
+                <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase font-semibold font-sans">
+                                <th class="p-3">Tarea de Gobierno / Actividad</th>
+                                <th class="p-3 text-center">vCISO (Ext.)</th>
+                                <th class="p-3 text-center">SOC Gijón (Ext.)</th>
+                                <th class="p-3 text-center">Técnico IT (Int.)</th>
+                                <th class="p-3 text-center">Gerente (Int.)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650">
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Monitoreo de alertas SIEM (Wazuh) e intrusiones</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center font-bold text-yellow-650" style="color: #a37c05;">R</td>
+                                <td class="p-3 text-center">I</td>
+                                <td class="p-3 text-center">I</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Bloqueo y aislamiento de IPs en WAF y NSG de Azure</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center font-bold text-yellow-650" style="color: #a37c05;">R</td>
+                                <td class="p-3 text-center font-bold text-slate-900">A</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Gestión de perfiles MDM (Intune) en dispositivos</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center">I</td>
+                                <td class="p-3 text-center font-bold text-yellow-650" style="color: #a37c05;">R</td>
+                                <td class="p-3 text-center font-bold text-slate-900">A</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Borrado remoto de datos en portátiles/móviles robados</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center">I</td>
+                                <td class="p-3 text-center font-bold text-yellow-650" style="color: #a37c05;">R</td>
+                                <td class="p-3 text-center font-bold text-slate-900">A</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Parcheado y mantenimiento de PCs de tienda</td>
+                                <td class="p-3 text-center">I</td>
+                                <td class="p-3 text-center">I</td>
+                                <td class="p-3 text-center font-bold text-yellow-650" style="color: #a37c05;">R</td>
+                                <td class="p-3 text-center font-bold text-slate-900">A</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Activación de playbooks de contención de crisis</td>
+                                <td class="p-3 text-center font-bold text-yellow-650" style="color: #a37c05;">R</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center">C</td>
+                                <td class="p-3 text-center font-bold text-slate-900">A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 4. Cuerpo de la Política Documentada -->
+            <section id="politica-documentada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-folder-open text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Cuerpo de la Política Documentada</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    A continuación se expone de forma directa la tabla de políticas de control de acceso y protocolo de asignación de roles formalizados para TelcoConnect Distribuciones:
+                </p>
+
+                <div class="p-6 border border-slate-200 bg-slate-50/50 rounded-2xl space-y-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-slate-200 text-xs font-sans">
+                        <span class="font-bold text-slate-800">Repositorio: Wiki Corporativo Interno</span>
+                        <span class="px-2 py-0.5 rounded font-bold" style="background-color: #f9f5ce; color: #826002;">Estado: Aprobado (Versión 2.1)</span>
+                    </div>
+                    <h4 class="font-extrabold text-slate-950 text-base text-center font-sans">POL-SEG-04: Política Híbrida de Accesos y Asignación de Roles de Seguridad</h4>
+                    
+                    <div class="space-y-4 text-slate-700">
+                        <div>
+                            <strong class="text-slate-955 block font-sans font-bold" style="color: #a37c05;">1. Propósito y Alcance</strong>
+                            <p class="mt-1">Esta política define las directrices y responsabilidades para salvaguardar los activos críticos alojados en Azure y en el perímetro físico de las 4 tiendas y la oficina central de TelcoConnect. Aplica a toda la plantilla (40 empleados).</p>
+                        </div>
+                        <div>
+                            <strong class="text-slate-955 block font-sans font-bold" style="color: #a37c05;">2. Control de Acceso Perimetral y Remoto</strong>
+                            <ul class="list-disc pl-5 space-y-1 mt-1 font-sans">
+                                <li><strong>MFA Obligatorio:</strong> Todo acceso al portal Azure y a la herramienta de tramitación VodaTramit requiere doble factor TOTP activo en Microsoft Entra ID.</li>
+                                <li><strong>Dispositivos Registrados (Intune):</strong> Solo se autoriza la conexión VPN P2S a dispositivos enrolados en el MDM corporativo que cumplan con la política de seguridad mínima.</li>
+                                <li><strong>Aislamiento de Tiendas:</strong> El tráfico de red de tiendas físicas solo puede acceder al entorno Azure mediante túneles seguros IPSec S2S del VPN Gateway.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong class="text-slate-955 block font-sans font-bold" style="color: #a37c05;">3. Protocolo de Aprobaciones</strong>
+                            <p class="mt-1">Cualquier cambio en la configuración de cortafuegos perimetrales, NSG o el WAF en Azure requiere la aprobación previa y firma digital del vCISO y autorización del Gerente, siendo ejecutado únicamente por el Técnico de Mantenimiento local.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 3. Directrices de Respuesta a Incidentes (Protocolo ante Ataques) -->
+            <!-- 5. Protocolo ante Ataques y Evidencias -->
             <section id="protocolo-incidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
-                        <i class="fas fa-file-signature text-xl"></i>
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-shield-alt text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Protocolo de Actuación ante Explotación</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Protocolo de Actuación y Contención</h3>
                 </div>
                 <p class="leading-8 text-slate-700 text-base">
-                    Ante la detección de un evento crítico (como un RCE React2Shell o bypass de autenticación), el protocolo exige la ejecución ordenada de las siguientes fases:
+                    Ante la sospecha de una intrusión perimetral en la aplicación VodaTramit o el robo de un portátil de comerciales externos, se activa el protocolo estructurado en tres fases coordinado con el SOC de Gijón:
                 </p>
 
-                <div class="grid gap-4 md:grid-cols-3 text-xs text-slate-700">
+                <div class="grid gap-4 md:grid-cols-3 text-slate-700 font-sans">
                     <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-                        <strong class="text-slate-955 font-bold block text-sm">Fase 1: Contención</strong>
-                        <p class="leading-relaxed">El administrador bloquea de forma inmediata las IPs atacantes a nivel de UFW perimetral y Nginx. Si el servidor frontal (Servidor 1) está comprometido, se desvía el tráfico o se aísla de la red privada para salvaguardar el Servidor 2 (SIEM/Base de Datos).</p>
+                        <strong class="text-slate-955 font-bold block text-sm" style="color: #a37c05;">Fase 1: Contención</strong>
+                        <p class="leading-relaxed text-xs">El SOC de Gijón detecta anomalías y notifica al Técnico Interno. Éste bloquea de inmediato la cuenta del usuario en Entra ID y ejecuta el aislamiento de la VM en Azure modificando el NSG. En caso de robo de portátiles, se lanza una directiva de borrado remoto instantáneo de datos vía Intune.</p>
                     </div>
                     <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-                        <strong class="text-slate-955 font-bold block text-sm">Fase 2: Erradicación</strong>
-                        <p class="leading-relaxed">Se eliminan los procesos sospechosos o shells levantadas, se revocan todas las cookies y sesiones de autenticación persistentes de la cuenta atacada, y se analiza la causa raíz del exploit aplicando parches de código en caliente.</p>
+                        <strong class="text-slate-955 font-bold block text-sm" style="color: #a37c05;">Fase 2: Erradicación</strong>
+                        <p class="leading-relaxed text-xs">Se eliminan los procesos maliciosos en la VM. El Técnico de Mantenimiento junto con el vCISO aplican en caliente parches de software para cerrar la inyección del atacante. Se revocan de forma inmediata todas las credenciales y tokens SAS temporales de Blob Storage.</p>
                     </div>
                     <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-                        <strong class="text-slate-955 font-bold block text-sm">Fase 3: Recuperación</strong>
-                        <p class="leading-relaxed">Se restauran los servicios a partir de snapshots limpios e inmutables, se fuerza un cambio general de credenciales del sistema, se activan auditorías de control y se reevalúan las alertas en la consola de Wazuh.</p>
+                        <strong class="text-slate-955 font-bold block text-sm" style="color: #a37c05;">Fase 3: Recuperación</strong>
+                        <p class="leading-relaxed text-xs">Se restauran los sistemas utilizando las copias de seguridad de Azure Backup de las últimas 24h. Se reestablecen los servicios privados y se activan auditorías de integridad (FIM) de Wazuh para comprobar que el entorno está libre de persistencias del atacante.</p>
                     </div>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA (OBJETIVO 22)</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Cuerpo de la Política Documentada:</strong> Captura o texto que demuestre la formalización del documento de políticas y el protocolo de asignación de roles de seguridad (SOC, Sysadmin y CISO) archivados en un repositorio corporativo interno.</p>
+                <!-- Marco sin EVIDENCIA RECOMENDADA con el enlace -->
+                <div class="p-6 border rounded-2xl space-y-3 shadow-sm" style="background-color: #fcfbf0; border-color: #cca210;">
+                    <h4 class="font-bold text-base flex items-center font-sans" style="color: #826002;">
+                        <i class="fas fa-file-contract mr-2"></i> Capítulo de Política de Seguridad e Incidentes Formalizado
+                    </h4>
+                    <p class="text-slate-650 leading-relaxed">
+                        Se ha elaborado y aprobado formalmente el capítulo de la política que describe las directivas de acceso mínimo, la gestión de identidades corporativas en Entra ID y el plan de resiliencia de copias de seguridad para TelcoConnect Distribuciones.
+                    </p>
+                    <div class="pt-2">
+                        <a href="politica_documentada.html" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold hover:underline font-sans" style="color: #a37c05;">
+                            <i class="fa-solid fa-file-contract"></i> Abrir Capítulo Formal Aprobado (POL-SEG-04)
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <!-- 4. Plan Director de Seguridad (PDS) de 12 Meses -->
-            <section id="pds-12meses" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <!-- 6. Evaluación de Riesgos (MAGERIT v3) -->
+            <section id="evaluacion-riesgos" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
-                        <i class="fas fa-calendar-alt text-xl"></i>
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-calculator text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Plan Director de Seguridad (PDS)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Evaluación de Riesgos Cuantitativa (MAGERIT v3)</h3>
                 </div>
-                <p class="leading-8 text-slate-700 text-base">
-                    Para consolidar el hardening y asegurar que las vulnerabilidades críticas se mantengan mitigadas a largo plazo, el **Plan Director de Seguridad (PDS)** a 12 meses prioriza y organiza las siguientes fases:
+                <p class="leading-8 text-slate-700 text-base font-sans">
+                    La cuantificación del riesgo estima el producto de las variables de Impacto (I) y Probabilidad (P) en escalas de 1 a 5, definiendo las salvaguardas idóneas para cada activo crítico del entorno híbrido:
                 </p>
 
-                <div class="space-y-6">
-                    <div class="relative pl-8 border-l-2 border-amber-200">
-                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
-                        <h4 class="font-bold text-slate-900 text-sm">Q1 (Meses 1-3): Hardening de Acceso y Gestión de Identidades (MFA)</h4>
-                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                            - Despliegue obligatorio y global de la autenticación de Doble Factor (TOTP MFA) en Supabase para todos los portales.<br>
-                            - Forzar el almacenamiento de contraseñas robustas y auditoría inicial de usuarios.<br>
-                            - Aplicación de políticas deny-by-default y control de puertos con UFW en el sistema host.
+                <!-- Marco Integrado de la Tabla MAGERIT v3 -->
+                <div class="p-6 border rounded-2xl space-y-4 shadow-sm" style="background-color: #fcfbf0; border-color: #cca210;">
+                    <h4 class="font-bold text-base flex items-center font-sans" style="color: #826002;">
+                        <i class="fas fa-calculator mr-2"></i> Matriz de Evaluación de Activos y Riesgos Híbridos (MAGERIT v3)
+                    </h4>
+                    <p class="text-slate-650 leading-relaxed font-sans">
+                        Análisis cuantitativo de riesgos estimando la severidad del impacto sobre los activos de información en base a amenazas híbridas identificadas:
+                    </p>
+                    
+                    <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 uppercase font-semibold font-sans">
+                                    <th class="p-3">ID</th>
+                                    <th class="p-3">Activo Crítico</th>
+                                    <th class="p-3">Amenaza Identificada</th>
+                                    <th class="p-3 text-center">I</th>
+                                    <th class="p-3 text-center">P</th>
+                                    <th class="p-3 text-center font-bold text-slate-900">Riesgo</th>
+                                    <th class="p-3 font-bold text-slate-900">Salvaguarda y Control Propuesto</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-650">
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-01</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">Portal VodaTramit (Web)</td>
+                                    <td class="p-3 font-sans">Inyección SQL o RCE en alta de contratos</td>
+                                    <td class="p-3 text-center font-bold">5</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold text-red-650">15 (Muy Alto)</td>
+                                    <td class="p-3 font-sans">Azure Application Gateway con WAF en modo de prevención activa frente a reglas OWASP.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-02</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">Base de Datos (MariaDB PaaS)</td>
+                                    <td class="p-3 font-sans">Modificación de stock o robo de credenciales</td>
+                                    <td class="p-3 text-center font-bold">4</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold text-orange-650">12 (Alto)</td>
+                                    <td class="p-3 font-sans">Restricción por Private Endpoint a la subred de App y auditoría periódica de cambios en BD con Wazuh.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-03</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">Portátiles y Móviles</td>
+                                    <td class="p-3 font-sans">Robo de terminales con datos de clientes en tránsito</td>
+                                    <td class="p-3 text-center font-bold">4</td>
+                                    <td class="p-3 text-center font-bold">4</td>
+                                    <td class="p-3 text-center font-bold text-red-650">16 (Muy Alto)</td>
+                                    <td class="p-3 font-sans">Cifrado completo de disco BitLocker, MFA en Entra ID y borrado remoto automatizado mediante Microsoft Intune.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-04</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">PCs de Tienda y Oficina</td>
+                                    <td class="p-3 font-sans">Infección Ransomware por USB o correo</td>
+                                    <td class="p-3 text-center font-bold">5</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold text-red-650">15 (Muy Alto)</td>
+                                    <td class="p-3 font-sans">Instalación del Agente de Wazuh con respuesta activa para bloqueo de procesos y GPOs de puertos USB restrictivas.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-05</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">VPN Híbrido (S2S)</td>
+                                    <td class="p-3 font-sans">Caída del túnel que incomunique ventas en tiendas</td>
+                                    <td class="p-3 text-center font-bold">4</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold text-orange-650">12 (Alto)</td>
+                                    <td class="p-3 font-sans">Configuración de enrutador con redundancia celular 4G/LTE de respaldo automática en tiendas físicas.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-06</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">Portal de Azure</td>
+                                    <td class="p-3 font-sans">Suplantación de credenciales del técnico</td>
+                                    <td class="p-3 text-center font-bold">5</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold text-red-650">15 (Muy Alto)</td>
+                                    <td class="p-3 font-sans">Acceso Condicional en Entra ID restringiendo IPs de administración a rangos autorizados y uso de MFA.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-07</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">Monitorización (Wazuh SIEM)</td>
+                                    <td class="p-3 font-sans">Desactivación o caída de auditorías de logs</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold">2</td>
+                                    <td class="p-3 text-center font-bold text-yellow-600">6 (Medio)</td>
+                                    <td class="p-3 font-sans">Implementación de alertas de inactividad de envío de agentes de forma remota monitorizadas por el SOC de Gijón.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-slate-900">ACT-08</td>
+                                    <td class="p-3 font-semibold text-slate-800 font-sans">Flujos Automatizados (SOAR)</td>
+                                    <td class="p-3 font-sans">Errores en bloqueos que aíslen dispositivos legítimos</td>
+                                    <td class="p-3 text-center font-bold">3</td>
+                                    <td class="p-3 text-center font-bold">2</td>
+                                    <td class="p-3 text-center font-bold text-yellow-600">6 (Medio)</td>
+                                    <td class="p-3 font-sans">Mantenimiento de listas blancas para IPs estáticas de oficina y tiendas antes de la detonación de playbooks.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Plan Director de Seguridad (PDS) Fusionado con la Migración -->
+            <section id="pds-12meses" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-route text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Plan Director de Seguridad y Transición Azure</h3>
+                </div>
+                <p class="leading-8 text-slate-700 text-base">
+                    Para coordinar el hardening y asegurar que las vulnerabilidades se mantengan mitigadas a largo plazo, el Plan Director de Seguridad (PDS) a 12 meses se fusiona de forma progresiva con el plan de migración técnica en Azure:
+                </p>
+
+                <div class="space-y-6 text-sm text-slate-705 leading-relaxed font-sans">
+                    <div class="relative pl-8 border-l-2 border-yellow-300">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full" style="background-color: #cca210;"></div>
+                        <h4 class="font-bold text-slate-900 text-base">Q1: Landing Zone, Identidad y Gestión de Dispositivos MDM (Meses 1-3)</h4>
+                        <p class="text-slate-655 mt-1">
+                            - <strong>Hitos Técnicos:</strong> Despliegue de la Landing Zone en Azure, configurando la VNet privada y las subredes (App, Data, Sec). Levantamiento de la VPN Site-to-Site (S2S) desde la Oficina Central hacia el Azure VPN Gateway.<br>
+                            - <strong>Seguridad (vCISO + Técnico IT):</strong> Enrolamiento global en Microsoft Intune de los 20 portátiles/móviles comerciales, tablet de gerencia y equipos de oficina, configurando BitLocker y borrado remoto. Federación de accesos administrativos mediante Entra ID con MFA obligatorio.
                         </p>
                     </div>
 
-                    <div class="relative pl-8 border-l-2 border-amber-200">
-                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
-                        <h4 class="font-bold text-slate-900 text-sm">Q2 (Meses 4-6): Monitorización Activa y Detección en Tiempo Real</h4>
-                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                            - Centralización y recolección activa de logs en Wazuh Server.<br>
-                            - Configuración de alertas específicas frente a inyecciones web y accesos SSH anómalos.<br>
-                            - Despliegue de escaneos automáticos de SAST (Semgrep) e integración DAST (OWASP ZAP) en la rama principal de Git.
+                    <div class="relative pl-8 border-l-2 border-yellow-300">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full" style="background-color: #cca210;"></div>
+                        <h4 class="font-bold text-slate-900 text-base">Q2: Migración de BD de Almacén y Monitorización Activa (Meses 4-6)</h4>
+                        <p class="text-slate-655 mt-1">
+                            - <strong>Hitos Técnicos:</strong> Migración de la base de datos MariaDB (550 GB de inventario y stock) a Azure Database for MariaDB PaaS con Private Endpoint. Despliegue del servidor Wazuh SIEM Manager VM en la subred de seguridad.<br>
+                            - <strong>Seguridad (Técnico IT + SOC Gijón):</strong> Instalación de los agentes Wazuh en todos los PCs locales de tiendas y oficina, y portátiles comerciales remotos. Activación de la auditoría de integridad de archivos (FIM) en directorios de contratos.
                         </p>
                     </div>
 
-                    <div class="relative pl-8 border-l-2 border-amber-200">
-                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
-                        <h4 class="font-bold text-slate-900 text-sm">Q3 (Meses 7-9): Orquestación y Automatización ante Incidentes (SOAR)</h4>
-                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                            - Integración y despliegue del software SOAR (Shuffle / n8n) con Wazuh.<br>
-                            - Creación de playbooks automatizados para el bloqueo automático de IPs atacantes a nivel de proxy de Nginx.<br>
-                            - Ejecución y documentación del simulacro anual de Plan de Respuesta a Incidentes (PRI).
+                    <div class="relative pl-8 border-l-2 border-yellow-300">
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full" style="background-color: #cca210;"></div>
+                        <h4 class="font-bold text-slate-900 text-base">Q3: Migración de Aplicación VodaTramit e Integración SOAR (Meses 7-9)</h4>
+                        <p class="text-slate-655 mt-1">
+                            - <strong>Hitos Técnicos:</strong> Migración del portal web VodaTramit (Next.js/Spring) a VMs Linux en la subred privada. Configuración de Azure Application Gateway con WAF perimetral activo frente a inyecciones SQL/L7.<br>
+                            - <strong>Seguridad (vCISO + Técnico IT + SOC Gijón):</strong> Conexión del orquestador Shuffle SOAR con Wazuh mediante webhooks. Despliegue de playbook automatizado: si se detectan múltiples inicios de sesión fallidos o IPs concurrentes imposibles de un comercial, el SOAR suspende temporalmente su cuenta en Entra ID y alerta al Técnico IT.
                         </p>
                     </div>
 
                     <div class="relative pl-8">
-                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-amber-500"></div>
-                        <h4 class="font-bold text-slate-900 text-sm">Q4 (Meses 10-12): Auditoría de Control y Concienciación frente al Phishing</h4>
-                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-                            - Ejecución de la primera campaña anual controlada de simulación de phishing corporativo utilizando Gophish.<br>
-                            - Auditoría técnica externa del perímetro y pruebas dinámicas de bypass de seguridad.<br>
-                            - Revisión analítica de resultados y actualización del Plan Director de Seguridad corporativo.
+                        <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full" style="background-color: #cca210;"></div>
+                        <h4 class="font-bold text-slate-900 text-base">Q4: Aseguramiento de Blob, Auditoría Externa y Concienciación (Meses 10-12)</h4>
+                        <p class="text-slate-655 mt-1">
+                            - <strong>Hitos Técnicos:</strong> Migración de expedientes de contratos a Azure Blob Storage con firmas SAS de acceso temporal limitado a 1 hora.<br>
+                            - <strong>Seguridad (vCISO):</strong> Campaña interna de phishing controlado con Gophish dirigida a dependientas de tiendas, tramitadoras y comerciales móviles. Auditoría externa de caja gris (Pentesting de red híbrida y WAF) y actualización del cálculo MAGERIT v3.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- 5. Evidencias, Soluciones y Métricas -->
+            <!-- 8. Evidencias, Soluciones y Métricas (KPIs) -->
             <section id="soluciones-evidencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 bg-amber-50 rounded-xl text-amber-700">
-                        <i class="fas fa-tasks text-xl"></i>
+                    <div class="p-2.5 rounded-xl text-yellow-700" style="background-color: #f9f5ce; color: #a37c05;">
+                        <i class="fas fa-chart-line text-xl"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Métricas e Indicadores de Éxito del Plan (KPIs)</h3>
+                    <h3 class="text-2xl font-bold text-slate-950 font-sans">Métricas e Indicadores de Éxito de Gobierno</h3>
                 </div>
-                <p class="leading-8 text-slate-700 text-base">
-                    Para comprobar la efectividad de las soluciones implantadas a lo largo de los 12 meses, la gobernanza del TFG audita el cumplimiento basándose en las siguientes métricas:
+                <p class="leading-8 text-slate-700 text-base font-sans">
+                    Para supervisar el estado de resiliencia y la seguridad del entorno híbrido de TelcoConnect, se definen los siguientes indicadores clave de rendimiento (KPIs):
                 </p>
 
-                <div class="grid gap-4 md:grid-cols-2 text-xs text-slate-700">
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-                        <strong class="text-slate-955 font-bold block text-sm"><i class="fas fa-percentage text-amber-600 mr-1.5"></i> 1. Tasa de Adopción de MFA y Hardening</strong>
-                        <p class="leading-relaxed"><strong>Métrica:</strong> 100% de usuarios activos del sistema con MFA validado. 0 cuentas utilizando contraseñas débiles en auditorías de fuerza bruta internas.</p>
-                    </div>
-                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
-                        <strong class="text-slate-955 font-bold block text-sm"><i class="fas fa-history text-amber-600 mr-1.5"></i> 2. Tiempo Medio de Mitigación (MTTR)</strong>
-                        <p class="leading-relaxed"><strong>Métrica:</strong> Tiempo medio de respuesta a incidentes inferior a 15 minutos en el bloqueo de IPs mediante reglas automáticas o playbooks SOAR.</p>
-                    </div>
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="min-w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200">
+                                <th class="p-3 font-bold text-slate-950">Indicador de Éxito</th>
+                                <th class="p-3 font-bold text-slate-950">Fórmula de Cálculo</th>
+                                <th class="p-3 font-bold text-slate-950 text-center">Frecuencia</th>
+                                <th class="p-3 font-bold text-slate-950 text-center">Meta</th>
+                                <th class="p-3 font-bold text-slate-950">Responsable</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-650">
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Cumplimiento de Dispositivos MDM</td>
+                                <td class="p-3 font-mono">Dispositivos Cumpliendo Políticas / Total Dispositivos Registrados</td>
+                                <td class="p-3 text-center">Mensual</td>
+                                <td class="p-3 text-center font-bold text-emerald-600 font-mono">100%</td>
+                                <td class="p-3 font-sans">Técnico Comercial y Mantenimiento</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Tasa de Cobertura MFA</td>
+                                <td class="p-3 font-mono">Cuentas con MFA Activo / Total Cuentas Activas</td>
+                                <td class="p-3 text-center">Mensual</td>
+                                <td class="p-3 text-center font-bold text-emerald-600 font-mono">100%</td>
+                                <td class="p-3 font-sans">Técnico Comercial y Mantenimiento</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Efectividad Preventiva WAF</td>
+                                <td class="p-3 font-mono">Peticiones Maliciosas Bloqueadas / Total Peticiones Maliciosas Detectadas</td>
+                                <td class="p-3 text-center">Mensual</td>
+                                <td class="p-3 text-center font-bold text-emerald-600 font-mono">&gt; 99%</td>
+                                <td class="p-3 font-sans">SOC Gijón (Proveedor SOC Externo)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Tiempo Medio de Mitigación (MTTR)</td>
+                                <td class="p-3 font-mono">Tiempo Total en Mitigar Incidentes / Total de Incidentes de Red</td>
+                                <td class="p-3 text-center">Trimestral</td>
+                                <td class="p-3 text-center font-bold text-emerald-600 font-mono">&lt; 15 min</td>
+                                <td class="p-3 font-sans">SOC Gijón + Shuffle SOAR</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Resistencia a la Ingeniería Social</td>
+                                <td class="p-3 font-mono">Usuarios que Clican o Envían Datos / Total Correos de Simulación</td>
+                                <td class="p-3 text-center">Semestral</td>
+                                <td class="p-3 text-center font-bold text-emerald-600 font-mono">&lt; 5%</td>
+                                <td class="p-3 font-sans">vCISO (Estrategia)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium text-slate-900 font-sans">Disponibilidad del Canal VPN Híbrido</td>
+                                <td class="p-3 font-mono">Tiempo de VPN Online / Tiempo Total del Periodo</td>
+                                <td class="p-3 text-center">Mensual</td>
+                                <td class="p-3 text-center font-bold text-emerald-600 font-mono">&gt; 99.9%</td>
+                                <td class="p-3 font-sans">Técnico Comercial y Mantenimiento</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA (OBJETIVO 24)</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Diagrama de Gantt del PDS:</strong> Captura del cronograma visual o diagrama de Gantt elaborado para los 12 meses de planificación (puedes estructurarlo con Excel, Jira o herramientas de planificación de proyectos) detallando los hitos de implementación de MFA, monitorización y simulación de phishing.</p>
+                <!-- Marco para diagrama de Gantt sin EVIDENCIA RECOMENDADA -->
+                <div class="p-6 border rounded-2xl space-y-4 shadow-sm" style="background-color: #fcfbf0; border-color: #cca210;">
+                    <h4 class="font-bold text-base flex items-center font-sans" style="color: #826002;">
+                        <i class="fas fa-chart-gantt mr-2"></i> Cronograma de Planificación y Diagrama de Gantt del PDS
+                    </h4>
+                    <p class="text-slate-650 leading-relaxed font-sans font-sans">
+                        Cronograma visual elaborado para los 12 meses de planificación donde se detallan los hitos técnicos de migración y la implementación de controles del PDS (hardening, monitorización y concienciación):
+                    </p>
+                    <div class="mt-2 flex justify-center">
+                        <img src="../assets/img/gob/gant.png" alt="Diagrama de Gantt del Plan Director de Seguridad (PDS) de 12 meses" class="w-full h-auto object-contain rounded-xl border border-slate-200 shadow-md">
                     </div>
                 </div>
             </section>
