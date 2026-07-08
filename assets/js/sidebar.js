@@ -144,6 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
             iconClass = 'fas fa-envelope-open-text';
         } else if (text.includes('cortafuegos') || text.includes('firewall') || text.includes('búnker') || text.includes('nginx')) {
             iconClass = 'fas fa-shield-halved';
+        } else if (text.includes('configuracion') || text.includes('configuración')) {
+            iconClass = 'fas fa-sliders-h';
+        } else if (text.includes('smtp') || text.includes('remitente')) {
+            iconClass = 'fas fa-paper-plane';
+        } else if (text.includes('plantilla') || text.includes('landing')) {
+            iconClass = 'fas fa-laptop-code';
+        } else if (text.includes('campaña') || text.includes('campana') || text.includes('ejecución') || text.includes('ejecucion')) {
+            iconClass = 'fas fa-rocket';
+        } else if (text.includes('panel') || text.includes('resultados')) {
+            iconClass = 'fas fa-chart-pie';
         }
 
         const iconEl = document.createElement('i');

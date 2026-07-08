@@ -158,8 +158,8 @@
                                 3. Abre una terminal de **PowerShell** o **Símbolo del sistema** con privilegios de **Administrador** y navega hasta el directorio de la aplicación.
                             </p>
                             <div class="code-shell border border-slate-200 rounded-xl overflow-hidden bg-slate-50 mt-2">
-                                <pre class="p-3 text-[11px] font-mono whitespace-pre-wrap break-all overflow-x-visible"><code># Acceso y ejecución en PowerShell (Administrador)
-cd C:\Proyectos\gophish
+                                <pre class="p-3 text-[11px] font-mono whitespace-pre-wrap break-all overflow-x-visible"><code># Acceso y ejecución en PowerShell (Administrador) desde el Escritorio
+cd $HOME\Desktop\gophish
 .\gophish.exe</code></pre>
                             </div>
                         </div>
@@ -199,19 +199,18 @@ sudo ./gophish</code></pre>
 
                     <div class="code-shell border border-slate-200 rounded-2xl overflow-hidden mt-3">
                         <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-3 text-xs text-slate-650 bg-white">
-                            <span>Logs de Consola de Gophish (Simulación)</span>
+                            <span>Logs de Consola de Gophish (Arranque Real)</span>
                             <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-first-log')">Copiar</button>
                         </div>
-                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-first-log">2026/07/07 11:32:00 [info] Starting admin server at https://127.0.0.1:3330
-2026/07/07 11:32:00 [info] Starting phishing server at http://0.0.0.0:80
-<span style="color: #39ff14;" class="font-bold">2026/07/07 11:32:00 [info] Please login with the username admin and the temporary password: <span style="color: #ff1493;">4a89df8b2c5e7a91</span></span>
-2026/07/07 11:32:00 [info] Trusting certificates in gophish.crt</code></pre>
+                        <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-first-log">time="2026-07-08T13:03:11+02:00" level=info msg="Please login with the username admin and the password 79a01fa21f95535e"
+time="2026-07-08T13:03:11+02:00" level=info msg="Starting phishing server at http://0.0.0.0:80"
+time="2026-07-08T13:03:12+02:00" level=info msg="Starting admin server at https://127.0.0.1:3333"</code></pre>
                     </div>
                 </div>
 
                 <figure class="tfg-figure mt-4">
-                    <img src="../assets/img/go/gophish_user.png" alt="Arranque del Servicio e IP visible" class="tfg-image cursor-zoom-in">
-                    <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Captura la consola de ejecución inicial donde se aprecia la carga de los servicios y, especialmente, la generación del log con la contraseña temporal de administración (<code>temporary password</code>) generada por el sistema.</figcaption>
+                    <img src="../assets/img/go/gophish_user.png" alt="Contraseña temporal en consola" class="tfg-image cursor-zoom-in">
+                    <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Consola de Gophish detallando el despliegue del listener y la contraseña maestra autogenerada en el arranque inicial.</figcaption>
                 </figure>
             </section>
 
@@ -224,7 +223,7 @@ sudo ./gophish</code></pre>
                     <h3 class="text-2xl font-bold text-slate-950 font-sans">Configuración Inicial (config.json)</h3>
                 </div>
                 <p class="leading-8 text-slate-700 text-base">
-                    Por defecto, la interfaz de administración de Gophish solo es accesible localmente (`127.0.0.1:3330`). Para administrarlo remotamente o cambiar los puertos de escucha para que no entren en conflicto con otros servicios del laboratorio, editamos el archivo `config.json`.
+                    Por defecto, la interfaz de administración de Gophish solo es accesible localmente (`127.0.0.1:3330`). Para administrarlo remotamente o cambiar los puertos de escucha para que no entren en conflicto con otros servicios del laboratorio, editamos el archivo `config.json`. Cabe destacar que en Windows ningún puerto interfería con la ejecución de este servicio en el momento de realizar el laboratorio.
                 </p>
 
                 <div class="code-shell border border-slate-200 rounded-2xl overflow-hidden bg-white">
@@ -233,9 +232,8 @@ sudo ./gophish</code></pre>
                         <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-config-json')">Copiar</button>
                     </div>
                     <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-config-json">{
-  {
   "admin_listener": {
-    "listen_url": "0.0.0.0:3330",
+    "listen_url": "127.0.0.1:3333",
     "use_tls": true,
     "cert_path": "gophish.crt",
     "key_path": "gophish.key"
@@ -247,7 +245,6 @@ sudo ./gophish</code></pre>
   "db_name": "sqlite3",
   "db_path": "gophish.db",
   "migrations_path": "db/db_sqlite3/migrations/"
-}
 }</code></pre>
                 </div>
 
@@ -259,12 +256,6 @@ sudo ./gophish</code></pre>
                     </ul>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 2</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Primer Acceso de Administrador:</strong> Captura la interfaz de cambio de contraseña obligatoria en la URL <code>https://localhost:3330</code> después de introducir por primera vez las credenciales temporales generadas.</p>
-                    </div>
-                </div>
             </section>
 
             <!-- 1. Entendiendo el Flujo del Ataque -->
@@ -276,7 +267,7 @@ sudo ./gophish</code></pre>
                     <h3 class="text-2xl font-bold text-slate-950 font-sans">Arquitectura y Funcionamiento de la Simulación</h3>
                 </div>
                 <p class="leading-8 text-slate-700 text-base">
-                    La plataforma funciona estructurando un embudo de eventos que permite medir la concienciación de los usuarios. Cuando se despacha un email, Gophish inyecta identificadores dinámicos que diferencian las acciones de cada destinatario de manera individualizada:
+                    La plataforma funciona estructurando un embudo de eventos que permite medir la concienciación de los usuarios. En este laboratorio de TFG, orientamos la campaña específicamente a simular la captura de credenciales del ecosistema iCloud. Con fines exclusivamente académicos y éticos, no se emplean logotipos oficiales de marcas registradas, sino que se recrea únicamente la estética y la disposición visual del formulario. Asimismo, para el envío de los correos utilizamos el canal legítimo de Gmail como servidor SMTP de salida, a diferencia de los atacantes reales que suelen registrar dominios cebo similares al legítimo (como <code>icloud.com</code>) para engañar al usuario. Cuando se despacha un email, Gophish inyecta identificadores dinámicos que diferencian las acciones de cada destinatario de manera individualizada:
                 </p>
                 <div class="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl mt-4">
                     <!-- Caja 1 -->
@@ -311,7 +302,7 @@ sudo ./gophish</code></pre>
                     <h3 class="text-2xl font-bold text-slate-950 font-sans">Configuración del Perfil de Envío SMTP</h3>
                 </div>
                 <p class="leading-8 text-slate-700 text-base">
-                    Para que los correos electrónicos se envíen de manera fiable, Gophish requiere configurarse con un servidor SMTP externo (como Gmail, Outlook, un relé SMTP local o servicios como SendGrid).
+                    Para que los correos electrónicos se envíen de manera fiable, Gophish requiere configurarse con un servidor SMTP externo. Por razones de seguridad perimetral, Google exige el uso de una credencial dedicada de 16 caracteres, aislando la contraseña maestra del canal SMTP.
                 </p>
 
                 <div class="space-y-4">
@@ -324,11 +315,16 @@ sudo ./gophish</code></pre>
                     </ul>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 3</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Configuración de Sending Profiles:</strong> Captura de pantalla de la ventana modal "New Sending Profile" con todos los parámetros SMTP completos e interactivos. Es fundamental capturar el test de envío exitoso presionando el botón "Send Test Email" confirmando que el correo de prueba llega a la bandeja de destino.</p>
-                    </div>
+                <div class="flex flex-col gap-6 mt-4">
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/gmail_aplicacion.png" alt="Generación de credencial en Google" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Panel de Seguridad de Google Account durante la generación del token de aplicación.</figcaption>
+                    </figure>
+
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/golphish_sender.png" alt="Formulario de Sending Profile" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Configuración del Sending Profile apuntando a smtp.gmail.com:587 con la opción 'Ignore Certificate Errors' habilitada.</figcaption>
+                    </figure>
                 </div>
             </section>
 
@@ -344,28 +340,34 @@ sudo ./gophish</code></pre>
                     El éxito pericial del phishing reside en la similitud visual del cebo. Gophish automatiza la generación y captura de estos recursos de forma estructurada.
                 </p>
 
-                <div class="grid gap-6 md:grid-cols-2">
-                    <div class="p-5 border border-slate-100 bg-[#fff6f5]/50 rounded-2xl space-y-2">
-                        <strong class="text-slate-900 text-sm font-bold block"><i class="fas fa-envelope mr-1.5" style="color: #FF573B;"></i> 1. Email Template (El Cebo)</strong>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Crea la plantilla usando el editor HTML enriquecido. Recuerda activar el seguimiento agregando el tag dinámico <code>{{.Tracker}}</code> al final del cuerpo del correo e inyecta la URL del servidor de phishing mediante el parámetro <code>{{.URL}}</code> en el botón de acción principal.
-                        </p>
+                <div class="flex flex-col gap-6">
+                    <div class="p-5 border border-slate-100 bg-[#fff6f5]/50 rounded-2xl space-y-4 flex flex-col justify-between">
+                        <div>
+                            <strong class="text-slate-900 text-sm font-bold block"><i class="fas fa-envelope mr-1.5" style="color: #FF573B;"></i> 1. Email Template (Diseño del Cebo con Estética iCloud)</strong>
+                            <p class="text-xs text-slate-600 leading-relaxed mt-2">
+                                Se estructuró un diseño corporativo limpio utilizando tablas HTML y estilos CSS en línea compatibles con clientes de correo modernos, inyectando la variable de escucha <code>{{.URL}}</code> y agregando el tag dinámico <code>{{.Tracker}}</code> al final del cuerpo del correo.
+                            </p>
+                        </div>
+                        <figure class="tfg-figure mt-3">
+                            <img src="../assets/img/go/golphish_template.png" alt="Editor de plantilla de correo" class="tfg-image cursor-zoom-in">
+                            <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Construcción del cuerpo del correo simulado empleando el tag analítico de Gophish.</figcaption>
+                        </figure>
                     </div>
-                    <div class="p-5 border border-slate-100 bg-[#fff6f5]/50 rounded-2xl space-y-2">
-                        <strong class="text-slate-900 text-sm font-bold block"><i class="fas fa-file-invoice mr-1.5" style="color: #FF573B;"></i> 2. Landing Page (El Clon)</strong>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Usa la función **Import Site** para clonar directamente la página de login legítima (ej. Microsoft 365, Google o el propio panel de Supabase). Es imperativo marcar las casillas **Capture Submitted Data** y **Capture Passwords** para interceptar el formulario en Gophish.
-                        </p>
+                    <div class="p-5 border border-slate-100 bg-[#fff6f5]/50 rounded-2xl space-y-4 flex flex-col justify-between">
+                        <div>
+                            <strong class="text-slate-900 text-sm font-bold block"><i class="fas fa-file-invoice mr-1.5" style="color: #FF573B;"></i> 2. Landing Page (Interrupción y Captura Activa)</strong>
+                            <p class="text-xs text-slate-600 leading-relaxed mt-2">
+                                Se configuraron las directivas 'Capture Submitted Data' y 'Capture Passwords' en conjunto con el parámetro 'Redirect To' apuntando al despliegue remoto en Vercel.
+                            </p>
+                        </div>
+                        <figure class="tfg-figure mt-3">
+                            <img src="../assets/img/go/golphish_landing.png" alt="Configuración de la Landing Page" class="tfg-image cursor-zoom-in">
+                            <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Interfaz de Landing Page detallando el formulario de ingreso y la inyección de la URL de redirección.</figcaption>
+                        </figure>
                     </div>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIAS RECOMENDADAS 4 Y 5</div>
-                    <div class="evidence-box-content">
-                        <p><strong>4. Plantilla del Email Recibido:</strong> Captura de pantalla de la bandeja de entrada del correo objetivo (Outlook o Gmail) mostrando el correo de simulación recibido. Debe verse limpio, alineado y con el enlace apuntando al dominio de pruebas perimetrales.</p>
-                        <p class="mt-3"><strong>5. Landing Page Falsa en el Navegador:</strong> Captura de la ventana del navegador renderizando el portal de inicio de sesión clonado. Señala con un recuadro o anotación visual que la barra de direcciones del navegador apunta a la IP o subdominio dinámico local y no al dominio real.</p>
-                    </div>
-                </div>
+
             </section>
 
             <!-- 4. Lanzamiento y Ejecución de la Campaña -->
@@ -377,7 +379,7 @@ sudo ./gophish</code></pre>
                     <h3 class="text-2xl font-bold text-slate-950 font-sans">Lanzamiento y Ejecución de la Campaña</h3>
                 </div>
                 <p class="leading-8 text-slate-700 text-base">
-                    Una vez configurados los perfiles SMTP, las plantillas y los portales de interceptación, agrupamos los objetivos de prueba agregando una lista en "Users & Groups" e iniciamos el envío controlado.
+                    Una vez configurados los perfiles SMTP, las plantillas y los portales de interceptación, agrupamos los objetivos de prueba agregando una lista en "Users & Groups" e iniciamos el envío controlado. La campaña vincula la IP privada del servidor (<code>http://192.168.1.73</code>) para habilitar la resolución del dispositivo móvil mediante la red Wi-Fi local.
                 </p>
 
                 <!-- Dozzle docker-compose.yml block -->
@@ -391,12 +393,18 @@ Aaron,Gomez,aarongomez@masterciber.org,Administrador TFG
 Security,Audit,audit@masterciber.org,Auditor SOC</code></pre>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 6</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Formulario de Lanzamiento "Campaigns":</strong> Captura del formulario de creación en Gophish (Campaigns -> New Campaign) donde se agrupan el Sending Profile, el Email Template, la Landing Page y el grupo de usuarios. El botón "Launch Campaign" debe aparecer visible e interactivo.</p>
-                    </div>
+                <div class="flex flex-col gap-6 mt-4">
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/golphish_objetives.png" alt="Grupo de usuarios" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Definición del grupo de control 'Tester' con la cuenta asignada para la auditoría.</figcaption>
+                    </figure>
+
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/golphish_campaing.png" alt="Lanzamiento de Campaña" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Inicialización de la campaña asociando la IP de escucha perimetral 192.168.1.73.</figcaption>
+                    </figure>
                 </div>
+
             </section>
 
             <!-- 5. Panel de Analítica y Resultados -->
@@ -434,11 +442,41 @@ Security,Audit,audit@masterciber.org,Auditor SOC</code></pre>
                     </div>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 7 (CRÍTICA RÚBRICA)</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Dashboard Analítico de la Campaña:</strong> Captura de pantalla de la campaña finalizada en Gophish. Debe mostrar de forma clara el gráfico de quesito o barras con los porcentajes de cada paso del embudo (especialmente <em>Clicked Link</em> y <em>Submitted Data</em>) y el listado inferior detallando las credenciales interceptadas y el estado individual de cada usuario.</p>
+                <p class="leading-8 text-slate-700 text-base">
+                    El sistema registró de forma secuencial la apertura, la interacción con el enlace y el posterior envío del formulario, almacenando de forma segura los strings de prueba ingresados por el usuario antes de enviarlo a la pantalla de concienciación.
+                </p>
+
+                <div class="flex flex-col gap-6 mt-4">
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/golphish_recibed.png" alt="Correo recibido en bandeja" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Visualización final del correo electrónico cebo renderizado desde el cliente de correo del dispositivo móvil.</figcaption>
+                    </figure>
+
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/golphish_server_capCredencials.png" alt="Portal de inicio de sesión falso" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Interfaz de inicio de sesión simulada con estética iCloud presentada a la víctima para la captura de credenciales.</figcaption>
+                    </figure>
+
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/golphish_redirect_url.png" alt="Parámetro de Redirección" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Detalle del destino final de la víctima hacia la infraestructura de Vercel.</figcaption>
+                    </figure>
+
+                    <div class="text-center mt-2 mb-2">
+                        <a href="https://tfg-masterciber.vercel.app/assets/rep/go/hunted.html" target="_blank" class="inline-flex items-center gap-2 rounded-xl bg-[#FF573B] px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-[#e04328] transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                            <i class="fas fa-external-link-alt"></i> Ver Portal de Concienciación (Vercel)
+                        </a>
                     </div>
+
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/campaing_dashboard.png" alt="Progreso de la campaña actual" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Vista analítica detallada de la campaña completada al 100% en el embudo de eventos.</figcaption>
+                    </figure>
+
+                    <figure class="tfg-figure">
+                        <img src="../assets/img/go/campaing_credentials_capture.png" alt="Captura de variables en texto plano" class="tfg-image cursor-zoom-in">
+                        <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Interceptación pericial de las variables 'username' y 'password' reflejadas en el backend de Gophish.</figcaption>
+                    </figure>
                 </div>
             </section>
         </section>
