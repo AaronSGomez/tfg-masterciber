@@ -481,54 +481,315 @@ body.bg-theme-atk {
     background:
         radial-gradient(circle at top left, rgba(239, 68, 68, 0.08), transparent 32%),
         radial-gradient(circle at top right, rgba(248, 113, 113, 0.06), transparent 28%),
-        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+        linear-gradient(180deg, #fef2f2 0%, #e2e8f0 100%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
+}
+body.bg-theme-atk .nav-link:hover {
+    background-color: #fef2f2 !important;
+    border-color: #fca5a5 !important;
+    color: #991b1b !important;
+}
+body.bg-theme-atk .nav-link:hover i {
+    color: #ef4444 !important;
+}
+body.bg-theme-atk .nav-link-home {
+    border-color: #fee2e2 !important;
+    background-color: #fef2f2 !important;
+    color: #991b1b !important;
+}
+body.bg-theme-atk .nav-link-home i {
+    color: #ef4444 !important;
+}
+body.bg-theme-atk .nav-link-home:hover {
+    background-color: #fee2e2 !important;
+    border-color: #fca5a5 !important;
+}
+body.bg-theme-atk .hero-pill,
+body.bg-theme-atk .progress-status {
+    background-color: #fef2f2 !important;
+    border-color: #fca5a5 !important;
+    color: #991b1b !important;
 }
 
 body.bg-theme-ci {
     background:
-        radial-gradient(circle at top left, rgba(6, 182, 212, 0.08), transparent 32%),
-        radial-gradient(circle at top right, rgba(34, 211, 238, 0.06), transparent 28%),
-        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.06), transparent 28%),
+        linear-gradient(180deg, #faf5ff 0%, #e2e8f0 100%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
+}
+body.bg-theme-ci .nav-link:hover {
+    background-color: #faf5ff !important;
+    border-color: #c084fc !important;
+    color: #581c87 !important;
+}
+body.bg-theme-ci .nav-link:hover i {
+    color: #8b5cf6 !important;
+}
+body.bg-theme-ci .nav-link-home {
+    border-color: #ddd6fe !important;
+    background-color: #faf5ff !important;
+    color: #581c87 !important;
+}
+body.bg-theme-ci .nav-link-home i {
+    color: #8b5cf6 !important;
+}
+body.bg-theme-ci .nav-link-home:hover {
+    background-color: #ede9fe !important;
+    border-color: #c084fc !important;
+}
+body.bg-theme-ci .hero-pill,
+body.bg-theme-ci .progress-status {
+    background-color: #faf5ff !important;
+    border-color: #c084fc !important;
+    color: #581c87 !important;
 }
 
 body.bg-theme-soc {
     background:
         radial-gradient(circle at top left, rgba(16, 185, 129, 0.08), transparent 32%),
         radial-gradient(circle at top right, rgba(52, 211, 153, 0.06), transparent 28%),
-        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+        linear-gradient(180deg, #ecfdf5 0%, #e2e8f0 100%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
+}
+body.bg-theme-soc .nav-link:hover {
+    background-color: #ecfdf5 !important;
+    border-color: #6ee7b7 !important;
+    color: #065f46 !important;
+}
+body.bg-theme-soc .nav-link:hover i {
+    color: #10b981 !important;
+}
+body.bg-theme-soc .nav-link-home {
+    border-color: #d1fae5 !important;
+    background-color: #ecfdf5 !important;
+    color: #065f46 !important;
+}
+body.bg-theme-soc .nav-link-home i {
+    color: #10b981 !important;
+}
+body.bg-theme-soc .nav-link-home:hover {
+    background-color: #d1fae5 !important;
+    border-color: #6ee7b7 !important;
+}
+body.bg-theme-soc .hero-pill,
+body.bg-theme-soc .progress-status {
+    background-color: #ecfdf5 !important;
+    border-color: #6ee7b7 !important;
+    color: #065f46 !important;
 }
 
 body.bg-theme-mfa {
     background:
         radial-gradient(circle at top left, rgba(168, 85, 247, 0.08), transparent 32%),
         radial-gradient(circle at top right, rgba(217, 70, 239, 0.06), transparent 28%),
-        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+        linear-gradient(180deg, #faf5ff 0%, #e2e8f0 100%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
+}
+body.bg-theme-mfa .nav-link:hover {
+    background-color: #faf5ff !important;
+    border-color: #d8b4fe !important;
+    color: #6b21a8 !important;
+}
+body.bg-theme-mfa .nav-link:hover i {
+    color: #a855f7 !important;
+}
+body.bg-theme-mfa .nav-link-home {
+    border-color: #f3e8ff !important;
+    background-color: #faf5ff !important;
+    color: #6b21a8 !important;
+}
+body.bg-theme-mfa .nav-link-home i {
+    color: #a855f7 !important;
+}
+body.bg-theme-mfa .nav-link-home:hover {
+    background-color: #f3e8ff !important;
+    border-color: #d8b4fe !important;
+}
+body.bg-theme-mfa .hero-pill,
+body.bg-theme-mfa .progress-status {
+    background-color: #faf5ff !important;
+    border-color: #d8b4fe !important;
+    color: #6b21a8 !important;
 }
 
 body.bg-theme-orange {
     background:
         radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 32%),
         radial-gradient(circle at top right, rgba(251, 146, 60, 0.06), transparent 28%),
-        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+        linear-gradient(180deg, #fff7ed 0%, #e2e8f0 100%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
+}
+body.bg-theme-orange .nav-link:hover {
+    background-color: #fff7ed !important;
+    border-color: #fdba74 !important;
+    color: #9a3412 !important;
+}
+body.bg-theme-orange .nav-link:hover i {
+    color: #f97316 !important;
+}
+body.bg-theme-orange .nav-link-home {
+    border-color: #ffedd5 !important;
+    background-color: #fff7ed !important;
+    color: #9a3412 !important;
+}
+body.bg-theme-orange .nav-link-home i {
+    color: #f97316 !important;
+}
+body.bg-theme-orange .nav-link-home:hover {
+    background-color: #ffedd5 !important;
+    border-color: #fdba74 !important;
+}
+body.bg-theme-orange .hero-pill,
+body.bg-theme-orange .progress-status {
+    background-color: #fff7ed !important;
+    border-color: #fdba74 !important;
+    color: #9a3412 !important;
 }
 
 body.bg-theme-forensic {
     background:
         radial-gradient(circle at top left, rgba(99, 102, 241, 0.08), transparent 32%),
         radial-gradient(circle at top right, rgba(139, 92, 246, 0.06), transparent 28%),
-        linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
+        linear-gradient(180deg, #eef2ff 0%, #e2e8f0 100%) !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
+}
+body.bg-theme-forensic .nav-link:hover {
+    background-color: #eef2ff !important;
+    border-color: #c7d2fe !important;
+    color: #3730a3 !important;
+}
+body.bg-theme-forensic .nav-link:hover i {
+    color: #6366f1 !important;
+}
+body.bg-theme-forensic .nav-link-home {
+    border-color: #e0e7ff !important;
+    background-color: #eef2ff !important;
+    color: #3730a3 !important;
+}
+body.bg-theme-forensic .nav-link-home i {
+    color: #6366f1 !important;
+}
+body.bg-theme-forensic .nav-link-home:hover {
+    background-color: #e0e7ff !important;
+    border-color: #c7d2fe !important;
+}
+body.bg-theme-forensic .hero-pill,
+body.bg-theme-forensic .progress-status {
+    background-color: #eef2ff !important;
+    border-color: #c7d2fe !important;
+    color: #3730a3 !important;
+}
+
+body.bg-theme-gob {
+    background:
+        radial-gradient(circle at top left, rgba(204, 162, 16, 0.09), transparent 32%),
+        radial-gradient(circle at top right, rgba(246, 232, 180, 0.07), transparent 28%),
+        linear-gradient(180deg, #fdfbe7 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+body.bg-theme-gob .nav-link:hover {
+    background-color: #f9f5ce !important;
+    border-color: #cca210 !important;
+    color: #826002 !important;
+}
+body.bg-theme-gob .nav-link:hover i {
+    color: #a37c05 !important;
+}
+body.bg-theme-gob .nav-link-home {
+    border-color: #f6e8b4 !important;
+    background-color: #fdfbe7 !important;
+    color: #826002 !important;
+}
+body.bg-theme-gob .nav-link-home i {
+    color: #a37c05 !important;
+}
+body.bg-theme-gob .nav-link-home:hover {
+    background-color: #f9f5ce !important;
+    border-color: #cca210 !important;
+}
+body.bg-theme-gob .hero-pill,
+body.bg-theme-gob .progress-status {
+    background-color: #f9f5ce !important;
+    border-color: #f6e8b4 !important;
+    color: #826002 !important;
+}
+
+body.bg-theme-firewall {
+    background:
+        radial-gradient(circle at top left, rgba(34, 197, 94, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(74, 222, 128, 0.06), transparent 28%),
+        linear-gradient(180deg, #f0fdf4 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+body.bg-theme-firewall .nav-link:hover {
+    background-color: #f0fdf4 !important;
+    border-color: #4ade80 !important;
+    color: #166534 !important;
+}
+body.bg-theme-firewall .nav-link:hover i {
+    color: #22c55e !important;
+}
+body.bg-theme-firewall .nav-link-home {
+    border-color: #bbf7d0 !important;
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+}
+body.bg-theme-firewall .nav-link-home i {
+    color: #22c55e !important;
+}
+body.bg-theme-firewall .nav-link-home:hover {
+    background-color: #bbf7d0 !important;
+    border-color: #4ade80 !important;
+}
+body.bg-theme-firewall .hero-pill,
+body.bg-theme-firewall .progress-status {
+    background-color: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+    color: #166534 !important;
+}
+
+body.bg-theme-phishing {
+    background:
+        radial-gradient(circle at top left, rgba(255, 87, 59, 0.08), transparent 32%),
+        radial-gradient(circle at top right, rgba(255, 138, 117, 0.06), transparent 28%),
+        linear-gradient(180deg, #fff6f5 0%, #e2e8f0 100%) !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+}
+body.bg-theme-phishing .nav-link:hover {
+    background-color: #fff6f5 !important;
+    border-color: #ff8a75 !important;
+    color: #b82d14 !important;
+}
+body.bg-theme-phishing .nav-link:hover i {
+    color: #ff573b !important;
+}
+body.bg-theme-phishing .nav-link-home {
+    border-color: #ffd8d1 !important;
+    background-color: #fff6f5 !important;
+    color: #b82d14 !important;
+}
+body.bg-theme-phishing .nav-link-home i {
+    color: #ff573b !important;
+}
+body.bg-theme-phishing .nav-link-home:hover {
+    background-color: #ffd8d1 !important;
+    border-color: #ff8a75 !important;
+}
+body.bg-theme-phishing .hero-pill,
+body.bg-theme-phishing .progress-status {
+    background-color: #fff6f5 !important;
+    border-color: #ffd8d1 !important;
+    color: #b82d14 !important;
 }
 
 

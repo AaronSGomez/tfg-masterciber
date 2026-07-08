@@ -44,15 +44,16 @@
                 </div>
 
                 <nav class="mt-8 space-y-2 text-sm">
-                    <a href="#portada" class="nav-link">Portada</a>
-                    <a href="#arquitectura" class="nav-link">1. Arquitectura WAN</a>
-                    <a href="#contenedores" class="nav-link">2. Despliegue Docker</a>
-                    <a href="#amenazas" class="nav-link">3. Análisis React2Shell</a>
-                    <a href="#hardening" class="nav-link">4. Nginx Hardening WAN</a>
-                    <a href="#blue-team" class="nav-link">5. SIEM & Reglas XML</a>
-                    <a href="#red-team" class="nav-link">6. Explotación (Red Team)</a>
-                    <a href="#checklist" class="nav-link">7. Checklist Anexo A</a>
-                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900">Volver al menú principal</a>
+                    <a href="#portada" class="nav-link"><i class="fas fa-book-open mr-2"></i>Portada</a>
+                    <a href="#arquitectura" class="nav-link"><i class="fas fa-network-wired mr-2"></i>1. Arquitectura WAN</a>
+                    <a href="#contenedores" class="nav-link"><i class="fas fa-box mr-2"></i>2. Despliegue Docker</a>
+                    <a href="#amenazas" class="nav-link"><i class="fas fa-bug mr-2"></i>3. Análisis React2Shell</a>
+                    <a href="#hardening" class="nav-link"><i class="fas fa-shield-halved mr-2"></i>4. Nginx Hardening WAN</a>
+                    <a href="#blue-team" class="nav-link"><i class="fas fa-shield-virus mr-2"></i>5. SIEM & Reglas XML</a>
+                    <a href="#red-team" class="nav-link"><i class="fas fa-skull-crossbones mr-2"></i>6. Explotación (Red Team)</a>
+                    <a href="#checklist" class="nav-link"><i class="fas fa-list-check mr-2"></i>7. Checklist Anexo A</a>
+                    <a href="#referencias" class="nav-link"><i class="fas fa-book mr-2"></i>8. Guía de Referencias</a>
+                    <a href="../index.html" class="nav-link border-cyan-200 bg-cyan-50 text-cyan-900"><i class="fas fa-arrow-left mr-2"></i>Volver al menú principal</a>
                 </nav>
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500 space-y-2">
@@ -770,6 +771,64 @@ http {
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <!-- 8. Guía de Referencias y Fuentes -->
+        <section id="referencias" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-300/20 space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <h3 class="text-2xl font-bold text-slate-955 flex items-center">
+                    <span class="text-amber-600 mr-3">8.</span> Guía de Referencias y Fuentes Bibliográficas
+                </h3>
+                <p class="text-sm text-slate-500 mt-1">Portales oficiales, repositorios y recursos de inteligencia artificial utilizados en el TFG</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Portales Oficiales y Documentación de Referencia -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-slate-900 text-lg flex items-center">
+                        <i class="fas fa-book-bookmark text-amber-600 mr-2"></i> Portales Oficiales y Normativas de Seguridad
+                    </h4>
+                    <p class="text-slate-650 leading-relaxed">
+                        Enlaces oficiales a las metodologías, normativas y guías de buenas prácticas de gobernanza y seguridad de la información:
+                    </p>
+                    <ul class="list-disc pl-5 text-slate-655 space-y-2">
+                        <li><strong>Metodología MAGERIT v3 (Portal de Administración Electrónica):</strong> <a href="https://administracionelectronica.gob.es/pae_Home/pae_PAe_Creadores/pae_Metodologias/pae_Magerit.html" target="_blank" class="text-cyan-600 hover:underline">Guía y catálogos de MAGERIT en el PAE</a>.</li>
+                        <li><strong>Esquema Nacional de Seguridad (ENS) - CCN-CERT:</strong> <a href="https://www.ccn-cert.cni.es/ens.html" target="_blank" class="text-cyan-600 hover:underline">Marco regulador e instrucciones de seguridad del ENS</a>.</li>
+                        <li><strong>INCIBE (Instituto Nacional de Ciberseguridad):</strong> <a href="https://www.incibe.es/pymes/guias" target="_blank" class="text-cyan-600 hover:underline">Guías y plantillas de políticas de seguridad para pymes</a>.</li>
+                    </ul>
+                </div>
+
+                <!-- Herramientas y Guías de los Laboratorios -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-slate-900 text-lg flex items-center">
+                        <i class="fas fa-toolbox text-amber-600 mr-2"></i> Documentación de Herramientas y Laboratorios
+                    </h4>
+                    <p class="text-slate-655 leading-relaxed">
+                        Manuales y guías oficiales de instalación de las herramientas de código abierto empleadas en los laboratorios prácticos:
+                    </p>
+                    <ul class="list-disc pl-5 text-slate-655 space-y-2">
+                        <li><strong>Wazuh SIEM (Documentación Oficial):</strong> <a href="https://documentation.wazuh.com/current/index.html" target="_blank" class="text-cyan-600 hover:underline">Guías de instalación de Wazuh Server y Agentes remotos</a>.</li>
+                        <li><strong>Gophish (Guía Oficial):</strong> <a href="https://docs.getgophish.com/" target="_blank" class="text-cyan-600 hover:underline">Guía de usuario de Gophish para simulaciones de phishing</a>.</li>
+                        <li><strong>Shuffle SOAR (Repositorio y Docs):</strong> <a href="https://shuffler.io/docs" target="_blank" class="text-cyan-600 hover:underline">Documentación de flujos de trabajo e integraciones SOAR</a>.</li>
+                        <li><strong>OWASP Threat Dragon:</strong> <a href="https://threatdragon.org/" target="_blank" class="text-cyan-600 hover:underline">Portal del modelador gráfico de amenazas STRIDE</a>.</li>
+                        <li><strong>Autopsy Forensics:</strong> <a href="https://www.autopsy.com/" target="_blank" class="text-cyan-600 hover:underline">Guías oficiales de la suite de análisis forense digital</a>.</li>
+                    </ul>
+                </div>
+
+                <!-- Modelos de Inteligencia Artificial Utilizados -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-slate-900 text-lg flex items-center">
+                        <i class="fas fa-robot text-amber-600 mr-2"></i> Modelos de Inteligencia Artificial y Apoyo de IA
+                    </h4>
+                    <p class="text-slate-655 leading-relaxed">
+                        Durante la elaboración técnica, simulaciones de negocio y redacción de políticas de este TFG, se ha contado con el apoyo interactivo de asistentes avanzados de inteligencia artificial:
+                    </p>
+                    <ul class="list-disc pl-5 text-slate-655 space-y-2">
+                        <li><strong>Google Gemini (Modelos Gemini 1.5 Pro y Gemini Advanced):</strong> Empleado para la simulación del escenario de negocio de TelcoConnect, cálculos cuantitativos MAGERIT v3 y depuración del portal.</li>
+                        <li><strong>Antigravity (AI Coding Assistant):</strong> Herramienta pair-programming de Google DeepMind que asiste en la maquetación y consistencia estética del portal.</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
