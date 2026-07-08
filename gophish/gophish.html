@@ -209,12 +209,10 @@ sudo ./gophish</code></pre>
                     </div>
                 </div>
 
-                <div class="evidence-box">
-                    <div class="evidence-box-header">📸 EVIDENCIA RECOMENDADA 1</div>
-                    <div class="evidence-box-content">
-                        <p><strong>Arranque del Servicio e IP visible:</strong> Captura la consola de ejecución inicial donde se aprecia la carga de los servicios y, especialmente, la generación del log con la contraseña temporal de administración (<code>temporary password</code>) generada por el sistema.</p>
-                    </div>
-                </div>
+                <figure class="tfg-figure mt-4">
+                    <img src="../assets/img/go/gophish_user.png" alt="Arranque del Servicio e IP visible" class="tfg-image cursor-zoom-in">
+                    <figcaption class="mt-1.5 text-xs italic text-slate-600 text-center">Captura la consola de ejecución inicial donde se aprecia la carga de los servicios y, especialmente, la generación del log con la contraseña temporal de administración (<code>temporary password</code>) generada por el sistema.</figcaption>
+                </figure>
             </section>
 
             <!-- Nueva Sección: Configuración Inicial (config.json) -->
@@ -235,21 +233,21 @@ sudo ./gophish</code></pre>
                         <button class="copy-btn rounded-lg border border-orange-300 bg-orange-100 px-3 py-1.5 text-orange-900 font-semibold" onclick="copyCode(this, 'code-config-json')">Copiar</button>
                     </div>
                     <pre class="p-4 text-xs font-mono whitespace-pre-wrap break-all overflow-x-visible"><code id="code-config-json">{
+  {
   "admin_listener": {
-    # listen_url: Cambiar "127.0.0.1:3330" a "0.0.0.0:3330" para administración remota
     "listen_url": "0.0.0.0:3330",
     "use_tls": true,
     "cert_path": "gophish.crt",
     "key_path": "gophish.key"
   },
   "phish_listener": {
-    # listen_url: Dirección donde escuchará la Landing Page clonada
     "listen_url": "0.0.0.0:80",
     "use_tls": false
   },
   "db_name": "sqlite3",
   "db_path": "gophish.db",
   "migrations_path": "db/db_sqlite3/migrations/"
+}
 }</code></pre>
                 </div>
 
