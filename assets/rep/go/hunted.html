@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demostración de Ciberseguridad - TFG</title>
+    <title>Aviso de Seguridad - Simulación TFG</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,61 +16,89 @@
             margin: 0;
         }
         .container {
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             text-align: center;
-            max-width: 500px;
-            border-top: 10px solid #d9534f; /* Rojo de alerta */
+            max-width: 460px;
+            box-sizing: border-box;
+        }
+        .icon-header {
+            font-size: 48px;
+            margin-bottom: 15px;
         }
         h1 {
-            color: #d9534f;
-            font-size: 36px;
-            margin-bottom: 10px;
+            color: #1d1d1f;
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
         }
         p {
-            font-size: 18px;
-            line-height: 1.6;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #515154;
             margin-bottom: 20px;
         }
-        .aviso {
-            font-weight: bold;
-            color: #212529;
+        .aviso-rojo {
+            color: #e30000;
+            font-weight: 600;
         }
         .consejos {
             text-align: left;
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 5px;
+            background-color: #f5f5f7;
+            padding: 20px;
+            border-radius: 12px;
             margin-top: 25px;
         }
         .consejos h3 {
             margin-top: 0;
-            color: #495057;
+            color: #1d1d1f;
+            font-size: 16px;
+            font-weight: 600;
         }
         .consejos ul {
             padding-left: 20px;
             margin-bottom: 0;
+            color: #515154;
+            font-size: 14px;
         }
         .consejos li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+        }
+        .consejos li:last-child {
+            margin-bottom: 0;
+        }
+        .footer-tfg {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #86868b;
+            border-top: 1px solid #d2d2d7;
+            padding-top: 15px;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>¡Alto! 🛑</h1>
-        <p class="aviso">El enlace que acabas de pulsar era una <strong>simulación de phishing</strong>.</p>
-        <p>No te preocupes, esto es un entorno controlado para un Trabajo de Fin de Grado (TFG) y tus datos no han sido recopilados ni están en peligro.</p>
+        <div class="icon-header">🛑</div>
+        <h1>Simulación de Phishing</h1>
+        <p class="aviso-rojo">El enlace o formulario que acabas de interactuar formaba parte de un ejercicio controlado.</p>
+        <p>No te preocupes, tus datos reales no corren peligro ni han sido almacenados de forma maliciosa. Este entorno ha sido desplegado exclusivamente con fines educativos.</p>
         
         <div class="consejos">
-            <h3>¿Cómo evitar caer en el futuro?</h3>
+            <h3>Indicadores clave para identificar el fraude:</h3>
             <ul>
-                <li><strong>Verifica el remitente:</strong> ¿La dirección de correo coincide con el servicio real?</li>
-                <li><strong>Revisa los enlaces:</strong> Pasa el ratón sobre el enlace (sin hacer clic) para ver la dirección real a la que te lleva.</li>
-                <li><strong>Busca urgencia:</strong> Desconfía de correos que te metan prisa por cambiar contraseñas o datos personales.</li>
+                <li><strong>Remitente del correo:</strong> Comprueba siempre si el dominio de la dirección de origen corresponde exactamente al servicio oficial.</li>
+                <li><strong>Dirección URL (Enlace):</strong> Revisa la barra de direcciones del navegador. Los servicios oficiales utilizan dominios propios y conexiones seguras verificadas, no direcciones IP locales o dominios externos genéricos.</li>
+                <li><strong>Urgencia psicológica:</strong> Desconfía de alertas que exijan una acción inmediata bajo amenaza de bloquear o suspender cuentas de servicios.</li>
             </ul>
+        </div>
+
+        <div class="footer-tfg">
+            Este módulo educativo pertenece al Laboratorio de Ciberseguridad de un Trabajo de Fin de Grado (TFG).
         </div>
     </div>
 </body>
