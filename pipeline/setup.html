@@ -52,7 +52,7 @@
 
                 <div class="mt-8 pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
                     <p>Autor: <span class="font-semibold text-slate-800">AarónSGómez</span></p>
-                    <a href="https://asga.vercel.app" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">asga.vercel.app</a>
+                    <a href="https://aaronsgomez.es" target="_blank" class="mt-1 inline-block text-cyan-600 hover:underline">AaronSGomez.es</a>
                 </div>
             </div>
         </aside>
@@ -147,7 +147,7 @@
                 <ul class="list-disc pl-5 space-y-3 text-sm text-slate-700">
                     <li><strong>SAST (Static Application Security Testing):</strong> Inicialmente se contempló únicamente GitHub CodeQL. Sin embargo, debido a las limitaciones funcionales de subir reportes a las pestañas de seguridad en repositorios personales privados sin licencias Advanced Security, se optó por incorporar <strong>Semgrep Community Edition</strong> como herramienta SAST principal por ser open-source, flexible, compatible con pipelines locales y tener soporte completo para JavaScript/TypeScript.</li>
                     <li><strong>SCA (Software Composition Analysis):</strong> Integración de <code>npm audit</code> en el frontend del portfolio para rastrear vulnerabilidades conocidas en dependencias del gestor Node.js, exportando reportes detallados en formato estructurado JSON.</li>
-                    <li><strong>DAST (Dynamic Application Security Testing):</strong> Configuración de <strong>OWASP ZAP Baseline Scan</strong> a través de una acción del pipeline que realiza un escaneo de seguridad pasivo perimetral apuntando al dominio de producción (<code>https://asga.vercel.app</code>).</li>
+                    <li><strong>DAST (Dynamic Application Security Testing):</strong> Configuración de <strong>OWASP ZAP Baseline Scan</strong> a través de una acción del pipeline que realiza un escaneo de seguridad pasivo perimetral apuntando al dominio de producción (<code>https://aaronsgomez.es</code>).</li>
                 </ul>
             </section>
 
@@ -366,7 +366,7 @@ jobs:
         continue-on-error: true
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: "https://asga.vercel.app"
+          target: "https://aaronsgomez.es"
           token: "" 
 
       - name: Count findings
