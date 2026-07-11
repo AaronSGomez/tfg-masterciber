@@ -133,16 +133,28 @@ let masterHtml = `<!DOCTYPE html>
             }
 
             /* Ajuste de código pre y blockquote */
-            pre, code, pre *, code * {
+            pre, pre * {
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                background-color: #0b1220 !important;
+                color: #f8fafc !important;
+                border: 1px solid #0f172a !important;
+                padding: 10px !important;
+                font-size: 9.5pt !important;
+                page-break-inside: auto !important;
+            }
+            code:not(pre code) {
                 white-space: pre-wrap !important;
                 word-wrap: break-word !important;
                 word-break: break-word !important;
                 background-color: #f8fafc !important;
                 color: #0f172a !important; /* Forzar color oscuro para que no sea blanco */
                 border: 1px solid #e2e8f0 !important;
-                padding: 10px !important;
+                padding: 2px 6px !important;
                 font-size: 9.5pt !important;
                 page-break-inside: avoid !important;
+                border-radius: 4px !important;
             }
             blockquote {
                 page-break-inside: avoid !important;
@@ -346,7 +358,7 @@ const outputHtmlPath = path.join(__dirname, 'tfg_documento_completo.html');
 fs.writeFileSync(outputHtmlPath, masterHtml, 'utf-8');
 console.log(`\n¡Éxito! Archivo maestro consolidado creado en: ${outputHtmlPath}`);
 
-// Proceder a compilar el PDF de forma directa y nativa para evitar problemas de escape del shell
+const puppeteer = require('puppeteer-core');
 const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const pdfPath = path.join(__dirname, 'tfg_master_ciberseguridad.pdf');
 
@@ -359,22 +371,33 @@ if (fs.existsSync(pdfPath)) {
     }
 }
 
-const args = [
-    '--headless=old',
-    '--disable-gpu',
-    '--display-header-footer',
-    '--header-template=<div style="font-size: 8px; font-family: sans-serif; width: 100%; text-align: center; color: #64748b;">Trabajo fin Master Ciberseguridad : Aarón S. Gómez</div>',
-    '--footer-template=<div style="font-size: 8px; font-family: sans-serif; width: 100%; text-align: right; padding-right: 20px; color: #64748b;"><span class="pageNumber"></span></div>',
-    `--print-to-pdf=${pdfPath}`,
-    `file:///${outputHtmlPath.replace(/\\/g, '/')}`
-];
-
-console.log('Iniciando exportación de PDF con Chrome...');
-execFile(chromePath, args, (err, stdout, stderr) => {
-    if (err) {
-        console.error('Error al generar el PDF:', err);
+console.log('Iniciando exportación de PDF con Puppeteer...');
+(async () => {
+    try {
+        const browser = await puppeteer.launch({
+            executablePath: chromePath,
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
+        const page = await browser.newPage();
+        
+        const fileUrl = `file:///${outputHtmlPath.replace(/\\/g, '/')}`;
+        await page.goto(fileUrl, { waitUntil: 'networkidle0' });
+        
+        await page.pdf({
+            path: pdfPath,
+            displayHeaderFooter: true,
+            headerTemplate: '<div style="font-size: 8px; color: transparent; height: 0px; opacity: 0;">&nbsp;</div>',
+            footerTemplate: '<div style="font-size: 8px; font-family: sans-serif; width: 100%; text-align: right; padding-right: 20px; color: #64748b;"><span class="pageNumber"></span></div>',
+            printBackground: true,
+            preferCSSPageSize: true
+        });
+        
+        await browser.close();
+        console.log(`PDF generado correctamente en: ${pdfPath}`);
+        process.exit(0);
+    } catch (err) {
+        console.error('Error al generar el PDF con Puppeteer:', err);
         process.exit(1);
     }
-    console.log(`PDF generado correctamente en: ${pdfPath}`);
-    process.exit(0);
-});
+})();

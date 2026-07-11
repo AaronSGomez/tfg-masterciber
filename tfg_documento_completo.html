@@ -78,16 +78,28 @@
             }
 
             /* Ajuste de código pre y blockquote */
-            pre, code, pre *, code * {
+            pre, pre * {
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
+                background-color: #0b1220 !important;
+                color: #f8fafc !important;
+                border: 1px solid #0f172a !important;
+                padding: 10px !important;
+                font-size: 9.5pt !important;
+                page-break-inside: auto !important;
+            }
+            code:not(pre code) {
                 white-space: pre-wrap !important;
                 word-wrap: break-word !important;
                 word-break: break-word !important;
                 background-color: #f8fafc !important;
                 color: #0f172a !important; /* Forzar color oscuro para que no sea blanco */
                 border: 1px solid #e2e8f0 !important;
-                padding: 10px !important;
+                padding: 2px 6px !important;
                 font-size: 9.5pt !important;
                 page-break-inside: avoid !important;
+                border-radius: 4px !important;
             }
             blockquote {
                 page-break-inside: avoid !important;
@@ -1040,7 +1052,7 @@
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-lab-install">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">1. Levantamiento del Laboratorio (Fase 1)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <header id="portada" class="rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 md:p-10 relative overflow-hidden">
@@ -1851,14 +1863,14 @@ volumes:
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-recon">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">2. Reconocimiento Perimetral y OSINT (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
@@ -2350,14 +2362,14 @@ Set-Cookie: PHPSESSID=...</pre>
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-exploit">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">3. Análisis y Explotación de Vulnerabilidades (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar Fijo --><html><head></head><body>
 
         <!-- Contenedor Principal de Contenido -->
         <section class="min-w-0 flex-1 space-y-8 pb-16">
@@ -3377,14 +3389,14 @@ drwxr-xr-x   35 root     root          4096 Jun 30 11:26 node_modules
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             
         </section>
-    </section>
+    </section></body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-post">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">4. Post-Explotación de Entornos (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar Fijo --><html><head></head><body>
 
         <!-- Contenedor Principal de Contenido -->
         <section class="min-w-0 flex-1 space-y-8 pb-16">
@@ -3521,14 +3533,14 @@ cat /app/flag.txt</code></pre>
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-pentest">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">5. Informe Técnico de Pentesting (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar Fijo --><html><head></head><body>
 
         <!-- Contenedor Principal de Contenido -->
         <section class="min-w-0 flex-1 space-y-8 pb-16">
@@ -3760,14 +3772,14 @@ cat /app/flag.txt</code></pre>
             </section>
             
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-pipeline-analysis">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">6. Análisis de Código Estático y Dinámico (Fase 3)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
@@ -4103,14 +4115,14 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-pipeline-threat">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">7. Modelado de Amenazas STRIDE (Fase 3)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
@@ -4249,14 +4261,14 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-pipeline-setup">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">8. Pipeline DevSecOps Automatizado (Fase 3)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
             <!-- Portada -->
@@ -4870,14 +4882,14 @@ MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')<
             <!-- Barra de Navegación de Flujo Flotante (Bottom) -->
             
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-mfa-mfa">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">9. Autenticación Robusta y MFA (Fase 4)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar lateral --><html><head></head><body>
 
         <!-- Contenedor de Contenido -->
         <section class="min-w-0 flex-1 space-y-6 pb-10">
@@ -5437,14 +5449,14 @@ USING ((select auth.jwt() -&gt;&gt; 'aal') = 'aal2');</code></pre>
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-firewall-firewall">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">10. Reglas de Firewall y Búnker Perimetral (Fase 4)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar lateral --><html><head></head><body>
 
         <!-- Contenedor de Contenido -->
         <section class="min-w-0 flex-1 space-y-6 pb-10">
@@ -5833,14 +5845,14 @@ docker logs app_nginx | grep "client intended to send too large body"</code></pr
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-gophish-gophish">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">11. Campaña de Phishing Controlado Gophish (Fase 4)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar lateral --><html><head></head><body>
 
         <!-- Contenedor de Contenido -->
         <section class="min-w-0 flex-1 space-y-6 pb-10">
@@ -6205,14 +6217,14 @@ Security,Audit,audit@masterciber.org,Auditor SOC</code></pre>
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-siem-siem">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">12. Monitorización y Casos de Uso SIEM (Fase 5)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar lateral --><html><head></head><body>
 
         <!-- Contenedor de Contenido -->
         <section class="min-w-0 flex-1 space-y-6 pb-10">
@@ -6676,14 +6688,14 @@ app.post('/api/deserialize', (req, res) =&gt; {
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-forensics-forensics">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">13. Análisis Forense Digital con Autopsy (Fase 5)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar lateral --><html><head></head><body>
 
         <!-- Contenedor de Contenido -->
         <section class="min-w-0 flex-1 space-y-6 pb-10">
@@ -7364,14 +7376,14 @@ app.post('/api/deserialize', (req, res) =&gt; {
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-gob-politica_documentada">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">14. Políticas de Seguridad de la Información (Fase 6)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Marca de agua de Aprobado --><html><head></head><body>
 
         <!-- Botón Volver -->
         
@@ -7523,14 +7535,14 @@ app.post('/api/deserialize', (req, res) =&gt; {
 
         <!-- Pie de página formal -->
         
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-gob-gob">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">15. Gestión de Riesgos y Plan Director (Fase 6)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Sidebar lateral --><html><head></head><body>
 
         <!-- Contenedor de Contenido -->
         <section class="min-w-0 flex-1 space-y-6 pb-10">
@@ -8098,14 +8110,14 @@ app.post('/api/deserialize', (req, res) =&gt; {
                 </div>
             </section>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-soar-soar">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">16. Despliegue y Orquestación SOAR (Extra)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="flex-1 space-y-6 pb-10">
           <header id="portada" class="overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 shadow-2xl shadow-slate-300/30 backdrop-blur md:p-10 relative">
@@ -8528,14 +8540,14 @@ docker logs -f thehive</code></pre>
                 </div>
             </article>
         </section>
-    
+    </body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-deep_r-research">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">17. Guía de Investigación de Ciberseguridad</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <html><head></head><body>
 
         <section class="min-w-0 flex-1 space-y-6 pb-10">
 
@@ -9305,14 +9317,14 @@ http {
             </div>
         </section>
 
-    </section>
+    </section></body></html>
         </div>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-deep_r-referencias">
         <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">18. Fuentes Bibliográficas y Referencias</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
-            
+            <!-- Botón Volver --><html><head></head><body>
 
             <!-- Encabezado formal -->
             <header class="border-b border-slate-200 pb-6 mb-8">
@@ -9505,7 +9517,7 @@ http {
 
             <!-- Pie de página -->
             
-        
+        </body></html>
         </div>
     </div>
     

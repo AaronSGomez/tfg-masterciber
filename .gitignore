@@ -1,0 +1,7 @@
+node_modules/
+chrome_temp_profile/
+.vscode/
+.idea/
+*.log
+Thumbs.db
+.DS_Store
