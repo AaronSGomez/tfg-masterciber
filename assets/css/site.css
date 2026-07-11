@@ -459,21 +459,25 @@ main:has(aside) {
 }
 
 /* Estilo unificado para figuras e imágenes en el TFG (soar.html style) */
-.tfg-figure {
+figure, .tfg-figure {
     margin-top: 1.25rem;
     overflow: hidden;
-    border-radius: 1rem;
-    border: 1px solid var(--border) !important;
-    background-color: var(--surface-soft) !important;
-    padding: 1rem;
+    border-radius: 0 !important;
+    border: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-shadow: none !important;
 }
 
-.tfg-image {
-    width: 100%;
-    border-radius: 0.75rem;
-    border: 1px solid var(--border) !important;
+figure img, .tfg-figure img, img.tfg-image {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
     object-fit: cover;
-    background-color: #ffffff;
 }
 
 /* Fondos degradados temáticos por módulo */

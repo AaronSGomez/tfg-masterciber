@@ -18,36 +18,82 @@
             body {
                 background: white !important;
                 color: black !important;
-                font-size: 11pt;
-                line-height: 1.6;
+                font-size: 10pt !important;
+                line-height: 1.5 !important;
             }
             .chapter {
                 page-break-before: always;
-            }
-            .no-print, aside, nav, .back-btn, .progress-status, .chip {
-                display: none !important;
-            }
-            
-            /* Quitar marcos, fondos, sombras y estilos de tarjeta web */
-            section, article, div.rounded-3xl, header.rounded-3xl, 
-            div.border, div.shadow-xl, div.shadow-2xl, div.bg-white,
-            div.backdrop-blur {
                 border: none !important;
                 box-shadow: none !important;
                 background: transparent !important;
                 background-color: transparent !important;
                 padding: 0 !important;
-                margin-top: 1rem !important;
-                margin-bottom: 1rem !important;
+                margin: 0 !important;
                 border-radius: 0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
-                page-break-inside: auto !important; /* Permitir que los contenedores se dividan libremente */
+            }
+            .no-print, aside, nav, .back-btn, .progress-status, .chip {
+                display: none !important;
+            }
+            
+            /* Quitar marcos, sombras y redondeos de todos los elementos */
+            div, section, article, header, blockquote {
+                border: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+
+            /* Estilos para secciones y subsecciones */
+            section, article {
+                padding: 0 !important;
+                margin-top: 3rem !important;
+                margin-bottom: 1.5rem !important;
+                background: transparent !important;
+                background-color: transparent !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                page-break-inside: auto !important;
             }
 
             /* Permitir que el texto fluya libremente */
             p, h2, h3, h4, li, span {
                 page-break-inside: auto !important;
+            }
+
+            /* Reducir tamaños y espacios en impresión */
+            header, header#portada {
+                padding: 0 !important;
+                margin-top: 0 !important;
+                margin-bottom: 1rem !important;
+            }
+            header h2, header#portada h2 {
+                font-size: 18pt !important;
+                line-height: 1.2 !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            header p, header#portada p {
+                font-size: 9.5pt !important;
+                line-height: 1.4 !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            h3 {
+                font-size: 13pt !important;
+                margin-top: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            h4 {
+                font-size: 11pt !important;
+                margin-top: 0.75rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            p, ul, ol, li {
+                font-size: 9.5pt !important;
+                line-height: 1.5 !important;
+                margin-top: 0.25rem !important;
+                margin-bottom: 0.5rem !important;
             }
 
             /* Permitir que las tablas se dividan entre páginas de forma limpia */
@@ -75,6 +121,23 @@
                 page-break-inside: avoid !important;
                 max-height: 180mm !important;
                 object-fit: contain !important;
+            }
+            figure, .tfg-figure {
+                border: none !important;
+                background: transparent !important;
+                background-color: transparent !important;
+                padding: 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            figure img, .tfg-figure img, img.tfg-image {
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
             }
 
             /* Ajuste de código pre y blockquote */
@@ -153,16 +216,16 @@
         }
 
         .chapter-title {
-            border-bottom: 2px solid #0f172a;
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 0.25rem;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
 <body class="bg-white text-slate-900">
 
     <!-- ÍNDICE DINÁMICO -->
-    <div class="chapter p-12 md:p-20 bg-slate-50 min-h-screen" id="indice-master" style="page-break-after: always;">
+    <div class="chapter p-12 md:p-20 bg-white min-h-screen" id="indice-master" style="page-break-after: always;">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-black text-slate-900 border-b border-slate-200 pb-4 mb-8">Índice del TFG</h2>
             <div class="toc-list space-y-4">
@@ -1050,7 +1113,7 @@
     <!-- CONTENIDOS -->
 
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-lab-install">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">1. Levantamiento del Laboratorio (Fase 1)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">1. Levantamiento del Laboratorio (Fase 1)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -1868,7 +1931,7 @@ volumes:
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-recon">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">2. Reconocimiento Perimetral y OSINT (Fase 2)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">2. Reconocimiento Perimetral y OSINT (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -2367,7 +2430,7 @@ Set-Cookie: PHPSESSID=...</pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-exploit">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">3. Análisis y Explotación de Vulnerabilidades (Fase 2)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">3. Análisis y Explotación de Vulnerabilidades (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar Fijo --><html><head></head><body>
 
@@ -3394,7 +3457,7 @@ drwxr-xr-x   35 root     root          4096 Jun 30 11:26 node_modules
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-post">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">4. Post-Explotación de Entornos (Fase 2)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">4. Post-Explotación de Entornos (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar Fijo --><html><head></head><body>
 
@@ -3538,7 +3601,7 @@ cat /app/flag.txt</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-exploit-pentest">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">5. Informe Técnico de Pentesting (Fase 2)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">5. Informe Técnico de Pentesting (Fase 2)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar Fijo --><html><head></head><body>
 
@@ -3777,7 +3840,7 @@ cat /app/flag.txt</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-pipeline-analysis">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">6. Análisis de Código Estático y Dinámico (Fase 3)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">6. Análisis de Código Estático y Dinámico (Fase 3)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -3943,7 +4006,7 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
                 <div>
                     <h3 class="text-2xl font-bold text-slate-950">⚡ Análisis Dinámico (DAST) — OWASP ZAP</h3>
                     <p class="text-sm text-slate-700 mt-2">
-                        El escaneo dinámico pasivo (Baseline) sobre la URI de producción <code>https://asga.vercel.app</code> detectó 11 avisos (Warnings) estructurados.
+                        El escaneo dinámico pasivo (Baseline) sobre la URI de producción <code>https://aaronsgomez.es</code> detectó 11 avisos (Warnings) estructurados.
                     </p>
                 </div>
 
@@ -4120,7 +4183,7 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-pipeline-threat">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">7. Modelado de Amenazas STRIDE (Fase 3)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">7. Modelado de Amenazas STRIDE (Fase 3)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -4266,7 +4329,7 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-pipeline-setup">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">8. Pipeline DevSecOps Automatizado (Fase 3)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">8. Pipeline DevSecOps Automatizado (Fase 3)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -4360,7 +4423,7 @@ const safeMessage = DOMPurify.sanitize(message);</code></pre>
                 <ul class="list-disc pl-5 space-y-3 text-sm text-slate-700">
                     <li><strong>SAST (Static Application Security Testing):</strong> Inicialmente se contempló únicamente GitHub CodeQL. Sin embargo, debido a las limitaciones funcionales de subir reportes a las pestañas de seguridad en repositorios personales privados sin licencias Advanced Security, se optó por incorporar <strong>Semgrep Community Edition</strong> como herramienta SAST principal por ser open-source, flexible, compatible con pipelines locales y tener soporte completo para JavaScript/TypeScript.</li>
                     <li><strong>SCA (Software Composition Analysis):</strong> Integración de <code>npm audit</code> en el frontend del portfolio para rastrear vulnerabilidades conocidas en dependencias del gestor Node.js, exportando reportes detallados en formato estructurado JSON.</li>
-                    <li><strong>DAST (Dynamic Application Security Testing):</strong> Configuración de <strong>OWASP ZAP Baseline Scan</strong> a través de una acción del pipeline que realiza un escaneo de seguridad pasivo perimetral apuntando al dominio de producción (<code>https://asga.vercel.app</code>).</li>
+                    <li><strong>DAST (Dynamic Application Security Testing):</strong> Configuración de <strong>OWASP ZAP Baseline Scan</strong> a través de una acción del pipeline que realiza un escaneo de seguridad pasivo perimetral apuntando al dominio de producción (<code>https://aaronsgomez.es</code>).</li>
                 </ul>
             </section>
 
@@ -4579,7 +4642,7 @@ jobs:
         continue-on-error: true
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: "https://asga.vercel.app"
+          target: "https://aaronsgomez.es"
           token: "" 
 
       - name: Count findings
@@ -4887,7 +4950,7 @@ MEDIUM=$(grep -i "Medium" report_md.md | awk -F'|' '{print $3}' | tr -dc '0-9')<
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-mfa-mfa">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">9. Autenticación Robusta y MFA (Fase 4)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">9. Autenticación Robusta y MFA (Fase 4)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar lateral --><html><head></head><body>
 
@@ -5454,7 +5517,7 @@ USING ((select auth.jwt() -&gt;&gt; 'aal') = 'aal2');</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-firewall-firewall">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">10. Reglas de Firewall y Búnker Perimetral (Fase 4)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">10. Reglas de Firewall y Búnker Perimetral (Fase 4)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar lateral --><html><head></head><body>
 
@@ -5850,7 +5913,7 @@ docker logs app_nginx | grep "client intended to send too large body"</code></pr
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-gophish-gophish">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">11. Campaña de Phishing Controlado Gophish (Fase 4)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">11. Campaña de Phishing Controlado Gophish (Fase 4)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar lateral --><html><head></head><body>
 
@@ -6222,7 +6285,7 @@ Security,Audit,audit@masterciber.org,Auditor SOC</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-siem-siem">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">12. Monitorización y Casos de Uso SIEM (Fase 5)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">12. Monitorización y Casos de Uso SIEM (Fase 5)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar lateral --><html><head></head><body>
 
@@ -6693,7 +6756,7 @@ app.post('/api/deserialize', (req, res) =&gt; {
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-forensics-forensics">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">13. Análisis Forense Digital con Autopsy (Fase 5)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">13. Análisis Forense Digital con Autopsy (Fase 5)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar lateral --><html><head></head><body>
 
@@ -7381,7 +7444,7 @@ app.post('/api/deserialize', (req, res) =&gt; {
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-gob-politica_documentada">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">14. Políticas de Seguridad de la Información (Fase 6)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">14. Políticas de Seguridad de la Información (Fase 6)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Marca de agua de Aprobado --><html><head></head><body>
 
@@ -7540,7 +7603,7 @@ app.post('/api/deserialize', (req, res) =&gt; {
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-gob-gob">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">15. Gestión de Riesgos y Plan Director (Fase 6)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">15. Gestión de Riesgos y Plan Director (Fase 6)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Sidebar lateral --><html><head></head><body>
 
@@ -8115,7 +8178,7 @@ app.post('/api/deserialize', (req, res) =&gt; {
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-soar-soar">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">16. Despliegue y Orquestación SOAR (Extra)</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">16. Despliegue y Orquestación SOAR (Extra)</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -8545,7 +8608,7 @@ docker logs -f thehive</code></pre>
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-deep_r-research">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">17. Guía de Investigación de Ciberseguridad</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">17. Guía de Investigación de Ciberseguridad</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <html><head></head><body>
 
@@ -9322,7 +9385,7 @@ http {
     </div>
     
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-deep_r-referencias">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">18. Fuentes Bibliográficas y Referencias</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">18. Fuentes Bibliográficas y Referencias</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             <!-- Botón Volver --><html><head></head><body>
 

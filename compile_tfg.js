@@ -73,36 +73,82 @@ let masterHtml = `<!DOCTYPE html>
             body {
                 background: white !important;
                 color: black !important;
-                font-size: 11pt;
-                line-height: 1.6;
+                font-size: 10pt !important;
+                line-height: 1.5 !important;
             }
             .chapter {
                 page-break-before: always;
-            }
-            .no-print, aside, nav, .back-btn, .progress-status, .chip {
-                display: none !important;
-            }
-            
-            /* Quitar marcos, fondos, sombras y estilos de tarjeta web */
-            section, article, div.rounded-3xl, header.rounded-3xl, 
-            div.border, div.shadow-xl, div.shadow-2xl, div.bg-white,
-            div.backdrop-blur {
                 border: none !important;
                 box-shadow: none !important;
                 background: transparent !important;
                 background-color: transparent !important;
                 padding: 0 !important;
-                margin-top: 1rem !important;
-                margin-bottom: 1rem !important;
+                margin: 0 !important;
                 border-radius: 0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
-                page-break-inside: auto !important; /* Permitir que los contenedores se dividan libremente */
+            }
+            .no-print, aside, nav, .back-btn, .progress-status, .chip {
+                display: none !important;
+            }
+            
+            /* Quitar marcos, sombras y redondeos de todos los elementos */
+            div, section, article, header, blockquote {
+                border: none !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+
+            /* Estilos para secciones y subsecciones */
+            section, article {
+                padding: 0 !important;
+                margin-top: 3rem !important;
+                margin-bottom: 1.5rem !important;
+                background: transparent !important;
+                background-color: transparent !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                page-break-inside: auto !important;
             }
 
             /* Permitir que el texto fluya libremente */
             p, h2, h3, h4, li, span {
                 page-break-inside: auto !important;
+            }
+
+            /* Reducir tamaños y espacios en impresión */
+            header, header#portada {
+                padding: 0 !important;
+                margin-top: 0 !important;
+                margin-bottom: 1rem !important;
+            }
+            header h2, header#portada h2 {
+                font-size: 18pt !important;
+                line-height: 1.2 !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            header p, header#portada p {
+                font-size: 9.5pt !important;
+                line-height: 1.4 !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            h3 {
+                font-size: 13pt !important;
+                margin-top: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            h4 {
+                font-size: 11pt !important;
+                margin-top: 0.75rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            p, ul, ol, li {
+                font-size: 9.5pt !important;
+                line-height: 1.5 !important;
+                margin-top: 0.25rem !important;
+                margin-bottom: 0.5rem !important;
             }
 
             /* Permitir que las tablas se dividan entre páginas de forma limpia */
@@ -130,6 +176,23 @@ let masterHtml = `<!DOCTYPE html>
                 page-break-inside: avoid !important;
                 max-height: 180mm !important;
                 object-fit: contain !important;
+            }
+            figure, .tfg-figure {
+                border: none !important;
+                background: transparent !important;
+                background-color: transparent !important;
+                padding: 0 !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            figure img, .tfg-figure img, img.tfg-image {
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
             }
 
             /* Ajuste de código pre y blockquote */
@@ -208,16 +271,16 @@ let masterHtml = `<!DOCTYPE html>
         }
 
         .chapter-title {
-            border-bottom: 2px solid #0f172a;
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 0.25rem;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
 <body class="bg-white text-slate-900">
 
     <!-- ÍNDICE DINÁMICO -->
-    <div class="chapter p-12 md:p-20 bg-slate-50 min-h-screen" id="indice-master" style="page-break-after: always;">
+    <div class="chapter p-12 md:p-20 bg-white min-h-screen" id="indice-master" style="page-break-after: always;">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-black text-slate-900 border-b border-slate-200 pb-4 mb-8">Índice del TFG</h2>
             <div class="toc-list space-y-4">
@@ -340,7 +403,7 @@ files.forEach((file, index) => {
     // Envolver contenido en un contenedor de capítulo con salto de página obligatorio
     masterHtml += `
     <div class="chapter p-8 md:p-16 max-w-5xl mx-auto" id="chapter-${file.id}">
-        <h2 class="text-3xl md:text-4xl font-black text-slate-955 chapter-title">${index + 1}. ${file.name}</h2>
+        <h2 class="text-base md:text-lg font-bold text-slate-500 uppercase tracking-wider chapter-title">${index + 1}. ${file.name}</h2>
         <div class="prose max-w-none text-slate-800 text-sm leading-relaxed space-y-6">
             ${cleanContent.html()}
         </div>
