@@ -176,6 +176,7 @@ npx live-server
 ## 👥 Autor
 
 **Aarón Gómez**
+- Portfolio: [aaronsgomez.es](https://aaronsgomez.es)
 - GitHub: [@AaronSGomez](https://github.com/AaronSGomez)
 - LinkedIn: [Aarón Gómez Abella](https://www.linkedin.com/in/aaronsgomez/)
 
